@@ -1,0 +1,188 @@
+import 'package:flutter/material.dart';
+import 'dart:ui';
+import '../../config/app_colors.dart';
+
+class TermsOfServiceScreen extends StatelessWidget {
+  const TermsOfServiceScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: Alignment.topCenter,
+            radius: 1.5,
+            colors: [
+              AppColors.pastelLavender.withValues(alpha: 0.05),
+              AppColors.pastelMint.withValues(alpha: 0.05),
+              const Color(0xFF0A0A12),
+            ],
+            stops: const [0.0, 0.4, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              _buildHeader(context),
+              Expanded(child: _buildContent()),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: const Color(0xFF141928).withValues(alpha: 0.9),
+        border: Border(
+          bottom: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+        ),
+      ),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Text(
+                    'Back',
+                    style: TextStyle(
+                      color: AppColors.pastelLavender,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ),
+                Icon(Icons.description_outlined,
+                    size: 24, color: AppColors.pastelLavender),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'TERMS OF SERVICE',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(25),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSection('1. Acceptance of Terms', [
+            'By accessing and using the NanoSolve Hive App, you accept and agree to be bound by the terms and provision of this agreement.',
+          ]),
+          _buildSection('2. License Grant', [
+            'We grant you a limited, non-exclusive, non-transferable license to use this App for personal, non-commercial purposes only.',
+            'You may not reproduce, distribute, or transmit the App or its content without our prior written permission.',
+          ]),
+          _buildSection('3. User Responsibilities', [
+            '• You agree to use the App lawfully and responsibly',
+            '• You will not engage in harassment, abuse, or defamatory conduct',
+            '• You will not attempt to hack, reverse engineer, or compromise App security',
+            '• You are responsible for maintaining the confidentiality of your account',
+          ]),
+          _buildSection('4. Intellectual Property Rights', [
+            '• All content, features, and functionality are owned by NanoSolve Hive',
+            '• Open source components retain their respective licenses',
+            '• User-generated content remains your property, but you grant us a license to use it',
+          ]),
+          _buildSection('5. Content Disclaimer', [
+            '• The App provides information for educational purposes only',
+            '• We do not guarantee the accuracy or completeness of the information',
+            '• Always consult qualified professionals before making decisions based on App content',
+          ]),
+          _buildSection('6. Limitation of Liability', [
+            'To the fullest extent permitted by law, we shall not be liable for:',
+            '• Indirect, incidental, or consequential damages',
+            '• Loss of data, profits, or business opportunities',
+            '• Use or inability to use the App',
+          ]),
+          _buildSection('7. Community Guidelines', [
+            '• Respect other users and their contributions',
+            '• No spam, advertising, or commercial promotion',
+            '• Do not share inappropriate, offensive, or illegal content',
+            '• Report violations to support@nanoslve.app',
+          ]),
+          _buildSection('8. Modifications to Terms', [
+            'We reserve the right to modify these terms at any time. Continued use of the App indicates acceptance of updated terms.',
+          ]),
+          _buildSection('9. Termination', [
+            'We may terminate or suspend your access immediately, without prior notice, for violations of these terms or applicable laws.',
+          ]),
+          _buildSection('10. Governing Law', [
+            'These terms are governed by and construed in accordance with applicable law.',
+          ]),
+          _buildSection('11. Contact Information', [
+            'For questions about these terms, please contact us through the App settings.',
+          ]),
+          const SizedBox(height: 20),
+          Text(
+            'Last Updated: January 2026',
+            style: TextStyle(
+              fontSize: 10,
+              color: AppColors.textMuted,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSection(String title, List<String> content) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w800,
+              color: Colors.white,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ...content.map((text) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textMuted,
+                    height: 1.6,
+                  ),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+}

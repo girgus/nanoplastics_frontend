@@ -1,0 +1,183 @@
+import 'package:flutter/material.dart';
+import 'dart:ui';
+import '../../config/app_colors.dart';
+
+class PrivacyPolicyScreen extends StatelessWidget {
+  const PrivacyPolicyScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: Alignment.topCenter,
+            radius: 1.5,
+            colors: [
+              AppColors.pastelAqua.withValues(alpha: 0.05),
+              AppColors.pastelLavender.withValues(alpha: 0.05),
+              const Color(0xFF0A0A12),
+            ],
+            stops: const [0.0, 0.4, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              _buildHeader(context),
+              Expanded(child: _buildContent()),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: const Color(0xFF141928).withValues(alpha: 0.9),
+        border: Border(
+          bottom: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+        ),
+      ),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Text(
+                    'Back',
+                    style: TextStyle(
+                      color: AppColors.pastelAqua,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ),
+                Icon(Icons.privacy_tip_outlined,
+                    size: 24, color: AppColors.pastelAqua),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'PRIVACY POLICY',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(25),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSection('1. Introduction', [
+            'This Privacy Policy explains how NanoSolve Hive ("App", "we", "our", or "us") collects, uses, discloses, and otherwise handles your information when you use our mobile application.',
+          ]),
+          _buildSection('2. Information We Collect', [
+            '• Device Information: Device type, operating system, unique identifiers, and mobile network information',
+            '• Usage Information: Features accessed, interactions with content, and time spent in the App',
+            '• Analytics Data: App performance metrics, crash reports, and error logs',
+            '• Optional Information: Profile data you voluntarily provide for community features',
+          ]),
+          _buildSection('3. How We Use Your Information', [
+            '• Improve and maintain the App functionality',
+            '• Analyze usage patterns to enhance user experience',
+            '• Diagnose and fix technical issues',
+            '• Send you important updates or notices',
+            '• Comply with legal obligations',
+          ]),
+          _buildSection('4. Data Storage and Security', [
+            '• We implement industry-standard security measures',
+            '• Data is stored securely on our servers',
+            '• We never share personal data with third parties without consent',
+            '• You can request data deletion at any time',
+          ]),
+          _buildSection('5. Third-Party Services', [
+            '• Firebase: Used for crash reporting and analytics',
+            '• These services have their own privacy policies',
+            '• We do not share personal identifiable information',
+          ]),
+          _buildSection('6. Your Rights', [
+            '• Access: Request a copy of your data',
+            '• Correction: Update inaccurate information',
+            '• Deletion: Request removal of your data',
+            '• Opt-Out: Disable analytics in app settings',
+          ]),
+          _buildSection('7. Children\'s Privacy', [
+            'This App is not intended for users under 13 years old. We do not knowingly collect information from children.',
+          ]),
+          _buildSection('8. Changes to This Policy', [
+            'We may update this Privacy Policy periodically. Changes will be posted here with an updated date.',
+          ]),
+          _buildSection('9. Contact Us', [
+            'For privacy concerns or data requests, please contact us through the App settings or visit our website.',
+          ]),
+          const SizedBox(height: 20),
+          Text(
+            'Last Updated: January 2026',
+            style: TextStyle(
+              fontSize: 10,
+              color: AppColors.textMuted,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSection(String title, List<String> content) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w800,
+              color: Colors.white,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ...content.map((text) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textMuted,
+                    height: 1.6,
+                  ),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+}

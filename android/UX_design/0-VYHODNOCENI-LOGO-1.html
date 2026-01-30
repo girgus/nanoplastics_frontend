@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NANOSOLVE - Výsledky a Inovátoři</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --glass-bg: rgba(20, 25, 40, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: #ffffff;
+            --text-muted: #a0aec0;
+            
+            /* Pastelová paleta */
+            --pastel-aqua: #AEEEEE;
+            --pastel-mint: #98FB98;
+            --pastel-lavender: #C7CEFF;
+            --pastel-gold: #FCEEB5; /* Nová barva pro 1. místo */
+            
+            --card-hover-bg: rgba(30, 35, 55, 0.9);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+
+        body {
+            background-color: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 10%, rgba(174, 238, 238, 0.05) 0%, transparent 50%);
+        }
+
+        .app-frame {
+            width: 100%; max-width: 400px; height: 850px;
+            background-color: var(--bg-dark); border-radius: 30px; overflow: hidden; position: relative;
+            box-shadow: 0 0 0 10px #05050a; display: flex; flex-direction: column;
+        }
+
+        /* --- HLAVIČKA (Standardní layout) --- */
+        header {
+            padding: 25px 25px 15px 25px; z-index: 5; background: rgba(20, 25, 40, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border);
+        }
+        .header-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .back-button {
+            display: inline-block; color: var(--pastel-aqua); font-weight: 700; font-size: 0.8rem;
+            cursor: pointer; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        }
+        .back-button:hover { transform: translateX(-3px); text-shadow: 0 0 10px var(--pastel-aqua); }
+        /* Ikona sekce VÝSLEDKY (Graf/Raketa) */
+        .header-section-icon {
+            width: 24px; height: 24px; color: var(--pastel-mint); filter: drop-shadow(0 0 8px var(--pastel-mint));
+        }
+        .header-logo-svg { width: 140px; height: auto; display: block; filter: drop-shadow(0 0 8px rgba(152, 251, 152, 0.2)); }
+
+
+        /* --- HLAVNÍ KONTEJNER (Scrollable) --- */
+        .results-container { flex: 1; overflow-y: auto; padding: 25px; scrollbar-width: none; }
+        .results-container::-webkit-scrollbar { display: none; }
+
+
+        /* --- KARTA CELKOVÉHO SUMÁŘE --- */
+        .summary-card {
+            background: linear-gradient(135deg, rgba(152, 251, 152, 0.15), rgba(174, 238, 238, 0.1));
+            border: 1px solid var(--pastel-mint); border-radius: 20px;
+            padding: 20px; margin-bottom: 30px; text-decoration: none; display: block;
+            transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .summary-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px -10px rgba(152, 251, 152, 0.4); }
+        .summary-card::after {
+            content: '→'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            font-size: 1.5rem; color: var(--pastel-mint); opacity: 0.7;
+        }
+        .summary-label { font-size: 0.75rem; font-weight: 700; color: var(--pastel-mint); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
+        .summary-title { font-size: 1.1rem; font-weight: 800; color: var(--text-light); line-height: 1.3; }
+
+
+        /* --- LEADERBOARD SEKCE --- */
+        .leaderboard-title {
+            font-size: 1rem; font-weight: 800; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 5px; display: flex; align-items: center; gap: 10px;
+        }
+        .leaderboard-subtitle { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 25px; font-weight: 500; }
+
+        /* --- PODIUM (TOP 3) --- */
+        .podium-container {
+            display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin-bottom: 30px;
+        }
+        .podium-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 15px;
+            padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center;
+            backdrop-filter: blur(10px); transition: 0.3s; position: relative;
+        }
+        /* Rank 1 (Střed, největší) */
+        .rank-1 {
+            order: 2; width: 38%; padding-top: 25px; padding-bottom: 25px; z-index: 2;
+            border-color: var(--pastel-gold); background: linear-gradient(to bottom, rgba(252, 238, 181, 0.1), var(--glass-bg));
+            box-shadow: 0 -10px 30px rgba(252, 238, 181, 0.15);
+        }
+        /* Rank 2 (Vlevo) */
+        .rank-2 { order: 1; width: 31%; border-color: var(--pastel-aqua); }
+        /* Rank 3 (Vpravo) */
+        .rank-3 { order: 3; width: 31%; border-color: var(--pastel-mint); }
+
+        .podium-rank { font-size: 1rem; font-weight: 900; margin-bottom: 5px; }
+        .rank-1 .podium-rank { font-size: 1.5rem; color: var(--pastel-gold); }
+        .rank-2 .podium-rank { color: var(--pastel-aqua); }
+        .rank-3 .podium-rank { color: var(--pastel-mint); }
+        
+        .podium-user-icon { font-size: 2rem; margin-bottom: 5px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
+        .podium-nick { font-size: 0.8rem; font-weight: 700; color: var(--text-light); margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+        
+        .podium-score { font-size: 0.85rem; font-weight: 800; color: var(--pastel-lavender); }
+        .rank-1 .podium-score { font-size: 1.1rem; font-weight: 900; color: var(--pastel-gold); }
+
+        /* --- ZBYTEK ŽEBŘÍČKU (LIST) --- */
+        .ranking-list { display: flex; flex-direction: column; gap: 10px; }
+        .ranking-item {
+            display: flex; align-items: center; padding: 12px 15px;
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px;
+        }
+        .rank-num { font-size: 0.9rem; font-weight: 800; color: var(--text-muted); width: 30px; }
+        .rank-user { flex: 1; font-size: 0.85rem; font-weight: 700; color: var(--text-light); display: flex; align-items: center; gap: 8px; }
+        .rank-score-container { text-align: right; }
+        .rank-score { font-size: 0.85rem; font-weight: 800; color: var(--pastel-lavender); display: block; }
+        
+        /* Vizuální "Weight bar" pro skóre v seznamu */
+        .score-bar-bg {
+            width: 80px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 4px; overflow: hidden;
+        }
+        .score-bar-fill { height: 100%; background: linear-gradient(to right, var(--pastel-aqua), var(--pastel-mint)); border-radius: 2px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-frame">
+        
+        <header>
+            <div class="header-top-row">
+                <a class="back-button" onclick="history.back()">← ZPĚT</a>
+                <svg class="header-section-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 21h4.5V16.5" opacity="0.5" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M20.5 21l-6-6" opacity="0.5" />
+                </svg>
+            </div>
+
+            <svg class="header-logo-svg" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="nanoGradH" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#D8DFFF;stop-opacity:1"/><stop offset="100%" style="stop-color:#C4FFFF;stop-opacity:1"/></linearGradient>
+                    <linearGradient id="solveGradH" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#C4FFFF;stop-opacity:1"/><stop offset="100%" style="stop-color:#B5FFB5;stop-opacity:1"/></linearGradient>
+                </defs>
+                <g transform="translate(20, 10)">
+                     <circle cx="10" cy="30" r="5" fill="url(#nanoGradH)" opacity="0.7" /><circle cx="25" cy="15" r="4" fill="url(#nanoGradH)" opacity="0.8" /><circle cx="30" cy="50" r="6" fill="url(#nanoGradH)" opacity="0.6" /><circle cx="15" cy="65" r="5" fill="url(#nanoGradH)" opacity="0.9" /><circle cx="45" cy="40" r="7" fill="url(#nanoGradH)" /><path d="M45 40 L70 25 M45 40 L75 55 M70 25 L90 40 M75 55 L90 40" stroke="url(#solveGradH)" stroke-width="3" stroke-linecap="round" /><circle cx="70" cy="25" r="7" fill="url(#solveGradH)" /><circle cx="75" cy="55" r="7" fill="url(#solveGradH)" /><circle cx="90" cy="40" r="9" fill="url(#solveGradH)" />
+                </g>
+                <text x="130" y="65" style="font-family: 'Montserrat', sans-serif;">
+                    <tspan fill="#e2e8f0" font-weight="400" font-size="48">NANO</tspan><tspan fill="#ffffff" font-weight="800" font-size="48">SOLVE</tspan>
+                </text>
+            </svg>
+        </header>
+
+        <div class="results-container">
+            
+            <a href="#" target="_blank" class="summary-card">
+                <span class="summary-label">GLOBÁLNÍ DATA</span>
+                <div class="summary-title">Zobrazit souhrnnou analýzu a vědecký report projektu</div>
+            </a>
+
+            <div class="leaderboard-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--pastel-gold);"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                TOP INOVÁTOŘI
+            </div>
+            <p class="leaderboard-subtitle">Řazeno dle váhy a dopadu navržených řešení, nikoliv počtu příspěvků.</p>
+
+            <div class="podium-container">
+                <div class="podium-card rank-2">
+                    <div class="podium-rank">#2</div>
+                    <div class="podium-user-icon">🥈</div>
+                    <div class="podium-nick">@BioTech_Jana</div>
+                    <div class="podium-score">Impact: 890</div>
+                </div>
+                <div class="podium-card rank-1">
+                    <div class="podium-rank">#1</div>
+                    <div class="podium-user-icon">🏆</div>
+                    <div class="podium-nick">@NanoMaster_X</div>
+                    <div class="podium-score">Impact: 1250</div>
+                    <div style="position: absolute; inset: 0; background: radial-gradient(circle, var(--pastel-gold) 0%, transparent 70%); opacity: 0.1; pointer-events: none;"></div>
+                </div>
+                <div class="podium-card rank-3">
+                    <div class="podium-rank">#3</div>
+                    <div class="podium-user-icon">🥉</div>
+                    <div class="podium-nick">@EcoWarriorCZ</div>
+                    <div class="podium-score">Impact: 750</div>
+                </div>
+            </div>
+
+            <div class="ranking-list">
+                <div class="ranking-item">
+                    <div class="rank-num">#4</div>
+                    <div class="rank-user">👤 @Pixel_Research</div>
+                    <div class="rank-score-container">
+                        <span class="rank-score">620</span>
+                        <div class="score-bar-bg"><div class="score-bar-fill" style="width: 65%;"></div></div>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank-num">#5</div>
+                    <div class="rank-user">👤 @AquaSolution</div>
+                    <div class="rank-score-container">
+                        <span class="rank-score">580</span>
+                        <div class="score-bar-bg"><div class="score-bar-fill" style="width: 58%;"></div></div>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank-num">#6</div>
+                    <div class="rank-user">👤 @DataScientist_88</div>
+                    <div class="rank-score-container">
+                        <span class="rank-score">450</span>
+                        <div class="score-bar-bg"><div class="score-bar-fill" style="width: 45%;"></div></div>
+                    </div>
+                </div>
+                 <div class="ranking-item">
+                    <div class="rank-num">#7</div>
+                    <div class="rank-user">👤 @NovaIdea</div>
+                    <div class="rank-score-container">
+                        <span class="rank-score">310</span>
+                        <div class="score-bar-bg"><div class="score-bar-fill" style="width: 30%;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

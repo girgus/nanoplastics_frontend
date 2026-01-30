@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NANOSOLVE - Registrace Řešitele</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* --- PASTELOVÁ PALETA "SMART HOPE" --- */
+            --bg-dark: #0a0a12;
+            --glass-bg: rgba(20, 25, 40, 0.8); /* Trochu tmavší sklo pro lepší kontrast loga */
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: #ffffff;
+            --text-muted: #a0aec0;
+            
+            /* Pastel Akcenty */
+            --pastel-aqua: #AEEEEE;
+            --pastel-mint: #98FB98;
+            --pastel-lavender: #C7CEFF;
+            
+            /* Gradient pro tlačítka */
+            --btn-gradient: linear-gradient(135deg, var(--pastel-aqua), var(--pastel-mint));
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-dark);
+            /* Jemné pozadí naznačující propojenou síť */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(174, 238, 238, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(199, 206, 255, 0.08) 0%, transparent 25%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            padding: 40px 35px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- HEADER S SVG LOGEM --- */
+        .form-header { text-align: center; margin-bottom: 25px; }
+        
+        /* Styl pro vložené SVG logo */
+        .form-logo-svg {
+            width: 100%;
+            max-width: 260px; /* Optimální šířka pro formulář */
+            height: auto;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(174, 238, 238, 0.2)); /* Jemná záře kolem loga */
+        }
+
+        .form-title { color: var(--text-light); font-size: 1rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; opacity: 0.9; }
+
+        /* --- ID PLACEHOLDER --- */
+        .id-placeholder {
+            background: rgba(199, 206, 255, 0.05); /* Nádech lavender */
+            border-radius: 12px; padding: 15px;
+            text-align: center; margin-bottom: 30px;
+            border: 1px dashed rgba(199, 206, 255, 0.3);
+        }
+        .id-label { color: var(--text-muted); font-size: 0.75rem; display: block; margin-bottom: 5px; }
+        .id-value { color: var(--pastel-aqua); font-family: monospace; font-size: 1.1rem; letter-spacing: 2px; font-weight: 800; }
+
+        /* --- FORMULÁŘOVÁ POLE (Floating Labels) --- */
+        .form-group { position: relative; margin-bottom: 22px; }
+        .form-input {
+            width: 100%; padding: 15px 10px;
+            background: rgba(255,255,255,0.02); border-radius: 8px 8px 0 0; border: none;
+            border-bottom: 2px solid var(--glass-border);
+            color: var(--text-light); font-size: 0.95rem;
+            transition: 0.3s; font-family: inherit;
+        }
+        .form-label {
+            position: absolute; left: 10px; top: 15px;
+            color: var(--text-muted); pointer-events: none; transition: 0.3s;
+            font-size: 0.9rem;
+        }
+        /* Efekt při najetí/vyplnění */
+        .form-input:focus, .form-input:not(:placeholder-shown) { 
+            border-bottom-color: var(--pastel-aqua); 
+            background: rgba(255,255,255,0.04);
+        }
+        .form-input:focus ~ .form-label, .form-input:not(:placeholder-shown) ~ .form-label {
+            top: -10px; font-size: 0.75rem; color: var(--pastel-aqua); font-weight: 600;
+        }
+        .form-input::placeholder { color: transparent; }
+
+        /* --- SEGMENT SELECTOR --- */
+        .segment-group { margin-bottom: 30px; margin-top: 10px;}
+        .segment-label { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px; display: block; }
+        .segment-options { display: flex; gap: 10px; }
+        .segment-option {
+            flex: 1; text-align: center; padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border); border-radius: 12px;
+            color: var(--text-muted); cursor: pointer; transition: 0.3s;
+            font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        input[type="radio"] { display: none; }
+        input[type="radio"]:checked + .segment-option {
+            background: rgba(152, 251, 152, 0.1); /* Nádech Mint */
+            border-color: var(--pastel-mint); color: var(--text-light);
+            box-shadow: 0 0 15px rgba(152, 251, 152, 0.15);
+        }
+
+        /* --- SUBMIT BUTTON --- */
+        .btn-submit {
+            width: 100%; padding: 16px;
+            background: var(--btn-gradient); border: none; border-radius: 15px;
+            color: #0a0a12; font-size: 1rem; font-weight: 800; cursor: pointer; letter-spacing: 1px;
+            transition: 0.3s; box-shadow: 0 5px 15px -5px rgba(174, 238, 238, 0.5);
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 30px -10px rgba(174, 238, 238, 0.6); }
+
+        .login-link { text-align: center; margin-top: 25px; color: var(--text-muted); font-size: 0.85rem; }
+        .login-link a { color: var(--pastel-aqua); text-decoration: none; font-weight: 700; }
+
+    </style>
+</head>
+<body>
+
+    <div class="register-container">
+        
+        <div class="form-header">
+            <svg class="form-logo-svg" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="nanoGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#D8DFFF;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#C4FFFF;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="solveGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#C4FFFF;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#B5FFB5;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <g transform="translate(20, 10)">
+                    <circle cx="10" cy="30" r="5" fill="url(#nanoGradDark)" opacity="0.7" />
+                    <circle cx="25" cy="15" r="4" fill="url(#nanoGradDark)" opacity="0.8" />
+                    <circle cx="30" cy="50" r="6" fill="url(#nanoGradDark)" opacity="0.6" />
+                    <circle cx="15" cy="65" r="5" fill="url(#nanoGradDark)" opacity="0.9" />
+                    <circle cx="45" cy="40" r="7" fill="url(#nanoGradDark)" />
+                    <path d="M45 40 L70 25 M45 40 L75 55 M70 25 L90 40 M75 55 L90 40" stroke="url(#solveGradDark)" stroke-width="3" stroke-linecap="round" />
+                    <circle cx="70" cy="25" r="7" fill="url(#solveGradDark)" />
+                    <circle cx="75" cy="55" r="7" fill="url(#solveGradDark)" />
+                    <circle cx="90" cy="40" r="9" fill="url(#solveGradDark)" />
+                </g>
+                <text x="130" y="65" style="font-family: 'Montserrat', sans-serif;">
+                    <tspan fill="#e2e8f0" font-weight="400" font-size="48">NANO</tspan>
+                    <tspan fill="#ffffff" font-weight="800" font-size="48">SOLVE</tspan>
+                </text>
+            </svg>
+            <h1 class="form-title">Registrace Řešitele</h1>
+        </div>
+
+        <div class="id-placeholder">
+            <span class="id-label">Vaše budoucí unikátní NanoID:</span>
+            <span class="id-value">NS-xxxx-xxxx</span>
+        </div>
+
+        <form action="#" method="post">
+            
+            <div class="form-group">
+                <input type="text" id="nickname" class="form-input" placeholder=" " required>
+                <label for="nickname" class="form-label">Nickname (pro brainstorming)</label>
+            </div>
+
+            <div class="form-group">
+                <input type="email" id="email" class="form-input" placeholder=" " required>
+                <label for="email" class="form-label">Emailová adresa</label>
+            </div>
+             <div class="form-group">
+                <input type="password" id="password" class="form-input" placeholder=" " required>
+                <label for="password" class="form-label">Heslo</label>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <input type="text" id="fname" class="form-input" placeholder=" ">
+                    <label for="fname" class="form-label">Jméno</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="lname" class="form-input" placeholder=" ">
+                    <label for="lname" class="form-label">Příjmení</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                 <select id="country" class="form-input" style="color: var(--text-muted); padding-top: 15px;">
+                    <option value="" disabled selected></option>
+                    <option value="cz" style="color: #000;">Česká republika</option>
+                    <option value="sk" style="color: #000;">Slovensko</option>
+                    <option value="other" style="color: #000;">Jiná</option>
+                </select>
+                 <span class="form-label">Země původu</span>
+            </div>
+            
+            <div class="form-group">
+                <input type="text" id="profession" class="form-input" placeholder=" ">
+                <label for="profession" class="form-label">Profese / Odbornost</label>
+            </div>
+
+            <div class="segment-group">
+                <span class="segment-label">Primární segment zájmu:</span>
+                <div class="segment-options">
+                    <label style="flex:1;">
+                        <input type="radio" name="segment" value="mikro" checked>
+                        <div class="segment-option"><span>👤</span> MIKRO (Člověk)</div>
+                    </label>
+                    <label style="flex:1;">
+                        <input type="radio" name="segment" value="makro">
+                        <div class="segment-option"><span>🌍</span> MAKRO (Planeta)</div>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">AKTIVOVAT PROFIL</button>
+
+            <div class="login-link">
+                Již máte NanoID? <a href="#">Přihlásit se</a>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        // Skript pro správné chování labelu u select boxu
+        const select = document.getElementById('country');
+        const selectLabel = select.nextElementSibling;
+        select.addEventListener('change', function() {
+            if(this.value) {
+                this.style.color = 'var(--text-light)';
+                selectLabel.style.top = '-10px';
+                selectLabel.style.fontSize = '0.75rem';
+                selectLabel.style.color = 'var(--pastel-aqua)';
+                selectLabel.style.fontWeight = '600';
+            }
+        });
+    </script>
+
+</body>
+</html>
