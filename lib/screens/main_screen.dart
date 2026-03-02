@@ -18,6 +18,7 @@ import '../services/logger_service.dart';
 import '../services/extended_tour_service.dart';
 import '../services/service_locator.dart';
 import '../services/settings_manager.dart';
+import '../services/update_service.dart';
 import '../utils/app_theme_colors.dart';
 
 enum ImpactType { human, planet }
@@ -84,9 +85,10 @@ class _MainScreenState extends State<MainScreen> {
     try {
       final updateService = ServiceLocator().updateService;
       final settingsManager = SettingsManager();
-      // Only show badge if update is available AND notifications are enabled
-      return updateService.currentState.name == 'available' &&
-          settingsManager.pushNotificationsEnabled;
+      // Check runtime state OR persisted flag (survives app restarts)
+      final hasUpdate = updateService.currentState == UpdateState.available ||
+          settingsManager.updateAvailable;
+      return hasUpdate && settingsManager.pushNotificationsEnabled;
     } catch (_) {
       return false;
     }
