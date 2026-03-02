@@ -1,4 +1,5 @@
 import '../config/backend_config.dart';
+import '../config/build_config.dart';
 import 'settings_manager.dart';
 import 'logger_service.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -12,7 +13,10 @@ import 'package:http/http.dart' as http;
 /// All PDFs (bundled + downloaded) stored in single app documents directory
 class PdfService {
   final SettingsManager settingsManager;
-  static const String _bundledExtractedKey = 'bundled_pdfs_extracted';
+  // Separate flags per build flavour so switching LITE→FULL forces re-extraction.
+  static const String _bundledExtractedKey = BuildConfig.bundleAllLangs
+      ? 'bundled_pdfs_extracted_full'
+      : 'bundled_pdfs_extracted_lite';
 
   /// Create PdfService with injected SettingsManager dependency
   /// This ensures a single SettingsManager instance is used throughout the app
@@ -92,14 +96,14 @@ class PdfService {
 
   /// Extract all bundled PDFs to app documents directory (called once on init)
   Future<void> _extractBundledPdfs() async {
-    final buildType = settingsManager.buildType.toUpperCase();
+    const bundleAll = BuildConfig.bundleAllLangs;
     final reportLanguages =
-        buildType == 'FULL' ? ['en', 'cs', 'es', 'fr', 'ru'] : ['en'];
-    final waterLanguages = buildType == 'FULL' ? ['en', 'cs'] : ['en'];
+        bundleAll ? ['en', 'cs', 'es', 'fr', 'ru'] : ['en'];
+    final waterLanguages = bundleAll ? ['en', 'cs'] : ['en'];
 
     LoggerService().logDebug(
       'pdf_extraction_start',
-      'Starting PDF extraction for build type: $buildType, languages: $reportLanguages',
+      'Starting PDF extraction for bundleAll=$bundleAll, languages: $reportLanguages',
     );
 
     // Extract main Nanoplastics reports

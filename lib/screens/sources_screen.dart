@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import '../config/app_colors.dart';
@@ -684,8 +686,9 @@ class _SourcesScreenState extends State<SourcesScreen> {
           'endPage': source.endPage,
         });
 
-        // Open in Custom Tabs browser (web PDF with optional #page anchor)
-        if (source.isWebLink) {
+        // Non-PDF web links (video, article, etc.) → Custom Tabs
+        // PDF web links fall through to PDF viewer so startPage/endPage work
+        if (source.isWebLink && !source.url!.contains('.pdf')) {
           try {
             await launchUrl(
               Uri.parse(source.url!),
@@ -704,13 +707,14 @@ class _SourcesScreenState extends State<SourcesScreen> {
               ),
             );
           } catch (e, st) {
-            LoggerService().logError('WebPDFOpenFailed', e.toString(), st);
+            LoggerService().logError('WebLinkOpenFailed', e.toString(), st);
           }
           return;
         }
 
         final navigator = Navigator.of(context);
         final scaffoldMessenger = ScaffoldMessenger.of(context);
+        final dialogBg = AppThemeColors.of(context).dialogBackground;
 
         // Use resolveAssetPdf if custom asset path is provided (for water PDFs, etc.)
         if (source.pdfAssetPath != null && source.pdfAssetPath!.isNotEmpty) {
@@ -738,23 +742,75 @@ class _SourcesScreenState extends State<SourcesScreen> {
           }
         } else {
           // Use resolvePdf for standard language-based reports
-          final pdf = await ServiceLocator().pdfService.resolvePdf(
-                language: ServiceLocator().settingsManager.userLanguage,
-              );
+          final lang = ServiceLocator().settingsManager.userLanguage;
+
+          // Show download dialog only if PDF not yet cached
+          final cached = await ServiceLocator().settingsManager.getPdfForLanguage(lang);
+          final needsDownload = cached == null || !await cached.exists();
+
+          if (needsDownload && context.mounted) {
+            showDialog(
+              context: context, // ignore: use_build_context_synchronously
+              barrierDismissible: false,
+              builder: (_) => AlertDialog(
+                backgroundColor: dialogBg,
+                title: const Text(
+                  'Downloading PDF…',
+                  style: TextStyle(color: AppColors.pastelAqua),
+                ),
+                content: const LinearProgressIndicator(
+                  backgroundColor: Colors.white12,
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.pastelAqua),
+                ),
+              ),
+            );
+          }
+
+          File? pdf;
+          try {
+            pdf = await ServiceLocator().pdfService.resolvePdf(language: lang);
+          } catch (e, st) {
+            LoggerService().logError('ResolvePdfFailed', e.toString(), st);
+          }
+
+          if (needsDownload && context.mounted) navigator.maybePop();
           if (!context.mounted) return;
 
           if (pdf != null) {
+            final pdfPath = pdf.path;
             navigator.push(
               MaterialPageRoute(
                 builder: (_) => PDFViewerScreen(
                   title: source.title,
-                  pdfPath: pdf.path,
+                  pdfPath: pdfPath,
                   startPage: source.startPage,
                   endPage: source.endPage,
                   description: source.description,
                 ),
               ),
             );
+          } else if (source.isWebLink) {
+            // PDF not available or download failed — open web URL as fallback
+            try {
+              await launchUrl(
+                Uri.parse(source.url!),
+                customTabsOptions: CustomTabsOptions(
+                  colorSchemes: CustomTabsColorSchemes.defaults(
+                    toolbarColor: const Color(0xFF141928),
+                  ),
+                  shareState: CustomTabsShareState.on,
+                  urlBarHidingEnabled: true,
+                  showTitle: true,
+                ),
+                safariVCOptions: const SafariViewControllerOptions(
+                  preferredBarTintColor: Color(0xFF141928),
+                  preferredControlTintColor: AppColors.pastelAqua,
+                  barCollapsingEnabled: true,
+                ),
+              );
+            } catch (e, st) {
+              LoggerService().logError('WebPDFFallbackFailed', e.toString(), st);
+            }
           } else {
             scaffoldMessenger.showSnackBar(
               const SnackBar(content: Text('Failed to load PDF')),
@@ -832,7 +888,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
                 ),
                 SizedBox(height: spacing.md),
                 Icon(
-                  source.isWebLink
+                  source.isWebLink && !source.url!.contains('.pdf')
                       ? Icons.open_in_browser
                       : Icons.picture_as_pdf,
                   size: sizing.iconMd,

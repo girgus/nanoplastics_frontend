@@ -359,16 +359,6 @@ class SettingsManager {
     await _updateStateManager.setLastDownloadedApkSize(size);
   }
 
-  String get buildType {
-    _checkInitialized();
-    return _updateStateManager.buildType;
-  }
-
-  Future<void> setBuildType(String type) async {
-    _checkInitialized();
-    await _updateStateManager.setBuildType(type);
-  }
-
   // ===== Draft Ideas (kept in SettingsManager) =====
   String? getDraftIdea(String categoryKey) {
     _checkInitialized();

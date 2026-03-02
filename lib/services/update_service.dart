@@ -351,26 +351,20 @@ class UpdateService {
       }
 
       // If tag is different (new release), update is available
-      // Use semantic version comparison to handle version numbering correctly
-      // Get appropriate download URL based on build type
-      final buildType = settingsManager.buildType;
-      String? downloadUrl;
-
-      if (buildType.toLowerCase() == 'full') {
-        downloadUrl = release.fullBuildUrl;
-      } else {
-        downloadUrl = release.liteBuildUrl;
-      }
+      // Build type is determined at compile time via BuildConfig.bundleAllLangs.
+      final String? downloadUrl = BuildConfig.bundleAllLangs
+          ? release.fullBuildUrl
+          : release.liteBuildUrl;
 
       if (downloadUrl == null) {
         LoggerService().logUserAction('APK URL not found in GitHub release',
-            params: {'build_type': buildType});
+            params: {'bundle_all_langs': BuildConfig.bundleAllLangs});
         return false;
       }
 
       // Check if this exact version's APK is already downloaded and valid
       // If so, skip marking as available again (it's already ready to install)
-      int expectedSize = buildType.toLowerCase() == 'full'
+      final int expectedSize = BuildConfig.bundleAllLangs
           ? release.fullBuildSize
           : release.liteBuildSize;
 
@@ -378,10 +372,7 @@ class UpdateService {
           await _isValidDownloadedApkAvailable(expectedSize)) {
         LoggerService().logUserAction(
           'Valid downloaded APK exists, skipping re-download',
-          params: {
-            'tag': currentTagId,
-            'build_type': buildType,
-          },
+          params: {'tag': currentTagId},
         );
         _notifyStateChange(UpdateState.downloaded);
         return true; // APK is ready, no need to re-download
@@ -395,11 +386,7 @@ class UpdateService {
 
       LoggerService().logUserAction(
         'New release detected',
-        params: {
-          'tag': currentTagId,
-          'build_type': buildType,
-          'url': downloadUrl,
-        },
+        params: {'tag': currentTagId, 'url': downloadUrl},
       );
       _notifyStateChange(UpdateState.available);
       return true; // New release available

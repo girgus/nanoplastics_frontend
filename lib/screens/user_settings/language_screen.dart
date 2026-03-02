@@ -7,6 +7,7 @@ import '../../utils/app_spacing.dart';
 import '../../utils/app_sizing.dart';
 import '../../utils/app_typography.dart';
 import '../../services/settings_manager.dart';
+import '../../config/build_config.dart';
 import '../../utils/pdf_utils.dart';
 import '../../services/service_locator.dart';
 import '../../widgets/nanosolve_logo.dart';
@@ -55,7 +56,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
     await _settingsManager.setUserLanguage(code);
 
     // Download PDFs for non-EN languages in LITE build with progress
-    if (code != 'en' && _settingsManager.buildType == 'LITE') {
+    if (code != 'en' && !BuildConfig.bundleAllLangs) {
       final success = await _downloadPDFForLanguageWithProgress(code);
       if (!success) {
         // Restore previous selection so the user can retry the same language

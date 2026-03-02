@@ -54,6 +54,10 @@ void main() {
 
     testWidgets('onLanguageChanged callback receives correct Locale',
         (tester) async {
+      // Start from Czech so we can switch to English without triggering a
+      // download (English is always available; non-EN requires a download in
+      // LITE builds which would block the callback in the test environment).
+      await setupServiceLocator({'user_language': 'cs'});
       Locale? receivedLocale;
 
       await tester.pumpWidget(buildTestableWidget(
@@ -65,11 +69,11 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      // Tap Czech
-      await tester.tap(find.text('Czech'));
+      // Tap English — no download needed, callback fires immediately
+      await tester.tap(find.text('English').first);
       await tester.pumpAndSettle();
 
-      expect(receivedLocale, equals(const Locale('cs')));
+      expect(receivedLocale, equals(const Locale('en')));
     });
   });
 
@@ -122,24 +126,4 @@ void main() {
     });
   });
 
-  group('LanguageScreen build type behavior', () {
-    testWidgets(
-        'English in LITE build: no download triggered, language just persists',
-        (tester) async {
-      // Set up LITE build
-      await setupServiceLocator({'build_type': 'LITE'});
-
-      await tester.pumpWidget(buildTestableWidget(
-        LanguageScreen(
-          onLanguageChanged: (_) {},
-        ),
-      ));
-      await tester.pumpAndSettle();
-
-      // Selecting English in LITE build — already selected, so no-op
-      // Verify no download dialog appears
-      expect(find.byType(AlertDialog), findsNothing);
-      expect(SettingsManager().userLanguage, equals('en'));
-    });
-  });
 }

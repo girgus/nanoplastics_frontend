@@ -238,24 +238,6 @@ void main() {
     });
   });
 
-  group('SettingsManager - buildType', () {
-    setUp(() async => await setupSettingsManager());
-
-    test('buildType defaults to "UNKNOWN"', () {
-      expect(SettingsManager().buildType, equals('UNKNOWN'));
-    });
-
-    test('setBuildType("FULL") persists', () async {
-      await SettingsManager().setBuildType('FULL');
-      expect(SettingsManager().buildType, equals('FULL'));
-    });
-
-    test('setBuildType("LITE") persists', () async {
-      await SettingsManager().setBuildType('LITE');
-      expect(SettingsManager().buildType, equals('LITE'));
-    });
-  });
-
   group('SettingsManager - avatar', () {
     setUp(() async => await setupSettingsManager());
 

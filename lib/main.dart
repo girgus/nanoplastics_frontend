@@ -25,26 +25,13 @@ void main() async {
     debugPrint('Error reading app version: $e'); // ignore: avoid_print
   }
 
-  // Detect and persist build type FIRST (before ServiceLocator init)
-  // This ensures PdfService knows which languages to extract.
-  final settingsManager = SettingsManager();
-  if (settingsManager.buildType == 'UNKNOWN') {
-    const bundleAllLangs =
-        bool.fromEnvironment('BUNDLE_ALL_LANGS', defaultValue: false);
-    await settingsManager.setBuildType(bundleAllLangs ? 'FULL' : 'LITE');
-  }
-
   // Initialize Service Locator (all singleton services)
-  // Now PdfService will know correct build type from SettingsManager
-  // This initializes: LoggerService, PdfService, UpdateService
+  // Build type is determined at compile time via BuildConfig.bundleAllLangs.
   await ServiceLocator().initialize();
 
   final serviceLocator = ServiceLocator();
   final logger = serviceLocator.loggerService;
   logger.logAppLifecycle('App Starting...');
-  logger.logUserAction('build_type_set', params: {
-    'type': settingsManager.buildType,
-  });
 
   // Set status bar style — both modes use dark surfaces, so always light icons
   SystemChrome.setSystemUIOverlayStyle(

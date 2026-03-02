@@ -12,7 +12,6 @@ class UpdateStateManager {
   static const String _currentAppVersionKey = 'current_app_version';
   static const String _lastDownloadedApkPathKey = 'last_downloaded_apk_path';
   static const String _lastDownloadedApkSizeKey = 'last_downloaded_apk_size';
-  static const String _buildTypeKey = 'build_type';
 
   final SharedPreferences _prefs;
 
@@ -92,14 +91,7 @@ class UpdateStateManager {
     await _prefs.setInt(_lastDownloadedApkSizeKey, size);
   }
 
-  // Build Type
-  String get buildType => _prefs.getString(_buildTypeKey) ?? 'UNKNOWN';
-
-  Future<void> setBuildType(String type) async {
-    await _prefs.setString(_buildTypeKey, type);
-  }
-
-  /// Clear update state (for cleanup)
+/// Clear update state (for cleanup)
   Future<void> clearUpdateState() async {
     await _prefs.remove(_updateAvailableKey);
     await _prefs.remove(_latestVersionKey);
