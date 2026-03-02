@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../config/app_colors.dart';
+import '../config/build_config.dart';
 import '../services/settings_manager.dart';
 import '../services/service_locator.dart';
 import '../utils/pdf_utils.dart';
@@ -34,8 +35,8 @@ mixin LanguageSelectionMixin<T extends StatefulWidget> on State<T> {
     setState(() => selectedLanguage = code);
     await settingsManager.setUserLanguage(code);
 
-    // Download PDFs for non-EN languages in LITE build
-    if (code != 'en' && settingsManager.buildType == 'LITE') {
+    // Download PDFs for non-EN languages when not all langs are bundled
+    if (code != 'en' && !BuildConfig.bundleAllLangs) {
       final success = await _downloadPDFForLanguageWithProgress(code);
       if (!success && mounted) {
         _showOfflineFallbackDialog(code);

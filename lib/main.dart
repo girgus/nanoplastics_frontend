@@ -26,7 +26,7 @@ void main() async {
   }
 
   // Detect and persist build type FIRST (before ServiceLocator init)
-  // This ensures PdfService knows which languages to extract
+  // This ensures PdfService knows which languages to extract.
   final settingsManager = SettingsManager();
   if (settingsManager.buildType == 'UNKNOWN') {
     const bundleAllLangs =

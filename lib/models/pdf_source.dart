@@ -49,7 +49,7 @@ class PDFSource {
 // Base URLs for hosted PDFs
 // ─────────────────────────────────────────────────────────────────────────────
 const _enBase =
-    'https://allatra.org/storage/app/media/reports/en/Nanoplastics_in_the_Biosphere_Report_EN.pdf';
+    'https://allatra.org/storage/app/media/reports/en/Nanoplastics_in_the_Biosphere_Report.pdf';
 const _czBase =
     'https://allatra.org/storage/app/media/reports/cs/Nanoplastics_in_the_Biosphere_Report_CS.pdf';
 const _esBase =
