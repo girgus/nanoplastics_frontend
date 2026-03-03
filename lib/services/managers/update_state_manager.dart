@@ -91,7 +91,7 @@ class UpdateStateManager {
     await _prefs.setInt(_lastDownloadedApkSizeKey, size);
   }
 
-/// Clear update state (for cleanup)
+  /// Clear update state (for cleanup)
   Future<void> clearUpdateState() async {
     await _prefs.remove(_updateAvailableKey);
     await _prefs.remove(_latestVersionKey);

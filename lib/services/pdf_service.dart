@@ -97,8 +97,7 @@ class PdfService {
   /// Extract all bundled PDFs to app documents directory (called once on init)
   Future<void> _extractBundledPdfs() async {
     const bundleAll = BuildConfig.bundleAllLangs;
-    final reportLanguages =
-        bundleAll ? ['en', 'cs', 'es', 'fr', 'ru'] : ['en'];
+    final reportLanguages = bundleAll ? ['en', 'cs', 'es', 'fr', 'ru'] : ['en'];
     final waterLanguages = bundleAll ? ['en', 'cs'] : ['en'];
 
     LoggerService().logDebug(

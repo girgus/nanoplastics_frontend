@@ -399,5 +399,38 @@
   "tourHumanPlanetBody": "Switch between human health and planet ecosystem. Post ideas to contribute solutions.",
   "tourSourcesButtonBody": "Access peer-reviewed research, case studies, and downloadable reports by impact category.",
   "tourResultsButtonBody": "View community ideas ranked by AI. Submit your ideas here to compete on the leaderboard.",
-  "tourSettingsBody": "Manage your profile, language, and app preferences. Tap to adjust language, sharing options, and more."
+  "tourSettingsBody": "Manage your profile, language, and app preferences. Tap to adjust language, sharing options, and more.",
+
+  "downloadingLanguage": "Downloading {languageName}",
+  "@downloadingLanguage": {
+    "description": "Title shown when downloading language files",
+    "placeholders": {
+      "languageName": {
+        "type": "String"
+      }
+    }
+  },
+  "downloadFailed": "Download Failed",
+  "downloadFailedMessage": "Unable to download {languageName} language files. Would you like to retry or use English?",
+  "@downloadFailedMessage": {
+    "description": "Message shown when PDF or language download fails",
+    "placeholders": {
+      "languageName": {
+        "type": "String"
+      }
+    }
+  },
+  "useEnglish": "Use English",
+  "retry": "Retry",
+  "cancel": "Cancel",
+
+  "failedToLoadPdf": "Failed to load PDF",
+  "downloadingPdf": "Downloading PDF…",
+  "pdfLoadingLabel": "Loading PDF...",
+  "pdfSavedSuccess": "✓ PDF saved successfully",
+
+  "profileNameRequired": "Please enter your full name",
+  "profileEmailRequired": "Please enter your email address",
+  "profileEmailInvalid": "Please enter a valid email address",
+  "profileRegistered": "Profile registered successfully!"
 }

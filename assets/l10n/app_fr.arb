@@ -365,5 +365,22 @@
   "tourHumanPlanetBody": "Basculez entre la santé humaine et l'écosystème planétaire. Publiez vos idées pour contribuer aux solutions.",
   "tourSourcesButtonBody": "Accédez à des recherches examinées, des études de cas et des rapports téléchargeables par catégorie d'impact.",
   "tourResultsButtonBody": "Afficher les idées de la communauté classées par IA. Soumettez vos idées ici pour concourir au classement.",
-  "tourSettingsBody": "Gérez votre profil, votre langue et vos préférences d'application. Appuyez pour ajuster la langue, les options de partage et plus encore."
+  "tourSettingsBody": "Gérez votre profil, votre langue et vos préférences d'application. Appuyez pour ajuster la langue, les options de partage et plus encore.",
+
+  "downloadingLanguage": "Téléchargement de {languageName}",
+  "downloadFailed": "Téléchargement échoué",
+  "downloadFailedMessage": "Impossible de télécharger les fichiers de langue {languageName}. Voulez-vous réessayer ou utiliser l'anglais?",
+  "useEnglish": "Utiliser l'anglais",
+  "retry": "Réessayer",
+  "cancel": "Annuler",
+
+  "failedToLoadPdf": "Impossible de charger le PDF",
+  "downloadingPdf": "Téléchargement du PDF…",
+  "pdfLoadingLabel": "Chargement du PDF...",
+  "pdfSavedSuccess": "✓ PDF enregistré avec succès",
+
+  "profileNameRequired": "Veuillez entrer votre nom complet",
+  "profileEmailRequired": "Veuillez entrer votre adresse e-mail",
+  "profileEmailInvalid": "Veuillez entrer une adresse e-mail valide",
+  "profileRegistered": "Profil enregistré avec succès!"
 }

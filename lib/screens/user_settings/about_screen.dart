@@ -243,7 +243,7 @@ class _AboutScreenState extends State<AboutScreen> {
             sizing: sizing,
             typography: typography,
             onTap: () => _launchUrl(
-                'https://glmcz.github.io/nanoplastics_frontend/privacy_policy.html'),
+                'https://glmcz.github.io/nanoplastics_frontend/privacy/'),
           ),
           SizedBox(height: spacing.cardSpacing * 2),
           _buildSectionTitle(

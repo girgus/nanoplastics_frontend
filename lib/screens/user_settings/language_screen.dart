@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../config/app_colors.dart';
@@ -6,14 +5,10 @@ import '../../config/app_constants.dart';
 import '../../utils/app_spacing.dart';
 import '../../utils/app_sizing.dart';
 import '../../utils/app_typography.dart';
-import '../../services/settings_manager.dart';
-import '../../config/build_config.dart';
-import '../../utils/pdf_utils.dart';
-import '../../services/service_locator.dart';
 import '../../widgets/nanosolve_logo.dart';
 import '../../widgets/glowing_header_separator.dart';
-import '../../main.dart';
 import '../../utils/app_theme_colors.dart';
+import '../../mixins/language_selection_mixin.dart';
 
 class LanguageScreen extends StatefulWidget {
   final Function(Locale)? onLanguageChanged;
@@ -24,9 +19,8 @@ class LanguageScreen extends StatefulWidget {
   State<LanguageScreen> createState() => _LanguageScreenState();
 }
 
-class _LanguageScreenState extends State<LanguageScreen> {
-  late SettingsManager _settingsManager;
-  late String _selectedLanguage;
+class _LanguageScreenState extends State<LanguageScreen>
+    with LanguageSelectionMixin {
 
   final List<LanguageOption> _languages = [
     const LanguageOption(
@@ -44,165 +38,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
   @override
   void initState() {
     super.initState();
-    _settingsManager = ServiceLocator().settingsManager;
-    _selectedLanguage = _settingsManager.userLanguage;
-  }
-
-  Future<void> _selectLanguage(String code) async {
-    if (_selectedLanguage == code) return;
-
-    final previousLanguage = _selectedLanguage;
-    setState(() => _selectedLanguage = code);
-    await _settingsManager.setUserLanguage(code);
-
-    // Download PDFs for non-EN languages in LITE build with progress
-    if (code != 'en' && !BuildConfig.bundleAllLangs) {
-      final success = await _downloadPDFForLanguageWithProgress(code);
-      if (!success) {
-        // Restore previous selection so the user can retry the same language
-        if (mounted) {
-          setState(() => _selectedLanguage = previousLanguage);
-          await _settingsManager.setUserLanguage(previousLanguage);
-          _showOfflineFallbackDialog(code);
-          return;
-        }
-      }
-    }
-
-    if (widget.onLanguageChanged != null) {
-      widget.onLanguageChanged!(Locale(code));
-    }
-
-    // Restart the app to apply the new language
-    if (mounted) {
-      RestartableApp.restartApp(context);
-      return;
-    }
-  }
-
-  Future<bool> _downloadPDFForLanguageWithProgress(String langCode) async {
-    try {
-      // Check if already downloaded
-      final resolved = await resolveMainReport(langCode);
-      if (resolved != null) return true;
-
-      // Show progress dialog
-      if (!mounted) return false;
-
-      double progress = 0;
-      final cancellationToken = Completer<void>();
-      void Function(VoidCallback)? updateDialog;
-      bool dialogDismissed = false;
-
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => StatefulBuilder(
-          builder: (context, setDialogState) {
-            updateDialog = setDialogState;
-            return AlertDialog(
-              backgroundColor: AppThemeColors.of(context).dialogBackground,
-              title: Text(
-                'Downloading ${_languages.firstWhere((l) => l.code == langCode).name}',
-                style: const TextStyle(color: AppColors.pastelAqua),
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      minHeight: 8,
-                      backgroundColor: Colors.white12,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        AppColors.pastelAqua,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    '${(progress * 100).toStringAsFixed(0)}%',
-                    style: TextStyle(
-                      color: AppThemeColors.of(context).textMuted,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    // Trigger cancellation
-                    if (!cancellationToken.isCompleted) {
-                      cancellationToken.complete();
-                    }
-                    dialogDismissed = true;
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    'CANCEL',
-                    style: TextStyle(color: AppColors.pastelMint),
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-      );
-
-      // Download with progress callback and cancellation token
-      await downloadReport(
-        langCode,
-        onProgress: (progressValue) {
-          updateDialog?.call(() => progress = progressValue);
-        },
-        cancellationToken: cancellationToken,
-      );
-
-      // Close progress dialog (only if not already dismissed by user cancel)
-      if (!dialogDismissed && mounted) {
-        Navigator.of(context).pop();
-        dialogDismissed = true;
-      }
-      return true;
-    } catch (e) {
-      // Dialog already dismissed by user cancel or on error during download—no double pop
-      return false;
-    }
-  }
-
-  void _showOfflineFallbackDialog(String attemptedLanguage) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1A2E),
-        title: const Text('Download Failed',
-            style: TextStyle(color: AppColors.pastelAqua)),
-        content: Text(
-          'Unable to download ${_languages.firstWhere((l) => l.code == attemptedLanguage).name} language files. Would you like to retry or use English?',
-          style: TextStyle(color: AppThemeColors.of(context).textMuted),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _selectLanguage('en'); // Fallback to English
-            },
-            child: const Text('Use English',
-                style: TextStyle(color: AppColors.pastelMint)),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _selectLanguage(attemptedLanguage); // Retry
-            },
-            child: const Text('Retry',
-                style: TextStyle(color: AppColors.pastelAqua)),
-          ),
-        ],
-      ),
-    );
+    initLanguageSelection();
   }
 
   @override
@@ -309,11 +145,11 @@ class _LanguageScreenState extends State<LanguageScreen> {
           ..._languages.map((lang) => Padding(
                 padding: EdgeInsets.only(bottom: spacing.cardSpacing),
                 child: _buildLanguageItem(
-                  lang,
-                  spacing,
-                  sizing,
-                  typography,
-                ),
+                lang,
+                spacing,
+                sizing,
+                typography,
+              ),
               )),
           SizedBox(height: spacing.cardSpacing),
           _buildInfoCard(spacing, sizing, typography),
@@ -359,10 +195,10 @@ class _LanguageScreenState extends State<LanguageScreen> {
     AppSizing sizing,
     AppTypography typography,
   ) {
-    final isSelected = _selectedLanguage == language.code;
+    final isSelected = selectedLanguage == language.code;
 
     return InkWell(
-      onTap: () => _selectLanguage(language.code),
+      onTap: () => selectLanguage(language.code),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.all(spacing.cardPadding),

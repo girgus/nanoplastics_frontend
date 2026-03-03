@@ -399,5 +399,22 @@
   "tourHumanPlanetBody": "Přepínejte mezi zdravím člověka a ekosystémem planety. Zveřejněte své nápady na řešení.",
   "tourSourcesButtonBody": "Přístup k recenzovanému výzkumu, případným studiím a stažitelným zprávám podle kategorie dopadu.",
   "tourResultsButtonBody": "Podívejte se na nápady komunity seřazené podle umělé inteligence. Odešlete své nápady sem, abyste soutěžili na žebříčku.",
-  "tourSettingsBody": "Spravujte svůj profil, jazyk a preference aplikace. Klepnutím upravte jazyk, možnosti sdílení a další."
+  "tourSettingsBody": "Spravujte svůj profil, jazyk a preference aplikace. Klepnutím upravte jazyk, možnosti sdílení a další.",
+
+  "downloadingLanguage": "Stahování {languageName}",
+  "downloadFailed": "Stahování selhalo",
+  "downloadFailedMessage": "Nepodařilo se stáhnout soubory jazyka {languageName}. Chcete zkusit znovu nebo použít angličtinu?",
+  "useEnglish": "Použít angličtinu",
+  "retry": "Zkusit znovu",
+  "cancel": "Zrušit",
+
+  "failedToLoadPdf": "Nepodařilo se načíst PDF",
+  "downloadingPdf": "Stahování PDF…",
+  "pdfLoadingLabel": "Načítání PDF...",
+  "pdfSavedSuccess": "✓ PDF úspěšně uloženo",
+
+  "profileNameRequired": "Prosím, zadejte své jméno",
+  "profileEmailRequired": "Prosím, zadejte svou e-mailovou adresu",
+  "profileEmailInvalid": "Prosím, zadejte platnou e-mailovou adresu",
+  "profileRegistered": "Profil úspěšně zaregistrován!"
 }

@@ -745,7 +745,8 @@ class _SourcesScreenState extends State<SourcesScreen> {
           final lang = ServiceLocator().settingsManager.userLanguage;
 
           // Show download dialog only if PDF not yet cached
-          final cached = await ServiceLocator().settingsManager.getPdfForLanguage(lang);
+          final cached =
+              await ServiceLocator().settingsManager.getPdfForLanguage(lang);
           final needsDownload = cached == null || !await cached.exists();
 
           if (needsDownload && context.mounted) {
@@ -760,7 +761,8 @@ class _SourcesScreenState extends State<SourcesScreen> {
                 ),
                 content: const LinearProgressIndicator(
                   backgroundColor: Colors.white12,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.pastelAqua),
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(AppColors.pastelAqua),
                 ),
               ),
             );
@@ -809,7 +811,8 @@ class _SourcesScreenState extends State<SourcesScreen> {
                 ),
               );
             } catch (e, st) {
-              LoggerService().logError('WebPDFFallbackFailed', e.toString(), st);
+              LoggerService()
+                  .logError('WebPDFFallbackFailed', e.toString(), st);
             }
           } else {
             scaffoldMessenger.showSnackBar(

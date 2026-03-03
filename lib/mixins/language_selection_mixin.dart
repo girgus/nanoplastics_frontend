@@ -6,6 +6,7 @@ import '../services/service_locator.dart';
 import '../utils/pdf_utils.dart';
 import '../utils/app_theme_colors.dart';
 import '../main.dart';
+import '../l10n/app_localizations.dart';
 
 /// Shared language selection logic for screens that support language switching.
 /// Handles language selection, PDF downloads, and app restart.
@@ -71,7 +72,9 @@ mixin LanguageSelectionMixin<T extends StatefulWidget> on State<T> {
             return AlertDialog(
               backgroundColor: AppThemeColors.of(context).dialogBackground,
               title: Text(
-                'Downloading ${supportedLanguages.firstWhere((l) => l['code'] == langCode)['name']}',
+                AppLocalizations.of(context)!.downloadingLanguage(
+                      supportedLanguages.firstWhere((l) => l['code'] == langCode)['name'] ?? 'Language',
+                    ),
                 style: const TextStyle(color: AppColors.pastelAqua),
               ),
               content: Column(
@@ -105,8 +108,10 @@ mixin LanguageSelectionMixin<T extends StatefulWidget> on State<T> {
                     dialogDismissed = true;
                     if (mounted) Navigator.of(context).pop();
                   },
-                  child:
-                      const Text('Cancel', style: TextStyle(color: Colors.red)),
+                  child: Text(
+                    AppLocalizations.of(context)!.cancel,
+                    style: const TextStyle(color: Colors.red),
+                  ),
                 ),
               ],
             );
@@ -138,14 +143,19 @@ mixin LanguageSelectionMixin<T extends StatefulWidget> on State<T> {
 
   /// Show fallback dialog when PDF download fails.
   void _showOfflineFallbackDialog(String attemptedLanguage) {
+    final langName = supportedLanguages
+            .firstWhere((l) => l['code'] == attemptedLanguage)['name'] ??
+        'language files';
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF1A1A2E),
-        title: const Text('Download Failed',
-            style: TextStyle(color: AppColors.pastelAqua)),
+        title: Text(
+          AppLocalizations.of(context)!.downloadFailed,
+          style: const TextStyle(color: AppColors.pastelAqua),
+        ),
         content: Text(
-          'Unable to download language files. Would you like to retry or use English?',
+          AppLocalizations.of(context)!.downloadFailedMessage(langName),
           style: TextStyle(color: AppThemeColors.of(context).textMuted),
         ),
         actions: [
@@ -154,16 +164,20 @@ mixin LanguageSelectionMixin<T extends StatefulWidget> on State<T> {
               Navigator.pop(context);
               selectLanguage('en');
             },
-            child: const Text('Use English',
-                style: TextStyle(color: AppColors.pastelMint)),
+            child: Text(
+              AppLocalizations.of(context)!.useEnglish,
+              style: const TextStyle(color: AppColors.pastelMint),
+            ),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               selectLanguage(attemptedLanguage);
             },
-            child: const Text('Retry',
-                style: TextStyle(color: AppColors.pastelAqua)),
+            child: Text(
+              AppLocalizations.of(context)!.retry,
+              style: const TextStyle(color: AppColors.pastelAqua),
+            ),
           ),
         ],
       ),

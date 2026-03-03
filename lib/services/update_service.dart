@@ -12,6 +12,7 @@ import '../config/backend_config.dart';
 import '../config/build_config.dart';
 import 'logger_service.dart';
 import 'service_locator.dart';
+import 'settings_manager.dart';
 
 /// Enum representing the different states of the app update process
 enum UpdateState {
@@ -83,13 +84,32 @@ class GitHubRelease {
 /// Checks for new versions from GitHub releases and manages Android flexible updates
 /// Provides state tracking and progress monitoring for update process
 class UpdateService {
-  static final UpdateService _instance = UpdateService._internal();
+  static late UpdateService _instance;
+  static bool _initialized = false;
 
-  factory UpdateService() {
+  final SettingsManager _settingsManager;
+  final InternetService _internetService;
+
+  factory UpdateService({
+    SettingsManager? settingsManager,
+    InternetService? internetService,
+  }) {
+    if (!_initialized) {
+      final sl = ServiceLocator();
+      _instance = UpdateService._internal(
+        settingsManager: settingsManager ?? sl.settingsManager,
+        internetService: internetService ?? sl.internetService,
+      );
+      _initialized = true;
+    }
     return _instance;
   }
 
-  UpdateService._internal();
+  UpdateService._internal({
+    required SettingsManager settingsManager,
+    required InternetService internetService,
+  })  : _settingsManager = settingsManager,
+        _internetService = internetService;
 
   static const String _githubApiUrl =
       'https://api.github.com/repos/glmcz/nanoplastics_frontend/releases/latest';
@@ -170,7 +190,7 @@ class UpdateService {
   /// Returns true only if APK file exists at saved path and size matches expected size
   /// Used to skip re-downloading if partial update already exists on disk
   Future<bool> _isValidDownloadedApkAvailable(int expectedSize) async {
-    final settingsManager = ServiceLocator().settingsManager;
+    final settingsManager = _settingsManager;
     final apkPath = settingsManager.lastDownloadedApkPath;
     final savedSize = settingsManager.lastDownloadedApkSize;
 
@@ -226,7 +246,7 @@ class UpdateService {
   /// Keeps only the current download, deletes any previous APKs to save disk space
   Future<void> _cleanupOldApks() async {
     try {
-      final settingsManager = ServiceLocator().settingsManager;
+      final settingsManager = _settingsManager;
       final oldApkPath = settingsManager.lastDownloadedApkPath;
 
       if (oldApkPath != null) {
@@ -266,7 +286,7 @@ class UpdateService {
       return false;
     }
 
-    final internetService = ServiceLocator().internetService;
+    final internetService = _internetService;
 
     // Check internet first - skip if offline
     if (!internetService.isOnline) {
@@ -282,7 +302,7 @@ class UpdateService {
 
     _notifyStateChange(UpdateState.checking);
     try {
-      final settingsManager = ServiceLocator().settingsManager;
+      final settingsManager = _settingsManager;
 
       // Check if enough time has passed since last check (12 hour interval = 2x per day)
       if (!force) {
@@ -523,8 +543,8 @@ class UpdateService {
   /// Returns true if update was successfully started, false if offline or error
   /// Notifies listeners of state changes during download and installation
   Future<bool> startUpdate() async {
-    final internetService = ServiceLocator().internetService;
-    final settingsManager = ServiceLocator().settingsManager;
+    final internetService = _internetService;
+    final settingsManager = _settingsManager;
     final updateDownloadUrl = settingsManager.updateDownloadUrl;
 
     // Check internet first - prevent starting if offline
@@ -695,7 +715,7 @@ class UpdateService {
       }
 
       // Track downloaded APK for next check to avoid re-downloading if install fails
-      final settingsManager = ServiceLocator().settingsManager;
+      final settingsManager = _settingsManager;
       await settingsManager.setLastDownloadedApkPath(filePath);
       await settingsManager.setLastDownloadedApkSize(downloadedBytes);
 
@@ -795,7 +815,7 @@ class UpdateService {
   /// Returns true if installation completed successfully
   Future<bool> checkInstallationComplete() async {
     try {
-      final settingsManager = ServiceLocator().settingsManager;
+      final settingsManager = _settingsManager;
       final expectedVersion = settingsManager.latestVersion;
 
       if (expectedVersion == null) {
@@ -836,7 +856,7 @@ class UpdateService {
   /// Returns true if installer was launched, false if APK not found
   Future<bool> retryInstallation() async {
     try {
-      final settingsManager = ServiceLocator().settingsManager;
+      final settingsManager = _settingsManager;
       final apkPath = settingsManager.lastDownloadedApkPath;
 
       if (apkPath == null) {
