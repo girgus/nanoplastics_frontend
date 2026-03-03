@@ -504,19 +504,24 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
               child: InkWell(
                 onTap: () => Navigator.of(context).maybePop(),
                 child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: spacing.md, vertical: spacing.sm),
-                  decoration: BoxDecoration(
-                    color: AppThemeColors.of(context)
-                        .surfaceMid
-                        .withValues(alpha: 0.8),
-                    borderRadius: BorderRadius.circular(sizing.radiusMd),
-                    border: Border.all(
-                      color: AppThemeColors.of(context)
-                          .textMain
-                          .withValues(alpha: 0.2),
-                    ),
-                  ),
+                  padding: isPortrait
+                      ? EdgeInsets.symmetric(
+                          horizontal: spacing.md, vertical: spacing.sm)
+                      : EdgeInsets.symmetric(
+                          horizontal: spacing.sm, vertical: 2),
+                  decoration: isPortrait
+                      ? BoxDecoration(
+                          color: AppThemeColors.of(context)
+                              .surfaceMid
+                              .withValues(alpha: 0.8),
+                          borderRadius: BorderRadius.circular(sizing.radiusMd),
+                          border: Border.all(
+                            color: AppThemeColors.of(context)
+                                .textMain
+                                .withValues(alpha: 0.2),
+                          ),
+                        )
+                      : null,
                   child: isPortrait
                       ? Row(
                           mainAxisSize: MainAxisSize.min,
