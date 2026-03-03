@@ -559,19 +559,13 @@ class UpdateService {
       return false; // Offline - can't download
     }
 
-    if (updateDownloadUrl == null) {
-      LoggerService().logUserAction(
-        'Update start blocked - missing download URL',
-      );
-      _notifyStateChange(UpdateState.failed);
-      return false;
-    }
-
     try {
       LoggerService().logUserAction('Starting in-app update download');
 
       if (Platform.isAndroid) {
-        // If a valid APK was already downloaded, install it directly
+        // If a valid APK was already downloaded, install it directly.
+        // This path is reached when checkForUpdates() detected a valid cached
+        // APK and returned early without saving the download URL.
         final existingPath = settingsManager.lastDownloadedApkPath;
         if (existingPath != null) {
           final existingFile = File(existingPath);
@@ -583,6 +577,15 @@ class UpdateService {
             _notifyStateChange(UpdateState.downloaded);
             return await _launchApkInstaller(existingPath);
           }
+        }
+
+        // No cached APK — need the download URL
+        if (updateDownloadUrl == null) {
+          LoggerService().logUserAction(
+            'Update start blocked - missing download URL',
+          );
+          _notifyStateChange(UpdateState.failed);
+          return false;
         }
         return await _downloadAndInstallApk(updateDownloadUrl);
       } else if (Platform.isIOS) {

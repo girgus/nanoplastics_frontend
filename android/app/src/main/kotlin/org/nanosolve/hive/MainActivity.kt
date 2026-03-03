@@ -18,14 +18,13 @@ class MainActivity : FlutterActivity() {
           result.success(Build.VERSION.SDK_INT)
         }
         "hasInstallPermission" -> {
-          val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            // Android 12+: check REQUEST_INSTALL_PACKAGES permission
-            packageManager.checkPermission(
-              android.Manifest.permission.REQUEST_INSTALL_PACKAGES,
-              packageName
-            ) == PackageManager.PERMISSION_GRANTED
+          // canRequestPackageInstalls() is the correct check for the user-controlled
+          // "Install Unknown Apps" setting (available since API 26 / Android 8.0).
+          // checkPermission(REQUEST_INSTALL_PACKAGES) always returns DENIED for
+          // third-party apps because it is a signature/appop permission, not normal.
+          val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            packageManager.canRequestPackageInstalls()
           } else {
-            // Below Android 12: permission not required
             true
           }
           result.success(hasPermission)
