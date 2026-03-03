@@ -73,8 +73,10 @@ mixin LanguageSelectionMixin<T extends StatefulWidget> on State<T> {
               backgroundColor: AppThemeColors.of(context).dialogBackground,
               title: Text(
                 AppLocalizations.of(context)!.downloadingLanguage(
-                      supportedLanguages.firstWhere((l) => l['code'] == langCode)['name'] ?? 'Language',
-                    ),
+                  supportedLanguages
+                          .firstWhere((l) => l['code'] == langCode)['name'] ??
+                      'Language',
+                ),
                 style: const TextStyle(color: AppColors.pastelAqua),
               ),
               content: Column(

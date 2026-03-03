@@ -21,7 +21,6 @@ class LanguageScreen extends StatefulWidget {
 
 class _LanguageScreenState extends State<LanguageScreen>
     with LanguageSelectionMixin {
-
   final List<LanguageOption> _languages = [
     const LanguageOption(
         code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸'),
@@ -145,11 +144,11 @@ class _LanguageScreenState extends State<LanguageScreen>
           ..._languages.map((lang) => Padding(
                 padding: EdgeInsets.only(bottom: spacing.cardSpacing),
                 child: _buildLanguageItem(
-                lang,
-                spacing,
-                sizing,
-                typography,
-              ),
+                  lang,
+                  spacing,
+                  sizing,
+                  typography,
+                ),
               )),
           SizedBox(height: spacing.cardSpacing),
           _buildInfoCard(spacing, sizing, typography),
