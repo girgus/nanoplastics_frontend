@@ -50,7 +50,8 @@ void main() {
       expect(find.text('🇷🇺'), findsOneWidget);
     });
 
-    testWidgets('English is selected by default with checkmark', (tester) async {
+    testWidgets('English is selected by default with checkmark',
+        (tester) async {
       await tester.pumpWidget(buildTestableWidget(
         const LanguageScreen(),
       ));
@@ -68,8 +69,8 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      // Tap English (already selected) — use first match since "English" appears twice
-      await tester.tap(find.text('English').first);
+      // Tap English (already selected) — tap the first InkWell
+      await tester.tap(find.byType(InkWell).at(0));
       await tester.pumpAndSettle();
 
       // Should still have exactly one checkmark

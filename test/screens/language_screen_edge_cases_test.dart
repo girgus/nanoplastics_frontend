@@ -11,8 +11,7 @@ void main() {
   });
 
   group('LanguageScreen selection guards', () {
-    testWidgets('selecting already-selected language is no-op',
-        (tester) async {
+    testWidgets('selecting already-selected language is no-op', (tester) async {
       // Default language is English
       int callbackCount = 0;
 
@@ -26,8 +25,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Tap English (already selected) — should be no-op
-      await tester.scrollUntilVisible(find.text('English').first, 200.0);
-      await tester.tap(find.text('English').first);
+      // Find and tap the first InkWell (English is first in the list)
+      await tester.tap(find.byType(InkWell).at(0));
       await tester.pumpAndSettle();
 
       // Callback should NOT fire (early return at line 48)
@@ -35,7 +34,8 @@ void main() {
       expect(SettingsManager().userLanguage, equals('en'));
     });
 
-    testWidgets('selecting different language updates SettingsManager immediately',
+    testWidgets(
+        'selecting different language updates SettingsManager immediately',
         (tester) async {
       await tester.pumpWidget(buildTestableWidget(
         LanguageScreen(
@@ -70,7 +70,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Tap English — no download needed, callback fires immediately
-      await tester.tap(find.text('English').first);
+      // English is the first language in the list
+      await tester.tap(find.byType(InkWell).at(0));
       await tester.pumpAndSettle();
 
       expect(receivedLocale, equals(const Locale('en')));
@@ -125,5 +126,4 @@ void main() {
       }
     });
   });
-
 }
