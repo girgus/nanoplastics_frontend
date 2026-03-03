@@ -76,7 +76,8 @@ void main() {
   });
 
   group('UserSettingsScreen navigation', () {
-    testWidgets('tapping Intro Tour pushes OnboardingScreen with isReplay: true',
+    testWidgets(
+        'tapping Intro Tour pushes OnboardingScreen with isReplay: true',
         (tester) async {
       final mockObserver = MockNavigatorObserver();
 
@@ -89,26 +90,31 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      // Find and tap the Intro Tour card
-      // Look for a button that might launch the tour
-      final inkwells = find.byType(InkWell);
-      expect(inkwells, findsWidgets);
+      // Drag to scroll down to Intro Tour card
+      await tester.drag(
+          find.byType(SingleChildScrollView), const Offset(0, -500));
+      await tester.pumpAndSettle();
 
-      // Tap the last inkwell (usually Intro Tour)
-      await tester.tap(inkwells.last);
+      // Tap the Intro Tour card
+      await tester.tap(find.ancestor(
+        of: find.text('Intro Tour'),
+        matching: find.byType(InkWell),
+      ));
       await tester.pumpAndSettle();
 
       // Verify OnboardingScreen was pushed
       expect(
         mockObserver.pushedRoutes.any(
-          (route) => route.settings.name == '/' ||
+          (route) =>
+              route.settings.name == '/' ||
               route.runtimeType.toString().contains('PageRoute'),
         ),
         isTrue,
       );
     });
 
-    testWidgets('each navigation item routes to correct screen', (tester) async {
+    testWidgets('each navigation item routes to correct screen',
+        (tester) async {
       await tester.pumpWidget(buildUserSettingsApp());
       await tester.pumpAndSettle();
 

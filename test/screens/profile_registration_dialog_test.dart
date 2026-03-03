@@ -59,11 +59,11 @@ void main() {
     });
 
     testWidgets('pre-populates fields from SettingsManager', (tester) async {
-      await setupServiceLocator({
-        'display_name': 'Pre Name',
-        'email': 'pre@test.com',
-        'bio': 'Pre Specialty',
-      });
+      // Pre-populate SettingsManager without re-initializing service locator
+      final settingsManager = SettingsManager();
+      await settingsManager.setDisplayName('Pre Name');
+      await settingsManager.setEmail('pre@test.com');
+      await settingsManager.setBio('Pre Specialty');
 
       await openDialog(tester);
 
@@ -153,7 +153,8 @@ void main() {
   });
 
   group('ProfileRegistrationDialog submission', () {
-    testWidgets('saves name, email, specialty to SettingsManager on valid submit',
+    testWidgets(
+        'saves name, email, specialty to SettingsManager on valid submit',
         (tester) async {
       bool callbackCalled = false;
 

@@ -1,9 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nanoplastics_app/services/update_service.dart';
+import '../helpers/settings_test_helper.dart';
 
 void main() {
+  setUp(() async {
+    await setupServiceLocator();
+  });
+
   group('UpdateService.isNewerVersion', () {
-    final updateService = UpdateService();
+    late UpdateService updateService;
+
+    setUp(() {
+      updateService = UpdateService();
+    });
 
     test('v1.2.3 is newer than v1.2.2', () {
       expect(updateService.isNewerVersion('v1.2.3', 'v1.2.2'), isTrue);
