@@ -122,17 +122,20 @@ class ExtendedTourService {
 
     if (!context.mounted) return;
 
-    // Set callback to mark tour as shown when it completes
-    ExtendedTourService service = ExtendedTourService();
+    // Mark tour as shown immediately so a language change (app restart) mid-tour
+    // does not re-trigger it. Safe to do before startTour since the user has
+    // already seen the tour begin.
+    // Capture context-dependent objects before the async gap.
+    final service = ExtendedTourService();
     service.setNavigationCallbacks(
       onNavigate: () {},
-      onComplete: () {
-        // Mark tour as shown when it completes (fire-and-forget async)
-        settings.setAdvisorTourShown(true);
-      },
+      onComplete: () {},
       onSwitchToHuman: onSwitchToHuman,
     );
 
+    await settings.setAdvisorTourShown(true);
+
+    if (!context.mounted) return;
     service.startTour(context, keys);
   }
 

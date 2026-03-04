@@ -108,12 +108,9 @@ class _MainScreenState extends State<MainScreen> {
                     'assets/images/bg_human.jpg',
                     fit: BoxFit.cover,
                   )
-                : ImageFiltered(
-                    imageFilter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                    child: Image.asset(
-                      'assets/images/bg_planet.jpg',
-                      fit: BoxFit.cover,
-                    ),
+                : Image.asset(
+                    'assets/images/bg_planet.jpg',
+                    fit: BoxFit.cover,
                   ),
           ),
           // Overlay - varies by tab
@@ -148,10 +145,21 @@ class _MainScreenState extends State<MainScreen> {
               children: [
                 _buildHeader(),
                 Expanded(
-                  child: SingleChildScrollView(
-                    physics: const ClampingScrollPhysics(),
-                    padding: EdgeInsets.only(bottom: sizing.hubContainerHeight),
-                    child: _buildCategoryGrid(),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.only(bottom: sizing.hubContainerHeight),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: constraints.maxHeight -
+                                sizing.hubContainerHeight,
+                          ),
+                          child: _buildCategoryGrid(),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -361,7 +369,10 @@ class _MainScreenState extends State<MainScreen> {
         top: spacing.md * 2.0,
         bottom: spacing.md * 0.7,
       ),
-      child: Column(children: rows),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: rows,
+      ),
     );
   }
 
