@@ -2,6 +2,8 @@ name: Flutter Release Build
 
 on:
   push:
+    branches:
+      - master # Automatically build release on push to master
     tags:
       - "v*" # Triggers when you push a tag like v1.0.2
   workflow_dispatch: # Allows manual run from the UI
