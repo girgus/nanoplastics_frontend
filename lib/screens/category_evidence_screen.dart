@@ -24,8 +24,6 @@ class CategoryEvidenceScreen extends StatefulWidget {
 }
 
 class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
-  CustomTabsSession? _customTabsSession;
-
   @override
   void initState() {
     super.initState();
@@ -33,16 +31,6 @@ class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
       'CategoryEvidenceScreen',
       params: {'category': widget.categoryData.title},
     );
-    _warmupCustomTabs();
-  }
-
-  Future<void> _warmupCustomTabs() async {
-    try {
-      _customTabsSession = await warmupCustomTabs();
-    } catch (e, stackTrace) {
-      LoggerService().logError(
-          'Evidence CustomTabs warmup failed', e.toString(), stackTrace);
-    }
   }
 
   @override
