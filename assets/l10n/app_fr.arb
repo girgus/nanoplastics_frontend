@@ -77,6 +77,7 @@
   "sourcesSectionEarthPollution": "Section II : Terre et Pollution Plastique",
   "sourcesSectionWaterAbilities": "Section III : Propriétés Spécifiques de l'Eau",
   "sourcesSectionVideoContent": "B. Contenu Documentaire et Expert",
+  "sourcesVideoSectionDocumentaries": "Films documentaires",
   "videoLink1Title": "Nanoplastiques. Menace pour la Vie | Documentaire ALLATRA",
   "videoLink1Source": "Documentaire ALLATRA",
   "videoLink1Url": "https://youtu.be/BVap0MdbCZg",
@@ -360,6 +361,9 @@
   "updateInstallationSuccessMsg": "NanoSolve Hive a été mis à jour avec succès vers la dernière version.",
   "aboutVariantLiteBuild": "ENG",
   "aboutVariantFullBuild": "Toutes les langues",
+  "aboutPlatformAndroidFull": "GitHub",
+  "aboutPlatformPlayStore": "Google Play",
+  "aboutPlatformIOS": "iOS (Bientôt)",
 
   "tourCategoryGridBody": "Appuyez sur n'importe quelle carte pour explorer les domaines de recherche et publier vos idées.",
   "tourHumanPlanetBody": "Basculez entre la santé humaine et l'écosystème planétaire. Publiez vos idées pour contribuer aux solutions.",

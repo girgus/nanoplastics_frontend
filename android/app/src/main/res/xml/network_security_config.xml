@@ -5,6 +5,11 @@
     <domain includeSubdomains="true">10.0.2.2</domain>
   </domain-config>
 
+  <!-- Allow cleartext traffic for production server IP -->
+  <domain-config cleartextTrafficPermitted="true">
+    <domain includeSubdomains="false">37.27.247.129</domain>
+  </domain-config>
+
   <!-- Allow cleartext traffic for localhost development -->
   <domain-config cleartextTrafficPermitted="true">
     <domain includeSubdomains="true">localhost</domain>

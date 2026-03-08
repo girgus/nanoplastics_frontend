@@ -90,6 +90,7 @@
   "sourcesSectionEarthPollution": "Sekce II: Země a plastové zamoření",
   "sourcesSectionWaterAbilities": "Sekce III: Specifické vlastnosti vody",
   "sourcesSectionVideoContent": "B. Dokumentární a expertní obsah",
+  "sourcesVideoSectionDocumentaries": "Dokumentární filmy",
 
   "videoLink1Title": "Nanoplasty. Hrozba pro život | ALLATRA Dokument",
   "videoLink1Source": "ALLATRA Dokument",
@@ -394,6 +395,9 @@
   "updateInstallationSuccessMsg": "NanoSolve Hive byl úspěšně aktualizován na nejnovější verzi.",
   "aboutVariantLiteBuild": "ENG",
   "aboutVariantFullBuild": "Všechny jazyky",
+  "aboutPlatformAndroidFull": "GitHub",
+  "aboutPlatformPlayStore": "Google Play",
+  "aboutPlatformIOS": "iOS (Již brzy)",
 
   "tourCategoryGridBody": "Klepnutím na libovolnou kartu prozkoumáte oblasť výzkumu a zveřejníte své nápady.",
   "tourHumanPlanetBody": "Přepínejte mezi zdravím člověka a ekosystémem planety. Zveřejněte své nápady na řešení.",

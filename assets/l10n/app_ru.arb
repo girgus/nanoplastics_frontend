@@ -77,6 +77,7 @@
   "sourcesSectionEarthPollution": "Раздел II: Земля и загрязнение пластиком",
   "sourcesSectionWaterAbilities": "Раздел III: Специфические свойства воды",
   "sourcesSectionVideoContent": "B. Документальный и экспертный контент",
+  "sourcesVideoSectionDocumentaries": "Документальные фильмы",
   "videoLink1Title": "Наночастицы пластика. Угроза жизни | Документальный фильм АЛЛАТРА",
   "videoLink1Source": "Документальный фильм АЛЛАТРА",
   "videoLink1Url": "https://youtu.be/BVap0MdbCZg",
@@ -360,6 +361,9 @@
   "updateInstallationSuccessMsg": "NanoSolve Hive успешно обновлён до последней версии.",
   "aboutVariantLiteBuild": "ENG",
   "aboutVariantFullBuild": "все языки",
+  "aboutPlatformAndroidFull": "GitHub",
+  "aboutPlatformPlayStore": "Google Play",
+  "aboutPlatformIOS": "iOS (Скоро)",
 
   "tourCategoryGridBody": "Коснитесь любой карточки, чтобы изучить области исследования и поделиться своими идеями.",
   "tourHumanPlanetBody": "Переключайтесь между здоровьем человека и экосистемой планеты. Публикуйте свои идеи для решения проблем.",

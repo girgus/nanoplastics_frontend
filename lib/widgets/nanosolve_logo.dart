@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 class NanosolveLogo extends StatelessWidget {
@@ -43,6 +44,7 @@ class _NanosolveLogoPainter extends CustomPainter {
           text: 'NANO',
           style: TextStyle(
             fontFamily: 'Montserrat',
+            fontFamilyFallback: const ['Roboto', 'Noto Sans', 'sans-serif'],
             fontSize: 48 * scale,
             fontWeight: FontWeight.w400,
             color: darkMode ? const Color(0xFFE2E8F0) : const Color(0xFF5E6E82),
@@ -52,6 +54,7 @@ class _NanosolveLogoPainter extends CustomPainter {
           text: 'SOLVE',
           style: TextStyle(
             fontFamily: 'Montserrat',
+            fontFamilyFallback: const ['Roboto', 'Noto Sans', 'sans-serif'],
             fontSize: 48 * scale,
             fontWeight: FontWeight.w800,
             color: darkMode ? const Color(0xFFFFFFFF) : const Color(0xFF2C3E50),
@@ -69,9 +72,16 @@ class _NanosolveLogoPainter extends CustomPainter {
     // Calculate total width and center offset
     final totalWidth = 130 * scale + textPainter.width;
     final horizontalCenterOffset = (size.width - totalWidth) / 2;
+    final particleBlockHeight = 80 * scale;
+    final visualContentHeight =
+        math.max(particleBlockHeight, textPainter.height);
+    final contentTop = (size.height - visualContentHeight) / 2;
+    final particleTop =
+        contentTop + (visualContentHeight - particleBlockHeight) / 2;
+    final textTop = contentTop + (visualContentHeight - textPainter.height) / 2;
 
     canvas.save();
-    canvas.translate(horizontalCenterOffset, 10 * scale);
+    canvas.translate(horizontalCenterOffset, particleTop);
 
     // Draw nano particles (left side) with varying opacity
     final nanoPaint1 = Paint()..color = nanoColor.withValues(alpha: 0.7);
@@ -112,9 +122,11 @@ class _NanosolveLogoPainter extends CustomPainter {
 
     // Draw text centered
     textPainter.paint(
-        canvas, Offset(horizontalCenterOffset + 130 * scale, 30 * scale));
+        canvas, Offset(horizontalCenterOffset + 130 * scale, textTop));
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _NanosolveLogoPainter oldDelegate) {
+    return oldDelegate.darkMode != darkMode;
+  }
 }

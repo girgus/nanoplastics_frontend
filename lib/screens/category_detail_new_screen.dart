@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import '../config/app_colors.dart';
 import '../config/app_constants.dart';
-import '../utils/app_spacing.dart';
-import '../utils/app_sizing.dart';
-import '../utils/app_typography.dart';
-import '../widgets/nanosolve_logo.dart';
-import '../widgets/brainstorm_box.dart';
-import '../models/category_detail_data.dart';
 import '../l10n/app_localizations.dart';
+import '../models/category_detail_data.dart';
 import '../services/logger_service.dart';
 import '../services/service_locator.dart';
+import '../utils/app_sizing.dart';
+import '../utils/app_spacing.dart';
 import '../utils/app_theme_colors.dart';
+import '../utils/app_typography.dart';
+import '../widgets/brainstorm_box.dart';
+import '../widgets/nanosolve_logo.dart';
+import 'category_evidence_screen.dart';
 import 'pdf_viewer_screen.dart';
 
 class CategoryDetailNewScreen extends StatefulWidget {
@@ -29,9 +29,7 @@ class CategoryDetailNewScreen extends StatefulWidget {
 
 class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  bool _isSourcesExpanded = false;
-  CustomTabsSession? _customTabsSession;
+  late final AnimationController _animationController;
 
   @override
   void initState() {
@@ -41,10 +39,6 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
       duration: const Duration(seconds: 3),
     )..repeat();
 
-    // Warmup Custom Tabs for faster loading
-    _warmupCustomTabs();
-
-    // Log category view
     LoggerService().logScreenNavigation(
       'CategoryDetailScreen',
       params: {
@@ -58,47 +52,10 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
     });
   }
 
-  Future<void> _warmupCustomTabs() async {
-    try {
-      _customTabsSession = await warmupCustomTabs();
-    } catch (e, stackTrace) {
-      LoggerService()
-          .logError('CustomTabs warmup failed', e.toString(), stackTrace);
-    }
-  }
-
-  Future<void> _preFetchUrls() async {
-    if (_customTabsSession == null ||
-        widget.categoryData.sourceLinks == null ||
-        widget.categoryData.sourceLinks!.isEmpty) {
-      return;
-    }
-
-    try {
-      // Pre-fetch the first few URLs that are most likely to be opened
-      final urlsToPrefetch = widget.categoryData.sourceLinks!
-          .take(3)
-          .map((link) => Uri.parse(link.url))
-          .toList();
-
-      for (final url in urlsToPrefetch) {
-        await mayLaunchUrl(
-          url,
-          customTabsSession: _customTabsSession,
-        );
-      }
-    } catch (e, stackTrace) {
-      LoggerService()
-          .logError('CustomTabs pre-fetch failed', e.toString(), stackTrace);
-    }
-  }
-
   @override
   void dispose() {
     _animationController.stop();
     _animationController.dispose();
-    // CustomTabsSession doesn't need explicit cleanup, just release reference
-    _customTabsSession = null;
     super.dispose();
   }
 
@@ -126,7 +83,6 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
                 child: Stack(
                   children: [
                     _buildScrollableContent(),
-                    // Gradient fade at the top of scrollable area
                     Positioned(
                       top: 0,
                       left: 0,
@@ -149,7 +105,6 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
                         ),
                       ),
                     ),
-                    // Thin glowing line separator
                     Positioned(
                       top: 0,
                       left: AppConstants.space40,
@@ -195,8 +150,9 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
 
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: spacing.contentPaddingH,
-          vertical: spacing.contentPaddingV),
+        horizontal: spacing.contentPaddingH,
+        vertical: spacing.contentPaddingV,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -207,9 +163,11 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.arrow_back_ios,
-                      color: AppThemeColors.of(context).textMain,
-                      size: sizing.backIcon),
+                  Icon(
+                    Icons.arrow_back_ios,
+                    color: AppThemeColors.of(context).textMain,
+                    size: sizing.backIcon,
+                  ),
                   const SizedBox(width: AppConstants.space4),
                   Flexible(
                     child: Text(
@@ -320,7 +278,9 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
           ),
           Container(
             margin: const EdgeInsets.only(
-                top: AppConstants.space8, bottom: AppConstants.space20),
+              top: AppConstants.space8,
+              bottom: AppConstants.space20,
+            ),
             height: 1,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -331,13 +291,12 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
               ),
             ),
           ),
-          ...widget.categoryData.entries.map((entry) => _buildEntry(entry)),
-          if (widget.categoryData.sourceLinks != null &&
-              widget.categoryData.sourceLinks!.isNotEmpty) ...[
+          ...widget.categoryData.entries.map(_buildEntry),
+          if (widget.categoryData.evidenceSections.isNotEmpty) ...[
             const SizedBox(height: AppConstants.space20),
             _buildDivider(),
             const SizedBox(height: AppConstants.space20),
-            _buildSourcesSection(),
+            _buildEvidencePreview(),
           ],
           const SizedBox(height: AppConstants.space20),
           _buildDivider(),
@@ -350,14 +309,12 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
                 .categoryDetailBrainstormPlaceholder,
             category: widget.categoryData.categoryKey,
             onSubmit: (text, attachments) async {
-              // Log the submission attempt
               LoggerService().logIdeaSubmission(
                 category: widget.categoryData.categoryKey,
                 title: text,
                 contentLength: text.length,
               );
 
-              // Submit to backend with attachments
               final result = await ServiceLocator().apiService.submitIdea(
                     description: text,
                     category: widget.categoryData.categoryKey,
@@ -365,7 +322,6 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
                   );
 
               if (!result['success']) {
-                // Log error if submission failed
                 LoggerService().logError(
                   'idea_submission_failed_in_ui',
                   result['message'],
@@ -379,231 +335,112 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
     );
   }
 
-  Widget _buildSourcesSection() {
+  Widget _buildEvidencePreview() {
     final l10n = AppLocalizations.of(context)!;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        InkWell(
-          onTap: () {
-            setState(() {
-              _isSourcesExpanded = !_isSourcesExpanded;
-            });
-            // Pre-fetch URLs when sources are expanded
-            if (_isSourcesExpanded) {
-              _preFetchUrls();
-            }
-          },
-          child: Container(
-            padding: const EdgeInsets.all(AppConstants.space16),
-            decoration: BoxDecoration(
-              color: AppThemeColors.of(context)
-                  .cardBackground
-                  .withValues(alpha: 0.85),
-              border: Border.all(
-                color: AppColors.pastelAqua.withValues(alpha: 0.3),
-              ),
-              borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppConstants.space12),
-                  decoration: BoxDecoration(
-                    color: AppColors.pastelAqua.withValues(alpha: 0.15),
-                    borderRadius:
-                        BorderRadius.circular(AppConstants.radiusSmall),
-                  ),
-                  child: const Icon(
-                    Icons.menu_book_outlined,
-                    size: AppConstants.iconMedium,
-                    color: AppColors.pastelAqua,
-                  ),
-                ),
-                const SizedBox(width: AppConstants.space12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.categoryDetailSourcesTitle.toUpperCase(),
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: AppThemeColors.of(context).textMain,
-                            ),
-                      ),
-                      const SizedBox(height: AppConstants.space4),
-                      Text(
-                        '${widget.categoryData.sourceLinks!.length} ${l10n.categoryDetailSourcesCount}',
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: AppThemeColors.of(context).textMuted,
-                                ),
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(
-                  _isSourcesExpanded
-                      ? Icons.keyboard_arrow_up
-                      : Icons.keyboard_arrow_down,
-                  color: AppColors.pastelAqua,
-                  size: AppConstants.iconMedium,
-                ),
-              ],
-            ),
-          ),
-        ),
-        if (_isSourcesExpanded) ...[
-          const SizedBox(height: AppConstants.space12),
-          ...widget.categoryData.sourceLinks!.asMap().entries.map((entry) {
-            return _buildSourceLinkCard(
-              number: entry.key + 1,
-              sourceLink: entry.value,
-            );
-          }),
-        ],
-      ],
-    );
-  }
+    final spacing = AppSpacing.of(context);
+    final sizing = AppSizing.of(context);
+    final typography = AppTypography.of(context);
+    final themeColor = widget.categoryData.themeColor;
 
-  Widget _buildSourceLinkCard({
-    required int number,
-    required SourceLink sourceLink,
-  }) {
-    return InkWell(
-      onTap: () => _handleSourceLink(sourceLink),
-      child: Container(
-        width: double.infinity,
-        margin: const EdgeInsets.only(bottom: AppConstants.space12),
-        padding: const EdgeInsets.all(AppConstants.space16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF141928).withValues(alpha: 0.85),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-          borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    sourceLink.title,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: AppThemeColors.of(context).textMain,
-                        ),
-                  ),
-                  const SizedBox(height: AppConstants.space4),
-                  Text(
-                    sourceLink.source,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: AppColors.pastelLavender,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: AppConstants.space8),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  '#$number',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppThemeColors.of(context)
-                            .textMuted
-                            .withValues(alpha: 0.5),
-                      ),
-                ),
-                const SizedBox(height: AppConstants.space20),
-                Icon(
-                  Icons.open_in_new,
-                  size: AppConstants.iconSmall,
-                  color: AppColors.pastelAqua.withValues(alpha: 0.8),
-                ),
+    return Semantics(
+      button: true,
+      label: l10n.categoryDetailSourcesTitle,
+      child: InkWell(
+        key: const ValueKey('evidence-preview-open'),
+        onTap: _openEvidenceLibrary,
+        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(
+            horizontal: spacing.md,
+            vertical: spacing.md,
+          ),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                themeColor.withValues(alpha: 0.13),
+                themeColor.withValues(alpha: 0.05),
+                AppThemeColors.of(context)
+                    .cardBackground
+                    .withValues(alpha: 0.5),
               ],
+              stops: const [0.0, 0.45, 1.0],
             ),
-          ],
+            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+            border: Border.all(
+              color: themeColor.withValues(alpha: 0.32),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: widget.categoryData.glowColor.withValues(alpha: 0.14),
+                blurRadius: 20,
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppConstants.space10),
+                decoration: BoxDecoration(
+                  color: themeColor.withValues(alpha: 0.15),
+                  borderRadius:
+                      BorderRadius.circular(AppConstants.radiusMedium),
+                  border: Border.all(
+                    color: themeColor.withValues(alpha: 0.28),
+                  ),
+                ),
+                child: Icon(
+                  Icons.biotech_outlined,
+                  size: sizing.iconSm,
+                  color: themeColor,
+                ),
+              ),
+              SizedBox(width: spacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      l10n.categoryDetailSourcesTitle.toUpperCase(),
+                      style: typography.label.copyWith(
+                        color: themeColor,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${widget.categoryData.evidenceStudyCount} ${l10n.categoryDetailSourcesCount}',
+                      style: typography.bodySm.copyWith(
+                        color: AppThemeColors.of(context).textMuted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: spacing.sm),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: sizing.iconXs,
+                color: themeColor.withValues(alpha: 0.7),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Future<void> _handleSourceLink(SourceLink sourceLink) async {
-    // Check if this is a PDF asset link
-    if (sourceLink.pdfAssetPath != null) {
-      _openPdfFromSource(sourceLink);
-    } else {
-      // Otherwise launch as web URL
-      _launchUrl(sourceLink.url);
-    }
-  }
-
-  Future<void> _openPdfFromSource(SourceLink sourceLink) async {
-    final navigator = Navigator.of(context);
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
-
-    final pdf = await ServiceLocator().pdfService.resolvePdf(
-          language: ServiceLocator().settingsManager.userLanguage,
-        );
-    if (!context.mounted) return;
-
-    if (pdf != null) {
-      navigator.push(
-        MaterialPageRoute(
-          builder: (_) => PDFViewerScreen(
-            title: sourceLink.title,
-            pdfPath: pdf.path,
-            startPage: sourceLink.pdfStartPage ?? 1,
-            endPage: sourceLink.pdfEndPage ?? 999,
-            description: sourceLink.source,
-          ),
-        ),
-      );
-    } else {
-      scaffoldMessenger.showSnackBar(
-        const SnackBar(content: Text('Failed to load PDF')),
-      );
-    }
-  }
-
-  Future<void> _launchUrl(String url) async {
-    try {
-      // Add referrer to make the request look more legitimate
-      final urlWithReferrer =
-          '$url${url.contains('?') ? '&' : '?'}utm_source=nanoplastics_app';
-
-      await launchUrl(
-        Uri.parse(urlWithReferrer),
-        customTabsOptions: CustomTabsOptions(
-          colorSchemes: CustomTabsColorSchemes.defaults(
-            toolbarColor: const Color(0xFF0F141E),
-          ),
-          shareState: CustomTabsShareState.on,
-          urlBarHidingEnabled: false,
-          showTitle: true,
-          // Explicitly use Firefox to avoid detection
-          browser: const CustomTabsBrowserConfiguration(
-            fallbackCustomTabs: [
-              'org.mozilla.firefox',
-              'org.mozilla.firefox_beta',
-              'com.microsoft.emmx',
-            ],
-          ),
-        ),
-        safariVCOptions: const SafariViewControllerOptions(
-          preferredBarTintColor: Color(0xFF0F141E),
-          preferredControlTintColor: Colors.white,
-          barCollapsingEnabled: true,
-          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-        ),
-      );
-    } catch (e, stackTrace) {
-      LoggerService()
-          .logError('CustomTabs launch failed', '$url: $e', stackTrace);
-    }
+  void _openEvidenceLibrary() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) =>
+            CategoryEvidenceScreen(categoryData: widget.categoryData),
+      ),
+    );
   }
 
   Widget _buildEntry(DetailEntry entry) {
@@ -619,50 +456,51 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
         children: [
           InkWell(
             onTap: () async {
-              // Navigate to PDF viewer if PDF page info is available
-              if (entry.pdfStartPage != null && entry.pdfEndPage != null) {
-                LoggerService().logUserAction(
-                  'pdf_entry_clicked',
-                  params: {
-                    'category': widget.categoryData.title,
-                    'entry': entry.highlight,
-                    'startPage': entry.pdfStartPage,
-                    'endPage': entry.pdfEndPage,
-                  },
-                );
+              if (entry.pdfStartPage == null || entry.pdfEndPage == null) {
+                return;
+              }
 
-                final navigator = Navigator.of(context);
-                final scaffoldMessenger = ScaffoldMessenger.of(context);
+              LoggerService().logUserAction(
+                'pdf_entry_clicked',
+                params: {
+                  'category': widget.categoryData.title,
+                  'entry': entry.highlight,
+                  'startPage': entry.pdfStartPage,
+                  'endPage': entry.pdfEndPage,
+                },
+              );
 
-                final pdf = await ServiceLocator().pdfService.resolvePdf(
-                      language: ServiceLocator().settingsManager.userLanguage,
-                    );
-                if (!context.mounted) return;
+              final navigator = Navigator.of(context);
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+              final pdf = await ServiceLocator().pdfService.resolvePdf(
+                    language: ServiceLocator().settingsManager.userLanguage,
+                  );
+              if (!context.mounted) return;
 
-                if (pdf != null) {
-                  navigator.push(
-                    MaterialPageRoute(
-                      builder: (_) => PDFViewerScreen(
-                        title: entry.highlight,
-                        pdfPath: pdf.path,
-                        startPage: entry.pdfStartPage!,
-                        endPage: entry.pdfEndPage!,
-                        description:
-                            entry.pdfCategory ?? widget.categoryData.title,
-                      ),
+              if (pdf != null) {
+                navigator.push(
+                  MaterialPageRoute(
+                    builder: (_) => PDFViewerScreen(
+                      title: entry.highlight,
+                      pdfPath: pdf.path,
+                      startPage: entry.pdfStartPage!,
+                      endPage: entry.pdfEndPage!,
+                      description:
+                          entry.pdfCategory ?? widget.categoryData.title,
                     ),
-                  );
-                } else {
-                  scaffoldMessenger.showSnackBar(
-                    const SnackBar(content: Text('Failed to load PDF')),
-                  );
-                }
+                  ),
+                );
+              } else {
+                scaffoldMessenger.showSnackBar(
+                  const SnackBar(content: Text('Failed to load PDF')),
+                );
               }
             },
             child: Container(
               padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.space8,
-                  vertical: AppConstants.space4),
+                horizontal: AppConstants.space8,
+                vertical: AppConstants.space4,
+              ),
               decoration: BoxDecoration(
                 color: widget.categoryData.themeColor.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
@@ -708,41 +546,45 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
           ),
           if (entry.bulletPoints != null && entry.bulletPoints!.isNotEmpty) ...[
             const SizedBox(height: AppConstants.space8),
-            ...entry.bulletPoints!.map((point) => Padding(
-                  padding: const EdgeInsets.only(
-                      left: AppConstants.space16, bottom: AppConstants.space4),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: AppConstants.space8,
-                            right: AppConstants.space8),
-                        width: bulletSize,
-                        height: bulletSize,
-                        decoration: BoxDecoration(
-                          color: widget.categoryData.themeColor,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: widget.categoryData.glowColor,
-                              blurRadius: 8,
+            ...entry.bulletPoints!.map(
+              (point) => Padding(
+                padding: const EdgeInsets.only(
+                  left: AppConstants.space16,
+                  bottom: AppConstants.space4,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: AppConstants.space8,
+                        right: AppConstants.space8,
+                      ),
+                      width: bulletSize,
+                      height: bulletSize,
+                      decoration: BoxDecoration(
+                        color: widget.categoryData.themeColor,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: widget.categoryData.glowColor,
+                            blurRadius: 8,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        point,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppThemeColors.of(context).textMuted,
                             ),
-                          ],
-                        ),
                       ),
-                      Expanded(
-                        child: Text(
-                          point,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppThemeColors.of(context).textMuted,
-                                  ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ],
       ),

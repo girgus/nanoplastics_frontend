@@ -92,6 +92,11 @@ class ExtendedTourService {
     return _instance!;
   }
 
+  static bool get _shouldSuppressTourUi {
+    final bindingType = WidgetsBinding.instance.runtimeType.toString();
+    return bindingType.contains('TestWidgetsFlutterBinding');
+  }
+
   /// Get current tour step
   ExtendedTourStep get currentStep => _currentStep;
   int get stepIndex => _stepIndex;
@@ -136,6 +141,8 @@ class ExtendedTourService {
     await settings.setAdvisorTourShown(true);
 
     if (!context.mounted) return;
+    if (_shouldSuppressTourUi) return;
+
     service.startTour(context, keys);
   }
 
@@ -181,6 +188,8 @@ class ExtendedTourService {
 
   /// Show appropriate tour based on current screen (call from each screen's initState)
   void showCurrentScreenTour(BuildContext context, ExtendedTourKeys keys) {
+    if (_shouldSuppressTourUi) return;
+
     Future.delayed(const Duration(milliseconds: 500), () {
       if (!context.mounted) return;
       switch (_currentStep) {

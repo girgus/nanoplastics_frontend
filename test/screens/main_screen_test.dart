@@ -17,6 +17,18 @@ void main() {
     return buildTestableWidget(const MainScreen());
   }
 
+  const humanButtonKey = ValueKey('hub-button-human');
+  const planetButtonKey = ValueKey('hub-button-planet');
+  const sourcesButtonKey = ValueKey('hub-button-sources');
+  const resultsButtonKey = ValueKey('hub-button-results');
+
+  Future<void> triggerHubButton(WidgetTester tester, Key key) async {
+    final inkWell = tester.widget<InkWell>(find.byKey(key));
+    expect(inkWell.onTap, isNotNull);
+    inkWell.onTap!();
+    await tester.pump();
+  }
+
   group('MainScreen rendering', () {
     testWidgets('displays Human and Planet tabs', (tester) async {
       await tester.pumpWidget(buildMainScreenApp());
@@ -63,9 +75,8 @@ void main() {
       await tester.pumpWidget(buildMainScreenApp());
       await tester.pumpAndSettle();
 
-      // Tap Planet tab (use .last to pick the tab button, not the heading)
-      await tester.tap(find.textContaining('PLANET').last);
-      await tester.pumpAndSettle();
+      await triggerHubButton(tester, planetButtonKey);
+      await tester.pump(const Duration(milliseconds: 200));
 
       // Planet tab icons should appear
       expect(find.byIcon(Icons.waves_outlined), findsOneWidget);
@@ -82,12 +93,12 @@ void main() {
       await tester.pumpAndSettle();
 
       // Switch to planet
-      await tester.tap(find.textContaining('PLANET').last);
-      await tester.pumpAndSettle();
+      await triggerHubButton(tester, planetButtonKey);
+      await tester.pump(const Duration(milliseconds: 200));
 
       // Switch back to human
-      await tester.tap(find.textContaining('HUMAN').last);
-      await tester.pumpAndSettle();
+      await triggerHubButton(tester, humanButtonKey);
+      await tester.pump(const Duration(milliseconds: 200));
 
       expect(find.byIcon(Icons.psychology_outlined), findsOneWidget);
     });
@@ -99,7 +110,7 @@ void main() {
       await tester.pumpWidget(buildMainScreenApp());
       await tester.pumpAndSettle();
 
-      await tester.tap(find.textContaining('SOURCES'));
+      await tester.tap(find.byKey(sourcesButtonKey));
       await tester.pumpAndSettle();
 
       expect(find.byType(SourcesScreen), findsOneWidget);
@@ -110,7 +121,7 @@ void main() {
       await tester.pumpWidget(buildMainScreenApp());
       await tester.pumpAndSettle();
 
-      await tester.tap(find.textContaining('RESULTS'));
+      await tester.tap(find.byKey(resultsButtonKey));
       await tester.pumpAndSettle();
 
       expect(find.byType(SolversLeaderboardScreen), findsOneWidget);

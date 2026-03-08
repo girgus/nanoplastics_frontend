@@ -23,7 +23,7 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  String _selectedVariant = 'full'; // 'full' or 'lite'
+  String _selectedPlatform = 'android_full'; // 'android_full', 'play_store', 'ios'
   late String appVersion;
 
   @override
@@ -41,19 +41,28 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   String _getDownloadUrl() {
-    if (_selectedVariant == 'lite') {
-      /// Have to be same as in CI flutter-release.yaml
-      return 'https://github.com/glmcz/nanoplastics_frontend/releases/latest/download/nanoplastics_app_lite.apk';
-    } else {
-      return 'https://github.com/glmcz/nanoplastics_frontend/releases/latest/download/nanoplastics_app.apk';
+    switch (_selectedPlatform) {
+      case 'play_store':
+        return 'https://play.google.com/store/apps/details?id=com.glmcz.nanoplastics_app';
+      case 'ios':
+        return ''; // Coming soon, not clickable
+      case 'android_full':
+      default:
+        return 'https://github.com/glmcz/nanoplastics_frontend/releases';
     }
   }
 
-  String _getVariantLabel(BuildContext context) {
+  String _getPlatformLabel(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return _selectedVariant == 'lite'
-        ? l10n.aboutVariantLiteBuild
-        : l10n.aboutVariantFullBuild;
+    switch (_selectedPlatform) {
+      case 'play_store':
+        return l10n.aboutPlatformPlayStore;
+      case 'ios':
+        return l10n.aboutPlatformIOS;
+      case 'android_full':
+      default:
+        return l10n.aboutPlatformAndroidFull;
+    }
   }
 
   @override
@@ -478,20 +487,24 @@ class _AboutScreenState extends State<AboutScreen> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppConstants.space16),
-          // Variant selector
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          // Platform selector
+          Column(
             children: [
-              _buildVariantButton('full', l10n.aboutVariantFullBuild, spacing,
-                  sizing, typography),
-              SizedBox(width: spacing.cardSpacing),
-              _buildVariantButton('lite', l10n.aboutVariantLiteBuild, spacing,
-                  sizing, typography),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildPlatformButton('android_full', l10n.aboutPlatformAndroidFull, spacing, sizing, typography),
+                  SizedBox(width: spacing.cardSpacing),
+                  _buildPlatformButton('play_store', l10n.aboutPlatformPlayStore, spacing, sizing, typography),
+                ],
+              ),
+              SizedBox(height: spacing.cardSpacing),
+              _buildPlatformButton('ios', l10n.aboutPlatformIOS, spacing, sizing, typography, isEnabled: false),
             ],
           ),
           const SizedBox(height: AppConstants.space16),
           Text(
-            _getVariantLabel(context),
+            _getPlatformLabel(context),
             style: typography.subtitle.copyWith(
               color: AppColors.pastelAqua,
               fontWeight: FontWeight.w600,
@@ -587,36 +600,40 @@ class _AboutScreenState extends State<AboutScreen> {
     );
   }
 
-  Widget _buildVariantButton(
-    String variantKey,
+  Widget _buildPlatformButton(
+    String platformKey,
     String label,
     AppSpacing spacing,
     AppSizing sizing,
-    AppTypography typography,
-  ) {
-    final isSelected = _selectedVariant == variantKey;
+    AppTypography typography, {
+    bool isEnabled = true,
+  }) {
+    final isSelected = _selectedPlatform == platformKey;
+    final opacity = isEnabled ? 1.0 : 0.5;
+
     return InkWell(
-      onTap: () => setState(() => _selectedVariant = variantKey),
+      onTap: isEnabled ? () => setState(() => _selectedPlatform = platformKey) : null,
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: AppConstants.space12,
           vertical: AppConstants.space8,
         ),
         decoration: BoxDecoration(
-          color: isSelected
+          color: isSelected && isEnabled
               ? AppColors.pastelAqua.withValues(alpha: 0.3)
-              : AppColors.pastelAqua.withValues(alpha: 0.1),
+              : AppColors.pastelAqua.withValues(alpha: 0.1 * opacity),
           borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
           border: Border.all(
-            color:
-                AppColors.pastelAqua.withValues(alpha: isSelected ? 0.6 : 0.3),
+            color: AppColors.pastelAqua.withValues(
+              alpha: isSelected && isEnabled ? 0.6 : 0.3 * opacity,
+            ),
           ),
         ),
         child: Text(
           label,
           style: typography.subtitle.copyWith(
-            color: AppColors.pastelAqua,
-            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+            color: AppColors.pastelAqua.withValues(alpha: opacity),
+            fontWeight: isSelected && isEnabled ? FontWeight.w700 : FontWeight.w500,
           ),
         ),
       ),

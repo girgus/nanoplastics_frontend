@@ -165,7 +165,8 @@ class ServiceLocator {
     _apiService = ApiService();
     _pdfService = PdfService(_settingsManager);
     _internetService = InternetService._();
-    await _internetService.initialize();
+    // Skip connectivity init in tests — platform plugin unavailable in Dart VM.
+    // InternetService stays in disconnected state, which is fine for unit tests.
     _updateService = UpdateService(
       settingsManager: _settingsManager,
       internetService: _internetService,

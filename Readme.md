@@ -239,6 +239,9 @@ To adjust layout for a new screen size: adjust tokens (or add variant logic insi
 backend /release endpoint → GitHub Actions hook → app checks backend on startup
 ```
 
+
+### iOS buil
+- Just use standard SPM instead of CocoaPods, see more [there](https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-app-developers)
 ---
 
 ## License

@@ -23,7 +23,7 @@ class AppTypography {
 
   /// Screen titles — large, bold
   TextStyle get display => TextStyle(
-        fontSize: 25 * fontScale * titleScale,
+        fontSize: (25 * fontScale * titleScale).clamp(16.0, double.infinity),
         fontWeight: FontWeight.w800,
         letterSpacing: 0.5,
         height: 1.2,
@@ -31,21 +31,21 @@ class AppTypography {
 
   /// Section titles — medium emphasis
   TextStyle get headline => TextStyle(
-        fontSize: 20 * fontScale * titleScale,
+        fontSize: (20 * fontScale * titleScale).clamp(14.0, double.infinity),
         fontWeight: FontWeight.w800,
         height: 1.25,
       );
 
   /// Card titles, setting item names
   TextStyle get title => TextStyle(
-        fontSize: 17 * fontScale * titleScale,
+        fontSize: (17 * fontScale * titleScale).clamp(12.0, double.infinity),
         fontWeight: FontWeight.w700,
         height: 1.3,
       );
 
   /// Tab / navigation text
   TextStyle get tab => TextStyle(
-        fontSize: 13 * fontScale,
+        fontSize: (13 * fontScale).clamp(10.0, double.infinity),
         fontWeight: FontWeight.w700,
         height: 1.3,
       );
@@ -84,7 +84,7 @@ class AppTypography {
 
   /// Tiny labels, badges
   TextStyle get labelXs => TextStyle(
-        fontSize: 10 * fontScale,
+        fontSize: (10 * fontScale).clamp(10.0, double.infinity),
         fontWeight: FontWeight.w700,
         letterSpacing: 0.3,
       );

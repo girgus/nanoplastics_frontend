@@ -4,6 +4,7 @@ class AppConstants {
   AppConstants._();
 
   // ── Spacing scale ─────────────────────────────────────────────────
+  static const double space2 = 2.0;
   static const double space4 = 4.0;
   static const double space5 = 5.0;
   static const double space6 = 6.0;

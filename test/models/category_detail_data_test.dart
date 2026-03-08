@@ -7,114 +7,69 @@ void main() {
   late AppLocalizations l10n;
 
   setUpAll(() async {
-    // Load English localizations without needing a BuildContext
     l10n = await AppLocalizations.delegate.load(const Locale('en'));
   });
 
-  group('CategoryDetailDataFactory - Human categories', () {
-    test('centralSystems returns valid data', () {
-      final data = CategoryDetailDataFactory.centralSystems(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.subtitle.isNotEmpty, isTrue);
-      expect(data.entries.isNotEmpty, isTrue);
-      expect(data.entries.length, equals(2));
-      expect(data.sourceLinks, isNotNull);
-      expect(data.sourceLinks!.length, equals(3));
+  group('CategoryDetailDataFactory', () {
+    test('all factories produce entries and evidence sections', () {
+      final allCategories = CategoryDetailDataFactory.all(l10n);
+
+      expect(allCategories.length, equals(12));
+
+      for (final data in allCategories) {
+        expect(data.title.isNotEmpty, isTrue, reason: 'missing title');
+        expect(data.subtitle.isNotEmpty, isTrue,
+            reason: '${data.categoryKey} subtitle');
+        expect(data.entries, isNotEmpty, reason: '${data.categoryKey} entries');
+        expect(
+          data.evidenceSections,
+          isNotEmpty,
+          reason: '${data.categoryKey} evidence sections',
+        );
+        expect(
+          data.evidenceStudyCount > 0,
+          isTrue,
+          reason: '${data.categoryKey} evidence count',
+        );
+      }
     });
 
-    test('filtrationDetox returns valid data', () {
-      final data = CategoryDetailDataFactory.filtrationDetox(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.length, equals(2));
-      expect(data.sourceLinks!.length, equals(3));
+    test('evidence sections contain valid metadata and non-empty URLs', () {
+      for (final data in CategoryDetailDataFactory.all(l10n)) {
+        for (final section in data.evidenceSections) {
+          expect(section.title.trim().isNotEmpty, isTrue,
+              reason: '${data.categoryKey} section title');
+          expect(section.studies, isNotEmpty,
+              reason: '${data.categoryKey}/${section.id} studies');
+
+          for (final study in section.studies) {
+            expect(study.title.trim().isNotEmpty, isTrue,
+                reason: '${data.categoryKey}/${section.id} study title');
+            expect(study.authorsShort.trim().isNotEmpty, isTrue,
+                reason: '${data.categoryKey}/${section.id} authors');
+            expect(study.journal.trim().isNotEmpty, isTrue,
+                reason: '${data.categoryKey}/${section.id} journal');
+            expect(study.url.trim().isNotEmpty, isTrue,
+                reason: '${data.categoryKey}/${section.id} url');
+          }
+        }
+      }
     });
 
-    test('vitalityTissues returns valid data', () {
-      final data = CategoryDetailDataFactory.vitalityTissues(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.length, equals(1));
-      expect(data.sourceLinks!.length, equals(3));
+    test('legacy sourceLinks remain populated from evidence data', () {
+      for (final data in CategoryDetailDataFactory.all(l10n)) {
+        expect(data.sourceLinks, isNotNull,
+            reason: '${data.categoryKey} sourceLinks');
+        expect(
+          data.sourceLinks!.length,
+          equals(data.evidenceStudyCount),
+          reason: '${data.categoryKey} legacy sourceLinks count',
+        );
+      }
     });
 
-    test('reproduction returns valid data', () {
-      final data = CategoryDetailDataFactory.reproduction(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.length, equals(1));
-      expect(data.sourceLinks!.length, equals(4));
-    });
-
-    test('entryGates returns valid data', () {
-      final data = CategoryDetailDataFactory.entryGates(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.length, equals(3));
-      expect(data.sourceLinks!.length, equals(3));
-    });
-
-    test('physicalAttack returns valid data', () {
-      final data = CategoryDetailDataFactory.physicalAttack(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.length, equals(3));
-      expect(data.sourceLinks!.length, equals(3));
-    });
-  });
-
-  group('CategoryDetailDataFactory - Planet categories', () {
-    test('worldOcean returns valid data', () {
-      final data = CategoryDetailDataFactory.worldOcean(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.isNotEmpty, isTrue);
-      expect(data.sourceLinks, isNotNull);
-    });
-
-    test('atmosphere returns valid data', () {
-      final data = CategoryDetailDataFactory.atmosphere(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.isNotEmpty, isTrue);
-    });
-
-    test('florFauna returns valid data', () {
-      final data = CategoryDetailDataFactory.florFauna(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.length, equals(2));
-    });
-
-    test('magneticField returns valid data', () {
-      final data = CategoryDetailDataFactory.magneticField(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.length, equals(1));
-    });
-
-    test('planetEntryGates returns valid data', () {
-      final data = CategoryDetailDataFactory.planetEntryGates(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.length, equals(1));
-    });
-
-    test('physicalProperties returns valid data', () {
-      final data = CategoryDetailDataFactory.physicalProperties(l10n);
-      expect(data.title.isNotEmpty, isTrue);
-      expect(data.entries.length, equals(4));
-    });
-  });
-
-  group('CategoryDetailDataFactory - All factories', () {
-    test('every factory produces entries with valid page ranges', () {
-      final allFactories = [
-        CategoryDetailDataFactory.centralSystems(l10n),
-        CategoryDetailDataFactory.filtrationDetox(l10n),
-        CategoryDetailDataFactory.vitalityTissues(l10n),
-        CategoryDetailDataFactory.reproduction(l10n),
-        CategoryDetailDataFactory.entryGates(l10n),
-        CategoryDetailDataFactory.physicalAttack(l10n),
-        CategoryDetailDataFactory.worldOcean(l10n),
-        CategoryDetailDataFactory.atmosphere(l10n),
-        CategoryDetailDataFactory.florFauna(l10n),
-        CategoryDetailDataFactory.magneticField(l10n),
-        CategoryDetailDataFactory.planetEntryGates(l10n),
-        CategoryDetailDataFactory.physicalProperties(l10n),
-      ];
-
-      for (final data in allFactories) {
+    test('entries keep valid PDF page ranges', () {
+      for (final data in CategoryDetailDataFactory.all(l10n)) {
         for (final entry in data.entries) {
           if (entry.pdfStartPage != null && entry.pdfEndPage != null) {
             expect(
@@ -127,63 +82,19 @@ void main() {
         }
       }
     });
-
-    test('every factory produces sourceLinks with non-empty URLs', () {
-      final allFactories = [
-        CategoryDetailDataFactory.centralSystems(l10n),
-        CategoryDetailDataFactory.filtrationDetox(l10n),
-        CategoryDetailDataFactory.vitalityTissues(l10n),
-        CategoryDetailDataFactory.reproduction(l10n),
-        CategoryDetailDataFactory.entryGates(l10n),
-        CategoryDetailDataFactory.physicalAttack(l10n),
-        CategoryDetailDataFactory.worldOcean(l10n),
-        CategoryDetailDataFactory.atmosphere(l10n),
-        CategoryDetailDataFactory.florFauna(l10n),
-        CategoryDetailDataFactory.magneticField(l10n),
-        CategoryDetailDataFactory.planetEntryGates(l10n),
-        CategoryDetailDataFactory.physicalProperties(l10n),
-      ];
-
-      for (final data in allFactories) {
-        if (data.sourceLinks != null) {
-          for (final link in data.sourceLinks!) {
-            expect(link.url.isNotEmpty, isTrue,
-                reason: '${data.title} -> ${link.title}: empty URL');
-            expect(link.title.isNotEmpty, isTrue,
-                reason: '${data.title}: empty source link title');
-          }
-        }
-      }
-    });
   });
 
-  group('DetailEntry', () {
-    test('bulletPoints can be null', () {
-      const entry = DetailEntry(
-        highlight: 'Test',
-        description: 'Desc',
-      );
-      expect(entry.bulletPoints, isNull);
-    });
-
-    test('pdfStartPage and pdfEndPage can be null', () {
-      const entry = DetailEntry(
-        highlight: 'Test',
-        description: 'Desc',
-      );
-      expect(entry.pdfStartPage, isNull);
-      expect(entry.pdfEndPage, isNull);
-    });
-  });
-
-  group('SourceLink', () {
-    test('pdfAssetPath defaults to null', () {
-      const link = SourceLink(
+  group('EvidenceStudy', () {
+    test('tags default to empty list', () {
+      const study = EvidenceStudy(
         title: 'Test',
-        source: 'Source',
+        authorsShort: 'Author et al.',
+        journal: 'Journal',
+        year: 2025,
         url: 'https://example.com',
       );
-      expect(link.pdfAssetPath, isNull);
+
+      expect(study.tags, isEmpty);
     });
   });
 }

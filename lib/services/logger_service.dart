@@ -51,16 +51,27 @@ class LoggerService {
 
       // Handle async errors
       PlatformDispatcher.instance.onError = (error, stack) {
-        FirebaseCrashlytics.instance.recordError(
-          error,
-          stack,
-          fatal: true,
-        );
+        final errorStr = error.toString();
+        // Platform channel errors occur when a plugin is unregistered or the
+        // engine is reinitializing (e.g. webview_flutter needs a clean build,
+        // or hot-reload after adding a new native plugin). These are never fatal
+        // user-visible crashes, so skip Crashlytics to avoid alert noise.
+        final isChannelNoise = errorStr.contains('channel-error') ||
+            errorStr.contains('Unable to establish connection on channel') ||
+            errorStr.contains('unregistered type') ||
+            errorStr.contains('PigeonInternalInstanceManager');
+        if (!isChannelNoise) {
+          FirebaseCrashlytics.instance.recordError(
+            error,
+            stack,
+            fatal: true,
+          );
+        }
         _logToConsole(
           'Async Error',
-          error.toString(),
+          errorStr,
           stack,
-          'FATAL',
+          isChannelNoise ? 'DEBUG' : 'FATAL',
         );
         return true;
       };

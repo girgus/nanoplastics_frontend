@@ -15,12 +15,17 @@
 
         :root {
             --primary: #00d4ff;
+            --primary-strong: #0099cc;
             --secondary: #b5ffb5;
             --bg-dark: #0f172a;
             --bg-darker: #1a1a2e;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-strong: rgba(255, 255, 255, 0.08);
             --text-light: #e0e0e0;
-            --text-muted: #999;
+            --text-muted: #9fb2c7;
             --border: rgba(100, 200, 255, 0.2);
+            --shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+            --page-max: 1120px;
         }
 
         html {
@@ -28,150 +33,233 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+            background:
+                radial-gradient(circle at top, rgba(0, 212, 255, 0.12), transparent 32%),
+                linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
             color: var(--text-light);
             line-height: 1.6;
             min-height: 100vh;
         }
 
-        /* Navigation */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: min(var(--page-max), calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
         nav {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
-            padding: 1rem 0;
         }
 
         nav .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            gap: 1rem;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        nav .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
         }
 
         nav .logo {
-            font-size: 1.3em;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 800;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-decoration: none;
+        }
+
+        nav .subline {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        nav .nav-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.9rem;
+            flex-wrap: wrap;
         }
 
         nav .links {
             display: flex;
-            gap: 2rem;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
         nav a {
             color: var(--text-light);
             text-decoration: none;
-            transition: color 0.3s;
-            font-size: 0.9em;
+            transition: color 0.25s ease, background 0.25s ease;
+            font-size: 0.92rem;
         }
 
         nav a:hover {
             color: var(--primary);
         }
 
+        nav .privacy-link,
+        nav .lang-link {
+            padding: 0.55rem 0.9rem;
+            border-radius: 999px;
+            font-weight: 700;
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+
         nav .privacy-link {
-            padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, var(--primary) 0%, #0099cc 100%);
-            color: #000;
-            border-radius: 6px;
-            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+            color: #001018;
+            border: none;
         }
 
-        /* Hero Section */
+        nav .lang-link.active {
+            color: #001018;
+            background: linear-gradient(135deg, var(--secondary) 0%, #76ffcf 100%);
+            border-color: transparent;
+        }
+
         .hero {
-            padding: 4rem 2rem;
-            text-align: center;
-            background: linear-gradient(180deg, rgba(0, 212, 255, 0.1) 0%, transparent 100%);
+            padding: clamp(3rem, 8vw, 5.5rem) 0 2.5rem;
         }
 
-        .hero .container {
-            max-width: 1000px;
-            margin: 0 auto;
+        .hero-shell {
+            padding: clamp(1.25rem, 4vw, 2rem);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            background:
+                linear-gradient(180deg, rgba(0, 212, 255, 0.1), rgba(255, 255, 255, 0.02)),
+                rgba(255, 255, 255, 0.03);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+            background: rgba(181, 255, 181, 0.08);
+            color: var(--secondary);
+            font-size: 0.83rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
 
         .hero h1 {
-            font-size: 3em;
+            font-size: clamp(2.4rem, 7vw, 4.5rem);
+            line-height: 1.05;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 1rem;
-            line-height: 1.2;
+            max-width: 12ch;
         }
 
-        .hero .tagline {
-            font-size: 1.3em;
+        .tagline {
+            font-size: clamp(1rem, 2.8vw, 1.35rem);
             color: var(--text-muted);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 42rem;
+            margin-bottom: 1.5rem;
         }
 
-        .hero .cta-buttons {
+        .hero-meta {
             display: flex;
-            gap: 1rem;
-            justify-content: center;
             flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-pill {
+            padding: 0.55rem 0.85rem;
+            border-radius: 999px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .cta-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
             margin-bottom: 1rem;
         }
 
         .btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
+            min-width: 0;
+            padding: 0.95rem 1.15rem;
+            border-radius: 16px;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-block;
+            font-weight: 700;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            text-align: center;
             border: none;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1rem;
+            line-height: 1.35;
+            box-shadow: var(--shadow);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, #0099cc 100%);
-            color: #000;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+            color: #001018;
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
             color: var(--primary);
-            border: 1px solid var(--primary);
+            border: 1px solid rgba(0, 212, 255, 0.35);
         }
 
-        .btn-secondary:hover {
-            background: rgba(0, 212, 255, 0.1);
+        .btn:hover {
+            transform: translateY(-2px);
         }
 
-        /* Content */
+        .hero-note {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
         .content {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 2rem;
+            padding-bottom: 3rem;
         }
 
         #markdown-content {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 3rem;
-            margin: 3rem 0;
+            border-radius: 24px;
+            padding: clamp(1.25rem, 4vw, 3rem);
+            margin: 0 0 3rem;
+            box-shadow: var(--shadow);
         }
 
         #markdown-content h1 {
@@ -180,11 +268,12 @@
 
         #markdown-content h2 {
             color: var(--primary);
-            font-size: 2em;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             margin-top: 2rem;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--border);
+            scroll-margin-top: 6rem;
         }
 
         #markdown-content h2:first-child {
@@ -193,21 +282,26 @@
 
         #markdown-content h3 {
             color: var(--secondary);
-            font-size: 1.3em;
+            font-size: clamp(1.08rem, 3vw, 1.3rem);
             margin-top: 1.5rem;
             margin-bottom: 0.8rem;
         }
 
+        #markdown-content p,
+        #markdown-content li {
+            color: var(--text-light);
+            overflow-wrap: anywhere;
+        }
+
         #markdown-content p {
             margin-bottom: 1rem;
-            color: var(--text-light);
             line-height: 1.8;
         }
 
         #markdown-content ul,
         #markdown-content ol {
-            margin: 1.5rem 0 1.5rem 2rem;
-            color: var(--text-light);
+            margin: 1.25rem 0 1.25rem 1.25rem;
+            padding-left: 0.75rem;
         }
 
         #markdown-content li {
@@ -217,13 +311,12 @@
 
         #markdown-content strong {
             color: var(--secondary);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         #markdown-content a {
             color: var(--primary);
             text-decoration: none;
-            transition: color 0.3s;
             border-bottom: 1px dotted var(--primary);
         }
 
@@ -232,13 +325,15 @@
         }
 
         #markdown-content table {
+            display: block;
             width: 100%;
+            overflow-x: auto;
             border-collapse: collapse;
             margin: 1.5rem 0;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
+            border-radius: 12px;
+            white-space: nowrap;
         }
 
         #markdown-content th {
@@ -246,12 +341,12 @@
             padding: 1rem;
             text-align: left;
             color: var(--primary);
-            font-weight: 600;
+            font-weight: 700;
             border-bottom: 2px solid var(--border);
         }
 
         #markdown-content td {
-            padding: 0.8rem 1rem;
+            padding: 0.85rem 1rem;
             border-bottom: 1px solid var(--border);
         }
 
@@ -261,7 +356,7 @@
 
         #markdown-content blockquote {
             border-left: 4px solid var(--primary);
-            padding-left: 1.5rem;
+            padding-left: 1rem;
             margin: 1.5rem 0;
             color: var(--text-muted);
             font-style: italic;
@@ -270,17 +365,18 @@
         #markdown-content code {
             background: rgba(0, 212, 255, 0.1);
             color: var(--primary);
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
+            padding: 0.2rem 0.55rem;
+            border-radius: 6px;
+            font-family: "Courier New", monospace;
+            font-size: 0.92em;
+            word-break: break-word;
         }
 
         #markdown-content pre {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.34);
             border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.5rem;
+            border-radius: 14px;
+            padding: 1rem;
             overflow-x: auto;
             margin: 1.5rem 0;
         }
@@ -291,168 +387,216 @@
             padding: 0;
         }
 
-        /* Footer */
+        .loading {
+            text-align: center;
+            padding: 3rem 1rem;
+            font-size: 1.05rem;
+            color: var(--primary);
+        }
+
+        .loading::after {
+            content: "";
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% {
+                content: "";
+            }
+            40% {
+                content: ".";
+            }
+            60% {
+                content: "..";
+            }
+            80%, 100% {
+                content: "...";
+            }
+        }
+
         footer {
-            margin-top: 4rem;
-            padding: 3rem 2rem;
+            margin-top: 1rem;
+            padding: 2rem 0 3rem;
             border-top: 1px solid var(--border);
             text-align: center;
             color: var(--text-muted);
         }
 
         footer .links {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
         }
 
         footer a {
             color: var(--primary);
             text-decoration: none;
-            margin: 0 1rem;
         }
 
         footer a:hover {
             color: var(--secondary);
         }
 
-        /* Loading state */
-        .loading {
-            text-align: center;
-            padding: 4rem 2rem;
-            font-size: 1.1em;
-            color: var(--primary);
-        }
+        @media (max-width: 900px) {
+            nav .container,
+            nav .nav-actions {
+                justify-content: center;
+            }
 
-        .loading::after {
-            content: '';
-            animation: dots 1.5s steps(4, end) infinite;
-        }
+            .hero h1,
+            .tagline,
+            .hero-note {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
 
-        @keyframes dots {
-            0%, 20% {
-                content: '';
-            }
-            40% {
-                content: '.';
-            }
-            60% {
-                content: '..';
-            }
-            80%, 100% {
-                content: '...';
+            .hero-meta {
+                justify-content: center;
             }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2em;
+        @media (max-width: 640px) {
+            .container {
+                width: min(var(--page-max), calc(100% - 1rem));
             }
 
-            #markdown-content {
-                padding: 1.5rem;
+            nav .container {
+                padding: 0.85rem 0;
+            }
+
+            nav .brand,
+            nav .nav-actions,
+            nav .links {
+                width: 100%;
             }
 
             nav .links {
-                gap: 1rem;
-                font-size: 0.85em;
+                justify-content: center;
             }
 
-            #markdown-content h2 {
-                font-size: 1.5em;
+            .hero-shell {
+                border-radius: 22px;
             }
 
-            #markdown-content table {
-                font-size: 0.9em;
+            .cta-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            #markdown-content {
+                border-radius: 18px;
+            }
+
+            #markdown-content ul,
+            #markdown-content ol {
+                margin-left: 0.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav>
         <div class="container">
-            <div class="logo">🧬 NanoSolve Hive</div>
-            <div class="links">
-                <a href="#download">Download</a>
-                <a href="#features">Features</a>
-                <a href="./privacy/" class="privacy-link">Privacy Policy</a>
+            <div class="brand">
+                <a href="./" class="logo">NanoSolve Hive</a>
+                <div class="subline">Nanoplastics research app</div>
+            </div>
+            <div class="nav-actions">
+                <div class="links">
+                    <a href="#download">Download</a>
+                    <a href="#features">Overview</a>
+                    <a href="./privacy/" class="privacy-link">Privacy Policy</a>
+                    <a href="./" class="lang-link active" aria-current="page">EN</a>
+                    <a href="./ru/" class="lang-link">RU</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="download">
         <div class="container">
-            <h1>NanoSolve Hive</h1>
-            <p class="tagline">Science-backed intelligence on nanoplastic pollution — and a community platform to fight it.</p>
-            <div class="cta-buttons">
-                <a href="https://github.com/glmcz/nanoplastics_frontend/releases/latest/download/nanoplastics_app.apk" class="btn btn-primary">📱 Download Full (85 MB)</a>
-                <a href="https://github.com/glmcz/nanoplastics_frontend/releases/latest/download/nanoplastics_app_lite.apk" class="btn btn-secondary">📱 Download Lite (45 MB)</a>
+            <div class="hero-shell">
+                <div class="hero-kicker">Science-backed mobile app</div>
+                <h1>NanoSolve Hive</h1>
+                <p class="tagline">Science-backed intelligence on nanoplastic pollution and a community platform to fight it.</p>
+                <div class="hero-meta">
+                    <div class="hero-pill">Android APK</div>
+                    <div class="hero-pill">Flutter</div>
+                    <div class="hero-pill">5 languages</div>
+                </div>
+                <div class="cta-buttons">
+                    <a id="full-apk-download" href="https://github.com/glmcz/nanoplastics_frontend/releases/latest/download/nanoplastics_app.apk" class="btn btn-primary">📱 Download Full</a>
+                    <a id="lite-apk-download" href="https://github.com/glmcz/nanoplastics_frontend/releases/latest/download/nanoplastics_app_lite.apk" class="btn btn-secondary">📱 Download Lite</a>
+                </div>
+                <p class="hero-note">Available on Android. Full build includes EN, CS, ES, FR, and RU. Lite build is English-only.</p>
             </div>
-            <p style="color: var(--text-muted); font-size: 0.9em;">Available on Android · Built with Flutter · Supports 5 languages</p>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <div class="content">
-        <div id="markdown-content" class="loading">Loading documentation...</div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="links">
-            <a href="https://github.com/glmcz/nanoplastics_frontend">GitHub</a>
-            <a href="https://github.com/glmcz/nanoplastics_frontend/releases">Releases</a>
-            <a href="/privacy/">Privacy Policy</a>
+    <main class="content" id="features">
+        <div class="container">
+            <div id="markdown-content" class="loading">Loading documentation...</div>
         </div>
-        <p>&copy; 2024-2026 Martin Durak. All rights reserved.</p>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="links">
+                <a href="https://github.com/glmcz/nanoplastics_frontend">GitHub</a>
+                <a href="https://github.com/glmcz/nanoplastics_frontend/releases">Releases</a>
+                <a href="./privacy/">Privacy Policy</a>
+                <a href="./ru/">Russian version</a>
+            </div>
+            <p>&copy; 2024-2026 Martin Durak. All rights reserved.</p>
+        </div>
     </footer>
 
     <script>
-        // Fetch and render README.md
         async function loadMarkdown() {
             try {
-                const response = await fetch('README.md');
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const response = await fetch("README.md");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
                 const markdown = await response.text();
 
-                // Configure marked options
                 marked.setOptions({
                     breaks: true,
                     gfm: true,
-                    pedantic: false,
+                    pedantic: false
                 });
 
-                // Render markdown
                 let html = marked.parse(markdown);
-
-                // Sanitize HTML
                 html = DOMPurify.sanitize(html);
 
-                // Insert into content div
-                document.getElementById('markdown-content').innerHTML = html;
+                const content = document.getElementById("markdown-content");
+                content.innerHTML = html;
 
-                // Add target="_blank" to external links
-                document.querySelectorAll('#markdown-content a').forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href && !href.startsWith('#')) {
-                        link.setAttribute('target', '_blank');
-                        link.setAttribute('rel', 'noopener noreferrer');
+                document.querySelectorAll("#markdown-content a").forEach((link) => {
+                    const href = link.getAttribute("href");
+                    if (href && !href.startsWith("#")) {
+                        link.setAttribute("target", "_blank");
+                        link.setAttribute("rel", "noopener noreferrer");
                     }
                 });
             } catch (error) {
-                console.error('Error loading markdown:', error);
-                document.getElementById('markdown-content').innerHTML = `
+                console.error("Error loading markdown:", error);
+                document.getElementById("markdown-content").innerHTML = `
                     <h2>Documentation</h2>
                     <p style="color: #ff6b6b;">Unable to load documentation at this time.</p>
-                    <p>Please visit the <a href="https://github.com/glmcz/nanoplastics_frontend" target="_blank">GitHub repository</a> for more information.</p>
+                    <p>Please visit the <a href="https://github.com/glmcz/nanoplastics_frontend" target="_blank" rel="noopener noreferrer">GitHub repository</a> for more information.</p>
                 `;
             }
         }
 
-        // Load markdown when page loads
-        document.addEventListener('DOMContentLoaded', loadMarkdown);
+        document.addEventListener("DOMContentLoaded", loadMarkdown);
     </script>
 </body>
 </html>

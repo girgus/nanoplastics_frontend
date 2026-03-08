@@ -47,7 +47,7 @@ class AppSpacing {
   // ── Semantic spacing ──
 
   double get contentPaddingH => 28 * scale * compactScale;
-  double get contentPaddingV => 2 * scale * compactScale * categoryScale;
+  double get contentPaddingV => 8 * scale * compactScale * categoryScale;
   double get cardPadding => 22 * scale * compactScale;
   double get cardSpacing => 18 * scale * compactScale;
   double get sectionSpacing => 30 * scale * compactScale;

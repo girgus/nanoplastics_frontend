@@ -107,7 +107,58 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
             children: [
               _buildHeader(context),
               Expanded(
-                child: _buildLeaderboard(context),
+                child: Stack(
+                  children: [
+                    Positioned.fill(child: _buildLeaderboard(context)),
+                    // Glow haze — overlays the header border
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 24,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              AppColors.pastelMint.withValues(alpha: 0.12),
+                              AppColors.pastelMint.withValues(alpha: 0.03),
+                              AppColors.pastelMint.withValues(alpha: 0.0),
+                            ],
+                            stops: const [0.0, 0.5, 1.0],
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Glow line
+                    Positioned(
+                      top: 0,
+                      left: AppConstants.space40,
+                      right: AppConstants.space40,
+                      child: Container(
+                        height: 1,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              AppColors.pastelMint.withValues(alpha: 0.0),
+                              AppColors.pastelMint.withValues(alpha: 0.75),
+                              AppColors.pastelMint.withValues(alpha: 0.0),
+                            ],
+                            stops: const [0.0, 0.5, 1.0],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.pastelMint.withValues(alpha: 0.3),
+                              blurRadius: 8,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

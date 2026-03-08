@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../config/app_colors.dart';
 import '../../config/app_constants.dart';
+import '../../utils/app_sizing.dart';
 import '../../utils/app_theme_colors.dart';
 import '../../services/settings_manager.dart';
 import '../../services/service_locator.dart';
+import '../../widgets/nanosolve_logo.dart';
 
 class ProfileRegistrationDialog extends StatefulWidget {
   final VoidCallback? onProfileShared;
@@ -147,6 +149,51 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Logo
+              Center(
+                child: NanosolveLogo(
+                  height: AppSizing.of(context).logoHeightLg,
+                ),
+              ),
+              const SizedBox(height: AppConstants.space12),
+              // Glow haze
+              Container(
+                height: 16,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppColors.pastelMint.withValues(alpha: 0.10),
+                      AppColors.pastelMint.withValues(alpha: 0.0),
+                    ],
+                  ),
+                ),
+              ),
+              // Glow line
+              Container(
+                height: 1.5,
+                margin: const EdgeInsets.symmetric(
+                    horizontal: AppConstants.space16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.pastelMint.withValues(alpha: 0.0),
+                      AppColors.pastelMint.withValues(alpha: 0.9),
+                      AppColors.pastelMint.withValues(alpha: 0.0),
+                    ],
+                    stops: const [0.0, 0.5, 1.0],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.pastelMint.withValues(alpha: 0.55),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: AppConstants.space20),
               // Title with shine effect
               ShaderMask(
                 shaderCallback: (bounds) => const LinearGradient(

@@ -29,7 +29,7 @@ class AppSizing {
     final r = ResponsiveConfig.fromContext(context);
     final compactScale = r.isCompact ? 0.85 : 1.0;
     final heroScale = (r.isSmallPhone || r.isCompact) ? 0.8 : 1.0;
-    final logoScale = r.isXLargePhone ? 0.5 : (r.isLargePhone ? 0.5 : 0.8);
+    final logoScale = r.isXLargePhone ? 0.75 : (r.isLargePhone ? 0.7 : 0.8);
     final categoryScale = categoryScaleFor(r);
     return AppSizing(
       scaleW: r.scaleW,
@@ -76,15 +76,13 @@ class AppSizing {
       isLandscape ? 21.0 : 70 * scaleH * compactScale * logoScale;
 
   /// Large logo for all screen headers.
-  /// On compact-height phones (≤860dp, e.g. 6.1" iPhone 16e) the 1.5× multiplier
-  /// would push the logo to ~87px while 6.5" phones get only ~58px — a 29px header
-  /// gap that shifts content toward the hub. Cap at logoHeight on short screens.
+  /// Keep scaling gentle so emulator/real-device metric differences do not
+  /// create visibly different header layouts.
   double get logoHeightLg {
     if (isLandscape) return 21.0;
-    if (scaleH * 812 <= 860) {
-      return logoHeight; // skip the 1.5× boost on short screens
-    }
-    return logoHeight * 1.5;
+    final screenH = scaleH * ResponsiveConfig.baseHeight;
+    final t = ((screenH - 812) / 220).clamp(0.0, 1.0);
+    return logoHeight * (1.0 + 0.15 * t);
   }
 
   // ── Hero ──
@@ -113,7 +111,7 @@ class AppSizing {
 
   double get categoryIconContainer =>
       30 * scaleW * compactScale * categoryScale;
-  double get categoryIconSize => 31 * scaleW * compactScale * categoryScale;
+  double get categoryIconSize => 28 * scaleW * compactScale * categoryScale;
   double get categoryPadding => 12 * scaleW * compactScale * categoryScale;
 
   // ── Radius ──
@@ -141,7 +139,8 @@ class AppSizing {
 
   // ── Touch targets ──
 
-  double get minTouchTarget => 44 * scaleW * compactScale;
+  double get minTouchTarget =>
+      (44 * scaleW * compactScale).clamp(44.0, double.infinity);
 
   // ── Settings joystick ──
 
@@ -159,10 +158,22 @@ class AppSizing {
   double get secondaryIconSize => iconXs;
 
   // ── Control Hub ──
-  double get w => isBig ? (400 * scaleW / 1.2) : (400 * scaleW * compactScale);
+  double get w {
+    final raw = isBig ? (400 * scaleW / 1.2) : (400 * scaleW * compactScale);
+    final screenWidth =
+        scaleW * ResponsiveConfig.baseWidth; // logical screen width
+    return raw.clamp(0, screenWidth - 20); // 10dp margin each side
+  }
+
   double get hubGridWidth => w;
   double get hubGridHeight => 140 * scaleW * compactScale;
-  double get hubContainerHeight => 200 * scaleW * compactScale;
+
+  double get hubContainerHeight {
+    final raw = 200 * scaleW * compactScale;
+    final maxAllowed = scaleH * ResponsiveConfig.baseHeight * 0.35;
+    return raw.clamp(0, maxAllowed);
+  }
+
   double get hubBottomPadding => 30 * scaleW * compactScale;
   double get hubKnobSize => 62 * scaleW * compactScale;
   double get hubKnobBorderWidth => 6 * scaleW * compactScale;

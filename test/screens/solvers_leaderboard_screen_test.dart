@@ -5,6 +5,17 @@ import 'package:nanoplastics_app/screens/user_settings/profile_registration_dial
 import '../helpers/test_app.dart';
 import '../helpers/settings_test_helper.dart';
 
+// Short settle timeout — getTopSolvers() HTTP call never completes in tests.
+// Default pumpAndSettle timeout is 10min which would stall the suite.
+const _kSettle = Duration(seconds: 3);
+const _kStep = Duration(milliseconds: 100);
+
+Future<void> _settle(WidgetTester tester) => tester.pumpAndSettle(
+      _kStep,
+      EnginePhase.sendSemanticsUpdate,
+      _kSettle,
+    );
+
 void main() {
   group('SolversLeaderboardScreen - unregistered user', () {
     setUp(() async {
@@ -17,9 +28,8 @@ void main() {
       await tester.pumpWidget(buildTestableWidget(
         const SolversLeaderboardScreen(),
       ));
-      await tester.pumpAndSettle();
+      await _settle(tester);
 
-      // Should show lock icon for restricted access
       expect(find.byIcon(Icons.lock), findsOneWidget);
     });
 
@@ -27,7 +37,7 @@ void main() {
       await tester.pumpWidget(buildTestableWidget(
         const SolversLeaderboardScreen(),
       ));
-      await tester.pumpAndSettle();
+      await _settle(tester);
 
       expect(find.byIcon(Icons.app_registration), findsOneWidget);
     });
@@ -37,11 +47,10 @@ void main() {
       await tester.pumpWidget(buildTestableWidget(
         const SolversLeaderboardScreen(),
       ));
-      await tester.pumpAndSettle();
+      await _settle(tester);
 
-      // Tap the register button
       await tester.tap(find.byIcon(Icons.app_registration));
-      await tester.pumpAndSettle();
+      await _settle(tester);
 
       expect(find.byType(ProfileRegistrationDialog), findsOneWidget);
     });
@@ -60,11 +69,9 @@ void main() {
       await tester.pumpWidget(buildTestableWidget(
         const SolversLeaderboardScreen(),
       ));
-      await tester.pumpAndSettle();
+      await _settle(tester);
 
-      // Registered users should not see lock icon
       expect(find.byIcon(Icons.lock), findsNothing);
-      // Should not see the register button
       expect(find.byIcon(Icons.app_registration), findsNothing);
     });
   });

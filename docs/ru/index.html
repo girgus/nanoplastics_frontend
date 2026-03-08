@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NanoSolve Hive - Мобильное приложение</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00d4ff;
+            --primary-strong: #0099cc;
+            --secondary: #b5ffb5;
+            --bg-dark: #0f172a;
+            --bg-darker: #1a1a2e;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-strong: rgba(255, 255, 255, 0.08);
+            --text-light: #e0e0e0;
+            --text-muted: #9fb2c7;
+            --border: rgba(100, 200, 255, 0.2);
+            --shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+            --page-max: 1120px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+            background:
+                radial-gradient(circle at top, rgba(0, 212, 255, 0.12), transparent 32%),
+                linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: min(var(--page-max), calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        nav .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        nav .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        nav .subline {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        nav .nav-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        nav .links {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.25s ease, background 0.25s ease;
+            font-size: 0.92rem;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        nav .privacy-link,
+        nav .lang-link {
+            padding: 0.55rem 0.9rem;
+            border-radius: 999px;
+            font-weight: 700;
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        nav .privacy-link {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+            color: #001018;
+            border: none;
+        }
+
+        nav .lang-link.active {
+            color: #001018;
+            background: linear-gradient(135deg, var(--secondary) 0%, #76ffcf 100%);
+            border-color: transparent;
+        }
+
+        .hero {
+            padding: clamp(3rem, 8vw, 5.5rem) 0 2.5rem;
+        }
+
+        .hero-shell {
+            padding: clamp(1.25rem, 4vw, 2rem);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            background:
+                linear-gradient(180deg, rgba(0, 212, 255, 0.1), rgba(255, 255, 255, 0.02)),
+                rgba(255, 255, 255, 0.03);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+            background: rgba(181, 255, 181, 0.08);
+            color: var(--secondary);
+            font-size: 0.83rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 7vw, 4.5rem);
+            line-height: 1.05;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            max-width: 12ch;
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 2.8vw, 1.35rem);
+            color: var(--text-muted);
+            max-width: 42rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-pill {
+            padding: 0.55rem 0.85rem;
+            border-radius: 999px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .cta-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            min-width: 0;
+            padding: 0.95rem 1.15rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1.35;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+            color: #001018;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--primary);
+            border: 1px solid rgba(0, 212, 255, 0.35);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .hero-note {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        .content {
+            padding-bottom: 3rem;
+        }
+
+        #markdown-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: clamp(1.25rem, 4vw, 3rem);
+            margin: 0 0 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        #markdown-content h1 {
+            display: none;
+        }
+
+        #markdown-content h2 {
+            color: var(--primary);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            scroll-margin-top: 6rem;
+        }
+
+        #markdown-content h2:first-child {
+            margin-top: 0;
+        }
+
+        #markdown-content h3 {
+            color: var(--secondary);
+            font-size: clamp(1.08rem, 3vw, 1.3rem);
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        #markdown-content p,
+        #markdown-content li {
+            color: var(--text-light);
+            overflow-wrap: anywhere;
+        }
+
+        #markdown-content p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        #markdown-content ul,
+        #markdown-content ol {
+            margin: 1.25rem 0 1.25rem 1.25rem;
+            padding-left: 0.75rem;
+        }
+
+        #markdown-content li {
+            margin-bottom: 0.8rem;
+            line-height: 1.7;
+        }
+
+        #markdown-content strong {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        #markdown-content a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+
+        #markdown-content a:hover {
+            color: var(--secondary);
+        }
+
+        #markdown-content table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        #markdown-content th {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 1rem;
+            text-align: left;
+            color: var(--primary);
+            font-weight: 700;
+            border-bottom: 2px solid var(--border);
+        }
+
+        #markdown-content td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        #markdown-content tr:last-child td {
+            border-bottom: none;
+        }
+
+        #markdown-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        #markdown-content code {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--primary);
+            padding: 0.2rem 0.55rem;
+            border-radius: 6px;
+            font-family: "Courier New", monospace;
+            font-size: 0.92em;
+            word-break: break-word;
+        }
+
+        #markdown-content pre {
+            background: rgba(0, 0, 0, 0.34);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        #markdown-content pre code {
+            background: none;
+            color: var(--secondary);
+            padding: 0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem 1rem;
+            font-size: 1.05rem;
+            color: var(--primary);
+        }
+
+        .loading::after {
+            content: "";
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% {
+                content: "";
+            }
+            40% {
+                content: ".";
+            }
+            60% {
+                content: "..";
+            }
+            80%, 100% {
+                content: "...";
+            }
+        }
+
+        footer {
+            margin-top: 1rem;
+            padding: 2rem 0 3rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        footer .links {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 900px) {
+            nav .container,
+            nav .nav-actions {
+                justify-content: center;
+            }
+
+            .hero h1,
+            .tagline,
+            .hero-note {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-meta {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                width: min(var(--page-max), calc(100% - 1rem));
+            }
+
+            nav .container {
+                padding: 0.85rem 0;
+            }
+
+            nav .brand,
+            nav .nav-actions,
+            nav .links {
+                width: 100%;
+            }
+
+            nav .links {
+                justify-content: center;
+            }
+
+            .hero-shell {
+                border-radius: 22px;
+            }
+
+            .cta-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            #markdown-content {
+                border-radius: 18px;
+            }
+
+            #markdown-content ul,
+            #markdown-content ol {
+                margin-left: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="brand">
+                <a href="./" class="logo">NanoSolve Hive</a>
+                <div class="subline">Приложение о нанопластике</div>
+            </div>
+            <div class="nav-actions">
+                <div class="links">
+                    <a href="#download">Скачать</a>
+                    <a href="#features">Обзор</a>
+                    <a href="../privacy/" class="privacy-link">Конфиденциальность</a>
+                    <a href="../" class="lang-link">EN</a>
+                    <a href="./" class="lang-link active" aria-current="page">RU</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="download">
+        <div class="container">
+            <div class="hero-shell">
+                <div class="hero-kicker">Научно обоснованное мобильное приложение</div>
+                <h1>NanoSolve Hive</h1>
+                <p class="tagline">Научно обоснованная информация о загрязнении нанопластиком и платформа сообщества для поиска решений.</p>
+                <div class="hero-meta">
+                    <div class="hero-pill">Android APK</div>
+                    <div class="hero-pill">Flutter</div>
+                    <div class="hero-pill">5 языков</div>
+                </div>
+                <div class="cta-buttons">
+                    <a id="full-apk-download" href="https://github.com/glmcz/nanoplastics_frontend/releases/latest/download/nanoplastics_app.apk" class="btn btn-primary">📱 Скачать полную версию</a>
+                    <a id="lite-apk-download" href="https://github.com/glmcz/nanoplastics_frontend/releases/latest/download/nanoplastics_app_lite.apk" class="btn btn-secondary">📱 Скачать Lite</a>
+                </div>
+                <p class="hero-note">Доступно для Android. Полная версия включает EN, CS, ES, FR и RU. Lite-версия содержит только английский язык.</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="content" id="features">
+        <div class="container">
+            <div id="markdown-content" class="loading">Загрузка документации...</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="links">
+                <a href="https://github.com/glmcz/nanoplastics_frontend">GitHub</a>
+                <a href="https://github.com/glmcz/nanoplastics_frontend/releases">Релизы</a>
+                <a href="../privacy/">Политика конфиденциальности</a>
+                <a href="../">English version</a>
+            </div>
+            <p>&copy; 2024-2026 Martin Durak. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        async function loadMarkdown() {
+            try {
+                const response = await fetch("README.md");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const markdown = await response.text();
+
+                marked.setOptions({
+                    breaks: true,
+                    gfm: true,
+                    pedantic: false
+                });
+
+                let html = marked.parse(markdown);
+                html = DOMPurify.sanitize(html);
+
+                const content = document.getElementById("markdown-content");
+                content.innerHTML = html;
+
+                document.querySelectorAll("#markdown-content a").forEach((link) => {
+                    const href = link.getAttribute("href");
+                    if (href && !href.startsWith("#")) {
+                        link.setAttribute("target", "_blank");
+                        link.setAttribute("rel", "noopener noreferrer");
+                    }
+                });
+            } catch (error) {
+                console.error("Error loading markdown:", error);
+                document.getElementById("markdown-content").innerHTML = `
+                    <h2>Документация</h2>
+                    <p style="color: #ff6b6b;">Сейчас не удалось загрузить документацию.</p>
+                    <p>Дополнительную информацию можно найти в <a href="https://github.com/glmcz/nanoplastics_frontend" target="_blank" rel="noopener noreferrer">репозитории GitHub</a>.</p>
+                `;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadMarkdown);
+    </script>
+</body>
+</html>

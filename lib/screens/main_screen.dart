@@ -20,6 +20,7 @@ import '../services/service_locator.dart';
 import '../services/settings_manager.dart';
 import '../services/update_service.dart';
 import '../utils/app_theme_colors.dart';
+import '../utils/responsive_config.dart';
 
 enum ImpactType { human, planet }
 
@@ -97,6 +98,13 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final sizing = AppSizing.of(context);
+    final responsive = ResponsiveConfig.fromContext(context);
+
+    // Responsive background offset and scale
+    final humanOffset = responsive.isBig ? -80.0 : -120.0;
+    final humanScale = responsive.isBig ? 1.0 : 1.1;
+    final planetOffset = responsive.isBig ? -30.0 : -50.0;
+    final planetScale = responsive.isBig ? 0.9 : 1.0;
 
     return Scaffold(
       body: Stack(
@@ -104,13 +112,27 @@ class _MainScreenState extends State<MainScreen> {
           // Background image
           Positioned.fill(
             child: _selectedTab == ImpactType.human
-                ? Image.asset(
-                    'assets/images/bg_human.jpg',
-                    fit: BoxFit.cover,
+                ? Transform.translate(
+                    offset: Offset(0, humanOffset),
+                    child: Transform.scale(
+                      scale: humanScale,
+                      alignment: Alignment.topCenter,
+                      child: Image.asset(
+                        'assets/images/bg_human.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   )
-                : Image.asset(
-                    'assets/images/bg_planet.jpg',
-                    fit: BoxFit.cover,
+                : Transform.translate(
+                    offset: Offset(0, planetOffset),
+                    child: Transform.scale(
+                      scale: planetScale,
+                      alignment: Alignment.topCenter,
+                      child: Image.asset(
+                        'assets/images/bg_planet.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
           ),
           // Overlay - varies by tab
@@ -153,8 +175,9 @@ class _MainScreenState extends State<MainScreen> {
                             EdgeInsets.only(bottom: sizing.hubContainerHeight),
                         child: ConstrainedBox(
                           constraints: BoxConstraints(
-                            minHeight: constraints.maxHeight -
-                                sizing.hubContainerHeight,
+                            minHeight: (constraints.maxHeight -
+                                    sizing.hubContainerHeight)
+                                .clamp(0, double.infinity),
                           ),
                           child: _buildCategoryGrid(),
                         ),
@@ -431,6 +454,8 @@ class _MainScreenState extends State<MainScreen> {
                                 child: KeyedSubtree(
                                   key: _tourHumanButtonKey,
                                   child: _HubButton(
+                                    buttonKey:
+                                        const ValueKey('hub-button-human'),
                                     label: l10n.tabHuman,
                                     icon: Icons.person_outline,
                                     position: _HubButtonPosition.topLeft,
@@ -455,6 +480,8 @@ class _MainScreenState extends State<MainScreen> {
                                 child: KeyedSubtree(
                                   key: _tourPlanetButtonKey,
                                   child: _HubButton(
+                                    buttonKey:
+                                        const ValueKey('hub-button-planet'),
                                     label: l10n.tabPlanet,
                                     icon: Icons.public_outlined,
                                     position: _HubButtonPosition.topRight,
@@ -486,6 +513,8 @@ class _MainScreenState extends State<MainScreen> {
                                 child: KeyedSubtree(
                                   key: _tourSourcesButtonKey,
                                   child: _HubButton(
+                                    buttonKey:
+                                        const ValueKey('hub-button-sources'),
                                     label: l10n.navSources,
                                     icon: Icons.menu_book_outlined,
                                     position: _HubButtonPosition.bottomLeft,
@@ -504,6 +533,8 @@ class _MainScreenState extends State<MainScreen> {
                                 child: KeyedSubtree(
                                   key: _tourResultsButtonKey,
                                   child: _HubButton(
+                                    buttonKey:
+                                        const ValueKey('hub-button-results'),
                                     label: l10n.navResults,
                                     icon: Icons.auto_graph_outlined,
                                     position: _HubButtonPosition.bottomRight,
@@ -689,6 +720,7 @@ class _MainScreenState extends State<MainScreen> {
 // ── Hub Button ──
 
 class _HubButton extends StatelessWidget {
+  final Key? buttonKey;
   final String label;
   final IconData icon;
   final _HubButtonPosition position;
@@ -701,6 +733,7 @@ class _HubButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const _HubButton({
+    this.buttonKey,
     required this.label,
     required this.icon,
     required this.position,
@@ -757,6 +790,7 @@ class _HubButton extends StatelessWidget {
       label: label,
       selected: isActive,
       child: InkWell(
+        key: buttonKey,
         onTap: onTap,
         borderRadius: borderRadius,
         child: ClipRRect(
