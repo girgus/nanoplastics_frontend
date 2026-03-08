@@ -2,11 +2,6 @@ name: Flutter Release AAB (Play Store)
 
 on:
   workflow_dispatch:
-    inputs:
-      release_tag:
-        description: "Release tag to attach AAB to (e.g., v1.0.0)"
-        required: true
-        type: string
 
 jobs:
   build_aab:
@@ -18,8 +13,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.release_tag }}
+
+      # --- EXTRACT VERSION FROM PUBSPEC ---
+      - name: Get Version from Pubspec
+        id: pubspec_version
+        run: |
+          VERSION=$(grep 'version: ' pubspec.yaml | sed 's/version: //')
+          echo "VERSION=v$VERSION" >> $GITHUB_ENV
 
       # --- RESTORE FIREBASE OPTIONS ---
       - name: Restore firebase_options.dart from secret
@@ -80,6 +80,6 @@ jobs:
       - name: Upload AAB to Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ inputs.release_tag }}
+          tag_name: ${{ env.VERSION }}
           files: build/app/outputs/bundle/playRelease/nanoplastics_app_play.aab
           fail_on_unmatched_files: false
