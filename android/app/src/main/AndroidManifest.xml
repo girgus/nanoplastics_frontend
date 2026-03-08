@@ -3,20 +3,11 @@
     <!-- Network permissions for API calls -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <!-- Permissions for file access and sharing -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <!-- Android 11+ Permissions -->
+    <!-- APK self-update (non-Play builds) -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-    tools:ignore="ScopedStorage"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Camera and microphone for idea attachments -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!-- Android 13+ granular media permissions -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <!-- Android 13+ notification permission (for post-update relaunch notification) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     

@@ -2,18 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Remove storage and install permissions for Play Store builds -->
-    <uses-permission
-        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:node="remove" />
+    <!-- Remove self-update install permission for Play Store builds -->
     <uses-permission
         android:name="android.permission.REQUEST_INSTALL_PACKAGES"
         tools:node="remove" />
+
+    <!-- Remove undeclared media permissions (app only captures, doesn't read library) -->
     <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:name="android.permission.READ_MEDIA_IMAGES"
         tools:node="remove" />
     <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:name="android.permission.READ_MEDIA_VIDEO"
         tools:node="remove" />
 
 </manifest>
