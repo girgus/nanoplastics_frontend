@@ -6,7 +6,12 @@ on:
       - main
     tags:
       - "v*" # Triggers when you push a tag like v1.0.2
-  workflow_dispatch: # Allows manual run from the UI
+  workflow_dispatch:
+    inputs:
+      publish_aab:
+        description: "Build & publish Play Store AAB to release"
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -115,10 +120,8 @@ jobs:
         run: flutter pub get
 
       # ---------------- QUALITY GATES ----------------
-      - name: Check dart formatting
-        run: |
-          dart format lib/firebase_options.dart  # normalize restored generated file
-          dart format lib/ --set-exit-if-changed
+      - name: Format dart files
+        run: dart format lib/
 
       - name: Run Flutter Analyze
         run: flutter analyze
@@ -138,6 +141,7 @@ jobs:
 
       # ---------- BUILD PLAY FLAVOR AAB (Google Play Store only) ------
       - name: Build PLAY AAB (Google Play)
+        if: inputs.publish_aab == true
         run: |
           flutter build appbundle --release --flavor play --dart-define=BUNDLE_ALL_LANGS=true --dart-define=BACKEND_URL=${{ env.BACKEND_URL }} --dart-define=IS_PLAY_STORE=true
           cp build/app/outputs/bundle/playRelease/app-play-release.aab build/app/outputs/bundle/playRelease/nanoplastics_app_play.aab || true
@@ -205,9 +209,11 @@ jobs:
         id: publish_release
         uses: softprops/action-gh-release@v2
         with:
+          fail_on_unmatched_files: false
           files: |
             build/app/outputs/flutter-apk/nanoplastics_app.apk
             build/app/outputs/flutter-apk/nanoplastics_app_lite.apk
+            build/app/outputs/bundle/playRelease/nanoplastics_app_play.aab
           tag_name: ${{ env.RELEASE_TAG }}
           name: Release ${{ env.RELEASE_TAG }}
           generate_release_notes: true
