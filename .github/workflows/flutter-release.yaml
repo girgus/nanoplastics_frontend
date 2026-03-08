@@ -139,13 +139,6 @@ jobs:
           flutter build apk --release --flavor full --dart-define=BUNDLE_ALL_LANGS=true --dart-define=BACKEND_URL=${{ env.BACKEND_URL }}
           mv build/app/outputs/flutter-apk/app-full-release.apk build/app/outputs/flutter-apk/nanoplastics_app.apk
 
-      # ---------- BUILD PLAY FLAVOR AAB (Google Play Store only) ------
-      - name: Build PLAY AAB (Google Play)
-        if: inputs.publish_aab == true
-        run: |
-          flutter build appbundle --release --flavor play --dart-define=BUNDLE_ALL_LANGS=true --dart-define=BACKEND_URL=${{ env.BACKEND_URL }} --dart-define=IS_PLAY_STORE=true
-          cp build/app/outputs/bundle/playRelease/app-play-release.aab build/app/outputs/bundle/playRelease/nanoplastics_app_play.aab || true
-
       # ---------- GENERATE LITE PUBSPEC ------
       - name: Generate LITE pubspec
         run: |
@@ -200,20 +193,16 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-artifacts
-          path: |
-            build/app/outputs/flutter-apk/nanoplastics_app*.apk
-            build/app/outputs/bundle/playRelease/nanoplastics_app_play.aab
+          path: build/app/outputs/flutter-apk/nanoplastics_app*.apk
 
       # ---------------- CREATE RELEASE ----------------
       - name: Publish Release
         id: publish_release
         uses: softprops/action-gh-release@v2
         with:
-          fail_on_unmatched_files: false
           files: |
             build/app/outputs/flutter-apk/nanoplastics_app.apk
             build/app/outputs/flutter-apk/nanoplastics_app_lite.apk
-            build/app/outputs/bundle/playRelease/nanoplastics_app_play.aab
           tag_name: ${{ env.RELEASE_TAG }}
           name: Release ${{ env.RELEASE_TAG }}
           generate_release_notes: true

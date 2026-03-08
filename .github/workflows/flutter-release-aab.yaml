@@ -1,0 +1,85 @@
+name: Flutter Release AAB (Play Store)
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Release tag to attach AAB to (e.g., v1.0.0)"
+        required: true
+        type: string
+
+jobs:
+  build_aab:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag }}
+
+      # --- RESTORE FIREBASE OPTIONS ---
+      - name: Restore firebase_options.dart from secret
+        run: |
+          echo "${{ secrets.FIREBASE_OPTIONS_BASE64 }}" | base64 --decode > lib/firebase_options.dart
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # --- SETUP FLUTTER ---
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.38.5"
+          channel: stable
+          cache: true
+
+      # --- RESTORE FIREBASE CONFIG ---
+      - name: Restore google-services.json
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > android/app/google-services.json
+
+      # --- RESTORE ANDROID SIGNING KEY ---
+      - name: Restore Android Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release.jks
+
+      # --- SET SIGNING ENVIRONMENT VARIABLES ---
+      - name: Set Signing Environment Variables
+        run: |
+          echo "KEYSTORE_PATH=$(pwd)/android/app/release.jks" >> $GITHUB_ENV
+          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
+          echo "BACKEND_URL=${{ secrets.BACKEND_URL_PROD }}" >> $GITHUB_ENV
+
+      # --- INSTALL DEPENDENCIES ---
+      - name: Install dependencies
+        run: flutter pub get
+
+      # --- FORMAT & ANALYZE ---
+      - name: Format dart files
+        run: dart format lib/
+
+      - name: Run Flutter Analyze
+        run: flutter analyze
+
+      # --- BUILD PLAY AAB ---
+      - name: Build PLAY AAB (Google Play)
+        run: |
+          flutter build appbundle --release --flavor play --dart-define=BUNDLE_ALL_LANGS=true --dart-define=BACKEND_URL=${{ env.BACKEND_URL }} --dart-define=IS_PLAY_STORE=true
+          cp build/app/outputs/bundle/playRelease/app-play-release.aab build/app/outputs/bundle/playRelease/nanoplastics_app_play.aab || true
+
+      # --- UPLOAD TO RELEASE ---
+      - name: Upload AAB to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.release_tag }}
+          files: build/app/outputs/bundle/playRelease/nanoplastics_app_play.aab
+          fail_on_unmatched_files: false
