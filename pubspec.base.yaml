@@ -35,6 +35,7 @@ dependencies:
   # Google Play Store updates only
   in_app_update: ^4.2.3
   tutorial_coach_mark: ^1.2.8
+  webview_flutter: ^4.9.0
   # Direct declarations of transitive deps actually used in lib/
   image: ^4.0.0
   crypto: ^3.0.0
