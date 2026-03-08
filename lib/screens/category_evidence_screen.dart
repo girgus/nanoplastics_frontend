@@ -9,6 +9,7 @@ import '../utils/app_sizing.dart';
 import '../utils/app_spacing.dart';
 import '../utils/app_theme_colors.dart';
 import '../utils/app_typography.dart';
+import '../utils/responsive_config.dart';
 import '../widgets/nanosolve_logo.dart';
 
 class CategoryEvidenceScreen extends StatefulWidget {
@@ -78,8 +79,7 @@ class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
                                   .textTheme
                                   .titleMedium
                                   ?.copyWith(
-                                    color:
-                                        AppThemeColors.of(context).textMuted,
+                                    color: AppThemeColors.of(context).textMuted,
                                   ),
                             ),
                           ),
@@ -95,8 +95,7 @@ class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
                         itemBuilder: (ctx, i) {
                           if (i == 0) {
                             return Padding(
-                              padding:
-                                  EdgeInsets.only(bottom: spacing.md),
+                              padding: EdgeInsets.only(bottom: spacing.md),
                               child: Text(
                                 AppLocalizations.of(context)!
                                     .categoryDetailSourcesTitle,
@@ -178,11 +177,16 @@ class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
     final spacing = AppSpacing.of(context);
     final sizing = AppSizing.of(context);
     final typography = AppTypography.of(context);
+    final responsive = ResponsiveConfig.fromContext(context);
+    final isXLargePortrait = responsive.isPortrait && responsive.isXLargePhone;
+    final backFontSize =
+        (typography.back.fontSize ?? 12) * (isXLargePortrait ? 0.88 : 1.0);
+    final logoHeight = sizing.logoHeightLg * (isXLargePortrait ? 0.82 : 1.0);
 
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: spacing.contentPaddingH,
-        vertical: spacing.contentPaddingV * 0.65,
+        vertical: spacing.contentPaddingV * (isXLargePortrait ? 0.5 : 0.65),
       ),
       child: Column(
         children: [
@@ -203,6 +207,7 @@ class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
                       l10n.categoryDetailBackToOverview,
                       style: typography.back.copyWith(
                         color: AppThemeColors.of(context).textMain,
+                        fontSize: backFontSize,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.fade,
@@ -212,14 +217,12 @@ class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
               ),
             ),
           ),
-          SizedBox(height: spacing.sm),
-          NanosolveLogo(height: sizing.logoHeightLg),
+          SizedBox(height: spacing.sm * (isXLargePortrait ? 0.7 : 1.0)),
+          NanosolveLogo(height: logoHeight),
         ],
       ),
     );
   }
-
-
 
   Widget _buildStudyCard({
     required int index,
@@ -295,8 +298,7 @@ class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    if (study.summary != null &&
-                        study.summary!.isNotEmpty) ...[
+                    if (study.summary != null && study.summary!.isNotEmpty) ...[
                       SizedBox(height: spacing.xs / 2),
                       Text(
                         study.summary!,
@@ -342,7 +344,6 @@ class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
       ),
     );
   }
-
 
   Future<void> _openStudy(EvidenceStudy study) async {
     LoggerService().logUserAction('category_evidence_study_opened', params: {

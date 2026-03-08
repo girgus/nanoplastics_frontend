@@ -8,6 +8,7 @@ import '../config/app_constants.dart';
 import '../utils/app_spacing.dart';
 import '../utils/app_sizing.dart';
 import '../utils/app_typography.dart';
+import '../utils/responsive_config.dart';
 import '../widgets/nanosolve_logo.dart';
 import '../widgets/pdf_page_input.dart';
 import '../l10n/app_localizations.dart';
@@ -481,6 +482,13 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
     final sizing = AppSizing.of(context);
     final typography = AppTypography.of(context);
     final l10n = AppLocalizations.of(context)!;
+    final responsive = ResponsiveConfig.fromContext(context);
+    final isXLargePortrait = responsive.isPortrait && responsive.isXLargePhone;
+    final backFontSize =
+        (typography.back.fontSize ?? 12) * (isXLargePortrait ? 0.82 : 0.9);
+    final headerLogoHeight =
+        (isPortrait ? sizing.logoHeightLg : sizing.logoHeight) *
+            (isXLargePortrait ? 0.78 : 0.88);
 
     return Container(
       padding: EdgeInsets.all(isPortrait ? AppConstants.space8 : 1.0),
@@ -503,46 +511,43 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
               flex: 1,
               child: InkWell(
                 onTap: () => Navigator.of(context).maybePop(),
-                child: Container(
+                child: Padding(
                   padding: isPortrait
                       ? EdgeInsets.symmetric(
-                          horizontal: spacing.md, vertical: spacing.sm)
+                          horizontal: spacing.xs, vertical: spacing.xs)
                       : EdgeInsets.symmetric(
-                          horizontal: spacing.sm, vertical: 2),
-                  decoration: isPortrait
-                      ? BoxDecoration(
-                          color: AppThemeColors.of(context)
-                              .surfaceMid
-                              .withValues(alpha: 0.8),
-                          borderRadius: BorderRadius.circular(sizing.radiusMd),
-                          border: Border.all(
-                            color: AppThemeColors.of(context)
-                                .textMain
-                                .withValues(alpha: 0.2),
-                          ),
-                        )
-                      : null,
+                          horizontal: spacing.xs, vertical: 2),
                   child: isPortrait
                       ? Row(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.arrow_back_ios,
-                                color: AppThemeColors.of(context).textMain,
-                                size: sizing.iconSm),
-                            const SizedBox(width: AppConstants.space8),
-                            Text(
-                              l10n.categoryDetailBackToOverview,
-                              style: typography.back.copyWith(
-                                color: AppThemeColors.of(context).textMain,
-                                fontWeight: FontWeight.bold,
+                            Icon(
+                              Icons.arrow_back_ios,
+                              color: AppThemeColors.of(context).textMain,
+                              size: sizing.iconXs,
+                            ),
+                            const SizedBox(width: AppConstants.space4),
+                            Flexible(
+                              child: Text(
+                                l10n.categoryDetailBackToOverview,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: typography.back.copyWith(
+                                  color: AppThemeColors.of(context).textMain,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: backFontSize,
+                                  letterSpacing: 0.4,
+                                ),
                               ),
                             ),
                           ],
                         )
-                      : Icon(Icons.arrow_back_ios,
+                      : Icon(
+                          Icons.arrow_back_ios,
                           color: AppThemeColors.of(context).textMain,
-                          size: sizing.iconXss),
+                          size: sizing.iconXss,
+                        ),
                 ),
               ),
             ),
@@ -551,7 +556,7 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
               flex: 2,
               child: Center(
                 child: NanosolveLogo(
-                  height: isPortrait ? sizing.logoHeightLg : sizing.logoHeight,
+                  height: headerLogoHeight,
                 ),
               ),
             ),

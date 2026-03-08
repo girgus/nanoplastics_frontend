@@ -9,6 +9,7 @@ import '../utils/app_sizing.dart';
 import '../utils/app_spacing.dart';
 import '../utils/app_theme_colors.dart';
 import '../utils/app_typography.dart';
+import '../utils/responsive_config.dart';
 import '../widgets/brainstorm_box.dart';
 import '../widgets/nanosolve_logo.dart';
 import 'category_evidence_screen.dart';
@@ -147,11 +148,16 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
     final spacing = AppSpacing.of(context);
     final sizing = AppSizing.of(context);
     final typography = AppTypography.of(context);
+    final responsive = ResponsiveConfig.fromContext(context);
+    final isXLargePortrait = responsive.isPortrait && responsive.isXLargePhone;
+    final backFontSize =
+        (typography.back.fontSize ?? 12) * (isXLargePortrait ? 0.88 : 1.0);
+    final logoHeight = sizing.logoHeightLg * (isXLargePortrait ? 0.84 : 1.0);
 
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: spacing.contentPaddingH,
-        vertical: spacing.contentPaddingV,
+        vertical: spacing.contentPaddingV * (isXLargePortrait ? 0.82 : 1.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -174,6 +180,7 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
                       l10n.categoryDetailBackToOverview,
                       style: typography.back.copyWith(
                         color: AppThemeColors.of(context).textMain,
+                        fontSize: backFontSize,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.fade,
@@ -184,8 +191,9 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
               ),
             ),
           ),
-          SizedBox(height: spacing.headerSpacing),
-          NanosolveLogo(height: sizing.logoHeightLg),
+          SizedBox(
+              height: spacing.headerSpacing * (isXLargePortrait ? 0.6 : 1.0)),
+          NanosolveLogo(height: logoHeight),
         ],
       ),
     );
@@ -227,6 +235,8 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
   Widget _buildScrollableContent() {
     final spacing = AppSpacing.of(context);
     final typography = AppTypography.of(context);
+    final responsive = ResponsiveConfig.fromContext(context);
+    final isXLargePortrait = responsive.isPortrait && responsive.isXLargePhone;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: AppConstants.space20),
@@ -237,6 +247,8 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
             widget.categoryData.title.toUpperCase(),
             style: typography.headline.copyWith(
               color: AppThemeColors.of(context).textMain,
+              fontSize: (typography.headline.fontSize ?? 20) *
+                  (isXLargePortrait ? 0.88 : 1.0),
             ),
             textAlign: TextAlign.center,
           ),

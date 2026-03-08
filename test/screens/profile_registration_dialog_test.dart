@@ -6,6 +6,9 @@ import '../helpers/test_app.dart';
 import '../helpers/settings_test_helper.dart';
 
 void main() {
+  const skipButtonKey = ValueKey('profile-registration-skip');
+  const submitButtonKey = ValueKey('profile-registration-submit');
+
   setUp(() async {
     await setupServiceLocator();
   });
@@ -35,6 +38,20 @@ void main() {
     ));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Open Dialog'));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> submitRegistration(WidgetTester tester) async {
+    final button = tester.widget<ElevatedButton>(find.byKey(submitButtonKey));
+    expect(button.onPressed, isNotNull);
+    button.onPressed!();
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> skipRegistration(WidgetTester tester) async {
+    final button = tester.widget<TextButton>(find.byKey(skipButtonKey));
+    expect(button.onPressed, isNotNull);
+    button.onPressed!();
     await tester.pumpAndSettle();
   }
 
@@ -97,8 +114,7 @@ void main() {
       await tester.enterText(textFields.at(1), 'test@email.com');
 
       // Tap Register
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       expect(find.text('Please enter your full name'), findsOneWidget);
     });
@@ -112,8 +128,7 @@ void main() {
       );
       await tester.enterText(textFields.at(0), 'John Doe');
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       expect(find.text('Please enter your email address'), findsOneWidget);
     });
@@ -129,8 +144,7 @@ void main() {
       await tester.enterText(textFields.at(0), 'John Doe');
       await tester.enterText(textFields.at(1), 'notanemail');
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       expect(find.text('Please enter a valid email address'), findsOneWidget);
     });
@@ -145,8 +159,7 @@ void main() {
       await tester.enterText(textFields.at(0), 'John');
       await tester.enterText(textFields.at(1), '@domain.com');
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       expect(find.text('Please enter a valid email address'), findsOneWidget);
     });
@@ -170,8 +183,7 @@ void main() {
       await tester.enterText(textFields.at(1), 'jane@example.com');
       await tester.enterText(textFields.at(2), 'Marine Biology');
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       final settings = SettingsManager();
       expect(settings.displayName, equals('Jane Doe'));
@@ -191,8 +203,7 @@ void main() {
       await tester.enterText(textFields.at(0), 'Jane Doe');
       await tester.enterText(textFields.at(1), 'jane@example.com');
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       expect(find.text('Profile registered successfully!'), findsOneWidget);
     });
@@ -202,8 +213,7 @@ void main() {
     testWidgets('tapping Skip closes dialog without saving', (tester) async {
       await openDialog(tester);
 
-      await tester.tap(find.text('Skip'));
-      await tester.pumpAndSettle();
+      await skipRegistration(tester);
 
       // Dialog should be closed
       expect(find.text('Join the Community'), findsNothing);

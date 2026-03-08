@@ -291,6 +291,7 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
                 children: [
                   Expanded(
                     child: TextButton(
+                      key: const ValueKey('profile-registration-skip'),
                       onPressed:
                           _isLoading ? null : () => Navigator.of(context).pop(),
                       style: TextButton.styleFrom(
@@ -310,6 +311,7 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
                   const SizedBox(width: AppConstants.space12),
                   Expanded(
                     child: ElevatedButton(
+                      key: const ValueKey('profile-registration-submit'),
                       onPressed: _isLoading ? null : _saveProfile,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.pastelMint,

@@ -1580,18 +1580,6 @@ class CategoryDetailDataFactory {
         studies: [
           _study(
             title:
-                'A global estimate of multiecosystem photosynthesis losses under microplastic pollution',
-            authorsShort: 'Zhu et al.',
-            journal: 'PNAS',
-            year: 2025,
-            url: 'https://www.pnas.org/doi/10.1073/pnas.2423957122',
-            studyType: 'Global modeling study',
-            summary:
-                'Quantifies broad photosynthesis losses linked to plastic pollution.',
-            tags: ['photosynthesis', 'global model', 'ecosystems'],
-          ),
-          _study(
-            title:
                 'Effect of microplastics exposure on the photosynthesis system of freshwater algae',
             authorsShort: 'Wu et al.',
             journal: 'Journal of Hazardous Materials',

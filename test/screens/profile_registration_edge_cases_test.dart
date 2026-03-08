@@ -6,9 +6,26 @@ import '../helpers/test_app.dart';
 import '../helpers/settings_test_helper.dart';
 
 void main() {
+  const skipButtonKey = ValueKey('profile-registration-skip');
+  const submitButtonKey = ValueKey('profile-registration-submit');
+
   setUp(() async {
     await setupServiceLocator();
   });
+
+  Future<void> submitRegistration(WidgetTester tester) async {
+    final button = tester.widget<ElevatedButton>(find.byKey(submitButtonKey));
+    expect(button.onPressed, isNotNull);
+    button.onPressed!();
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> skipRegistration(WidgetTester tester) async {
+    final button = tester.widget<TextButton>(find.byKey(skipButtonKey));
+    expect(button.onPressed, isNotNull);
+    button.onPressed!();
+    await tester.pumpAndSettle();
+  }
 
   group('ProfileRegistrationDialog email validation edge cases', () {
     testWidgets('standard valid email passes', (tester) async {
@@ -27,8 +44,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Tap Register
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       // Should succeed (green snackbar or profile saved)
       expect(SettingsManager().isProfileRegistered, isTrue);
@@ -48,8 +64,7 @@ void main() {
       await tester.enterText(emailField, 'a@b.cd');
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       // Regex requires domain with 2+ char TLD: a@b.cd should pass
       expect(SettingsManager().isProfileRegistered, isTrue);
@@ -69,8 +84,7 @@ void main() {
       await tester.enterText(emailField, 'user@.com');
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       // Should show validation error snackbar
       expect(find.byType(SnackBar), findsOneWidget);
@@ -90,8 +104,7 @@ void main() {
       await tester.enterText(emailField, 'notanemail');
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       expect(find.byType(SnackBar), findsOneWidget);
       expect(SettingsManager().isProfileRegistered, isFalse);
@@ -111,8 +124,7 @@ void main() {
       await tester.enterText(emailField, '  user@test.com  ');
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       // Trimmed email should be valid
       expect(SettingsManager().isProfileRegistered, isTrue);
@@ -135,8 +147,7 @@ void main() {
       await tester.enterText(emailField, 'test@test.com');
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       expect(find.byType(SnackBar), findsOneWidget);
       expect(SettingsManager().isProfileRegistered, isFalse);
@@ -161,8 +172,7 @@ void main() {
       await tester.enterText(specialtyField, 'Marine Biology');
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Register'));
-      await tester.pumpAndSettle();
+      await submitRegistration(tester);
 
       expect(SettingsManager().displayName, equals('Jane Doe'));
       expect(SettingsManager().email, equals('jane@example.com'));
@@ -184,8 +194,7 @@ void main() {
       final nameField = find.byType(TextField).at(0);
       await tester.enterText(nameField, 'Should Not Save');
 
-      await tester.tap(find.text('Skip'));
-      await tester.pumpAndSettle();
+      await skipRegistration(tester);
 
       // SettingsManager should be unchanged
       expect(SettingsManager().displayName, equals('PreExisting'));
