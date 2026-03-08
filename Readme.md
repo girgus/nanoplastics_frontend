@@ -246,7 +246,7 @@ backend /release endpoint → GitHub Actions hook → app checks backend on star
 
 ## License
 
-Copyright (c) 2024 Martin Durak. All rights reserved.
+Copyright (c) 2026 Martin Durak. All rights reserved.
 
 This source code is made available for viewing and contribution purposes only. No permission is granted to use, copy, modify, merge, publish, distribute, sublicense, or sell copies of this software, in whole or in part, without explicit written permission from the author.
 
