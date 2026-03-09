@@ -1,12 +1,12 @@
 /// Backend configuration for API endpoints
 /// Build configuration:
-/// - Production: http://37.27.247.129 (default)
+/// - Production: https://nanosolve.duckdns.org (default)
 /// - Emulator: flutter run --dart-define=BACKEND_URL=http://10.0.2.2:3000
 /// - Local: flutter run --dart-define=BACKEND_URL=http://localhost:3000
 class BackendConfig {
   /// Backend URL - can be overridden via environment variable at build time
   ///
-  /// Production default: http://37.27.247.129
+  /// Production default: https://nanosolve.duckdns.org
   /// Local development can override with:
   ///   flutter run --dart-define=BACKEND_URL=http://10.0.2.2:3000 (emulator)
   ///   flutter run --dart-define=BACKEND_URL=http://localhost:3000 (local machine)
@@ -16,7 +16,7 @@ class BackendConfig {
   /// - See: android/app/src/main/res/xml/network_security_config.xml
   static const String defaultBackendUrl = String.fromEnvironment(
     'BACKEND_URL',
-    defaultValue: 'http://37.27.247.129',
+    defaultValue: 'https://nanosolve.duckdns.org',
   );
 
   /// Get the current backend base URL
@@ -45,7 +45,9 @@ class BackendConfig {
       return 'emulator';
     } else if (url.contains('localhost') || url.contains('127.0.0.1')) {
       return 'local';
+    } else if (url.contains('37.27.247.129')) {
+      return 'production-ip'; // legacy — prefer HTTPS domain
     }
-    return 'production'; // Any other URL is assumed production
+    return 'production';
   }
 }
