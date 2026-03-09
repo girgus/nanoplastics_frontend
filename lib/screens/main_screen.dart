@@ -352,12 +352,12 @@ class _MainScreenState extends State<MainScreen> {
     final rows = <Widget>[];
     for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
       if (rowIndex > 0) {
-        rows.add(SizedBox(height: spacing.gridRowSpacing));
+        rows.add(const SizedBox(height: 8));
       }
       final first = rowIndex * 2;
       final second = first + 1;
       rows.add(
-        IntrinsicHeight(
+        Expanded(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -406,7 +406,6 @@ class _MainScreenState extends State<MainScreen> {
         bottom: spacing.md * 0.7,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: rows,
       ),
     );
@@ -908,7 +907,7 @@ class _CategoryCard extends StatelessWidget {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   Container(
                     width: iconContainerSize,
