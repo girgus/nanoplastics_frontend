@@ -52,6 +52,7 @@ class AppConstants {
   static const double iconContainerSmall = 25.0;
   static const double iconContainerMedium = 160.0;
   static const double iconContainerLarge = 280.0;
+  static const double categoryCardMinHeight = 100.0;
   static const double avatarXS = 45.0;
   static const double avatarSmall = 80.0;
   static const double avatarMedium = 100.0;

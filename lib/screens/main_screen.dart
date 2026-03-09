@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -349,7 +350,6 @@ class _MainScreenState extends State<MainScreen> {
 
     final rowCount = (categories.length / 2).ceil();
     const rowGap = 8.0;
-    final vertPad = spacing.md * 2.0 + spacing.md * 0.7;
 
     Widget buildRows(double? rowHeight) {
       final rows = <Widget>[];
@@ -406,29 +406,26 @@ class _MainScreenState extends State<MainScreen> {
       );
     }
 
+    final responsive = ResponsiveConfig.fromContext(context);
+    final topPadding = responsive.isCompact ? spacing.md * 0.8 : spacing.md * 2.0;
     return Padding(
       key: _tourCategoryGridKey,
       padding: EdgeInsets.only(
-        left: spacing.md * 1.5,
-        right: spacing.md * 1.5,
-        top: spacing.md * 2.0,
+        left: spacing.md,
+        right: spacing.md,
+        top: topPadding,
         bottom: spacing.md * 0.7,
       ),
       child: LayoutBuilder(
         builder: (context, lc) {
-          // lc.minHeight is the available grid height propagated by the parent
-          // ConstrainedBox. When it is positive, divide it evenly across rows.
           final available = lc.minHeight;
           if (available > 0) {
             final totalGaps = (rowCount - 1) * rowGap;
-            final rowHeight =
-                ((available - vertPad - totalGaps) / rowCount).clamp(
-              60.0,
-              double.infinity,
-            );
+            final rowHeight = ((available - totalGaps) / rowCount)
+                .clamp(AppConstants.categoryCardMinHeight, double.infinity);
             return buildRows(rowHeight);
           }
-          // Fallback for edge cases where minHeight is not provided (e.g. tests).
+          // Fallback for tests where minHeight is not propagated.
           return buildRows(null);
         },
       ),
@@ -929,43 +926,74 @@ class _CategoryCard extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.08),
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Container(
-                    width: iconContainerSize,
-                    height: iconContainerSize,
-                    decoration: BoxDecoration(
-                      color: category.color.withValues(alpha: 0.2),
-                      borderRadius:
-                          BorderRadius.circular(AppConstants.radiusSmall),
-                    ),
-                    child: Icon(
-                      category.icon,
-                      size: iconSize,
-                      color: category.color,
-                    ),
-                  ),
-                  const SizedBox(height: AppConstants.space4),
-                  Text(
-                    category.title,
-                    style: titleStyle.copyWith(
-                      color: AppThemeColors.of(context).textMain,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: AppConstants.space4),
-                  Flexible(
-                    child: Text(
-                      category.description,
-                      style: descStyle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+              child: Builder(
+                builder: (context) {
+                  final spacing = AppSpacing.of(context);
+                  final screenWidth = MediaQuery.of(context).size.width;
+                  final estimatedCardWidth =
+                      (screenWidth - spacing.contentPaddingH * 2 - spacing.gridSpacing) / 2;
+                  final dense = estimatedCardWidth < 145;
+                  final contentGap = spacing.xs * 0.5;
+                  final effectiveIconContainer =
+                      dense ? iconContainerSize * 0.9 : iconContainerSize;
+                  final effectiveIconSize = math.min(
+                    dense ? iconSize * 0.9 : iconSize,
+                    effectiveIconContainer * 0.82,
+                  );
+                  final effectiveTitleStyle = dense
+                      ? titleStyle.copyWith(
+                          fontSize: ((titleStyle.fontSize ?? 12.0) * 0.92)
+                              .clamp(11.0, double.infinity),
+                          height: 1.2,
+                        )
+                      : titleStyle;
+                  final effectiveDescStyle = dense
+                      ? descStyle.copyWith(
+                          fontSize: ((descStyle.fontSize ?? 12.0) * 0.92)
+                              .clamp(10.0, double.infinity),
+                          height: 1.3,
+                        )
+                      : descStyle;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: effectiveIconContainer,
+                        height: effectiveIconContainer,
+                        decoration: BoxDecoration(
+                          color: category.color.withValues(alpha: 0.2),
+                          borderRadius:
+                              BorderRadius.circular(AppConstants.radiusSmall),
+                        ),
+                        child: Icon(
+                          category.icon,
+                          size: effectiveIconSize,
+                          color: category.color,
+                        ),
+                      ),
+                      SizedBox(height: contentGap),
+                      Text(
+                        category.title,
+                        style: effectiveTitleStyle.copyWith(
+                          color: AppThemeColors.of(context).textMain,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                      ),
+                      Text(
+                        category.description,
+                        style: effectiveDescStyle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ),

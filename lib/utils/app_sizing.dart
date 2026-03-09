@@ -109,10 +109,9 @@ class AppSizing {
 
   // ── Category card ──
 
-  double get categoryIconContainer =>
-      30 * scaleW * compactScale * categoryScale;
-  double get categoryIconSize => 28 * scaleW * compactScale * categoryScale;
-  double get categoryPadding => 12 * scaleW * compactScale * categoryScale;
+  double get categoryIconContainer => 30 * scaleW * compactScale;
+  double get categoryIconSize => 28 * scaleW * compactScale;
+  double get categoryPadding => 5 * scaleW * compactScale;
 
   // ── Radius ──
 
