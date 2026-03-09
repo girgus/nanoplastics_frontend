@@ -348,52 +348,61 @@ class _MainScreenState extends State<MainScreen> {
     final typography = AppTypography.of(context);
 
     final rowCount = (categories.length / 2).ceil();
+    const rowGap = 8.0;
+    final vertPad = spacing.md * 2.0 + spacing.md * 0.7;
 
-    final rows = <Widget>[];
-    for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-      if (rowIndex > 0) {
-        rows.add(const SizedBox(height: 8));
-      }
-      final first = rowIndex * 2;
-      final second = first + 1;
-      rows.add(
-        Expanded(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+    Widget buildRows(double? rowHeight) {
+      final rows = <Widget>[];
+      for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+        if (rowIndex > 0) {
+          rows.add(const SizedBox(height: rowGap));
+        }
+        final first = rowIndex * 2;
+        final second = first + 1;
+        Widget row = Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: _CategoryCard(
+                category: categories[first],
+                iconContainerSize: sizing.categoryIconContainer,
+                iconSize: sizing.categoryIconSize,
+                padding: sizing.categoryPadding,
+                titleStyle: typography.title,
+                descStyle: typography.bodySm.copyWith(
+                  color: AppThemeColors.of(context).textMuted,
+                ),
+                onTap: () => _navigateToCategoryDetail(categories[first]),
+              ),
+            ),
+            SizedBox(width: spacing.gridSpacing),
+            if (second < categories.length)
               Expanded(
                 child: _CategoryCard(
-                  category: categories[first],
+                  category: categories[second],
                   iconContainerSize: sizing.categoryIconContainer,
                   iconSize: sizing.categoryIconSize,
                   padding: sizing.categoryPadding,
                   titleStyle: typography.title,
                   descStyle: typography.bodySm.copyWith(
-                    color: AppThemeColors.of(context).textMuted,
+                    color: AppColors.textMuted,
                   ),
-                  onTap: () => _navigateToCategoryDetail(categories[first]),
+                  onTap: () => _navigateToCategoryDetail(categories[second]),
                 ),
-              ),
-              SizedBox(width: spacing.gridSpacing),
-              if (second < categories.length)
-                Expanded(
-                  child: _CategoryCard(
-                    category: categories[second],
-                    iconContainerSize: sizing.categoryIconContainer,
-                    iconSize: sizing.categoryIconSize,
-                    padding: sizing.categoryPadding,
-                    titleStyle: typography.title,
-                    descStyle: typography.bodySm.copyWith(
-                      color: AppColors.textMuted,
-                    ),
-                    onTap: () => _navigateToCategoryDetail(categories[second]),
-                  ),
-                )
-              else
-                const Expanded(child: SizedBox()),
-            ],
-          ),
-        ),
+              )
+            else
+              const Expanded(child: SizedBox()),
+          ],
+        );
+        rows.add(
+          rowHeight != null
+              ? SizedBox(height: rowHeight, child: row)
+              : IntrinsicHeight(child: row),
+        );
+      }
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: rows,
       );
     }
 
@@ -405,8 +414,23 @@ class _MainScreenState extends State<MainScreen> {
         top: spacing.md * 2.0,
         bottom: spacing.md * 0.7,
       ),
-      child: Column(
-        children: rows,
+      child: LayoutBuilder(
+        builder: (context, lc) {
+          // lc.minHeight is the available grid height propagated by the parent
+          // ConstrainedBox. When it is positive, divide it evenly across rows.
+          final available = lc.minHeight;
+          if (available > 0) {
+            final totalGaps = (rowCount - 1) * rowGap;
+            final rowHeight =
+                ((available - vertPad - totalGaps) / rowCount).clamp(
+              60.0,
+              double.infinity,
+            );
+            return buildRows(rowHeight);
+          }
+          // Fallback for edge cases where minHeight is not provided (e.g. tests).
+          return buildRows(null);
+        },
       ),
     );
   }
@@ -933,11 +957,13 @@ class _CategoryCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: AppConstants.space4),
-                  Text(
-                    category.description,
-                    style: descStyle,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  Flexible(
+                    child: Text(
+                      category.description,
+                      style: descStyle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
