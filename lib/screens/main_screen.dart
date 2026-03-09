@@ -36,6 +36,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   ImpactType _selectedTab = ImpactType.human;
 
+  // Update service listener — refreshes badge when update state changes
+  late final Function(UpdateState, double) _updateStateListener;
+
   // Tour GlobalKeys — each key is attached to the widget that the tour spotlights
   final GlobalKey _tourLogoKey = GlobalKey(debugLabel: 'tour_logo');
   final GlobalKey _tourCategoryGridKey =
@@ -51,7 +54,17 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    _updateStateListener = (_, __) {
+      if (mounted) setState(() {});
+    };
+    ServiceLocator().updateService.addStateListener(_updateStateListener);
     WidgetsBinding.instance.addPostFrameCallback((_) => _maybeLaunchTour());
+  }
+
+  @override
+  void dispose() {
+    ServiceLocator().updateService.removeStateListener(_updateStateListener);
+    super.dispose();
   }
 
   Future<void> _maybeLaunchTour() async {

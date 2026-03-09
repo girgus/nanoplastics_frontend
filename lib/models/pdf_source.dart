@@ -473,7 +473,9 @@ final List<PDFSource> humanHealthSources = [
     language: 'ru',
     url: '$_ruBase#page=91',
   ),
+
 ];
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Earth Pollution Category
@@ -876,6 +878,7 @@ final List<PDFSource> earthPollutionSources = [
     language: 'ru',
     url: _ruBase,
   ),
+
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -419,6 +419,12 @@ class UpdateService {
         return true; // APK is ready, no need to re-download
       }
 
+      // Clear any previously-downloaded APK — it belongs to an older version.
+      // Without this, startUpdate() finds the stale cached APK and installs
+      // the wrong version instead of downloading the new one.
+      await settingsManager.setLastDownloadedApkPath(null);
+      await settingsManager.setLastDownloadedApkSize(0);
+
       // Save new tag ID and update info
       await settingsManager.setLastReleaseTagId(currentTagId);
       await settingsManager.setUpdateAvailable(true);
@@ -597,6 +603,10 @@ class UpdateService {
             );
             _notifyStateChange(UpdateState.downloaded);
             return await _launchApkInstaller(existingPath);
+          } else {
+            // File was deleted externally — clear stale tracking data
+            await settingsManager.setLastDownloadedApkPath(null);
+            await settingsManager.setLastDownloadedApkSize(0);
           }
         }
 

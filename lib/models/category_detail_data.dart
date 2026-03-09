@@ -209,6 +209,167 @@ class CategoryDetailDataFactory {
                 'Connects surface interactions, corona formation, and downstream biological disruption.',
             tags: ['review', 'surface chemistry', 'mechanism'],
           ),
+          _study(
+            title:
+                'Analysis of Microplastics in Human Feces Reveals a Correlation between Fecal Microplastics and Inflammatory Bowel Disease Status',
+            authorsShort: 'Yan et al.',
+            journal: 'Environmental Science and Technology',
+            year: 2022,
+            url: 'https://pubs.acs.org/doi/10.1021/acs.est.1c03924',
+            doiOrPubMed: 'doi:10.1021/acs.est.1c03924',
+            studyType: 'Human biomonitoring study',
+            summary:
+                'Links fecal microplastic burden with IBD status, suggesting gut inflammation involvement.',
+            tags: ['gut', 'inflammation', 'human study'],
+          ),
+          _study(
+            title:
+                'Nano/micro-plastic, an invisible threat getting into the brain',
+            authorsShort: 'Kaushik et al.',
+            journal: 'Chemosphere',
+            year: 2024,
+            url:
+                'https://www.sciencedirect.com/science/article/pii/S0045653524012736?via%3Dihub',
+            studyType: 'Review',
+            summary:
+                'Reviews pathways and mechanisms by which nano/micro-plastics penetrate and accumulate in the brain.',
+            tags: ['review', 'brain', 'mechanism'],
+          ),
+          _study(
+            title:
+                'Effects of Microplastic Accumulation on Neuronal Death After Global Cerebral Ischemia',
+            authorsShort: 'Kim et al.',
+            journal: 'Cells',
+            year: 2025,
+            url: 'https://www.mdpi.com/2073-4409/14/4/241',
+            studyType: 'In vivo study',
+            summary:
+                'Shows microplastic accumulation worsens neuronal death following cerebral ischemia.',
+            tags: ['neuro', 'ischemia', 'in vivo'],
+          ),
+          _study(
+            title:
+                'Selective bioaccumulation of polystyrene nanoplastics in fetal rat brain and damage to myelin development',
+            authorsShort: 'Zhang et al.',
+            journal: 'Ecotoxicology and Environmental Safety',
+            year: 2024,
+            url:
+                'https://www.sciencedirect.com/science/article/pii/S014765132400469X?via%3Dihub',
+            studyType: 'Animal study',
+            summary:
+                'Demonstrates nanoplastic accumulation in fetal brain and impaired myelin sheath development.',
+            tags: ['animal study', 'fetal', 'brain'],
+          ),
+          _study(
+            title:
+                'Bisphenols exert detrimental effects on neuronal signaling in mature vertebrate brains',
+            authorsShort: 'Schirmer et al.',
+            journal: 'Communications Biology',
+            year: 2021,
+            url: 'https://www.nature.com/articles/s42003-021-01966-w',
+            doiOrPubMed: 'doi:10.1038/s42003-021-01966-w',
+            studyType: 'Animal study',
+            summary:
+                'Shows that bisphenol additives from plastics disrupt mature vertebrate neuronal signaling.',
+            tags: ['bisphenol', 'neuro', 'animal study'],
+          ),
+          _study(
+            title:
+                'A perspective on the potential impact of microplastics and nanoplastics on the human central nervous system',
+            authorsShort: 'Moiniafshari et al.',
+            journal: 'Environmental Science: Nano',
+            year: 2025,
+            url:
+                'https://pubs.rsc.org/en/content/articlelanding/2025/en/d4en01017e',
+            studyType: 'Review',
+            summary:
+                'Evaluates the potential CNS impact of MNPs via neuroinflammation, oxidative stress, and barrier disruption.',
+            tags: ['review', 'CNS', 'brain'],
+          ),
+          _study(
+            title:
+                'Genotoxic and neurotoxic potential of intracellular nanoplastics: A review',
+            authorsShort: 'Casella and Ballaz',
+            journal: 'Journal of Applied Toxicology',
+            year: 2024,
+            url:
+                'https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/10.1002/jat.4598',
+            studyType: 'Review',
+            summary:
+                'Reviews DNA-damage and neurotoxicity mechanisms triggered by intracellular nanoplastic particles.',
+            tags: ['review', 'genotoxicity', 'neuro'],
+          ),
+          _study(
+            title:
+                'A pan-cancer mycobiome analysis reveals fungal involvement in gastrointestinal and lung tumors',
+            authorsShort: 'Dohlman et al.',
+            journal: 'Cell',
+            year: 2022,
+            url:
+                'https://www.cell.com/cell/fulltext/S0092-8674(22)01173-4',
+            doiOrPubMed: 'doi:10.1016/j.cell.2022.09.015',
+            studyType: 'Pan-cancer analysis',
+            summary:
+                'Identifies fungal co-factors in GI and lung tumors, providing context for plastic-microbiome-cancer links.',
+            tags: ['cancer', 'microbiome', 'gut'],
+          ),
+          _study(
+            title: 'Global prevalence of autism: A systematic review update',
+            authorsShort: 'Zeidan et al.',
+            journal: 'Autism Research',
+            year: 2022,
+            url: 'https://onlinelibrary.wiley.com/doi/10.1002/aur.2696',
+            doiOrPubMed: 'doi:10.1002/aur.2696',
+            studyType: 'Systematic review',
+            summary:
+                'Reports updated global autism prevalence data supporting neurodevelopmental impact monitoring.',
+            tags: ['autism', 'prevalence', 'systematic review'],
+          ),
+          _study(
+            title: 'Microplastics and Nanoplastics in Atheromas and Cardiovascular Events',
+            authorsShort: 'Marfella et al.',
+            journal: 'The New England Journal of Medicine',
+            year: 2024,
+            url: 'https://www.nejm.org/doi/10.1056/NEJMoa2309822',
+            doiOrPubMed: 'PMID:38446676',
+            studyType: 'Human cohort study',
+            summary:
+                'Finds MNPs embedded in atherosclerotic plaques; patients had dramatically higher rates of heart attack, stroke, and death — demonstrating systemic vascular penetration.',
+            tags: ['human study', 'cardiovascular', 'bloodstream'],
+          ),
+          _study(
+            title: 'Autism in boys linked to common plastic exposure in the womb',
+            authorsShort: 'New Atlas',
+            journal: 'New Atlas',
+            year: 2024,
+            url: 'https://newatlas.com/health-wellbeing/prenatal-bisphenol-a-bpa-autism-boys',
+            studyType: 'Science news',
+            summary:
+                'Reports research showing prenatal BPA (plastic additive) exposure is linked to autism diagnosis in boys.',
+            tags: ['autism', 'BPA', 'prenatal'],
+          ),
+          _study(
+            title: 'Autism Prevalence Higher, Signals Possible Shift in Who Is Being Identified',
+            authorsShort: 'CDC',
+            journal: 'Centers for Disease Control and Prevention',
+            year: 2023,
+            url: 'https://www.cdc.gov/media/releases/2023/p0323-autism.html',
+            studyType: 'Public health data',
+            summary:
+                'CDC update on rising US autism prevalence, providing epidemiological context for neurodevelopmental disruption from plastic-linked chemicals.',
+            tags: ['autism', 'prevalence', 'CDC'],
+          ),
+          _study(
+            title: 'Autism Statistics You Need To Know in 2024',
+            authorsShort: 'Autism Parenting Magazine',
+            journal: 'Autism Parenting Magazine',
+            year: 2025,
+            url: 'https://www.autismparentingmagazine.com/autism-statistics/',
+            studyType: 'Statistics reference',
+            summary:
+                'Compiles current autism statistics and global prevalence trends for public awareness.',
+            tags: ['autism', 'statistics', 'reference'],
+          ),
         ],
       ),
       EvidenceSection(
@@ -383,6 +544,69 @@ class CategoryDetailDataFactory {
                 'Summarizes cellular uptake, liver and kidney burden, and molecular toxicity targets.',
             tags: ['review', 'toxicity', 'organs'],
           ),
+          _study(
+            title:
+                'Adipogenic Activity of Chemicals Used in Plastic Consumer Products',
+            authorsShort: 'Völker et al.',
+            journal: 'Environmental Science and Technology',
+            year: 2022,
+            url: 'https://pubs.acs.org/doi/10.1021/acs.est.1c06316',
+            doiOrPubMed: 'doi:10.1021/acs.est.1c06316',
+            studyType: 'Laboratory study',
+            summary:
+                'Demonstrates plastic-derived chemicals promote fat-cell formation, directly linking plastic exposure to obesity.',
+            tags: ['obesity', 'adipogenic', 'metabolic'],
+          ),
+          _study(
+            title:
+                'Association of Urinary Concentrations of Bisphenol A and Phthalate Metabolites with Risk of Type 2 Diabetes',
+            authorsShort: 'Sun et al.',
+            journal: 'Environmental Health Perspectives',
+            year: 2014,
+            url: 'https://pubmed.ncbi.nlm.nih.gov/24633239/',
+            doiOrPubMed: 'PMID:24633239',
+            studyType: 'Epidemiological study',
+            summary:
+                'Associates plastic chemical metabolites in urine with elevated type 2 diabetes risk.',
+            tags: ['diabetes', 'bisphenol', 'phthalate'],
+          ),
+          _study(
+            title: 'Obesity and overweight',
+            authorsShort: 'WHO',
+            journal: 'WHO Fact Sheets',
+            year: 2025,
+            url:
+                'https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight',
+            studyType: 'Global health data',
+            summary:
+                'Provides global obesity statistics and trends relevant to plastic-linked metabolic disruption.',
+            tags: ['obesity', 'global data', 'WHO'],
+          ),
+          _study(
+            title: 'Overweight and obesity statistics',
+            authorsShort: 'NIDDK',
+            journal: 'National Institute of Diabetes and Digestive and Kidney Diseases',
+            year: 2021,
+            url:
+                'https://www.niddk.nih.gov/health-information/health-statistics/overweight-obesity',
+            studyType: 'National health data',
+            summary:
+                'US-level obesity and overweight prevalence data contextualizing metabolic overloading.',
+            tags: ['obesity', 'statistics', 'national data'],
+          ),
+          _study(
+            title:
+                'Younger but sicker? Cohort trends in disease accumulation among middle-aged and older adults',
+            authorsShort: 'Ribe et al.',
+            journal: 'European Journal of Public Health',
+            year: 2024,
+            url:
+                'https://academic.oup.com/eurpub/article/34/4/696/7644332',
+            studyType: 'Cohort study',
+            summary:
+                'Documents accelerating disease accumulation in younger cohorts, consistent with chronic toxic exposure.',
+            tags: ['disease burden', 'aging', 'cohort'],
+          ),
         ],
       ),
     ];
@@ -491,6 +715,80 @@ class CategoryDetailDataFactory {
                 'Provides a mechanistic reference for proton-transfer and charge-coupled bioelectric processes.',
             tags: ['mechanism', 'bioelectric', 'proton transfer'],
           ),
+          _study(
+            title:
+                'Airborne micro- and nanoplastics: emerging causes of respiratory diseases',
+            authorsShort: 'Gou et al.',
+            journal: 'Particle and Fibre Toxicology',
+            year: 2024,
+            url: 'https://link.springer.com/article/10.1186/s12989-024-00613-6',
+            studyType: 'Review',
+            summary:
+                'Reviews how airborne plastic particles damage lung tissue and trigger respiratory disease.',
+            tags: ['review', 'inhalation', 'respiratory'],
+          ),
+          _study(
+            title:
+                'Study unravels how mitochondrial dysfunction leads to premature aging',
+            authorsShort: 'Medindia',
+            journal: 'Medindia',
+            year: 2022,
+            url:
+                'https://www.medindia.net/news/study-unravels-how-mitochondrial-dysfunction-leads-to-premature-aging-208364-1.htm',
+            studyType: 'Science news',
+            summary:
+                'Discusses research linking mitochondrial dysfunction to accelerated cellular aging.',
+            tags: ['mitochondria', 'aging', 'reference'],
+          ),
+          _study(
+            title: 'Mitochondria medicine',
+            authorsShort: 'Borisova',
+            journal: 'Open Longevity',
+            year: 2019,
+            url: 'https://openlongevity.org/mitochondria_medicine_1',
+            studyType: 'Science overview',
+            summary:
+                'Overview of mitochondria-targeted medicine and its role in cellular health and longevity.',
+            tags: ['mitochondria', 'longevity', 'reference'],
+          ),
+          _study(
+            title:
+                'The Biology of Electricity: How electricity is critical to the functioning of the human body',
+            authorsShort: 'Azim Premji University',
+            journal: 'Azim Premji University',
+            year: 2022,
+            url:
+                'https://azimpremjiuniversity.edu.in/news/2022/the-biology-of-electricity',
+            studyType: 'Educational reference',
+            summary:
+                'Explains fundamental bioelectricity and its role in cellular processes and health.',
+            tags: ['bioelectric', 'reference', 'education'],
+          ),
+          _study(
+            title:
+                'Exposure to polystyrene nanoparticles leads to changes in the zeta potential of bacterial cells',
+            authorsShort: 'Zajac et al.',
+            journal: 'Scientific Reports',
+            year: 2023,
+            url: 'https://pubmed.ncbi.nlm.nih.gov/37308531/',
+            studyType: 'Cell study',
+            summary:
+                'Documents how nanoplastic exposure shifts the surface electrical charge of bacterial cells.',
+            tags: ['surface charge', 'zeta potential', 'cell study'],
+          ),
+          _study(
+            title:
+                'Interplay Between Nanoplastics and the Immune System of the Mediterranean Sea Urchin Paracentrotus lividus',
+            authorsShort: 'Murano et al.',
+            journal: 'Frontiers in Marine Science',
+            year: 2021,
+            url:
+                'https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2021.647394/full',
+            studyType: 'Mechanistic study',
+            summary:
+                'Shows positively charged nanoplastics damage lysosomal membranes and disrupt immunity.',
+            tags: ['surface charge', 'immune', 'membrane damage'],
+          ),
         ],
       ),
     ];
@@ -594,6 +892,143 @@ class CategoryDetailDataFactory {
                 'Shows developmental brain abnormalities in offspring after maternal nanoplastic exposure.',
             tags: ['animal study', 'development', 'nanoplastic'],
           ),
+          _study(
+            title:
+                'Elevated Micro- and Nanoplastics Detected in Preterm Human Placentae',
+            authorsShort: 'Jochum et al.',
+            journal: 'Research Square (Preprint)',
+            year: 2025,
+            url: 'https://www.researchsquare.com/article/rs-5903715/v1',
+            studyType: 'Human tissue study',
+            summary:
+                'Finds significantly elevated MNP concentrations in placentae of preterm births.',
+            tags: ['human study', 'placenta', 'preterm'],
+          ),
+          _study(
+            title:
+                'Temporal trends in sperm count: a systematic review and meta-regression analysis of samples collected globally',
+            authorsShort: 'Levine et al.',
+            journal: 'Human Reproduction Update',
+            year: 2023,
+            url: 'https://academic.oup.com/humupd/article/29/2/157/6824414',
+            studyType: 'Meta-analysis',
+            summary:
+                'Documents a dramatic global decline in sperm count, consistent with widespread toxic exposures.',
+            tags: ['sperm', 'fertility', 'meta-analysis'],
+          ),
+          _study(
+            title: 'Mitochondrial DNA mutations in human disease',
+            authorsShort: 'Taylor and Turnbull',
+            journal: 'Nature Reviews Genetics',
+            year: 2005,
+            url: 'https://www.nature.com/articles/nrg1606',
+            doiOrPubMed: 'doi:10.1038/nrg1606',
+            studyType: 'Review',
+            summary:
+                'Foundational study on mitochondrial DNA mutations as drivers of inherited and acquired diseases.',
+            tags: ['mitochondria', 'DNA', 'review'],
+          ),
+          _study(
+            title:
+                'Mitochondrial proteins and congenital birth defect risk: a mendelian randomization study',
+            authorsShort: 'Li et al.',
+            journal: 'BMC Pregnancy and Childbirth',
+            year: 2025,
+            url:
+                'https://link.springer.com/article/10.1186/s12884-025-07562-8',
+            studyType: 'Mendelian randomization',
+            summary:
+                'Links mitochondrial protein dysfunction to elevated congenital birth defect risk.',
+            tags: ['mitochondria', 'birth defects', 'genetics'],
+          ),
+          _study(
+            title:
+                'Gastroschisis prevalence patterns in 27 surveillance programs from 24 countries',
+            authorsShort: 'Feldkamp et al.',
+            journal: 'Birth Defects Research',
+            year: 2024,
+            url: 'https://onlinelibrary.wiley.com/doi/10.1002/bdr2.2306',
+            doiOrPubMed: 'doi:10.1002/bdr2.2306',
+            studyType: 'Global surveillance study',
+            summary:
+                'Documents global rise in gastroschisis, a congenital defect associated with environmental chemical exposure.',
+            tags: ['birth defects', 'global data', 'congenital'],
+          ),
+          _study(
+            title: 'Analyzing the Trends and Causes of Birth Defects',
+            authorsShort: 'Wei et al.',
+            journal: 'China CDC Weekly',
+            year: 2023,
+            url: 'https://weekly.chinacdc.cn/en/article/doi/10.46234/ccdcw2023.184',
+            studyType: 'Trend analysis',
+            summary:
+                'Analyzes increasing birth defect trends over two decades, highlighting environmental factors.',
+            tags: ['birth defects', 'trends', 'epidemiology'],
+          ),
+          _study(
+            title:
+                'Effect of nanoplastic intake on the dopamine system during the development of male mice',
+            authorsShort: 'Kim et al.',
+            journal: 'Neuroscience',
+            year: 2024,
+            url:
+                'https://www.ibroneuroscience.org/article/S0306-4522(24)00331-2/abstract',
+            studyType: 'Animal study',
+            summary:
+                'Shows nanoplastic exposure disrupts the dopamine system during male mouse neurodevelopment.',
+            tags: ['animal study', 'dopamine', 'neurodevelopment'],
+          ),
+          _study(
+            title:
+                'Microplastics in Internal Tissues of Companion Animals from Urban Environments',
+            authorsShort: 'Prata et al.',
+            journal: 'Animals',
+            year: 2022,
+            url: 'https://www.mdpi.com/2076-2615/12/15/1979',
+            studyType: 'Animal biomonitoring',
+            summary:
+                'Finds widespread microplastic contamination in internal organs of dogs and cats in urban settings.',
+            tags: ['animals', 'companion animals', 'tissue accumulation'],
+          ),
+          _study(
+            title:
+                'Detection of microplastics in domestic and fetal pigs\' lung tissue in natural environment',
+            authorsShort: 'Li et al.',
+            journal: 'Environmental Research',
+            year: 2023,
+            url:
+                'https://www.sciencedirect.com/science/article/abs/pii/S0013935122019508?via%3Dihub',
+            studyType: 'Animal study',
+            summary:
+                'Detects microplastics in the lung tissue of both adult and fetal pigs, demonstrating prenatal exposure.',
+            tags: ['animal study', 'fetal', 'lung'],
+          ),
+          _study(
+            title:
+                'Seabirds in crisis: Plastic ingestion induces proteomic signatures of multiorgan failure and neurodegeneration',
+            authorsShort: 'De Jersey et al.',
+            journal: 'Science Advances',
+            year: 2025,
+            url: 'https://www.science.org/doi/10.1126/sciadv.ads0834',
+            doiOrPubMed: 'doi:10.1126/sciadv.ads0834',
+            studyType: 'Animal study',
+            summary:
+                'Reveals Alzheimer-like neurodegeneration and multi-organ failure in seabirds from plastic ingestion.',
+            tags: ['animal study', 'neuro', 'multi-organ failure'],
+          ),
+          _study(
+            title:
+                'Impact of Microplastics on Pregnancy and Fetal Development: A Systematic Review',
+            authorsShort: 'Sharma et al.',
+            journal: 'Cureus',
+            year: 2024,
+            url:
+                'https://www.cureus.com/articles/252793-impact-of-microplastics-on-pregnancy-and-fetal-development-a-systematic-review#!/',
+            studyType: 'Systematic review',
+            summary:
+                'Systematically reviews evidence linking plastic exposure to adverse pregnancy and fetal outcomes.',
+            tags: ['systematic review', 'pregnancy', 'fetal development'],
+          ),
         ],
       ),
     ];
@@ -659,6 +1094,59 @@ class CategoryDetailDataFactory {
           ),
           _study(
             title:
+                'The triple exposure nexus of microplastic particles, plastic-associated chemicals, and environmental pollutants from a human health perspective',
+            authorsShort: 'Alijagic et al.',
+            journal: 'Environment International',
+            year: 2024,
+            url:
+                'https://www.sciencedirect.com/science/article/pii/S0160412024003222?via%3Dihub',
+            studyType: 'Review',
+            summary:
+                'Shows entry via air, food, and water creates a combined toxic burden exceeding individual route risks.',
+            tags: ['review', 'exposure', 'entry routes'],
+          ),
+          _study(
+            title:
+                'Microplastics and human health: unveiling the gut microbiome disruption and chronic disease risks',
+            authorsShort: 'Bora et al.',
+            journal: 'Frontiers in Cellular and Infection Microbiology',
+            year: 2024,
+            url:
+                'https://www.frontiersin.org/journals/cellular-and-infection-microbiology/articles/10.3389/fcimb.2024.1492759/full',
+            studyType: 'Review',
+            summary:
+                'Links ingested plastics with gut microbiome disruption and chronic disease pathways.',
+            tags: ['review', 'ingestion', 'gut'],
+          ),
+          _study(
+            title:
+                'Recent insights into uptake, toxicity, and molecular targets of microplastics and nanoplastics relevant to human health impacts',
+            authorsShort: 'Khan and Jia',
+            journal: 'iScience',
+            year: 2023,
+            url:
+                'https://www.cell.com/iscience/fulltext/S2589-0042(23)00138-4',
+            doiOrPubMed: 'PMID:36818296',
+            studyType: 'Review',
+            summary:
+                'Synthesizes uptake routes, with particular detail on inhalation, ingestion, and skin mechanisms.',
+            tags: ['review', 'uptake', 'entry routes'],
+          ),
+          _study(
+            title:
+                'Toxicological impact of microplastics and nanoplastics on humans: understanding the mechanistic aspect of the interaction',
+            authorsShort: 'Alqahtani et al.',
+            journal: 'Frontiers in Toxicology',
+            year: 2023,
+            url:
+                'https://www.frontiersin.org/journals/toxicology/articles/10.3389/ftox.2023.1193386/full',
+            studyType: 'Review',
+            summary:
+                'Explains mechanistic toxicological interactions after entry via multiple routes.',
+            tags: ['review', 'toxicity', 'mechanism'],
+          ),
+          _study(
+            title:
                 'Transport and deposition of microplastics and nanoplastics in the human respiratory tract',
             authorsShort: 'Huang et al.',
             journal: 'Environmental Advances',
@@ -715,6 +1203,30 @@ class CategoryDetailDataFactory {
             summary:
                 'Shows contamination across common drinking and food-related sources.',
             tags: ['drinking water', 'food', 'exposure'],
+          ),
+          _study(
+            title: 'Uptake and Accumulation of Nano/Microplastics in Plants: A Critical Review',
+            authorsShort: 'Azeem et al.',
+            journal: 'Nanomaterials',
+            year: 2021,
+            url: 'https://www.mdpi.com/2079-4991/11/11/2935',
+            studyType: 'Review',
+            summary:
+                'Reviews how plants absorb and accumulate MNPs from soil and water, contributing to dietary exposure.',
+            tags: ['review', 'plants', 'food chain'],
+          ),
+          _study(
+            title:
+                'Drinking Boiled Tap Water Reduces Human Intake of Nanoplastics and Microplastics',
+            authorsShort: 'Yu et al.',
+            journal: 'Environmental Science and Technology Letters',
+            year: 2024,
+            url: 'https://pubs.acs.org/doi/10.1021/acs.estlett.4c00081',
+            doiOrPubMed: 'doi:10.1021/acs.estlett.4c00081',
+            studyType: 'Exposure mitigation study',
+            summary:
+                'Demonstrates boiling tap water significantly reduces ingested MNP load.',
+            tags: ['drinking water', 'mitigation', 'ingestion'],
           ),
         ],
       ),
@@ -929,6 +1441,43 @@ class CategoryDetailDataFactory {
                 'Synthesizes molecular damage pathways, including oxidative stress and structural biomolecule disruption.',
             tags: ['review', 'molecular targets', 'toxicity'],
           ),
+          _study(
+            title:
+                'An Atomic and Molecular Insight into How PFOA Reduces α-Helicity, Compromises Substrate Binding',
+            authorsShort: 'Yadav et al.',
+            journal: 'Journal of the American Chemical Society',
+            year: 2024,
+            url: 'https://pubs.acs.org/doi/10.1021/jacs.4c02934',
+            doiOrPubMed: 'doi:10.1021/jacs.4c02934',
+            studyType: 'Mechanistic study',
+            summary:
+                'Shows at atomic resolution how PFOA (a plastic-linked chemical) degrades protein alpha-helical structure.',
+            tags: ['PFAS', 'protein folding', 'structural'],
+          ),
+          _study(
+            title: 'Nano/micro-plastic, an invisible threat getting into the brain',
+            authorsShort: 'Kaushik et al.',
+            journal: 'Chemosphere',
+            year: 2024,
+            url:
+                'https://www.sciencedirect.com/science/article/pii/S0045653524012736?via%3Dihub',
+            studyType: 'Review',
+            summary:
+                'Reviews pathways by which MNPs physically penetrate the CNS, causing cellular and structural damage.',
+            tags: ['review', 'brain', 'mechanism'],
+          ),
+          _study(
+            title: 'Mitochondria as a target of micro- and nanoplastic toxicity',
+            authorsShort: 'Yontem and Ahbab',
+            journal: 'Cambridge Prisms: Plastics',
+            year: 2024,
+            url:
+                'https://www.cambridge.org/core/journals/cambridge-prisms-plastics/article/mitochondria-as-a-target-of-micro-and-nanoplastic-toxicity/5A3E8C7CDB7F9919874A3F10F7586A78',
+            studyType: 'Review',
+            summary:
+                'Reviews mitochondrial membrane disruption, oxidative stress, and bioenergetic dysfunction caused by MNPs at the cellular level.',
+            tags: ['review', 'mitochondria', 'cell stress'],
+          ),
         ],
       ),
     ];
@@ -975,6 +1524,17 @@ class CategoryDetailDataFactory {
         title: l10n.detailWorldOceanEntry1Highlight,
         description: l10n.detailWorldOceanEntry1Desc,
         studies: [
+          _study(
+            title: 'Record-Setting Ocean Warmth Continued in 2019',
+            authorsShort: 'Cheng et al.',
+            journal: 'Advances in Atmospheric Sciences',
+            year: 2020,
+            url: 'https://link.springer.com/article/10.1007/s00376-020-9283-7',
+            studyType: 'Climate observation',
+            summary:
+                'Documents record ocean warming in 2019 as part of a multi-year heating trend.',
+            tags: ['ocean heat', 'climate', 'observation'],
+          ),
           _study(
             title: 'Another Year of Record Heat for the Oceans',
             authorsShort: 'Cheng et al.',
@@ -1034,6 +1594,156 @@ class CategoryDetailDataFactory {
             summary:
                 'Shows accelerating fragmentation and growth of small plastic particles in the Pacific.',
             tags: ['fragmentation', 'Pacific', 'field study'],
+          ),
+          _study(
+            title: 'Pacific Ocean Heat Content During the Past 10,000 Years',
+            authorsShort: 'Rosenthal et al.',
+            journal: 'Science',
+            year: 2013,
+            url: 'https://www.science.org/doi/10.1126/science.1240837',
+            doiOrPubMed: 'doi:10.1126/science.1240837',
+            studyType: 'Paleoclimate study',
+            summary:
+                'Proves average ocean depths are warming 15x faster than at any point in the past 10,000 years.',
+            tags: ['ocean heat', 'deep ocean', 'paleoclimate'],
+          ),
+          _study(
+            title:
+                'Observed Ocean Bottom Temperature Variability at Four Sites in the Northwestern Argentine Basin',
+            authorsShort: 'Meinen et al.',
+            journal: 'Geophysical Research Letters',
+            year: 2020,
+            url:
+                'https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2020GL089093',
+            studyType: 'Observation study',
+            summary:
+                'Provides direct evidence of warming at ocean-floor depth, confirming deep-water heating.',
+            tags: ['deep ocean', 'temperature', 'observation'],
+          ),
+          _study(
+            title: 'Argo — Two Decades: Global Oceanography, Revolutionized',
+            authorsShort: 'Johnson et al.',
+            journal: 'Annual Review of Marine Science',
+            year: 2022,
+            url:
+                'https://www.annualreviews.org/content/journals/10.1146/annurev-marine-022521-102008',
+            studyType: 'Review',
+            summary:
+                'Presents two decades of Argo buoy measurements revealing systematic warming at ocean depth.',
+            tags: ['ocean monitoring', 'temperature', 'review'],
+          ),
+          _study(
+            title: 'Water Dynamics in the Hydration Shells of Biomolecules',
+            authorsShort: 'Laage et al.',
+            journal: 'Chemical Reviews',
+            year: 2017,
+            url: 'https://pubs.acs.org/doi/10.1021/acs.chemrev.6b00765',
+            doiOrPubMed: 'doi:10.1021/acs.chemrev.6b00765',
+            studyType: 'Review',
+            summary:
+                'Describes how charged particles create hydration shells affecting millions of surrounding water molecules.',
+            tags: ['water', 'hydration', 'hydrogen bonds'],
+          ),
+          _study(
+            title:
+                'Thermal Conductivity and Specific Heat Capacity of Dodecylbenzenesulfonic Acid-Doped Polyaniline Particles — Water Based Nanofluid',
+            authorsShort: 'Chew et al.',
+            journal: 'Polymers',
+            year: 2015,
+            url: 'https://www.mdpi.com/2073-4360/7/7/1221',
+            studyType: 'Material science study',
+            summary:
+                'Shows nanoparticles in water increase its thermal conductivity, relevant to ocean heat dynamics.',
+            tags: ['nanofluid', 'thermal conductivity', 'water'],
+          ),
+          _study(
+            title: 'Specific heat control of nanofluids: A critical review',
+            authorsShort: 'Riazi et al.',
+            journal: 'International Journal of Thermal Sciences',
+            year: 2016,
+            url:
+                'https://www.sciencedirect.com/science/article/abs/pii/S129007291630103X',
+            studyType: 'Review',
+            summary:
+                'Reviews how nanoparticle suspensions alter specific heat and thermal properties of fluids.',
+            tags: ['nanofluid', 'specific heat', 'thermal'],
+          ),
+          _study(
+            title:
+                'The Vertical Distribution of Microplastics in the Water Column',
+            authorsShort: 'Tikhonova et al.',
+            journal: 'Water Resources',
+            year: 2024,
+            url:
+                'https://link.springer.com/article/10.1134/S009780782370063X',
+            studyType: 'Field study',
+            summary:
+                'Investigates plastic stratification and thermocline trapping by density gradient in the water column.',
+            tags: ['vertical distribution', 'ocean', 'stratification'],
+          ),
+          _study(
+            title:
+                'The rise in ocean plastics evidenced from a 60-year time series',
+            authorsShort: 'Ostle et al.',
+            journal: 'Nature Communications',
+            year: 2019,
+            url: 'https://www.nature.com/articles/s41467-019-09506-1',
+            doiOrPubMed: 'doi:10.1038/s41467-019-09506-1',
+            studyType: 'Long-term observation',
+            summary:
+                'Provides a 60-year historical record of increasing macro/microplastic volume in the seas.',
+            tags: ['ocean', 'time series', 'contamination'],
+          ),
+          _study(
+            title:
+                'A growing plastic smog, now estimated to be over 170 trillion plastic particles afloat in the world\'s oceans',
+            authorsShort: 'Eriksen et al.',
+            journal: 'PLoS ONE',
+            year: 2023,
+            url:
+                'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0281596',
+            doiOrPubMed: 'doi:10.1371/journal.pone.0281596',
+            studyType: 'Global modeling study',
+            summary:
+                'Models over 170 trillion floating plastic particles in global oceans requiring urgent action.',
+            tags: ['ocean', 'global model', 'contamination'],
+          ),
+          _study(
+            title:
+                'A hierarchical clustering method of hydrogen bond networks in liquid water undergoing shear flow',
+            authorsShort: 'Gao et al.',
+            journal: 'Scientific Reports',
+            year: 2021,
+            url: 'https://www.nature.com/articles/s41598-021-88810-7',
+            studyType: 'Water structure study',
+            summary:
+                'Investigates the complex hydrogen-bond network on which unique ocean-water heat properties depend; relevant to how MNPs disrupt these dynamics.',
+            tags: ['water', 'hydrogen bonds', 'ocean'],
+          ),
+          _study(
+            title:
+                'Water clusters and density fluctuations in liquid water based on extended hierarchical clustering methods',
+            authorsShort: 'Gao et al.',
+            journal: 'Scientific Reports',
+            year: 2022,
+            url: 'https://www.nature.com/articles/s41598-022-11947-6',
+            studyType: 'Water structure study',
+            summary:
+                'Studies cluster formation and density fluctuations in water, underlying ocean heat distribution and layering.',
+            tags: ['water', 'clusters', 'ocean'],
+          ),
+          _study(
+            title:
+                'Electrolytes induce long-range orientational order and free energy changes in the H-bond network of bulk water',
+            authorsShort: 'Chen et al.',
+            journal: 'Science Advances',
+            year: 2016,
+            url: 'https://www.science.org/doi/10.1126/sciadv.1501891',
+            doiOrPubMed: 'doi:10.1126/sciadv.1501891',
+            studyType: 'Water physics study',
+            summary:
+                'Describes how charged particles create hydration shells affecting millions of surrounding water molecules, relevant to charged MNP-ocean water interaction.',
+            tags: ['water', 'charge', 'hydrogen bonds'],
           ),
         ],
       ),
@@ -1129,6 +1839,79 @@ class CategoryDetailDataFactory {
                 'Models how atmospheric changes intensify lightning activity under warming conditions.',
             tags: ['lightning', 'climate', 'projection'],
           ),
+          _study(
+            title:
+                'Satellites reveal widespread decline in global lake water storage',
+            authorsShort: 'Yao et al.',
+            journal: 'Science',
+            year: 2023,
+            url: 'https://www.science.org/doi/10.1126/science.abo2812',
+            doiOrPubMed: 'doi:10.1126/science.abo2812',
+            studyType: 'Satellite observation',
+            summary:
+                'Documents global lake water storage decline, linked to hydrological cycle disruption.',
+            tags: ['water cycle', 'lakes', 'satellite'],
+          ),
+          _study(
+            title:
+                'Trends of moisture exchange components in the ocean-atmosphere system under global warming conditions',
+            authorsShort: 'Malinin and Vainovsky',
+            journal: 'ResearchGate',
+            year: 2021,
+            url:
+                'https://www.researchgate.net/publication/353407662_Trends_in_moisture_exchange_components_in_the_ocean-atmosphere_system_under_global_warming_according_to_the_Reanalysis-2_archive',
+            studyType: 'Climate analysis',
+            summary:
+                'Analyzes trends in ocean-atmosphere moisture exchange relevant to water cycle disruption.',
+            tags: ['moisture exchange', 'water cycle', 'climate'],
+          ),
+          _study(
+            title: 'Hailstorms of 2024',
+            authorsShort: 'ESSL',
+            journal: 'European Severe Storms Laboratory',
+            year: 2024,
+            url: 'https://www.essl.org/cms/hailstorms-of-2024/',
+            studyType: 'Observational database',
+            summary:
+                'Records spatial distribution and exponential increase of anomalously large hailstones in 2024.',
+            tags: ['hailstorms', 'extreme weather', 'observation'],
+          ),
+          _study(
+            title: '2024: An active year of U.S. billion-dollar weather and climate disasters',
+            authorsShort: 'Smith',
+            journal: 'NOAA Climate.gov',
+            year: 2024,
+            url:
+                'https://www.climate.gov/news-features/blogs/beyond-data/2024-active-year-us-billion-dollar-weather-and-climate-disasters',
+            studyType: 'Climate report',
+            summary:
+                'Documents record-level U.S. weather disasters in 2024 consistent with atmospheric destabilization.',
+            tags: ['extreme weather', 'climate disasters', 'data'],
+          ),
+          _study(
+            title: 'Microplastics impact cloud formation, likely affecting weather and climate',
+            authorsShort: 'Penn State University',
+            journal: 'Penn State News',
+            year: 2024,
+            url:
+                'https://www.psu.edu/news/research/story/microplastics-impact-cloud-formation-likely-affecting-weather-and-climate',
+            studyType: 'Science news',
+            summary:
+                'Penn State researchers show microplastics alter cloud-formation processes with potential weather and climate implications.',
+            tags: ['clouds', 'atmosphere', 'research news'],
+          ),
+          _study(
+            title:
+                'A hierarchical clustering method of hydrogen bond networks in liquid water undergoing shear flow',
+            authorsShort: 'Gao et al.',
+            journal: 'Scientific Reports',
+            year: 2021,
+            url: 'https://www.nature.com/articles/s41598-021-88810-7',
+            studyType: 'Water structure study',
+            summary:
+                'Explains the hydrogen-bond structure upon which natural water dynamics and atmospheric moisture exchange depend.',
+            tags: ['water', 'hydrogen bonds', 'atmosphere'],
+          ),
         ],
       ),
     ];
@@ -1199,6 +1982,145 @@ class CategoryDetailDataFactory {
             summary:
                 'Shows particle transfer through bee products and brood pathways.',
             tags: ['pollinators', 'transfer', 'food web'],
+          ),
+          _study(
+            title: 'Uptake and Accumulation of Nano/Microplastics in Plants: A Critical Review',
+            authorsShort: 'Azeem et al.',
+            journal: 'Nanomaterials',
+            year: 2021,
+            url: 'https://www.mdpi.com/2079-4991/11/11/2935',
+            studyType: 'Review',
+            summary:
+                'Reviews how plants take up MNPs through roots, leaves, and soil, disrupting growth and food chains.',
+            tags: ['review', 'plants', 'uptake'],
+          ),
+          _study(
+            title:
+                'Microplastics accumulate on pores in seed capsule and delay germination and root growth of the terrestrial vascular plant Lepidium sativum',
+            authorsShort: 'Bosker et al.',
+            journal: 'Chemosphere',
+            year: 2019,
+            url:
+                'https://www.sciencedirect.com/science/article/pii/S0045653519306095?via%3Dihub',
+            studyType: 'Plant study',
+            summary:
+                'Demonstrates that plastics block seed pores, delaying germination and root development.',
+            tags: ['plants', 'germination', 'seed'],
+          ),
+          _study(
+            title:
+                'Impacts of Microplastics on the Soil Biophysical Environment',
+            authorsShort: 'De Souza Machado et al.',
+            journal: 'Environmental Science and Technology',
+            year: 2018,
+            url: 'https://pubs.acs.org/doi/10.1021/acs.est.8b02212',
+            doiOrPubMed: 'doi:10.1021/acs.est.8b02212',
+            studyType: 'Field/laboratory study',
+            summary:
+                'Shows microplastics alter soil physical properties, affecting water retention and plant growth.',
+            tags: ['soil', 'ecosystem', 'biophysical'],
+          ),
+          _study(
+            title:
+                'Microplastics as an emerging threat to terrestrial ecosystems',
+            authorsShort: 'De Souza Machado et al.',
+            journal: 'Global Change Biology',
+            year: 2018,
+            url: 'https://onlinelibrary.wiley.com/doi/10.1111/gcb.14020',
+            doiOrPubMed: 'doi:10.1111/gcb.14020',
+            studyType: 'Review',
+            summary:
+                'Frames microplastics as a systemic emerging threat to terrestrial ecosystem function.',
+            tags: ['review', 'terrestrial', 'ecosystem'],
+          ),
+          _study(
+            title:
+                'Effects of plastic contamination on water evaporation and desiccation cracking in soil',
+            authorsShort: 'Wan et al.',
+            journal: 'Science of The Total Environment',
+            year: 2019,
+            url:
+                'https://www.sciencedirect.com/science/article/abs/pii/S0048969718344784?via%3Dihub',
+            studyType: 'Laboratory study',
+            summary:
+                'Shows plastic contamination impairs soil water evaporation and causes desiccation cracking.',
+            tags: ['soil', 'water cycle', 'laboratory'],
+          ),
+          _study(
+            title:
+                'An overview of microplastic and nanoplastic pollution in agroecosystems',
+            authorsShort: 'Ng et al.',
+            journal: 'Science of The Total Environment',
+            year: 2018,
+            url:
+                'https://www.sciencedirect.com/science/article/abs/pii/S0048969718303838?via%3Dihub',
+            studyType: 'Review',
+            summary:
+                'Reviews MNP pollution in agricultural ecosystems and impacts on soil biota and crop health.',
+            tags: ['review', 'agriculture', 'soil biota'],
+          ),
+          _study(
+            title:
+                'Active uptake of artificial particles in the nematode Caenorhabditis elegans',
+            authorsShort: 'Kiyama et al.',
+            journal: 'Journal of Experimental Biology',
+            year: 2012,
+            url:
+                'https://journals.biologists.com/jeb/article/215/7/1178/11278/Active-uptake-of-artificial-particles-in-the',
+            studyType: 'Animal study',
+            summary:
+                'Shows soil nematodes actively ingest synthetic particles, establishing MNP uptake in soil organisms.',
+            tags: ['soil biota', 'nematode', 'uptake'],
+          ),
+          _study(
+            title:
+                'Microplastics are present in women\'s and cows\' follicular fluid and polystyrene microplastics compromise bovine oocyte function in vitro',
+            authorsShort: 'Grechi et al.',
+            journal: 'eLife',
+            year: 2023,
+            url: 'https://elifesciences.org/reviewed-preprints/86791v1',
+            studyType: 'Cross-species study',
+            summary:
+                'Finds MNPs in both human and bovine follicular fluid; shows direct oocyte function impairment.',
+            tags: ['fertility', 'follicular fluid', 'livestock'],
+          ),
+          _study(
+            title: 'Plastic ingestion by marine fish is widespread and increasing',
+            authorsShort: 'Savoca et al.',
+            journal: 'Global Change Biology',
+            year: 2021,
+            url: 'https://onlinelibrary.wiley.com/doi/10.1111/gcb.15533',
+            doiOrPubMed: 'doi:10.1111/gcb.15533',
+            studyType: 'Global review',
+            summary:
+                'Documents massive and growing scale of plastic ingestion by marine fish across global fisheries.',
+            tags: ['marine fish', 'food chain', 'ingestion'],
+          ),
+          _study(
+            title:
+                'Marine plastic debris emits a keystone infochemical for olfactory foraging seabirds',
+            authorsShort: 'Savoca et al.',
+            journal: 'Science Advances',
+            year: 2016,
+            url: 'https://www.science.org/doi/10.1126/sciadv.1600395',
+            doiOrPubMed: 'doi:10.1126/sciadv.1600395',
+            studyType: 'Behavioral study',
+            summary:
+                'Shows plastic debris mimics food odor for seabirds, causing them to consume plastics instead of prey.',
+            tags: ['seabirds', 'food web', 'olfaction'],
+          ),
+          _study(
+            title:
+                'Development and application of a novel extraction protocol for the monitoring of microplastic contamination in widely consumed ruminant feeds',
+            authorsShort: 'Glorio Patrucco et al.',
+            journal: 'Science of The Total Environment',
+            year: 2024,
+            url:
+                'https://www.sciencedirect.com/science/article/pii/S0048969724046412?via%3Dihub',
+            studyType: 'Monitoring study',
+            summary:
+                'Detects microplastic contamination in ruminant feeds, tracing plastics into the livestock food chain.',
+            tags: ['livestock', 'feed contamination', 'food chain'],
           ),
         ],
       ),
@@ -1350,6 +2272,132 @@ class CategoryDetailDataFactory {
                 'Uses geomagnetic data to infer deep mantle structure beneath Siberia.',
             tags: ['mantle', 'geomagnetic', 'geodynamics'],
           ),
+          _study(
+            title:
+                'Influence of soil consolidation and thermal expansion effects on height and gravity variations',
+            authorsShort: 'Romagnoli et al.',
+            journal: 'Journal of Geodynamics',
+            year: 2003,
+            url:
+                'https://www.sciencedirect.com/science/article/abs/pii/S0264370703000127?via%3Dihub',
+            studyType: 'Geodynamic study',
+            summary:
+                'Records changes in planetary gravity linked to internal Earth dynamics.',
+            tags: ['gravity', 'geodynamics', 'Earth structure'],
+          ),
+          _study(
+            title:
+                'Exposure of the solar system and the Earth to external influences',
+            authorsShort: 'Smolkov',
+            journal: 'Physics and Astronomy International Journal',
+            year: 2018,
+            url:
+                'https://medcraveonline.com/PAIJ/exposure-of-the-solar-system-and-the-earth-to-external-influences.html',
+            studyType: 'Theoretical study',
+            summary:
+                'Discusses external cosmic influences contributing to Earth system destabilization.',
+            tags: ['cosmic influence', 'Earth dynamics', 'theoretical'],
+          ),
+          _study(
+            title:
+                'The role of geomagnetic field intensity in Late Quaternary evolution of humans and large mammals',
+            authorsShort: 'Channell and Vigliotti',
+            journal: 'Reviews of Geophysics',
+            year: 2019,
+            url:
+                'https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2018RG000629',
+            studyType: 'Paleogeophysics study',
+            summary:
+                'Analyzes how drastic historical declines in magnetic field intensity impacted the biosphere.',
+            tags: ['geomagnetism', 'biosphere', 'history'],
+          ),
+          _study(
+            title:
+                'Mantle plumes control magnetic reversal frequency',
+            authorsShort: 'Larson and Olson',
+            journal: 'Earth and Planetary Science Letters',
+            year: 1991,
+            url:
+                'https://www.sciencedirect.com/science/article/abs/pii/0012821X9190091U?via%3Dihub',
+            studyType: 'Geodynamic study',
+            summary:
+                'Proves a direct link between mantle plume intensity and magnetic field reversal frequency.',
+            tags: ['mantle plume', 'magnetic reversal', 'geodynamics'],
+          ),
+          _study(
+            title: 'The 15 m.y. geomagnetic reversal periodicity: a quantitative test',
+            authorsShort: 'Mazaud and Laj',
+            journal: 'Earth and Planetary Science Letters',
+            year: 1991,
+            url:
+                'https://www.sciencedirect.com/science/article/abs/pii/0012821X9190111T?via%3Dihub',
+            studyType: 'Geophysics study',
+            summary:
+                'Quantitatively tests the periodicity of geomagnetic field inversions across geological time.',
+            tags: ['magnetic reversal', 'periodicity', 'geophysics'],
+          ),
+          _study(
+            title:
+                '1995: An Important Inflection Point in Recent Geophysical History',
+            authorsShort: 'Viterito',
+            journal: 'International Journal of Environmental Sciences and Natural Resources',
+            year: 2022,
+            url:
+                'https://juniperpublishers.com/ijesnr/IJESNR.MS.ID.556271.php',
+            studyType: 'Statistical study',
+            summary:
+                'Proves a massive increase in mid-ocean ridge earthquakes after 1995, linked to internal Earth heat release.',
+            tags: ['earthquakes', 'ocean floor', 'heat'],
+          ),
+          _study(
+            title:
+                'Low-buoyancy thermochemical plumes resolve controversy of classical mantle plume concept',
+            authorsShort: 'Dannberg and Sobolev',
+            journal: 'Nature Communications',
+            year: 2015,
+            url: 'https://www.nature.com/articles/ncomms7960',
+            doiOrPubMed: 'doi:10.1038/ncomms7960',
+            studyType: 'Geodynamic modeling',
+            summary:
+                'Models thermochemical mantle plume dynamics, resolving disputes about the classical plume concept.',
+            tags: ['mantle plume', 'modeling', 'geodynamics'],
+          ),
+          _study(
+            title:
+                'Structure of the upper mantle beneath southern Siberia and Mongolia based on regional seismic tomography data',
+            authorsShort: 'Kulakov',
+            journal: 'Russian Geology and Geophysics',
+            year: 2008,
+            url:
+                'https://pubs.geoscienceworld.org/nsu/rgg/article-abstract/49/2/98/588894/',
+            studyType: 'Seismic tomography',
+            summary:
+                'Investigates magma flow patterns around the Siberian Craton using seismic data.',
+            tags: ['mantle', 'seismology', 'Siberia'],
+          ),
+          _study(
+            title:
+                'New data on mud volcanism in the Arctic on the Yamal Peninsula',
+            authorsShort: 'Bogoyavlensky',
+            journal: 'Doklady Earth Sciences',
+            year: 2023,
+            url: 'https://journals.rcsi.science/2686-7397/article/view/135891',
+            studyType: 'Field observation',
+            summary:
+                'Studies giant craters and mud volcanism caused by thermokarst thawing and deep gas expulsion.',
+            tags: ['Arctic', 'volcanism', 'gas expulsion'],
+          ),
+          _study(
+            title: 'Thunderstorms near the North Pole',
+            authorsShort: 'Popykina et al.',
+            journal: 'Atmosphere',
+            year: 2024,
+            url: 'https://www.mdpi.com/2073-4433/15/3/310',
+            studyType: 'Observation study',
+            summary:
+                'Documents anomalous thunderstorm activity near the North Pole linked to increased ionization.',
+            tags: ['Arctic', 'lightning', 'atmosphere'],
+          ),
         ],
       ),
     ];
@@ -1438,6 +2486,92 @@ class CategoryDetailDataFactory {
             summary:
                 'Classic review on fragmentation pathways that create persistent smaller plastic particles.',
             tags: ['fragmentation', 'review', 'environment'],
+          ),
+          _study(
+            title:
+                'A multidisciplinary perspective on the role of plastic pollution in the triple planetary crisis',
+            authorsShort: 'Schmidt et al.',
+            journal: 'Environment International',
+            year: 2024,
+            url:
+                'https://www.sciencedirect.com/science/article/pii/S0160412024006457?via%3Dihub',
+            studyType: 'Review',
+            summary:
+                'Frames plastic pollution as a driver across biodiversity, climate, and pollution crises.',
+            tags: ['review', 'planetary crisis', 'systems'],
+          ),
+          _study(
+            title: 'Annual plastic waste by disposal method',
+            authorsShort: 'Our World in Data',
+            journal: 'Our World in Data',
+            year: 2023,
+            url: 'https://ourworldindata.org/grapher/plastic-fate',
+            studyType: 'Data visualization',
+            summary:
+                'Visualizes global plastic waste disposal methods, illustrating the scale of the recycling failure.',
+            tags: ['plastic waste', 'recycling', 'global data'],
+          ),
+          _study(
+            title: 'Blind spots in the monitoring of plastic waste',
+            authorsShort: 'Karlsruhe Institute of Technology',
+            journal: 'KIT Press Release',
+            year: 2022,
+            url:
+                'https://www.kit.edu/kit/english/pi_2022_097_blind-spots-in-the-monitoring-of-plastic-waste.php',
+            studyType: 'Science news',
+            summary:
+                'Highlights systematic monitoring gaps that lead to underestimation of plastic waste volumes.',
+            tags: ['plastic waste', 'monitoring', 'policy'],
+          ),
+          _study(
+            title:
+                'A growing plastic smog, now estimated to be over 170 trillion plastic particles afloat in the world\'s oceans',
+            authorsShort: 'Eriksen et al.',
+            journal: 'PLoS ONE',
+            year: 2023,
+            url:
+                'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0281596',
+            studyType: 'Global modeling study',
+            summary:
+                'Models exponentially growing ocean plastic smog from land-based waste inputs.',
+            tags: ['ocean', 'plastic smog', 'modeling'],
+          ),
+          _study(
+            title:
+                'The rise in ocean plastics evidenced from a 60-year time series',
+            authorsShort: 'Ostle et al.',
+            journal: 'Nature Communications',
+            year: 2019,
+            url: 'https://www.nature.com/articles/s41467-019-09506-1',
+            studyType: 'Long-term observation',
+            summary:
+                'Documents rising ocean plastics since the 1960s, reflecting decades of inadequate waste management.',
+            tags: ['ocean', 'time series', 'plastic waste'],
+          ),
+          _study(
+            title:
+                'Abiotic plastic leaching contributes to ocean acidification',
+            authorsShort: 'Romera-Castillo et al.',
+            journal: 'Science of The Total Environment',
+            year: 2023,
+            url:
+                'https://www.sciencedirect.com/science/article/pii/S0048969722057825?via%3Dihub',
+            studyType: 'Laboratory study',
+            summary:
+                'Shows UV-driven plastic degradation releases dissolved organic acids, accelerating ocean acidification.',
+            tags: ['ocean acidification', 'UV degradation', 'leaching'],
+          ),
+          _study(
+            title: 'Current opinion: What is a nanoplastic?',
+            authorsShort: 'Gigault et al.',
+            journal: 'Environmental Pollution',
+            year: 2018,
+            url:
+                'https://www.sciencedirect.com/science/article/abs/pii/S0269749117337247?via%3Dihub',
+            studyType: 'Conceptual study',
+            summary:
+                'Defines nanoplastics and examines their formation from UV degradation of plastics in the Atlantic.',
+            tags: ['definition', 'nanoplastic', 'degradation'],
           ),
         ],
       ),
@@ -1590,6 +2724,91 @@ class CategoryDetailDataFactory {
             summary:
                 'Shows direct damage to the photosynthesis system in freshwater algae under microplastic exposure.',
             tags: ['photosynthesis', 'algae', 'laboratory'],
+          ),
+          _study(
+            title:
+                'Thermal Conductivity and Specific Heat Capacity of Dodecylbenzenesulfonic Acid-Doped Polyaniline Particles — Water Based Nanofluid',
+            authorsShort: 'Chew et al.',
+            journal: 'Polymers',
+            year: 2015,
+            url: 'https://www.mdpi.com/2073-4360/7/7/1221',
+            studyType: 'Material science study',
+            summary:
+                'Shows nanoparticles in water increase its thermal conductivity and alter specific heat.',
+            tags: ['nanofluid', 'thermal conductivity', 'water'],
+          ),
+          _study(
+            title: 'Specific heat control of nanofluids: A critical review',
+            authorsShort: 'Riazi et al.',
+            journal: 'International Journal of Thermal Sciences',
+            year: 2016,
+            url:
+                'https://www.sciencedirect.com/science/article/abs/pii/S129007291630103X',
+            studyType: 'Review',
+            summary:
+                'Reviews how nanoparticle concentration and type alter specific heat in aqueous fluids.',
+            tags: ['nanofluid', 'specific heat', 'thermal'],
+          ),
+          _study(
+            title: 'Water Dynamics in the Hydration Shells of Biomolecules',
+            authorsShort: 'Laage et al.',
+            journal: 'Chemical Reviews',
+            year: 2017,
+            url: 'https://pubs.acs.org/doi/10.1021/acs.chemrev.6b00765',
+            doiOrPubMed: 'doi:10.1021/acs.chemrev.6b00765',
+            studyType: 'Review',
+            summary:
+                'Describes how charged particles and biomolecules create hydration shells altering bulk-water dynamics.',
+            tags: ['water', 'hydration shell', 'hydrogen bonds'],
+          ),
+          _study(
+            title: 'Effective Thermal Conductivity of Nanofluids: Measurement and Prediction',
+            authorsShort: 'Berger Bioucas et al.',
+            journal: 'International Journal of Thermophysics',
+            year: 2020,
+            url: 'https://link.springer.com/article/10.1007/s10765-020-2621-2',
+            studyType: 'Experimental study',
+            summary:
+                'Measures and predicts thermal conductivity changes in nanofluids relevant to water heat dynamics.',
+            tags: ['nanofluid', 'thermal', 'measurement'],
+          ),
+          _study(
+            title:
+                'The Biology of Electricity: How electricity is critical to the functioning of the human body',
+            authorsShort: 'Azim Premji University',
+            journal: 'Azim Premji University',
+            year: 2022,
+            url:
+                'https://azimpremjiuniversity.edu.in/news/2022/the-biology-of-electricity',
+            studyType: 'Educational reference',
+            summary:
+                'Explains bioelectricity as a fundamental property of living systems, relevant to MNP interference.',
+            tags: ['bioelectric', 'reference', 'education'],
+          ),
+          _study(
+            title: 'The anomalies and criticality of liquid water',
+            authorsShort: 'Shi et al.',
+            journal: 'PNAS',
+            year: 2020,
+            url: 'https://www.pnas.org/doi/10.1073/pnas.2008426117',
+            doiOrPubMed: 'doi:10.1073/pnas.2008426117',
+            studyType: 'Water physics study',
+            summary:
+                'Explores unique thermodynamic anomalies of liquid water relevant to how nanoparticles disrupt its structure.',
+            tags: ['water', 'thermodynamics', 'anomalies'],
+          ),
+          _study(
+            title:
+                'Quantum effects in proteins: How tiny particles coordinate energy transfer inside cells',
+            authorsShort: 'Phys.org',
+            journal: 'Phys.org',
+            year: 2025,
+            url:
+                'https://phys.org/news/2025-05-quantum-effects-proteins-tiny-particles.html',
+            studyType: 'Science news',
+            summary:
+                'Explains the Goren et al. (2025) PNAS study on quantum proton transfer in proteins and its implications for bioelectric processes disrupted by MNPs.',
+            tags: ['bioelectric', 'quantum', 'reference'],
           ),
         ],
       ),
