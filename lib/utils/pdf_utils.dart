@@ -1,10 +1,34 @@
-import 'dart:io';
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import '../config/build_config.dart';
 import '../config/backend_config.dart';
 import '../services/settings_manager.dart';
+
+Future<Set<String>>? _assetManifestCache;
+
+Future<Set<String>> getAssetManifestKeys() async {
+  final cached = _assetManifestCache;
+  if (cached != null) return cached;
+  final future = rootBundle.loadString('AssetManifest.json').then((raw) {
+    final Map<String, dynamic> manifest = jsonDecode(raw);
+    return manifest.keys.toSet();
+  });
+  _assetManifestCache = future;
+  return future;
+}
+
+Future<bool> assetExists(String assetPath) async {
+  try {
+    final keys = await getAssetManifestKeys();
+    return keys.contains(assetPath);
+  } catch (_) {
+    return false;
+  }
+}
 
 /// Filename for a given language code.
 String _reportFileName(String langCode) =>
@@ -50,7 +74,10 @@ Future<ResolvedPdf?> resolveMainReport([String? langCode]) async {
 
   // EN is always bundled; in full build all langs are bundled
   if (code == 'en' || BuildConfig.bundleAllLangs) {
-    return ResolvedPdf(isAsset: true, path: _reportAssetPath(code));
+    final assetPath = _reportAssetPath(code);
+    if (await _assetExists(assetPath)) {
+      return ResolvedPdf(isAsset: true, path: assetPath);
+    }
   }
 
   // Check local cache

@@ -13,7 +13,9 @@ import '../../widgets/nanosolve_logo.dart';
 import '../../widgets/glowing_header_separator.dart';
 import '../../services/settings_manager.dart';
 import '../../services/logger_service.dart';
+import '../../services/web_link_cache_service.dart';
 import '../../utils/app_theme_colors.dart';
+import '../web_view_screen.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -23,7 +25,8 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  String _selectedPlatform = 'android_full'; // 'android_full', 'play_store', 'ios'
+  String _selectedPlatform =
+      'android_full'; // 'android_full', 'play_store', 'ios'
   late String appVersion;
 
   @override
@@ -493,13 +496,21 @@ class _AboutScreenState extends State<AboutScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildPlatformButton('android_full', l10n.aboutPlatformAndroidFull, spacing, sizing, typography),
+                  _buildPlatformButton(
+                      'android_full',
+                      l10n.aboutPlatformAndroidFull,
+                      spacing,
+                      sizing,
+                      typography),
                   SizedBox(width: spacing.cardSpacing),
-                  _buildPlatformButton('play_store', l10n.aboutPlatformPlayStore, spacing, sizing, typography),
+                  _buildPlatformButton('play_store',
+                      l10n.aboutPlatformPlayStore, spacing, sizing, typography),
                 ],
               ),
               SizedBox(height: spacing.cardSpacing),
-              _buildPlatformButton('ios', l10n.aboutPlatformIOS, spacing, sizing, typography, isEnabled: false),
+              _buildPlatformButton(
+                  'ios', l10n.aboutPlatformIOS, spacing, sizing, typography,
+                  isEnabled: false),
             ],
           ),
           const SizedBox(height: AppConstants.space16),
@@ -612,7 +623,9 @@ class _AboutScreenState extends State<AboutScreen> {
     final opacity = isEnabled ? 1.0 : 0.5;
 
     return InkWell(
-      onTap: isEnabled ? () => setState(() => _selectedPlatform = platformKey) : null,
+      onTap: isEnabled
+          ? () => setState(() => _selectedPlatform = platformKey)
+          : null,
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: AppConstants.space12,
@@ -633,7 +646,8 @@ class _AboutScreenState extends State<AboutScreen> {
           label,
           style: typography.subtitle.copyWith(
             color: AppColors.pastelAqua.withValues(alpha: opacity),
-            fontWeight: isSelected && isEnabled ? FontWeight.w700 : FontWeight.w500,
+            fontWeight:
+                isSelected && isEnabled ? FontWeight.w700 : FontWeight.w500,
           ),
         ),
       ),
@@ -668,27 +682,28 @@ class _AboutScreenState extends State<AboutScreen> {
   Future<void> _launchUrl(String url) async {
     final uri = Uri.parse(url);
 
-    try {
-      // Try custom tabs first (Android)
-      final theme = CustomTabsOptions(
-        colorSchemes: CustomTabsColorSchemes.defaults(
-          toolbarColor: AppColors.pastelLavender,
-        ),
-        shareState: CustomTabsShareState.on,
-        urlBarHidingEnabled: true,
-        showTitle: true,
-        browser: const CustomTabsBrowserConfiguration(
-          fallbackCustomTabs: [
-            'com.android.chrome',
-            'com.chrome.beta',
-            'com.chrome.dev',
-          ],
-        ),
-      );
+    // Track visited state so source cards can show the offline indicator
+    await WebLinkCacheService().markVisited(url);
 
+    try {
+      // Custom Tabs (Android) / Safari VC (iOS) — stays in-app, no app switch
       await launchUrl(
         uri,
-        customTabsOptions: theme,
+        customTabsOptions: CustomTabsOptions(
+          colorSchemes: CustomTabsColorSchemes.defaults(
+            toolbarColor: AppColors.pastelLavender,
+          ),
+          shareState: CustomTabsShareState.on,
+          urlBarHidingEnabled: true,
+          showTitle: true,
+          browser: const CustomTabsBrowserConfiguration(
+            fallbackCustomTabs: [
+              'com.android.chrome',
+              'com.chrome.beta',
+              'com.chrome.dev',
+            ],
+          ),
+        ),
         safariVCOptions: const SafariViewControllerOptions(
           preferredBarTintColor: AppColors.pastelLavender,
           preferredControlTintColor: Colors.white,
@@ -700,19 +715,16 @@ class _AboutScreenState extends State<AboutScreen> {
       LoggerService()
           .logError('CustomTabs launch failed', '$url: $e', stackTrace);
 
-      // Fallback to url_launcher's externalApplication mode
-      try {
-        final bool launched = await url_launcher.launchUrl(
-          uri,
-          mode: url_launcher.LaunchMode.externalApplication,
+      // Fallback: push WebViewScreen so the user never leaves the app
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => WebViewScreen(
+              url: url,
+              title: uri.host,
+            ),
+          ),
         );
-        if (!launched) {
-          LoggerService()
-              .logError('URL launch fallback failed', url, StackTrace.current);
-        }
-      } catch (fallbackError, fallbackStack) {
-        LoggerService().logError('URL launch fallback error',
-            fallbackError.toString(), fallbackStack);
       }
     }
   }

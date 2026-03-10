@@ -14,6 +14,9 @@ import 'logger_service.dart';
 import 'service_locator.dart';
 import 'settings_manager.dart';
 
+/// TODO: for flag isPlayStoreBuild disable whole service.
+
+
 /// Enum representing the different states of the app update process
 enum UpdateState {
   idle,

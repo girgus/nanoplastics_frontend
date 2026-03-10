@@ -955,9 +955,12 @@ class _CategoryCard extends StatelessWidget {
                         )
                       : descStyle;
 
-                  return Column(
+                  return OverflowBox(
+                    alignment: Alignment.topLeft,
+                    maxHeight: double.infinity,
+                    child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
@@ -992,6 +995,7 @@ class _CategoryCard extends StatelessWidget {
                         softWrap: true,
                       ),
                     ],
+                  ),
                   );
                 },
               ),

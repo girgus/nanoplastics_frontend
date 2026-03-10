@@ -29,6 +29,7 @@ class SourcesScreen extends StatefulWidget {
 }
 
 enum WebLinkSection { humanHealth, earthPollution, waterAbilities }
+
 enum VideoSection { videos, reports }
 
 class _SourcesScreenState extends State<SourcesScreen> {
@@ -83,7 +84,6 @@ class _SourcesScreenState extends State<SourcesScreen> {
     );
   }
 
-
   Widget _buildWebLinksTab() {
     final l10n = AppLocalizations.of(context)!;
     final spacing = AppSpacing.of(context);
@@ -97,25 +97,22 @@ class _SourcesScreenState extends State<SourcesScreen> {
         section: WebLinkSection.humanHealth,
         title: l10n.sourcesSectionHumanHealth,
         icon: Icons.favorite_outline,
-        sources: humanHealthSources
-            .where((s) => s.language == userLang)
-            .toList(),
+        sources:
+            humanHealthSources.where((s) => s.language == userLang).toList(),
       ),
       (
         section: WebLinkSection.earthPollution,
         title: l10n.sourcesSectionEarthPollution,
         icon: Icons.public,
-        sources: earthPollutionSources
-            .where((s) => s.language == userLang)
-            .toList(),
+        sources:
+            earthPollutionSources.where((s) => s.language == userLang).toList(),
       ),
       (
         section: WebLinkSection.waterAbilities,
         title: l10n.sourcesSectionWaterAbilities,
         icon: Icons.water_drop_outlined,
-        sources: waterAbilitiesSources
-            .where((s) => s.language == userLang)
-            .toList(),
+        sources:
+            waterAbilitiesSources.where((s) => s.language == userLang).toList(),
       ),
     ];
 
@@ -220,8 +217,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                 decoration: BoxDecoration(
                   color: accentColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(6),
@@ -284,7 +280,8 @@ class _SourcesScreenState extends State<SourcesScreen> {
                   spacing: spacing,
                   sizing: sizing,
                   typography: typography,
-                  onTap: () => setState(() => _selectedVideoSection = s.section),
+                  onTap: () =>
+                      setState(() => _selectedVideoSection = s.section),
                 ),
                 SizedBox(height: spacing.xs),
               ],
@@ -401,8 +398,8 @@ class _SourcesScreenState extends State<SourcesScreen> {
                   ),
                   SizedBox(height: spacing.xs / 2),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 6, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: chipColor.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(4),
@@ -589,7 +586,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
             LoggerService().logError('ResolvePdfFailed', e.toString(), st);
           }
 
-          if (needsDownload && context.mounted) navigator.maybePop();
+          if (needsDownload && context.mounted) await navigator.maybePop();
           if (!context.mounted) return;
 
           if (pdf != null) {
@@ -606,16 +603,32 @@ class _SourcesScreenState extends State<SourcesScreen> {
               ),
             );
           } else if (source.isWebLink) {
-            // PDF unavailable — open URL as fallback via in-app WebView
+            // PDF unavailable — open URL as fallback via Custom Tabs.
+            // WebView can't render PDFs; Custom Tabs hands off to the
+            // system PDF viewer / browser while keeping the user in-app.
             await WebLinkCacheService().markVisited(source.url!);
-            navigator.push(
-              MaterialPageRoute(
-                builder: (_) => WebViewScreen(
-                  url: source.url!,
-                  title: source.title,
+            try {
+              await launchUrl(
+                Uri.parse(source.url!),
+                customTabsOptions: CustomTabsOptions(
+                  colorSchemes: CustomTabsColorSchemes.defaults(
+                    toolbarColor: AppThemeColors.of(context).cardBackground,
+                  ),
+                  shareState: CustomTabsShareState.on,
+                  urlBarHidingEnabled: true,
+                  showTitle: true,
                 ),
-              ),
-            );
+                safariVCOptions: const SafariViewControllerOptions(
+                  preferredBarTintColor: AppColors.pastelLavender,
+                  preferredControlTintColor: Colors.white,
+                  barCollapsingEnabled: true,
+                  dismissButtonStyle:
+                      SafariViewControllerDismissButtonStyle.close,
+                ),
+              );
+            } catch (e) {
+              LoggerService().logError('PdfFallbackLaunchFailed', e.toString());
+            }
           } else {
             scaffoldMessenger.showSnackBar(
               const SnackBar(content: Text('Failed to load PDF')),
@@ -669,8 +682,8 @@ class _SourcesScreenState extends State<SourcesScreen> {
                   ),
                   SizedBox(height: spacing.xs / 2),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 6, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: chipColor.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(4),
@@ -715,8 +728,8 @@ class _SourcesScreenState extends State<SourcesScreen> {
                                 child: Icon(
                                   Icons.cloud_done,
                                   size: sizing.iconXs,
-                                  color:
-                                      AppColors.pastelMint.withValues(alpha: 0.7),
+                                  color: AppColors.pastelMint
+                                      .withValues(alpha: 0.7),
                                 ),
                               ),
                             );

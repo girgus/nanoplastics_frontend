@@ -103,8 +103,7 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
   void _openDocument(PdfDocument document, DateTime startTime) {
     _pdfController = PdfControllerPinch(
       document: Future.value(document),
-      initialPage:
-          widget.startPage - 1, // Convert from 1-based to 0-based for pdfx
+      initialPage: widget.startPage, // pdfx uses 1-based page numbers
     );
 
     _pdfDocument = document;
@@ -122,8 +121,7 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        _safeJumpToPage(
-            widget.startPage - 1); // Convert from 1-based to 0-based for pdfx
+        _safeJumpToPage(widget.startPage); // pdfx uses 1-based page numbers
         _initialPageSet = true;
       }
     });
@@ -176,8 +174,7 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
 
-        // pdfx uses 0-based indexing, so convert to 0-based
-        _safeJumpToPage(pageToPreserve - 1);
+        _safeJumpToPage(pageToPreserve); // pdfx uses 1-based page numbers
 
         Future.delayed(const Duration(milliseconds: 200), () {
           if (!mounted) return;
@@ -251,8 +248,7 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
 
       final oldPage = _currentPage;
 
-      // Convert from 1-based (user-facing) to 0-based (pdfx internal)
-      _pdfController.jumpToPage(pageNumber - 1);
+      _pdfController.jumpToPage(pageNumber); // pdfx uses 1-based page numbers
 
       // Update current page state manually
       setState(() {

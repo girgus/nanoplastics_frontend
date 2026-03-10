@@ -3,8 +3,8 @@ import '../config/build_config.dart';
 import 'settings_manager.dart';
 import 'logger_service.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
+import '../utils/pdf_utils.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
@@ -13,11 +13,6 @@ import 'package:http/http.dart' as http;
 /// All PDFs (bundled + downloaded) stored in single app documents directory
 class PdfService {
   final SettingsManager settingsManager;
-  // Separate flags per build flavour so switching LITE→FULL forces re-extraction.
-  static const String _bundledExtractedKey = BuildConfig.bundleAllLangs
-      ? 'bundled_pdfs_extracted_full'
-      : 'bundled_pdfs_extracted_lite';
-
   /// Create PdfService with injected SettingsManager dependency
   /// This ensures a single SettingsManager instance is used throughout the app
   ///
@@ -29,18 +24,13 @@ class PdfService {
   /// Should be called once during app startup
   Future<void> initialize() async {
     try {
-      // Only extract bundled PDFs once per app lifetime
-      final prefs = await SharedPreferences.getInstance();
-      final alreadyExtracted = prefs.getBool(_bundledExtractedKey) ?? false;
-
-      if (!alreadyExtracted) {
-        await _extractBundledPdfs();
-        await prefs.setBool(_bundledExtractedKey, true);
-        LoggerService().logDebug(
-          'pdf_service_init',
-          'Bundled PDFs extracted to documents directory',
-        );
-      }
+      // Always run extraction — _extractPdfAsset() skips files that already
+      // exist, so this is fast on subsequent launches and always correct.
+      await _extractBundledPdfs();
+      LoggerService().logDebug(
+        'pdf_service_init',
+        'Bundled PDF extraction complete',
+      );
     } catch (e) {
       LoggerService().logError(
         'pdf_service_init_failed',
@@ -150,6 +140,21 @@ class PdfService {
     required String language,
   }) async {
     try {
+      if (!await assetExists(assetPath)) {
+        if (!BuildConfig.bundleAllLangs && language != 'en') {
+          LoggerService().logDebug(
+            '${type}_pdf_asset_missing',
+            'Skipping missing $type asset for $language in lite build.',
+          );
+          return;
+        }
+        LoggerService().logError(
+          '${type}_pdf_asset_missing',
+          'Missing bundled $type asset: $assetPath',
+        );
+        return;
+      }
+
       final appDocDir = await getApplicationDocumentsDirectory();
       final pdfsDir = Directory('${appDocDir.path}/pdfs');
       final cachedFile = File('${pdfsDir.path}/$fileName');
