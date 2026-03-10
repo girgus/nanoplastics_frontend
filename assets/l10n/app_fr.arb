@@ -370,6 +370,10 @@
   "tourSourcesButtonBody": "Accédez à des recherches examinées, des études de cas et des rapports téléchargeables par catégorie d'impact.",
   "tourResultsButtonBody": "Afficher les idées de la communauté classées par IA. Soumettez vos idées ici pour concourir au classement.",
   "tourSettingsBody": "Gérez votre profil, votre langue et vos préférences d'application. Appuyez pour ajuster la langue, les options de partage et plus encore.",
+  "tourBtnSkip": "Passer",
+  "tourBtnNext": "Suivant",
+  "tourBtnDone": "Terminé",
+  "tourBtnSkipTour": "Passer la visite",
 
   "downloadingLanguage": "Téléchargement de {languageName}",
   "downloadFailed": "Téléchargement échoué",

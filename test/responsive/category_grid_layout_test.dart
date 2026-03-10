@@ -198,4 +198,110 @@ void main() {
       );
     });
   });
+
+  // ── Big-screen tests ──────────────────────────────────────────────────────
+  // isBig = !isCompact && (width > 410 || height > 900).
+  // Card icon/padding no longer use categoryScale (removed to avoid overflow
+  // when 2-line titles + 2-line descriptions are both shown).
+  // Fixed rowHeight from LayoutBuilder still fills screen.
+
+  const kBigDevices = [kiPhone14Plus, kXLarge, kVeryTallSlim];
+
+  group('Category grid big screens', () {
+    for (final device in kBigDevices) {
+      testWidgets('$device renders without layout exceptions', (tester) async {
+        await _pumpMainScreen(tester, device);
+
+        final errors = _drainExceptions(tester)
+            .where((message) =>
+                message.contains('overflowed') ||
+                message.contains('unbounded'))
+            .toList();
+
+        expect(
+          errors,
+          isEmpty,
+          reason: 'Layout breaks on $device: ${errors.join(' | ')}',
+        );
+        expect(
+          _cardRects(tester).length,
+          greaterThanOrEqualTo(6),
+          reason: 'Expected 6 category cards on $device.',
+        );
+      });
+    }
+
+    testWidgets('428x926 keeps all category cards at the same height',
+        (tester) async {
+      await _pumpMainScreen(tester, kiPhone14Plus);
+
+      final rects = _cardRects(tester).take(6).toList();
+      expect(rects.length, 6);
+
+      final heights = rects.map((r) => r.height).toList();
+      final minH = heights.reduce((a, b) => a < b ? a : b);
+      final maxH = heights.reduce((a, b) => a > b ? a : b);
+
+      expect(
+        maxH - minH,
+        lessThanOrEqualTo(2.0),
+        reason: 'Big-screen cards no longer share the same row height: $heights',
+      );
+      expect(
+        minH,
+        greaterThanOrEqualTo(AppConstants.categoryCardMinHeight),
+        reason: 'Big-screen cards should not be compressed below minHeight.',
+      );
+    });
+
+    testWidgets('428x926 does not leave a blank band above the hub',
+        (tester) async {
+      await _pumpMainScreen(tester, kiPhone14Plus);
+
+      final rects = _cardRects(tester);
+      expect(rects.length, greaterThanOrEqualTo(6));
+
+      final expectedBottomGap = spacingFor(kiPhone14Plus).md * 0.7;
+      final actualBottomGap = _gapBetweenLastRowAndHub(kiPhone14Plus, rects);
+
+      expect(
+        actualBottomGap,
+        lessThanOrEqualTo(expectedBottomGap + 4.0),
+        reason: 'Big-screen grid leaves unused vertical space on 428x926.',
+      );
+    });
+
+    testWidgets('428x926 French planet tab renders without overflow',
+        (tester) async {
+      await _pumpLocalizedMainScreen(
+        tester,
+        kiPhone14Plus,
+        locale: const Locale('fr'),
+      );
+
+      final planetButton = tester.widget<InkWell>(
+        find.byKey(const ValueKey('hub-button-planet')),
+      );
+      planetButton.onTap?.call();
+      await tester.pump(const Duration(milliseconds: 250));
+      await tester.pumpAndSettle();
+
+      final errors = _drainExceptions(tester)
+          .where((message) =>
+              message.contains('overflowed') ||
+              message.contains('unbounded'))
+          .toList();
+
+      expect(
+        errors,
+        isEmpty,
+        reason: 'French long titles overflow on 428x926 planet tab: '
+            '${errors.join(' | ')}',
+      );
+      expect(
+        _cardRects(tester, planetTab: true).length,
+        greaterThanOrEqualTo(6),
+      );
+    });
+  });
 }

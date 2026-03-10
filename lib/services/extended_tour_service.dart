@@ -624,7 +624,7 @@ class ExtendedTourService {
       targets: targets,
       colorShadow: Colors.black,
       opacityShadow: 0.85,
-      textSkip: 'SKIP TOUR',
+      textSkip: AppLocalizations.of(context)!.tourBtnSkipTour,
       alignSkip: Alignment.topRight,
       paddingFocus: 8,
       focusAnimationDuration: const Duration(milliseconds: 300),
@@ -730,7 +730,7 @@ class _TourTooltip extends StatelessWidget {
                   ),
                   onPressed: () => controller.skip(),
                   child: Text(
-                    'SKIP',
+                    AppLocalizations.of(context)!.tourBtnSkip,
                     style: typography.label.copyWith(
                       color: tc.textDark,
                       fontSize: 11,
@@ -747,7 +747,9 @@ class _TourTooltip extends StatelessWidget {
                   ),
                   onPressed: () => controller.next(),
                   child: Text(
-                    isFinal ? 'DONE' : 'NEXT',
+                    isFinal
+                        ? AppLocalizations.of(context)!.tourBtnDone
+                        : AppLocalizations.of(context)!.tourBtnNext,
                     style: typography.label.copyWith(
                       color: AppColors.pastelAqua,
                       fontSize: 11,

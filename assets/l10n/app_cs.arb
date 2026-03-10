@@ -404,6 +404,10 @@
   "tourSourcesButtonBody": "Přístup k recenzovanému výzkumu, případným studiím a stažitelným zprávám podle kategorie dopadu.",
   "tourResultsButtonBody": "Podívejte se na nápady komunity seřazené podle umělé inteligence. Odešlete své nápady sem, abyste soutěžili na žebříčku.",
   "tourSettingsBody": "Spravujte svůj profil, jazyk a preference aplikace. Klepnutím upravte jazyk, možnosti sdílení a další.",
+  "tourBtnSkip": "Přeskočit",
+  "tourBtnNext": "Další",
+  "tourBtnDone": "Hotovo",
+  "tourBtnSkipTour": "Přeskočit průvodce",
 
   "downloadingLanguage": "Stahování {languageName}",
   "downloadFailed": "Stahování selhalo",
