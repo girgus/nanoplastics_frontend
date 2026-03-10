@@ -75,7 +75,7 @@ Future<ResolvedPdf?> resolveMainReport([String? langCode]) async {
   // EN is always bundled; in full build all langs are bundled
   if (code == 'en' || BuildConfig.bundleAllLangs) {
     final assetPath = _reportAssetPath(code);
-    if (await _assetExists(assetPath)) {
+    if (await assetExists(assetPath)) {
       return ResolvedPdf(isAsset: true, path: assetPath);
     }
   }
