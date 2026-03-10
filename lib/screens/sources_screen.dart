@@ -606,13 +606,14 @@ class _SourcesScreenState extends State<SourcesScreen> {
             // PDF unavailable — open URL as fallback via Custom Tabs.
             // WebView can't render PDFs; Custom Tabs hands off to the
             // system PDF viewer / browser while keeping the user in-app.
+            final toolbarColor = AppThemeColors.of(context).cardBackground;
             await WebLinkCacheService().markVisited(source.url!);
             try {
               await launchUrl(
                 Uri.parse(source.url!),
                 customTabsOptions: CustomTabsOptions(
                   colorSchemes: CustomTabsColorSchemes.defaults(
-                    toolbarColor: AppThemeColors.of(context).cardBackground,
+                    toolbarColor: toolbarColor,
                   ),
                   shareState: CustomTabsShareState.on,
                   urlBarHidingEnabled: true,
