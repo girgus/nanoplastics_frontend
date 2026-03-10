@@ -528,7 +528,9 @@ class _SourcesScreenState extends State<SourcesScreen> {
 
         final navigator = Navigator.of(context);
         final scaffoldMessenger = ScaffoldMessenger.of(context);
-        final dialogBg = AppThemeColors.of(context).dialogBackground;
+        final themeColors = AppThemeColors.of(context);
+        final dialogBg = themeColors.dialogBackground;
+        final toolbarColor = themeColors.cardBackground;
 
         if (source.pdfAssetPath != null && source.pdfAssetPath!.isNotEmpty) {
           final pdf = await ServiceLocator().pdfService.resolveAssetPdf(
@@ -606,7 +608,6 @@ class _SourcesScreenState extends State<SourcesScreen> {
             // PDF unavailable — open URL as fallback via Custom Tabs.
             // WebView can't render PDFs; Custom Tabs hands off to the
             // system PDF viewer / browser while keeping the user in-app.
-            final toolbarColor = AppThemeColors.of(context).cardBackground;
             await WebLinkCacheService().markVisited(source.url!);
             try {
               await launchUrl(
