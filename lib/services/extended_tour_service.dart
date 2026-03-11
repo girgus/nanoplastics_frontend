@@ -315,6 +315,8 @@ class ExtendedTourService {
       targets: targets,
       colorShadow: Colors.black,
       opacityShadow: 0.85,
+      textSkip: AppLocalizations.of(context)!.tourBtnSkipTour,
+      alignSkip: Alignment.topRight,
       paddingFocus: 4,
       focusAnimationDuration: const Duration(milliseconds: 300),
       pulseAnimationDuration: const Duration(milliseconds: 800),
@@ -718,45 +720,26 @@ class _TourTooltip extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  style: TextButton.styleFrom(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  onPressed: () => controller.skip(),
-                  child: Text(
-                    AppLocalizations.of(context)!.tourBtnSkip,
-                    style: typography.label.copyWith(
-                      color: tc.textDark,
-                      fontSize: 11,
-                    ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                onPressed: () => controller.next(),
+                child: Text(
+                  isFinal
+                      ? AppLocalizations.of(context)!.tourBtnDone
+                      : AppLocalizations.of(context)!.tourBtnNext,
+                  style: typography.label.copyWith(
+                    color: AppColors.pastelAqua,
+                    fontSize: 11,
                   ),
                 ),
-                const Spacer(),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  onPressed: () => controller.next(),
-                  child: Text(
-                    isFinal
-                        ? AppLocalizations.of(context)!.tourBtnDone
-                        : AppLocalizations.of(context)!.tourBtnNext,
-                    style: typography.label.copyWith(
-                      color: AppColors.pastelAqua,
-                      fontSize: 11,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),

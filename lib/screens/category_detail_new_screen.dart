@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../config/app_colors.dart';
 import '../config/app_constants.dart';
@@ -9,6 +11,7 @@ import '../utils/app_sizing.dart';
 import '../utils/app_spacing.dart';
 import '../utils/app_theme_colors.dart';
 import '../utils/app_typography.dart';
+import '../utils/pdf_utils.dart';
 import '../utils/responsive_config.dart';
 import '../widgets/brainstorm_box.dart';
 import '../widgets/nanosolve_logo.dart';
@@ -31,6 +34,7 @@ class CategoryDetailNewScreen extends StatefulWidget {
 class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
+  bool _isPdfLoading = false;
 
   @override
   void initState() {
@@ -58,6 +62,160 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
     _animationController.stop();
     _animationController.dispose();
     super.dispose();
+  }
+
+  Future<void> _openPdfEntry(DetailEntry entry) async {
+    if (entry.pdfStartPage == null || entry.pdfEndPage == null) return;
+    if (_isPdfLoading) return;
+
+    setState(() => _isPdfLoading = true);
+
+    LoggerService().logUserAction(
+      'pdf_entry_clicked',
+      params: {
+        'category': widget.categoryData.title,
+        'entry': entry.highlight,
+        'startPage': entry.pdfStartPage,
+        'endPage': entry.pdfEndPage,
+      },
+    );
+
+    final navigator = Navigator.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final lang = ServiceLocator().settingsManager.userLanguage;
+
+    try {
+      ResolvedPdf? resolved = await resolveMainReport(lang);
+
+      if (resolved == null) {
+        if (!mounted) return;
+
+        final spacing = AppSpacing.of(context);
+        final sizing = AppSizing.of(context);
+        final typography = AppTypography.of(context);
+        final themeColors = AppThemeColors.of(context);
+
+        double progress = 0;
+        bool dialogDismissed = false;
+        late StateSetter dialogSetState;
+        final cancelToken = Completer<void>();
+
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (ctx) => StatefulBuilder(
+            builder: (ctx, setDialogState) {
+              dialogSetState = setDialogState;
+              return AlertDialog(
+                backgroundColor: themeColors.dialogBackground,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(sizing.radiusLg),
+                  side: BorderSide(
+                    color: AppColors.pastelAqua.withValues(alpha: 0.25),
+                    width: sizing.borderThin,
+                  ),
+                ),
+                titlePadding: EdgeInsets.fromLTRB(
+                    spacing.lg, spacing.lg, spacing.lg, spacing.sm),
+                contentPadding: EdgeInsets.fromLTRB(
+                    spacing.lg, spacing.sm, spacing.lg, spacing.md),
+                actionsPadding:
+                    EdgeInsets.fromLTRB(spacing.md, 0, spacing.md, spacing.md),
+                title: Text(
+                  l10n.downloadingPdf,
+                  style: typography.title
+                      .copyWith(color: AppColors.pastelAqua),
+                ),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(sizing.radiusSm),
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        minHeight: sizing.borderThick * 2,
+                        backgroundColor:
+                            themeColors.surfaceMid.withValues(alpha: 0.6),
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          AppColors.pastelAqua,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: spacing.md),
+                    Text(
+                      '${(progress * 100).toStringAsFixed(0)}%',
+                      style: typography.bodySm
+                          .copyWith(color: themeColors.textMuted),
+                    ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      if (!cancelToken.isCompleted) cancelToken.complete();
+                      dialogDismissed = true;
+                      Navigator.of(ctx).pop();
+                    },
+                    child: Text(
+                      l10n.cancel,
+                      style: typography.label.copyWith(
+                        color: Colors.redAccent,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+
+        try {
+          final localPath = await downloadReport(
+            lang,
+            cancellationToken: cancelToken,
+            onProgress: (p) {
+              if (mounted && !cancelToken.isCompleted) {
+                dialogSetState(() => progress = p);
+              }
+            },
+          );
+          if (!dialogDismissed && mounted) {
+            Navigator.of(context).pop();
+            dialogDismissed = true;
+          }
+          resolved = ResolvedPdf(isAsset: false, path: localPath);
+        } catch (_) {
+          // Cancelled or network error — dialog may already be dismissed by user
+          if (!dialogDismissed && mounted) {
+            Navigator.of(context).pop();
+          }
+          if (cancelToken.isCompleted) return; // user cancelled intentionally
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(l10n.downloadFailed)),
+            );
+          }
+          return;
+        }
+      }
+
+      if (!mounted) return;
+      navigator.push(
+        MaterialPageRoute(
+          builder: (_) => PDFViewerScreen(
+            title: entry.highlight,
+            pdfPath: resolved!.isAsset ? null : resolved.path,
+            pdfAssetPath: resolved.isAsset ? resolved.path : null,
+            startPage: entry.pdfStartPage!,
+            endPage: entry.pdfEndPage!,
+            description: entry.pdfCategory ?? widget.categoryData.title,
+          ),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isPdfLoading = false);
+    }
   }
 
   @override
@@ -467,47 +625,7 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
-            onTap: () async {
-              if (entry.pdfStartPage == null || entry.pdfEndPage == null) {
-                return;
-              }
-
-              LoggerService().logUserAction(
-                'pdf_entry_clicked',
-                params: {
-                  'category': widget.categoryData.title,
-                  'entry': entry.highlight,
-                  'startPage': entry.pdfStartPage,
-                  'endPage': entry.pdfEndPage,
-                },
-              );
-
-              final navigator = Navigator.of(context);
-              final scaffoldMessenger = ScaffoldMessenger.of(context);
-              final pdf = await ServiceLocator().pdfService.resolvePdf(
-                    language: ServiceLocator().settingsManager.userLanguage,
-                  );
-              if (!context.mounted) return;
-
-              if (pdf != null) {
-                navigator.push(
-                  MaterialPageRoute(
-                    builder: (_) => PDFViewerScreen(
-                      title: entry.highlight,
-                      pdfPath: pdf.path,
-                      startPage: entry.pdfStartPage!,
-                      endPage: entry.pdfEndPage!,
-                      description:
-                          entry.pdfCategory ?? widget.categoryData.title,
-                    ),
-                  ),
-                );
-              } else {
-                scaffoldMessenger.showSnackBar(
-                  const SnackBar(content: Text('Failed to load PDF')),
-                );
-              }
-            },
+            onTap: _isPdfLoading ? null : () => _openPdfEntry(entry),
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.space8,

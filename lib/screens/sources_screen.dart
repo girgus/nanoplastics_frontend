@@ -533,28 +533,19 @@ class _SourcesScreenState extends State<SourcesScreen> {
         final toolbarColor = themeColors.cardBackground;
 
         if (source.pdfAssetPath != null && source.pdfAssetPath!.isNotEmpty) {
-          final pdf = await ServiceLocator().pdfService.resolveAssetPdf(
-                source.pdfAssetPath!,
-              );
-          if (!context.mounted) return;
-
-          if (pdf != null) {
-            navigator.push(
-              MaterialPageRoute(
-                builder: (_) => PDFViewerScreen(
-                  title: source.title,
-                  pdfPath: pdf.path,
-                  startPage: source.startPage,
-                  endPage: source.endPage,
-                  description: source.description,
-                ),
+          // Navigate immediately — PDFViewerScreen opens asset directly via
+          // PdfDocument.openAsset(), no extraction step needed.
+          navigator.push(
+            MaterialPageRoute(
+              builder: (_) => PDFViewerScreen(
+                title: source.title,
+                pdfAssetPath: source.pdfAssetPath,
+                startPage: source.startPage,
+                endPage: source.endPage,
+                description: source.description,
               ),
-            );
-          } else {
-            scaffoldMessenger.showSnackBar(
-              const SnackBar(content: Text('Failed to load PDF')),
-            );
-          }
+            ),
+          );
         } else {
           final lang = ServiceLocator().settingsManager.userLanguage;
 

@@ -28,11 +28,36 @@ class _AboutScreenState extends State<AboutScreen> {
   String _selectedPlatform =
       'android_full'; // 'android_full', 'play_store', 'ios'
   late String appVersion;
+  CustomTabsSession? _customTabsSession; /// for warm up browser.
 
   @override
   void initState() {
     super.initState();
     _loadVersionInfo();
+    _warmupCustomTabs();
+  }
+
+  Future<void> _warmupCustomTabs() async {
+    try {
+      final session = await warmupCustomTabs();
+      if (!mounted) return;
+      _customTabsSession = session;
+      // Pre-fetch the website so it loads instantly on tap
+      await mayLaunchUrl(
+        Uri.parse('https://glmcz.github.io/nanoplastics_frontend/'),
+        customTabsSession: session,
+      );
+    } catch (_) {
+      // Warmup is best-effort — failures are silent
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_customTabsSession != null) {
+      invalidateSession(_customTabsSession!);
+    }
+    super.dispose();
   }
 
   void _loadVersionInfo() {
@@ -696,13 +721,6 @@ class _AboutScreenState extends State<AboutScreen> {
           shareState: CustomTabsShareState.on,
           urlBarHidingEnabled: true,
           showTitle: true,
-          browser: const CustomTabsBrowserConfiguration(
-            fallbackCustomTabs: [
-              'com.android.chrome',
-              'com.chrome.beta',
-              'com.chrome.dev',
-            ],
-          ),
         ),
         safariVCOptions: const SafariViewControllerOptions(
           preferredBarTintColor: AppColors.pastelLavender,

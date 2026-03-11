@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import '../config/app_colors.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/app_typography.dart';
 import '../utils/app_theme_colors.dart';
 import 'settings_manager.dart';
@@ -180,7 +181,7 @@ class AdvisorTourService {
       targets: targets,
       colorShadow: Colors.black,
       opacityShadow: 0.85,
-      textSkip: 'SKIP TOUR',
+      textSkip: AppLocalizations.of(context)!.tourBtnSkipTour,
       alignSkip: Alignment.topRight,
       paddingFocus: 8,
       focusAnimationDuration: const Duration(milliseconds: 300),
@@ -258,9 +259,9 @@ class _TourTooltip extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () => controller.skip(),
+                  onPressed: () => controller.next(),
                   child: Text(
-                    'SKIP',
+                    AppLocalizations.of(context)!.tourBtnSkip,
                     style: typography.label.copyWith(
                       color: tc.textDark,
                     ),
@@ -271,7 +272,9 @@ class _TourTooltip extends StatelessWidget {
                   onPressed: () =>
                       isFinal ? controller.finish() : controller.next(),
                   child: Text(
-                    isFinal ? 'DONE' : 'NEXT',
+                    isFinal
+                        ? AppLocalizations.of(context)!.tourBtnDone
+                        : AppLocalizations.of(context)!.tourBtnNext,
                     style: typography.label.copyWith(
                       color: AppColors.pastelAqua,
                     ),

@@ -25,7 +25,8 @@ class PDFViewerScreen extends StatefulWidget {
   final int startPage;
   final int endPage;
   final String description;
-  final String pdfPath; // File system path to the PDF
+  final String? pdfPath; // File system path (extracted/downloaded PDF)
+  final String? pdfAssetPath; // Flutter asset path (bundled PDF, opened directly)
 
   const PDFViewerScreen({
     super.key,
@@ -33,8 +34,10 @@ class PDFViewerScreen extends StatefulWidget {
     required this.startPage,
     required this.endPage,
     required this.description,
-    required this.pdfPath,
-  });
+    this.pdfPath,
+    this.pdfAssetPath,
+  }) : assert(pdfPath != null || pdfAssetPath != null,
+            'Either pdfPath or pdfAssetPath must be provided');
 
   @override
   State<PDFViewerScreen> createState() => _PDFViewerScreenState();
@@ -78,10 +81,17 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
     try {
       PdfDocument document;
 
-      // Open PDF from file system path (provided by PdfService)
-      _resolvedPath = widget.pdfPath;
-      _pdfIsAsset = false;
-      document = await PdfDocument.openFile(widget.pdfPath);
+      if (widget.pdfAssetPath != null) {
+        // Bundled asset — open directly without extraction (fast path)
+        _resolvedPath = widget.pdfAssetPath;
+        _pdfIsAsset = true;
+        document = await PdfDocument.openAsset(widget.pdfAssetPath!);
+      } else {
+        // Extracted / downloaded file on disk
+        _resolvedPath = widget.pdfPath;
+        _pdfIsAsset = false;
+        document = await PdfDocument.openFile(widget.pdfPath!);
+      }
 
       _openDocument(document, startTime);
     } catch (e) {
