@@ -22,6 +22,7 @@ mixin LanguageSelectionMixin<T extends StatefulWidget> on State<T> {
 
   late SettingsManager settingsManager;
   late String selectedLanguage;
+  bool _isChangingLanguage = false;
 
   /// Initialize language state (call in initState).
   void initLanguageSelection() {
@@ -29,24 +30,23 @@ mixin LanguageSelectionMixin<T extends StatefulWidget> on State<T> {
     selectedLanguage = settingsManager.userLanguage;
   }
 
-  /// Handle language selection with PDF download and app restart.
+  /// Handle language selection with animated locale switch.
   Future<void> selectLanguage(String code) async {
-    if (selectedLanguage == code) return;
+    if (selectedLanguage == code || _isChangingLanguage) return;
 
-    setState(() => selectedLanguage = code);
+    setState(() {
+      selectedLanguage = code;
+      _isChangingLanguage = true;
+    });
+
     await settingsManager.setUserLanguage(code);
 
-    // Download PDFs for non-EN languages when not all langs are bundled
-    if (code != 'en' && !BuildConfig.bundleAllLangs) {
-      final success = await _downloadPDFForLanguageWithProgress(code);
-      if (!success && mounted) {
-        _showOfflineFallbackDialog(code);
-        return;
-      }
-    }
+    // Wait for icon selection animation to finish before fading
+    await Future.delayed(const Duration(milliseconds: 250));
 
     if (mounted) {
-      RestartableApp.restartApp(context);
+      await NanoSolveHiveApp.changeLocale(context, Locale(code));
+      if (mounted) setState(() => _isChangingLanguage = false);
     }
   }
 

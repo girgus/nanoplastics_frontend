@@ -1,7 +1,7 @@
 name: nanoplastics_app
 description: NanoSolve Hive - Crowdsourcing R&D solutions for nanoplastic pollution
 publish_to: 'none'
-version: 1.0.29+11
+version: 1.0.30+12
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -56,8 +56,8 @@ flutter_launcher_icons:
     generate: true
   image_path: "assets/images/app_logo.png"
   min_sdk_android: 10
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/images/app_logo.png"
+  adaptive_icon_background: "#0A0F1E"
+  adaptive_icon_foreground: "assets/images/app_logo_adaptive_fg.png"
 
 flutter:
   generate: true

@@ -226,7 +226,6 @@ class ExtendedTourService {
             align: ContentAlign
                 .bottom, // grid is at top of screen — always show below
             builder: (context, controller) => _TourTooltip(
-              title: 'Impact Categories',
               body: AppLocalizations.of(context)!.tourCategoryGridBody,
               typography: typography,
               tc: tc,
@@ -245,7 +244,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Human & Planet Views',
               body: AppLocalizations.of(context)!.tourHumanPlanetBody,
               typography: typography,
               tc: tc,
@@ -263,7 +261,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Scientific Sources',
               body: AppLocalizations.of(context)!.tourSourcesButtonBody,
               typography: typography,
               tc: tc,
@@ -281,7 +278,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'AI-Ranked Results',
               body: AppLocalizations.of(context)!.tourResultsButtonBody,
               typography: typography,
               tc: tc,
@@ -299,7 +295,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Settings',
               body: AppLocalizations.of(context)!.tourSettingsBody,
               typography: typography,
               tc: tc,
@@ -350,7 +345,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Share Your Ideas',
               body:
                   'Submit your innovative solutions to combat nanoplastic pollution.',
               typography: typography,
@@ -368,7 +362,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Describe Your Idea',
               body: 'Write a detailed description of your solution.',
               typography: typography,
               tc: tc,
@@ -385,7 +378,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Add Evidence',
               body: 'Attach photos, videos, or documents to support your idea.',
               typography: typography,
               tc: tc,
@@ -425,7 +417,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Scientific References',
               body: 'Access peer-reviewed research on nanoplastics.',
               typography: typography,
               tc: tc,
@@ -442,7 +433,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Search Sources',
               body: 'Find references by impact category or keyword.',
               typography: typography,
               tc: tc,
@@ -459,7 +449,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Download Reports',
               body: 'Download full research reports in your language.',
               typography: typography,
               tc: tc,
@@ -499,7 +488,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Leaderboard',
               body: 'Compete with other innovators to rank by contributions.',
               typography: typography,
               tc: tc,
@@ -516,7 +504,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Top Solvers',
               body: 'See who is leading the community with their ideas.',
               typography: typography,
               tc: tc,
@@ -533,7 +520,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Earn Your Rank',
               body:
                   'Submit quality ideas to climb the rankings and get recognized.',
               typography: typography,
@@ -574,7 +560,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Your Profile',
               body: 'Manage your account and app settings.',
               typography: typography,
               tc: tc,
@@ -591,7 +576,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Share with Others',
               body:
                   'Scan QR code or share link to invite friends to join the community.',
               typography: typography,
@@ -609,7 +593,6 @@ class ExtendedTourService {
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) => _TourTooltip(
-              title: 'Tour Complete!',
               body:
                   'You\'re ready to explore and contribute. Happy innovating!',
               typography: typography,
@@ -642,7 +625,6 @@ class ExtendedTourService {
 
 /// Glassmorphism tooltip widget for tour steps
 class _TourTooltip extends StatelessWidget {
-  final String title;
   final String body;
   final AppTypography typography;
   final AppThemeColors tc;
@@ -650,7 +632,6 @@ class _TourTooltip extends StatelessWidget {
   final bool isFinal;
 
   const _TourTooltip({
-    required this.title,
     required this.body,
     required this.typography,
     required this.tc,
@@ -699,16 +680,6 @@ class _TourTooltip extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: typography.title.copyWith(
-                color: AppColors.pastelAqua,
-                fontSize: isCompact ? 12 : 13,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
             Text(
               body,
               style: typography.body.copyWith(

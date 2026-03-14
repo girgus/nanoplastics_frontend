@@ -385,8 +385,15 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             ],
           ),
         ),
-        // Show language flags only on first slide and not in replay mode
-        if (_currentPage == 0 && !widget.isReplay) _buildLanguageSelector(),
+        // Language flags: always reserve layout space to prevent mid-animation height shift
+        if (!widget.isReplay)
+          Visibility(
+            visible: _currentPage == 0,
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            child: _buildLanguageSelector(),
+          ),
       ],
     );
   }
@@ -470,33 +477,36 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   }
 
   Widget _buildSlide(OnboardingSlide slide) {
-    final responsive = ResponsiveConfig.fromContext(context);
     final spacing = AppSpacing.of(context);
     final typography = AppTypography.of(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableHeight = constraints.maxHeight;
+        final gap = spacing.md * 1.5;
 
-    final isWide = responsive.isLandscape;
-    final imageHeightPercent = isWide ? 0.35 : 0.4;
-    const iconRatio = 0.4;
-    const iconSizeMultiplier = 0.5;
+        // Reserve height for max 4 lines of display text — consistent across all screen sizes
+        final displayFontSize = typography.display.fontSize ?? 32.0;
+        final displayLineHeight = typography.display.height ?? 1.2;
+        final maxTextHeight = displayFontSize * displayLineHeight * 4;
 
-    final screenHeight = MediaQuery.of(context).size.height;
-    final imageHeight = screenHeight * imageHeightPercent;
-    final iconContainerSize = imageHeight * iconRatio;
-    final iconSize = iconContainerSize * iconSizeMultiplier;
+        // Image gets whatever space remains after text + gap
+        final imageHeight = (availableHeight - maxTextHeight - gap).clamp(80.0, availableHeight * 0.65);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppConstants.space12),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
+        const iconRatio = 0.4;
+        const iconSizeMultiplier = 0.5;
+        final iconContainerSize = imageHeight * iconRatio;
+        final iconSize = iconContainerSize * iconSizeMultiplier;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppConstants.space12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
           // Media - Image or Icon
-          Flexible(
-            flex: 2,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: imageHeight),
-              child: Container(
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: imageHeight),
+            child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.05),
@@ -508,47 +518,46 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-                  child: slide.imagePath != null
-                      ? Image.asset(
-                          slide.imagePath!,
-                          fit: BoxFit.cover,
-                        )
-                      : Center(
-                          child: Container(
-                            width: iconContainerSize,
-                            height: iconContainerSize,
-                            decoration: BoxDecoration(
-                              color:
-                                  AppColors.pastelAqua.withValues(alpha: 0.8),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.pastelAqua
-                                      .withValues(alpha: 0.5),
-                                  blurRadius: 15,
-                                ),
-                              ],
+                    borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+                    child: slide.imagePath != null
+                        ? Image.asset(
+                            slide.imagePath!,
+                            fit: BoxFit.cover,
+                          )
+                        : Center(
+                            child: Container(
+                              width: iconContainerSize,
+                              height: iconContainerSize,
+                              decoration: BoxDecoration(
+                                color:
+                                    AppColors.pastelAqua.withValues(alpha: 0.8),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.pastelAqua
+                                        .withValues(alpha: 0.5),
+                                    blurRadius: 15,
+                                  ),
+                                ],
+                              ),
+                              child: slide.icon != null
+                                  ? Icon(
+                                      slide.icon,
+                                      size: iconSize,
+                                      color: const Color(0xFF0A0A12),
+                                    )
+                                  : null,
                             ),
-                            child: slide.icon != null
-                                ? Icon(
-                                    slide.icon,
-                                    size: iconSize,
-                                    color: const Color(0xFF0A0A12),
-                                  )
-                                : null,
                           ),
-                        ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          SizedBox(height: spacing.md * 1.5),
+            SizedBox(height: spacing.md * 1.5),
 
-          // Title with highlight using ShaderMask
-          Flexible(
-            flex: 2,
-            child: ShaderMask(
+            // Title with highlight using ShaderMask — fixed height for longest language
+            SizedBox(
+              height: maxTextHeight,
+              child: ShaderMask(
               shaderCallback: (bounds) => const LinearGradient(
                 colors: [AppColors.pastelAqua, AppColors.pastelMint],
               ).createShader(bounds),
@@ -570,9 +579,11 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+        );
+      },
     );
   }
 

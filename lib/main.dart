@@ -91,13 +91,22 @@ class _RestartableAppState extends State<RestartableApp> {
 class NanoSolveHiveApp extends StatefulWidget {
   const NanoSolveHiveApp({super.key});
 
+  static Future<void> changeLocale(BuildContext context, Locale locale) {
+    return context
+            .findAncestorStateOfType<_NanoSolveHiveAppState>()
+            ?.setLocale(locale) ??
+        Future.value();
+  }
+
   @override
   State<NanoSolveHiveApp> createState() => _NanoSolveHiveAppState();
 }
 
-class _NanoSolveHiveAppState extends State<NanoSolveHiveApp> {
+class _NanoSolveHiveAppState extends State<NanoSolveHiveApp>
+    with TickerProviderStateMixin {
   late Locale _locale;
   late Function(UpdateState, double) _updateListener;
+  late AnimationController _fadeController;
 
   @override
   void initState() {
@@ -106,8 +115,24 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp> {
     final languageCode = settingsManager.userLanguage;
     _locale = Locale(languageCode);
 
+    _fadeController = AnimationController(
+      vsync: this,
+      value: 1.0,
+      duration: const Duration(milliseconds: 150),
+    );
+
     // Attach global update listener for automatic notifications
     _attachUpdateListener();
+  }
+
+  Future<void> setLocale(Locale locale) async {
+    await _fadeController.animateTo(0.0);
+    if (!mounted) return;
+    setState(() => _locale = locale);
+    await _fadeController.animateTo(
+      1.0,
+      duration: const Duration(milliseconds: 220),
+    );
   }
 
   void _attachUpdateListener() {
@@ -121,6 +146,7 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp> {
 
   @override
   void dispose() {
+    _fadeController.dispose();
     ServiceLocator().updateService.removeStateListener(_updateListener);
     super.dispose();
   }
@@ -133,31 +159,28 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp> {
     final darkModeEnabled = settingsManager.darkModeEnabled;
 
     return MaterialApp(
-      title: 'NanoSolve Hive',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
-      navigatorObservers: [routeObserver],
-
-      // Localization support
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en', ''), // English (default)
-        Locale('cs', ''), // Czech
-        Locale('es', ''), // Spanish
-        Locale('ru', ''), // Russian
-        Locale('fr', ''), // French
-      ],
-      locale: _locale,
-
-      home:
-          shouldShowOnboarding ? const OnboardingScreen() : const MainScreen(),
+        title: 'NanoSolve Hive',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
+        navigatorObservers: [routeObserver],
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''), // English (default)
+          Locale('cs', ''), // Czech
+          Locale('es', ''), // Spanish
+          Locale('ru', ''), // Russian
+          Locale('fr', ''), // French
+        ],
+        locale: _locale,
+        home:
+            shouldShowOnboarding ? const OnboardingScreen() : const MainScreen(),
     );
   }
 }
