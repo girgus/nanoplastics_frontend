@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 import 'dart:ui';
 import '../config/app_colors.dart';
 import '../config/app_constants.dart';
@@ -489,8 +490,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         final displayLineHeight = typography.display.height ?? 1.2;
         final maxTextHeight = displayFontSize * displayLineHeight * 4;
 
-        // Image gets whatever space remains after text + gap
-        final imageHeight = (availableHeight - maxTextHeight - gap).clamp(80.0, availableHeight * 0.65);
+        // Image gets whatever space remains after text + gap.
+        // Guard: clamp(min, max) throws if min > max on small viewports.
+        // actualTextHeight is also capped so imageHeight + gap + textHeight == availableHeight.
+        final imageMaxHeight = math.max(0.0, availableHeight * 0.65);
+        final imageHeight =
+            (availableHeight - maxTextHeight - gap).clamp(0.0, imageMaxHeight);
+        final actualTextHeight =
+            (availableHeight - imageHeight - gap).clamp(0.0, maxTextHeight);
 
         const iconRatio = 0.4;
         const iconSizeMultiplier = 0.5;
@@ -501,24 +508,26 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           padding: const EdgeInsets.symmetric(horizontal: AppConstants.space12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-          // Media - Image or Icon
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: imageHeight),
-            child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.05),
-                  borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    style: BorderStyle.solid,
-                    width: 1,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Media - Image or Icon
+              ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: imageHeight),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.05),
+                    borderRadius:
+                        BorderRadius.circular(AppConstants.radiusLarge),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      style: BorderStyle.solid,
+                      width: 1,
+                    ),
                   ),
-                ),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(AppConstants.radiusLarge),
                     child: slide.imagePath != null
                         ? Image.asset(
                             slide.imagePath!,
@@ -552,36 +561,36 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   ),
                 ),
               ),
-            SizedBox(height: spacing.md * 1.5),
+              SizedBox(height: spacing.md * 1.5),
 
-            // Title with highlight using ShaderMask — fixed height for longest language
-            SizedBox(
-              height: maxTextHeight,
-              child: ShaderMask(
-              shaderCallback: (bounds) => const LinearGradient(
-                colors: [AppColors.pastelAqua, AppColors.pastelMint],
-              ).createShader(bounds),
-              child: RichText(
-                textAlign: TextAlign.center,
-                maxLines: 4,
-                text: TextSpan(
-                  style: typography.display,
-                  children: [
-                    TextSpan(
-                      text: '${slide.title} ',
-                      style: const TextStyle(color: Colors.white),
+              // Title with highlight using ShaderMask — height capped to remaining space
+              SizedBox(
+                height: actualTextHeight,
+                child: ShaderMask(
+                  shaderCallback: (bounds) => const LinearGradient(
+                    colors: [AppColors.pastelAqua, AppColors.pastelMint],
+                  ).createShader(bounds),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    maxLines: 4,
+                    text: TextSpan(
+                      style: typography.display,
+                      children: [
+                        TextSpan(
+                          text: '${slide.title} ',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        TextSpan(
+                          text: slide.titleHighlight,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
-                    TextSpan(
-                      text: slide.titleHighlight,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-            ),
-          ],
-        ),
+            ],
+          ),
         );
       },
     );

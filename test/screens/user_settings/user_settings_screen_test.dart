@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nanoplastics_app/screens/user_settings/user_settings_screen.dart';
+import 'package:nanoplastics_app/screens/onboarding_screen.dart';
 import '../../helpers/test_app.dart';
 import '../../helpers/settings_test_helper.dart';
 
@@ -102,15 +103,8 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      // Verify OnboardingScreen was pushed
-      expect(
-        mockObserver.pushedRoutes.any(
-          (route) =>
-              route.settings.name == '/' ||
-              route.runtimeType.toString().contains('PageRoute'),
-        ),
-        isTrue,
-      );
+      // Verify OnboardingScreen(isReplay: true) is now in the widget tree
+      expect(find.byType(OnboardingScreen), findsOneWidget);
     });
 
     testWidgets('each navigation item routes to correct screen',
