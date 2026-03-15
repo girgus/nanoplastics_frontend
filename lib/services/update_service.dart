@@ -93,6 +93,11 @@ class UpdateService {
   final SettingsManager _settingsManager;
   final InternetService _internetService;
 
+  /// Reset the singleton for testing. Call before each test that creates UpdateService.
+  static void resetForTesting() {
+    _initialized = false;
+  }
+
   factory UpdateService({
     SettingsManager? settingsManager,
     InternetService? internetService,
@@ -289,6 +294,30 @@ class UpdateService {
       return false;
     }
 
+    // Stale badge clear runs even offline — no network needed to compare versions.
+    // This handles post-install: user updated manually but old flag persists in prefs.
+    final settingsManagerEarly = _settingsManager;
+    if (settingsManagerEarly.updateAvailable) {
+      final installedVersion = await _getInstalledVersion();
+      final latestKnown = settingsManagerEarly.latestVersion;
+      // Clear badge if:
+      // - latestKnown is null: no version baseline (e.g. first install carried
+      //   over a stale flag from before latestVersion was persisted) — safe to clear.
+      // - Both versions known and installed is not behind latest.
+      final shouldClear = latestKnown == null ||
+          (installedVersion != null &&
+              !isNewerVersion(latestKnown, installedVersion));
+      if (shouldClear) {
+        await settingsManagerEarly.setUpdateAvailable(false);
+        await settingsManagerEarly.setLastDownloadedApkPath(null);
+        LoggerService().logUserAction(
+          'Cleared stale update flag — already on latest version',
+          params: {'installed': installedVersion, 'latest': latestKnown},
+        );
+        _notifyStateChange(UpdateState.idle);
+      }
+    }
+
     final internetService = _internetService;
 
     // Check internet first - skip if offline
@@ -307,27 +336,7 @@ class UpdateService {
     try {
       final settingsManager = _settingsManager;
 
-      // If a stale update flag is set, clear it immediately when the current
-      // installed version already meets or exceeds the stored latest version.
-      // This handles the post-install scenario: the user updated the app but the
-      // flag from the previous version is still persisted in SharedPreferences.
-      // We do this before the throttle check so it always runs on startup.
-      if (settingsManager.updateAvailable) {
-        final installedVersion = await _getInstalledVersion();
-        final latestKnown = settingsManager.latestVersion;
-        if (installedVersion != null &&
-            latestKnown != null &&
-            !isNewerVersion(latestKnown, installedVersion)) {
-          await settingsManager.setUpdateAvailable(false);
-          await settingsManager.setLastDownloadedApkPath(null);
-          LoggerService().logUserAction(
-            'Cleared stale update flag — already on latest version',
-            params: {'installed': installedVersion, 'latest': latestKnown},
-          );
-          _notifyStateChange(UpdateState.idle);
-        }
-      }
-
+      // Throttle check runs after the stale clear above.
       // Check if enough time has passed since last check (12 hour interval = 2x per day)
       if (!force) {
         final lastCheck = settingsManager.lastUpdateCheckTime;

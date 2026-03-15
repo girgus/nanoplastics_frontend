@@ -204,11 +204,13 @@ class ApiService {
             .logError('Failed to load solvers: ${response.statusCode}', '');
         return [];
       }
-    } on SocketException catch (e, stackTrace) {
-      LoggerService().logError('No internet connection', e, stackTrace);
+    } on SocketException {
+      // Expected: device has no internet — not a bug, skip Crashlytics
+      LoggerService().logNetworkCall('/api/solvers', method: 'GET', statusCode: 0);
       return [];
-    } on TimeoutException catch (e, stackTrace) {
-      LoggerService().logError('Request timeout', e, stackTrace);
+    } on TimeoutException {
+      // Expected: slow network — not a bug, skip Crashlytics
+      LoggerService().logNetworkCall('/api/solvers', method: 'GET', statusCode: 408);
       return [];
     } catch (e, stackTrace) {
       LoggerService().logError('Failed to fetch solvers', e, stackTrace);

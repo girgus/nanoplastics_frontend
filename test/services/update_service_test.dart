@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:nanoplastics_app/services/settings_manager.dart';
 import 'package:nanoplastics_app/services/update_service.dart';
 import '../helpers/settings_test_helper.dart';
 
@@ -141,6 +142,54 @@ void main() {
       expect(UpdateState.installing, isNotNull);
       expect(UpdateState.installed, isNotNull);
       expect(UpdateState.failed, isNotNull);
+    });
+  });
+
+  group('Stale badge clear on startup', () {
+    setUp(() => UpdateService.resetForTesting());
+
+    test(
+        'clears update badge on first install when latestVersion is null but updateAvailable is true',
+        () async {
+      // Simulate: old version set updateAvailable=true, but latestVersion was
+      // never stored (e.g. first install carried over stale prefs, or app
+      // was updated from a version that did not persist latestVersion).
+      await setupServiceLocator({
+        'advisor_tour_shown': true,
+        'update_available': true,
+        // 'latest_version' intentionally absent → latestKnown == null
+      });
+
+      final updateService = UpdateService();
+      await updateService.checkForUpdates();
+
+      // Badge must be cleared even without a version baseline.
+      expect(
+        SettingsManager().updateAvailable,
+        isFalse,
+        reason: 'stale badge should be cleared when latestVersion is null',
+      );
+    });
+
+    test('does not clear badge when latestVersion is known and installed version is unavailable',
+        () async {
+      // latestKnown='v1.2.3' but PackageInfo unavailable in test env (null).
+      // Conservative: keep badge — we can't verify the installed version.
+      await setupServiceLocator({
+        'advisor_tour_shown': true,
+        'update_available': true,
+        'latest_version': 'v1.2.3',
+      });
+
+      final updateService = UpdateService();
+      await updateService.checkForUpdates();
+
+      // Badge stays: can't confirm installed version matches latest without PackageInfo.
+      expect(
+        SettingsManager().updateAvailable,
+        isTrue,
+        reason: 'badge should not be cleared when installed version is unknown',
+      );
     });
   });
 }
