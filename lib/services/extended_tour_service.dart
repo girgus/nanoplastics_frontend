@@ -696,9 +696,9 @@ class _TourTooltip extends StatelessWidget {
               child: TextButton(
                 style: TextButton.styleFrom(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  minimumSize: const Size(44, 24),
+                  tapTargetSize: MaterialTapTargetSize.padded,
                 ),
                 onPressed: () => controller.next(),
                 child: Text(
