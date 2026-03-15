@@ -56,6 +56,13 @@ android {
         versionName = flutter.versionName
     }
 
+    // Prevent Google play to split bin according lang. So every
+    bundle {
+        language {
+            enableSplit = false  // Keep ALL languages in base APK
+        }
+    }
+
     flavorDimensions += "bundle"
     productFlavors {
         create("lite") {
