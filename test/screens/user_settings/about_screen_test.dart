@@ -171,7 +171,7 @@ void main() {
 
       // Fallback dialog must appear with the email address
       expect(find.byType(AlertDialog), findsOneWidget);
-      expect(find.text('support@nanosolve.io'), findsOneWidget);
+      expect(find.text('support@nanosolve.org'), findsOneWidget);
     });
 
     testWidgets('fallback dialog has COPY and CLOSE buttons', (tester) async {

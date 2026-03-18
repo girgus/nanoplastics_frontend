@@ -250,6 +250,9 @@
   "leaderboardAccessRestricted": "Leaderboard Access Restricted",
   "leaderboardAccessDescription": "Register with your email and name to view the top 10 leaderboard and be recognized for your solutions.",
   "leaderboardRegisterNow": "Register Now",
+  "leaderboardContactTitle": "Want to Collaborate?",
+  "leaderboardContactDescription": "Reach out to us if you'd like to partner, contribute data, or join the NanoSolve initiative.",
+  "leaderboardContactEmail": "support@nanosolve.org",
 
   "settingsBack": "Back",
   "settingsTitle": "Settings",

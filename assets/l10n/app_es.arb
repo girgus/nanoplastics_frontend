@@ -216,6 +216,9 @@
   "leaderboardAccessRestricted": "Acceso a la clasificación restringido",
   "leaderboardAccessDescription": "Regístrate con tu correo electrónico y nombre para ver el top 10 de la clasificación y ser reconocido por tus soluciones.",
   "leaderboardRegisterNow": "Registrarse ahora",
+  "leaderboardContactTitle": "¿Quieres colaborar?",
+  "leaderboardContactDescription": "Contáctanos si deseas asociarte, contribuir con datos o unirte a la iniciativa NanoSolve.",
+  "leaderboardContactEmail": "support@nanosolve.org",
 
   "settingsBack": "Atrás",
   "settingsTitle": "Configuración",

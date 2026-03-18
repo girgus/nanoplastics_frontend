@@ -250,6 +250,9 @@
   "leaderboardAccessRestricted": "Přístup k žebříčku omezen",
   "leaderboardAccessDescription": "Zaregistrujte se pomocí svého e-mailu a jména, abyste mohli zobrazit žebříček top 10 a byli uznáni za svá řešení.",
   "leaderboardRegisterNow": "Registrovat se nyní",
+  "leaderboardContactTitle": "Chcete spolupracovat?",
+  "leaderboardContactDescription": "Kontaktujte nás, pokud chcete navázat partnerství, přispět daty nebo se zapojit do iniciativy NanoSolve.",
+  "leaderboardContactEmail": "support@nanosolve.org",
 
   "settingsBack": "Zpět",
   "settingsTitle": "Nastavení",

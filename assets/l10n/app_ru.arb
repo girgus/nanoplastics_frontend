@@ -216,6 +216,9 @@
   "leaderboardAccessRestricted": "Доступ к рейтингу ограничен",
   "leaderboardAccessDescription": "Зарегистрируйтесь с вашим email и именем, чтобы увидеть топ-10 рейтинга и получить признание за ваши решения.",
   "leaderboardRegisterNow": "Зарегистрироваться сейчас",
+  "leaderboardContactTitle": "Хотите сотрудничать?",
+  "leaderboardContactDescription": "Свяжитесь с нами, если хотите стать партнёром, внести данные или присоединиться к инициативе NanoSolve.",
+  "leaderboardContactEmail": "support@nanosolve.org",
 
   "settingsBack": "Назад",
   "settingsTitle": "Настройки",

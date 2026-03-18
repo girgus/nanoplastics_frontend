@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../config/app_colors.dart';
 import '../config/app_constants.dart';
@@ -299,6 +300,8 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
                 _buildTitleSection(context),
                 const SizedBox(height: AppConstants.space24),
                 ...solvers.map((solver) => _buildSolverCard(solver)),
+                const SizedBox(height: AppConstants.space24),
+                _buildContactSection(context),
               ],
             ),
           );
@@ -419,6 +422,65 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
               ),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContactSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.handshake_outlined,
+                size: AppConstants.iconSmall, color: AppColors.pastelAqua),
+            const SizedBox(width: AppConstants.space8),
+            Text(
+              l10n.leaderboardContactTitle,
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: AppColors.pastelAqua,
+                    fontWeight: FontWeight.w700,
+                  ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+        const SizedBox(height: AppConstants.space8),
+        Semantics(
+          button: true,
+          label: l10n.leaderboardContactDescription,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+            onTap: () => launchUrl(
+              Uri.parse('mailto:${l10n.leaderboardContactEmail}'),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: AppConstants.space4,
+                  horizontal: AppConstants.space8),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.email_outlined,
+                      size: AppConstants.iconSmall,
+                      color: AppColors.pastelMint),
+                  const SizedBox(width: AppConstants.space6),
+                  Text(
+                    l10n.leaderboardContactEmail,
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                          color: AppColors.pastelMint,
+                          decoration: TextDecoration.underline,
+                          decorationColor: AppColors.pastelMint,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ],
     );
