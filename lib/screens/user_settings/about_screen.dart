@@ -225,7 +225,7 @@ class _AboutScreenState extends State<AboutScreen> {
             sizing: sizing,
             typography: typography,
             onTap: () async {
-              const email = 'support@nanosolve.io';
+              const email = 'support@nanosolve.org';
               final Uri emailUri = Uri(scheme: 'mailto', path: email);
               bool launched = false;
               if (await url_launcher.canLaunchUrl(emailUri)) {
