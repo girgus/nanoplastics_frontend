@@ -70,7 +70,10 @@
   "categoryDetailBrainstormUsernameHint": "Zadejte uživatelské jméno",
   "categoryDetailBrainstormCancel": "Zrušit",
   "categoryDetailBrainstormSave": "Uložit",
-  "categoryDetailBrainstormMinLength": "Napište prosím alespoň 10 znaků.",
+  "categoryDetailBrainstormMinLength": "Váš nápad musí mít alespoň 10 znaků.",
+  "brainstormNoEmailHintTitle": "Soutěžte v Top 10 Solvers",
+  "brainstormNoEmailHintBody": "Bez emailu se vaše nápady nezapočítají do žebříčku.",
+  "brainstormEmailLinked": "Email uložen — nyní soutěžíte v Top 10 Solvers.",
   "categoryDetailSourcesTitle": "Zdroje k tématu",
   "categoryDetailSourcesCount": "zdrojů",
 

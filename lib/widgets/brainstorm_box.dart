@@ -519,6 +519,9 @@ class _BrainstormBoxState extends State<BrainstormBox>
                       ),
                     ),
                   ),
+                  if (_settingsManager.email.isEmpty)
+                    _buildNoEmailHint(context),
+
                   const SizedBox(height: AppConstants.space16),
 
                   // Textarea
@@ -722,6 +725,97 @@ class _BrainstormBoxState extends State<BrainstormBox>
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNoEmailHint(BuildContext context) {
+    const amber = Color(0xFFFFB300);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppConstants.space8),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+        onTap: () async {
+          final l10n = AppLocalizations.of(context)!;
+          final messenger = ScaffoldMessenger.of(context);
+          final controller =
+              TextEditingController(text: _settingsManager.email);
+          final result = await showDialog<String>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: Text(l10n.profileEmail),
+              content: TextField(
+                controller: controller,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(hintText: l10n.profileEmailHint),
+                autofocus: true,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  child: Text(l10n.categoryDetailBrainstormCancel),
+                ),
+                TextButton(
+                  onPressed: () =>
+                      Navigator.of(ctx).pop(controller.text.trim()),
+                  child: Text(l10n.categoryDetailBrainstormSave),
+                ),
+              ],
+            ),
+          );
+          if (result != null && result.isNotEmpty && mounted) {
+            await _settingsManager.setEmail(result);
+            if (mounted) setState(() {});
+            messenger.showSnackBar(
+              SnackBar(
+                content: Text(l10n.brainstormEmailLinked),
+                backgroundColor: const Color(0xFFFFB300),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.space8,
+            vertical: AppConstants.space6,
+          ),
+          decoration: BoxDecoration(
+            color: amber.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+            border: Border.all(color: amber.withValues(alpha: 0.25)),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.emoji_events_outlined,
+                  color: amber, size: AppConstants.iconSmall),
+              const SizedBox(width: AppConstants.space8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.brainstormNoEmailHintTitle,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: amber,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.brainstormNoEmailHintBody,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: amber.withValues(alpha: 0.75),
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.arrow_forward_ios,
+                  color: amber, size: AppConstants.iconXS),
+            ],
+          ),
         ),
       ),
     );
