@@ -57,6 +57,7 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
   bool _pdfIsAsset = true; // Whether _resolvedPath is a Flutter asset
   int _actualEndPage =
       0; // Clamped endPage based on actual PDF page count; initialized on PDF load
+  final GlobalKey _shareButtonKey = GlobalKey();
 
   @override
   void initState() {
@@ -314,9 +315,15 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
         throw Exception('Failed to create PDF file');
       }
 
+      final box = _shareButtonKey.currentContext?.findRenderObject() as RenderBox?;
+      final origin = box != null
+          ? box.localToGlobal(Offset.zero) & box.size
+          : const Rect.fromLTWH(0, 0, 1, 1);
+
       await Share.shareXFiles(
         [XFile(tempFile.path)],
         subject: widget.title,
+        sharePositionOrigin: origin,
       );
 
       LoggerService().logUserAction('pdf_shared', params: {
@@ -807,6 +814,7 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
               ),
               const SizedBox(width: 16),
               InkWell(
+                key: _shareButtonKey,
                 onTap: _sharePDF,
                 child: Icon(
                   Icons.share,

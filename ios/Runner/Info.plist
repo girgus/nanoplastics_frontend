@@ -45,6 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Standard encryption only. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<!-- Camera & microphone — required by image_picker and record packages -->
 	<key>NSCameraUsageDescription</key>
 	<string>Used to capture photos and videos to attach to your ideas.</string>

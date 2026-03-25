@@ -305,7 +305,7 @@ class _BrainstormBoxState extends State<BrainstormBox>
     if (_isSubmitting) return;
 
     final text = _controller.text.trim();
-    if (text.length < 10) {
+    if (text.length < 10 && _attachments.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -552,6 +552,28 @@ class _BrainstormBoxState extends State<BrainstormBox>
                             const EdgeInsets.all(AppConstants.space12),
                       ),
                     ),
+                  ),
+                  ValueListenableBuilder<TextEditingValue>(
+                    valueListenable: _controller,
+                    builder: (context, value, _) {
+                      final len = value.text.trim().length;
+                      if (len == 0 || len >= 10 || _attachments.isNotEmpty) {
+                        return const SizedBox.shrink();
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          top: AppConstants.space4,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!
+                              .categoryDetailBrainstormMinLength,
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.orange,
+                                  ),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: AppConstants.space12),
 

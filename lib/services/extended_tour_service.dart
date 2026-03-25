@@ -150,7 +150,13 @@ class ExtendedTourService {
   void startTour(BuildContext context, ExtendedTourKeys keys) {
     _currentStep = ExtendedTourStep.mainScreen;
     _stepIndex = 0;
-    _showMainScreenTour(context, keys);
+    // Delay to allow iOS page-transition animation (~400ms) to complete before
+    // calling localToGlobal. Without this, the category grid spotlight appears
+    // at the right edge of the screen because the page is still sliding in.
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (!context.mounted) return;
+      _showMainScreenTour(context, keys);
+    });
   }
 
   /// Move to next screen in tour
