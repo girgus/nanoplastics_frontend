@@ -193,7 +193,7 @@ class _RankingsTable extends StatelessWidget {
             ),
           ),
           const Divider(height: 1, color: Colors.white24),
-          ...rows.map((s) => _row(s)).toList(growable: false),
+          ...rows.map((s) => _row(s)),
         ],
       ),
     );

@@ -1,8 +1,9 @@
 @Deprecated('Use web_app_shell.dart directly for new code.')
 export 'web_app_shell.dart' show NanoSolveWebApp;
 
+
 // ignore: unused_element
-final _legacyWebAppSource = r'''
+const _legacyWebAppSource = r'''
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
