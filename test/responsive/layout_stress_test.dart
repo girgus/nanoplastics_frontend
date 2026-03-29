@@ -12,117 +12,38 @@ void main() {
     });
 
     testWidgets('no overflow on 640x360 landscape (4.6" @2x)', (tester) async {
-      final errors = <FlutterErrorDetails>[];
-      final oldHandler = FlutterError.onError;
-      FlutterError.onError = (details) {
-        if (details.toString().contains('overflowed')) {
-          errors.add(details);
-        }
-      };
-      addTearDown(() => FlutterError.onError = oldHandler);
-
+      // No custom FlutterError.onError — Flutter's default test handler fails
+      // the test immediately on any Flutter error (overflow or otherwise),
+      // giving a clear stack trace. This is a KNOWN BUG: hub height exceeds
+      // viewport on landscape. The test is expected to FAIL until the bug is
+      // fixed (hubContainerHeight capped to ~30% of viewport height).
       setScreenSize(tester, kUserDevice46);
       await tester.pumpWidget(buildTestableWidget(const MainScreen()));
       await tester.pumpAndSettle();
-
-      expect(
-        errors,
-        isEmpty,
-        reason:
-            'OVERFLOW BUG on 4.6" landscape: hub height exceeds viewport. '
-            'hubContainerHeight = 200 × 1.707 = 341dp > 360dp screen. '
-            'Hub alone consumes 94.8% of viewport — no content area. '
-            'Fix: cap hub height = min(height × 0.3, 200 × scaleW × compactScale).',
-      );
     });
 
     testWidgets('no overflow on 1280x720 landscape (4.6" @1x)', (tester) async {
-      final errors = <FlutterErrorDetails>[];
-      final oldHandler = FlutterError.onError;
-      FlutterError.onError = (details) {
-        if (details.toString().contains('overflowed')) {
-          errors.add(details);
-        }
-      };
-      addTearDown(() => FlutterError.onError = oldHandler);
-
       setScreenSize(tester, kUserDevice46_1x);
       await tester.pumpWidget(buildTestableWidget(const MainScreen()));
       await tester.pumpAndSettle();
-
-      expect(
-        errors,
-        isEmpty,
-        reason:
-            'OVERFLOW BUG on 4.6" @1x: scaleW=3.413 causes massive sizing. '
-            'hubContainerHeight = 200 × 3.413 = 683dp vs 720dp height. '
-            'All tokens scale to 3.4×, causing UI elements to be enormous.',
-      );
     });
 
     testWidgets('no overflow on 393x873 (Motorola G32)', (tester) async {
-      final errors = <FlutterErrorDetails>[];
-      final oldHandler = FlutterError.onError;
-      FlutterError.onError = (details) {
-        if (details.toString().contains('overflowed')) {
-          errors.add(details);
-        }
-      };
-      addTearDown(() => FlutterError.onError = oldHandler);
-
       setScreenSize(tester, kMotoG32);
       await tester.pumpWidget(buildTestableWidget(const MainScreen()));
       await tester.pumpAndSettle();
-
-      expect(errors, isEmpty,
-          reason: 'Expected: Motorola G32 layout should be tuned and pass.');
     });
 
     testWidgets('no overflow on 350x950 (isCompact+isBig overlap)', (tester) async {
-      final errors = <FlutterErrorDetails>[];
-      final oldHandler = FlutterError.onError;
-      FlutterError.onError = (details) {
-        if (details.toString().contains('overflowed')) {
-          errors.add(details);
-        }
-      };
-      addTearDown(() => FlutterError.onError = oldHandler);
-
       setScreenSize(tester, kCompactBigOverlap);
       await tester.pumpWidget(buildTestableWidget(const MainScreen()));
       await tester.pumpAndSettle();
-
-      expect(
-        errors,
-        isEmpty,
-        reason:
-            'OVERFLOW BUG on 350x950: AppSpacing and AppSizing disagree on compactScale. '
-            'Spacing token scale=1.0 while sizing token scale=0.85 for same device. '
-            'Proportional relationship is broken — spacing too large relative to sizing.',
-      );
     });
 
     testWidgets('no overflow on 320x568 (iPhone 5)', (tester) async {
-      final errors = <FlutterErrorDetails>[];
-      final oldHandler = FlutterError.onError;
-      FlutterError.onError = (details) {
-        if (details.toString().contains('overflowed')) {
-          errors.add(details);
-        }
-      };
-      addTearDown(() => FlutterError.onError = oldHandler);
-
       setScreenSize(tester, kTinyPhone);
       await tester.pumpWidget(buildTestableWidget(const MainScreen()));
       await tester.pumpAndSettle();
-
-      expect(
-        errors,
-        isEmpty,
-        reason:
-            'OVERFLOW BUG on tiny phone: hubGridWidth=290dp vs 320dp screen. '
-            'Category card text wrapping + Russian locale (40% longer) may overflow containers.',
-      );
     });
   });
 

@@ -190,4 +190,9 @@ class ServiceLocator {
 
   /// Get the singleton ApiService instance
   ApiService get apiService => _apiService;
+
+  /// Override the ApiService for testing — call before rendering widgets.
+  @visibleForTesting
+  void overrideApiServiceForTesting(ApiService service) =>
+      _apiService = service;
 }

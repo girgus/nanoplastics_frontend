@@ -1264,11 +1264,24 @@ class _CategoryCard extends StatelessWidget {
                   return LayoutBuilder(
                     builder: (context, constraints) {
                       final cardWidth = constraints.maxWidth;
+                      final cardHeight = constraints.maxHeight;
+                      // Tight-height mode: landscape or very compressed cards.
+                      // Reduces icon and limits title to 1 line to prevent overflow.
+                      final tightHeight = cardHeight > 0 && cardHeight < 90;
                       final dense = cardWidth < 180;
-                      final effectiveIconContainer =
-                          dense ? iconContainerSize * 0.9 : iconContainerSize;
+                      final iconScale =
+                          tightHeight ? 0.75 : (dense ? 0.9 : 1.0);
+                      // In tight-height mode, cap icon to 40% of card height
+                      // so it never exceeds the row regardless of scaleW.
+                      // (icon + gap + 1-line title must fit within cardHeight)
+                      final effectiveIconContainer = tightHeight
+                          ? math.min(
+                              iconContainerSize * iconScale,
+                              (cardHeight * 0.40).clamp(20.0, double.infinity),
+                            )
+                          : iconContainerSize * iconScale;
                       final effectiveIconSize = math.min(
-                        dense ? iconSize * 0.9 : iconSize,
+                        iconSize * iconScale,
                         effectiveIconContainer * 0.82,
                       );
                       final effectiveTitleStyle = dense
@@ -1306,22 +1319,24 @@ class _CategoryCard extends StatelessWidget {
                               color: category.color,
                             ),
                           ),
-                          SizedBox(height: contentGap),
+                          if (!tightHeight) SizedBox(height: contentGap),
                           Text(
                             category.title,
                             style: effectiveTitleStyle.copyWith(
                               color: AppThemeColors.of(context).textMain,
                             ),
-                            maxLines: 2,
+                            maxLines: tightHeight ? 1 : 2,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                           ),
-                          Text(
-                            category.description,
-                            style: effectiveDescStyle,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
+                          Flexible(
+                            child: Text(
+                              category.description,
+                              style: effectiveDescStyle,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                            ),
                           ),
                         ],
                       );

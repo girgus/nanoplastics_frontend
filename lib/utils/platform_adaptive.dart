@@ -10,7 +10,10 @@ class PlatformAdaptive {
   }
 
   static bool isDesktop(BuildContext context) {
-    return MediaQuery.sizeOf(context).width >= 1100;
+    final size = MediaQuery.sizeOf(context);
+    // Require both large width and sufficient height: landscape phones can exceed
+    // 1100dp wide at 1× density but are still phone-form-factor devices.
+    return size.width >= 1100 && size.height >= 768;
   }
 
   static double contentMaxWidth(
