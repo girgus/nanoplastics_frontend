@@ -4,6 +4,7 @@
   "appSubtitle": "SCIENCE, SOCIÉTÉ, AVENIR",
   "tabHuman": "HUMAINS",
   "tabPlanet": "PLANÈTE",
+  "navExplore": "Explorer",
   "navSources": "Sources",
   "navResults": "Résultats",
   "humanCategoryCentralSystems": "Systèmes Centraux",
@@ -396,5 +397,110 @@
   "profileNameRequired": "Veuillez entrer votre nom complet",
   "profileEmailRequired": "Veuillez entrer votre adresse e-mail",
   "profileEmailInvalid": "Veuillez entrer une adresse e-mail valide",
-  "profileRegistered": "Profil enregistré avec succès!"
+  "profileRegistered": "Profil enregistré avec succès!",
+
+  "sidebarLang": "Language",
+  "sidebarAiChat": "AI Assistant",
+  "exploreResearchDomains": "RESEARCH DOMAINS",
+  "exploreHumanTitle": "Human Health Impact",
+  "explorePlanetTitle": "Earth Systems Impact",
+  "exploreHumanDesc": "Six critical pathways through which nanoplastic pollution disrupts human biology — from the central nervous system to hormonal regulation.",
+  "explorePlanetDesc": "Six planetary systems under accelerating threat from nanoplastic contamination — from oceanic food chains to atmospheric chemistry.",
+  "exploreCardCta": "Explore",
+  "exploreAllDomains": "All domains",
+  "sourcesLibraryTitle": "EVIDENCE LIBRARY",
+  "sourcesLibrarySubtitle": "Sources · {domain}",
+  "sourcesDescription": "Search across {count}+ curated research entries",
+  "sourcesSearchPlaceholder": "Search sources...",
+  "sourcesNoResults": "No sources match \"{query}\"",
+  "sourcesClearSearch": "Clear search",
+  "sourcesCountBadge": "{count} sources",
+  "sourcesHeadlineLabel": "HEADLINE",
+  "sourcesStudiesLabel": "STUDIES",
+  "sourcesAllatraLabel": "ALLATRA REPORTS",
+  "sourcesOpenPdf": "Open PDF p.{page}",
+  "sourcesOpenInNewTab": "Open in new tab",
+  "ideasTitle": "SUBMIT YOUR IDEA",
+  "ideasSubtitle": "Propose a solution. Our AI will evaluate its impact.",
+  "ideasCategoryLabel": "Category",
+  "ideasIdeaLabel": "Your idea",
+  "ideasMinChars": "minimum 10 characters",
+  "ideasCharCount": "{count} characters",
+  "ideasAttachmentsLabel": "Attachments ({count} / 10)",
+  "ideasAddFiles": "Add files",
+  "ideasAttachHint": "PDF, images, video — max 95 MB each",
+  "ideasNoAttachments": "No attachments yet",
+  "ideasSubmitting": "Submitting...",
+  "ideasSuccess": "Your idea was submitted! We'll evaluate its impact.",
+  "ideasEmailInlineHint": "Add your email to track your submission (optional)",
+  "ideasEmailInlinePlaceholder": "your@email.com",
+  "leaderboardContributorsTitle": "TOP CONTRIBUTORS",
+  "leaderboardContributorsSubtitle": "Ideas ranked by AI-evaluated impact score",
+  "leaderboardRegisterCta": "Register to appear on the leaderboard",
+  "leaderboardEmpty": "Be the first to submit a scored idea.",
+  "leaderboardPostIdeaCta": "Post an idea",
+  "leaderboardRankHeader": "Rank",
+  "leaderboardNameHeader": "Name",
+  "leaderboardSpecialtyHeader": "Specialty",
+  "leaderboardIdeasHeader": "Ideas",
+  "leaderboardScoreHeader": "Score",
+  "aiChatTitle": "NanoSolve AI",
+  "aiChatWelcome": "Hello! I'm your nanoplastics research assistant. Ask me about health impacts, mitigation strategies, or get help refining your ideas.",
+  "aiChatComingSoon": "The AI assistant is coming soon. In the meantime, explore our Evidence Library for 200+ curated research sources.",
+  "aiChatInputPlaceholder": "Ask about nanoplastics...",
+  "aiChatOpenLibrary": "Open Evidence Library",
+  "aiChatTopic1": "Health risks",
+  "aiChatTopic2": "Mitigation",
+  "aiChatTopic3": "Evidence gaps",
+  "aiChatTopic4": "Refine my idea",
+  "aiChatTopic5": "Explain a study",
+  "breadcrumbSeparator": "›",
+  "emailRequired": "An email is required to continue.",
+  "selectCategoryFirst": "Please select a category first.",
+
+  "@sourcesLibrarySubtitle": {
+    "placeholders": {
+      "domain": {}
+    }
+  },
+  "@sourcesDescription": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@sourcesNoResults": {
+    "placeholders": {
+      "query": {}
+    }
+  },
+  "@sourcesCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@sourcesOpenPdf": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      }
+    }
+  },
+  "@ideasCharCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ideasAttachmentsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

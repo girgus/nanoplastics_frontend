@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import '../config/backend_config.dart';
 import '../config/build_config.dart';
 import 'settings_manager.dart';
@@ -13,6 +14,7 @@ import 'package:http/http.dart' as http;
 /// All PDFs (bundled + downloaded) stored in single app documents directory
 class PdfService {
   final SettingsManager settingsManager;
+
   /// Create PdfService with injected SettingsManager dependency
   /// This ensures a single SettingsManager instance is used throughout the app
   ///
@@ -24,6 +26,14 @@ class PdfService {
   /// Should be called once during app startup
   Future<void> initialize() async {
     try {
+      if (kIsWeb) {
+        LoggerService().logDebug(
+          'pdf_service_init',
+          'Skipping bundled PDF extraction on web; browser uses asset/URL access directly.',
+        );
+        return;
+      }
+
       // Always run extraction — _extractPdfAsset() skips files that already
       // exist, so this is fast on subsequent launches and always correct.
       await _extractBundledPdfs();
@@ -46,6 +56,14 @@ class PdfService {
     required String language,
   }) async {
     try {
+      if (kIsWeb) {
+        LoggerService().logDebug(
+          'pdf_lookup_web_skipped',
+          'Skipping file-based PDF resolution on web for language=$language.',
+        );
+        return null;
+      }
+
       final lang = language;
 
       // Check if PDF exists in unified documents directory
@@ -207,6 +225,14 @@ class PdfService {
   /// Extracts and caches the PDF, returns the File path
   Future<File?> resolveAssetPdf(String assetPath) async {
     try {
+      if (kIsWeb) {
+        LoggerService().logDebug(
+          'asset_pdf_web_skipped',
+          'Skipping asset PDF caching on web for $assetPath.',
+        );
+        return null;
+      }
+
       // Extract PDF name from asset path for caching
       final fileName = assetPath.split('/').last.replaceAll('.pdf', '');
 
@@ -255,6 +281,14 @@ class PdfService {
   /// Stores downloaded PDF locally via SettingsManager
   Future<bool> downloadPdfFromBackend(String language) async {
     try {
+      if (kIsWeb) {
+        LoggerService().logDebug(
+          'pdf_download_web_skipped',
+          'Skipping file download/caching on web for language=$language.',
+        );
+        return false;
+      }
+
       LoggerService()
           .logUserAction('Downloading PDF', params: {'language': language});
 

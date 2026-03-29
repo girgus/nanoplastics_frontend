@@ -15,6 +15,7 @@ import '../../services/settings_manager.dart';
 import '../../services/logger_service.dart';
 import '../../services/web_link_cache_service.dart';
 import '../../utils/app_theme_colors.dart';
+import '../../utils/platform_adaptive.dart';
 import '../web_view_screen.dart';
 
 class AboutScreen extends StatefulWidget {
@@ -28,7 +29,9 @@ class _AboutScreenState extends State<AboutScreen> {
   String _selectedPlatform =
       'android_full'; // 'android_full', 'play_store', 'ios'
   late String appVersion;
-  CustomTabsSession? _customTabsSession; /// for warm up browser.
+  CustomTabsSession? _customTabsSession;
+
+  /// for warm up browser.
 
   @override
   void initState() {
@@ -711,6 +714,10 @@ class _AboutScreenState extends State<AboutScreen> {
     await WebLinkCacheService().markVisited(url);
 
     try {
+      if (PlatformAdaptive.isWeb) {
+        await PlatformAdaptive.launchExternalUri(uri);
+        return;
+      }
       // Custom Tabs (Android) / Safari VC (iOS) — stays in-app, no app switch
       await launchUrl(
         uri,

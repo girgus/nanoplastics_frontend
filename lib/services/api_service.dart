@@ -45,10 +45,11 @@ class ApiService {
     required String description,
     String? category,
     List<IdeaAttachment>? attachments,
+    String? email,
   }) async {
     try {
       final settings = SettingsManager();
-      final userEmail = settings.email;
+      final userEmail = email ?? settings.email;
       final userNickName = settings.displayName;
 
       // Create multipart request
@@ -70,6 +71,27 @@ class ApiService {
 
       // Attach files
       for (final att in attachments ?? []) {
+        if (att.bytes != null && att.bytes!.isNotEmpty) {
+          request.files.add(
+            http.MultipartFile.fromBytes(
+              'attachment',
+              att.bytes!,
+              contentType: MediaType.parse(att.mimeType),
+              filename: att.name,
+            ),
+          );
+          continue;
+        }
+
+        if (att.path.trim().isEmpty) {
+          return {
+            'success': false,
+            'type': 'attachment',
+            'message':
+                'One or more attachments could not be read. Please re-attach and try again.',
+          };
+        }
+
         request.files.add(await http.MultipartFile.fromPath(
           'attachment',
           att.path,
@@ -88,7 +110,8 @@ class ApiService {
         },
       );
 
-      if (description.length < 10) {
+      if (description.length < 10 &&
+          (attachments == null || attachments.isEmpty)) {
         return {
           'success': false,
           'message': 'The idea description should have at least 10 characters.',
@@ -206,11 +229,13 @@ class ApiService {
       }
     } on SocketException {
       // Expected: device has no internet — not a bug, skip Crashlytics
-      LoggerService().logNetworkCall('/api/solvers', method: 'GET', statusCode: 0);
+      LoggerService()
+          .logNetworkCall('/api/solvers', method: 'GET', statusCode: 0);
       return [];
     } on TimeoutException {
       // Expected: slow network — not a bug, skip Crashlytics
-      LoggerService().logNetworkCall('/api/solvers', method: 'GET', statusCode: 408);
+      LoggerService()
+          .logNetworkCall('/api/solvers', method: 'GET', statusCode: 408);
       return [];
     } catch (e, stackTrace) {
       LoggerService().logError('Failed to fetch solvers', e, stackTrace);

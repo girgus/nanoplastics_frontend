@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import '../config/build_config.dart';
@@ -13,9 +13,8 @@ Future<Set<String>>? _assetManifestCache;
 Future<Set<String>> getAssetManifestKeys() async {
   final cached = _assetManifestCache;
   if (cached != null) return cached;
-  final future = rootBundle.loadString('AssetManifest.json').then((raw) {
-    final Map<String, dynamic> manifest = jsonDecode(raw);
-    return manifest.keys.toSet();
+  final future = AssetManifest.loadFromAssetBundle(rootBundle).then((manifest) {
+    return manifest.listAssets().toSet();
   });
   _assetManifestCache = future;
   return future;
@@ -78,6 +77,10 @@ Future<ResolvedPdf?> resolveMainReport([String? langCode]) async {
     if (await assetExists(assetPath)) {
       return ResolvedPdf(isAsset: true, path: assetPath);
     }
+  }
+
+  if (kIsWeb) {
+    return null;
   }
 
   // Check local cache

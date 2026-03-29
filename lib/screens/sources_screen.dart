@@ -9,13 +9,16 @@ import '../utils/app_typography.dart';
 import '../widgets/nanosolve_logo.dart';
 import '../widgets/glowing_header_separator.dart';
 import '../l10n/app_localizations.dart';
+import '../models/category_detail_data.dart';
 import '../models/pdf_source.dart';
+import '../models/sources.dart';
 import '../services/logger_service.dart';
 import '../services/settings_manager.dart';
 import '../services/service_locator.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import '../services/web_link_cache_service.dart';
 import '../utils/app_theme_colors.dart';
+import '../utils/platform_adaptive.dart';
 import 'pdf_viewer_screen.dart';
 import 'web_view_screen.dart';
 
@@ -36,6 +39,9 @@ class _SourcesScreenState extends State<SourcesScreen> {
   SourceType _selectedTab = SourceType.webLinks;
   WebLinkSection _selectedSection = WebLinkSection.humanHealth;
   VideoSection _selectedVideoSection = VideoSection.videos;
+  String _webLinksSearchQuery = '';
+  final TextEditingController _webLinksSearchController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -44,6 +50,12 @@ class _SourcesScreenState extends State<SourcesScreen> {
     LoggerService().logFeatureUsage('sources_screen_opened', metadata: {
       'timestamp': DateTime.now().toIso8601String(),
     });
+  }
+
+  @override
+  void dispose() {
+    _webLinksSearchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -65,19 +77,26 @@ class _SourcesScreenState extends State<SourcesScreen> {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              _SourcesScreenHeader(this),
-              _SourcesScreenTabs(
-                selectedTab: _selectedTab,
-                onTabChanged: (tab) => setState(() => _selectedTab = tab),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: PlatformAdaptive.contentMaxWidth(context),
               ),
-              Expanded(
-                child: _selectedTab == SourceType.webLinks
-                    ? _buildWebLinksTab()
-                    : _buildVideoLinksTab(),
+              child: Column(
+                children: [
+                  _SourcesScreenHeader(this),
+                  _SourcesScreenTabs(
+                    selectedTab: _selectedTab,
+                    onTabChanged: (tab) => setState(() => _selectedTab = tab),
+                  ),
+                  Expanded(
+                    child: _selectedTab == SourceType.webLinks
+                        ? _buildWebLinksTab()
+                        : _buildVideoLinksTab(),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -89,6 +108,17 @@ class _SourcesScreenState extends State<SourcesScreen> {
     final spacing = AppSpacing.of(context);
     final sizing = AppSizing.of(context);
     final typography = AppTypography.of(context);
+
+    final isMobilePlatform =
+        !PlatformAdaptive.isWeb && (Platform.isAndroid || Platform.isIOS);
+    if (isMobilePlatform) {
+      return _buildMobileEvidenceWebLinksTab(
+        l10n: l10n,
+        spacing: spacing,
+        sizing: sizing,
+        typography: typography,
+      );
+    }
 
     final userLang = SettingsManager().userLanguage;
 
@@ -161,6 +191,303 @@ class _SourcesScreenState extends State<SourcesScreen> {
         ),
       ],
     );
+  }
+
+  Widget _buildMobileEvidenceWebLinksTab({
+    required AppLocalizations l10n,
+    required AppSpacing spacing,
+    required AppSizing sizing,
+    required AppTypography typography,
+  }) {
+    final groups = _buildGroupedEvidenceLinks(l10n, _webLinksSearchQuery);
+
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+            spacing.contentPaddingH,
+            spacing.xs,
+            spacing.contentPaddingH,
+            spacing.sm,
+          ),
+          child: TextField(
+            controller: _webLinksSearchController,
+            onChanged: (value) => setState(() => _webLinksSearchQuery = value),
+            style: typography.body,
+            decoration: InputDecoration(
+              hintText: 'Search links by title, author, journal…',
+              hintStyle: typography.bodySm.copyWith(
+                color: AppThemeColors.of(context).textMuted,
+              ),
+              prefixIcon: Icon(
+                Icons.search,
+                size: sizing.iconSm,
+                color: AppThemeColors.of(context).textMuted,
+              ),
+              suffixIcon: _webLinksSearchQuery.trim().isEmpty
+                  ? null
+                  : IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        size: sizing.iconSm,
+                        color: AppThemeColors.of(context).textMuted,
+                      ),
+                      onPressed: () {
+                        _webLinksSearchController.clear();
+                        setState(() => _webLinksSearchQuery = '');
+                      },
+                    ),
+              filled: true,
+              fillColor: AppThemeColors.of(context)
+                  .cardBackground
+                  .withValues(alpha: 0.85),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+                borderSide:
+                    BorderSide(color: Colors.white.withValues(alpha: 0.12)),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+                borderSide:
+                    BorderSide(color: Colors.white.withValues(alpha: 0.12)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+                borderSide: BorderSide(
+                  color: AppColors.pastelAqua.withValues(alpha: 0.55),
+                ),
+              ),
+              isDense: true,
+            ),
+          ),
+        ),
+        Expanded(
+          child: groups.isEmpty
+              ? Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: spacing.contentPaddingH),
+                    child: Text(
+                      'No links found.',
+                      textAlign: TextAlign.center,
+                      style: typography.bodySm.copyWith(
+                        color: AppThemeColors.of(context).textMuted,
+                      ),
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: spacing.contentPaddingH,
+                    vertical: spacing.contentPaddingV,
+                  ),
+                  itemCount: groups.length,
+                  itemBuilder: (ctx, groupIndex) {
+                    final group = groups[groupIndex];
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          group.categoryTitle.toUpperCase(),
+                          style: typography.title.copyWith(
+                            color: group.categoryColor,
+                            letterSpacing: 0.8,
+                          ),
+                        ),
+                        SizedBox(height: spacing.sm),
+                        ...group.studies.asMap().entries.map((entry) {
+                          return _buildMobileEvidenceStudyCard(
+                            category: group,
+                            study: entry.value,
+                            number: entry.key + 1,
+                            spacing: spacing,
+                            sizing: sizing,
+                            typography: typography,
+                          );
+                        }),
+                        SizedBox(height: spacing.lg),
+                      ],
+                    );
+                  },
+                ),
+        ),
+      ],
+    );
+  }
+
+  List<MobileEvidenceGroup> _buildGroupedEvidenceLinks(
+    AppLocalizations l10n,
+    String query,
+  ) {
+    final normalizedQuery = query.trim().toLowerCase();
+    final categories = CategoryDetailDataFactory.all(l10n);
+
+    final groups = categories
+        .map((category) {
+          final seen = <String>{};
+          final studies = category.evidenceSections
+              .expand((section) => section.studies)
+              .where((study) {
+            if (normalizedQuery.isEmpty) return true;
+            final haystack = [
+              category.title,
+              study.title,
+              study.authorsShort,
+              study.journal,
+              study.url,
+            ].join(' ').toLowerCase();
+            return haystack.contains(normalizedQuery);
+          }).where((study) {
+            final key = '${study.title}|${study.url}';
+            return seen.add(key);
+          }).toList();
+
+          studies.sort(
+              (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+
+          return MobileEvidenceGroup(
+            categoryKey: category.categoryKey,
+            categoryTitle: category.title,
+            categoryColor: category.themeColor,
+            studies: studies,
+          );
+        })
+        .where((group) => group.studies.isNotEmpty)
+        .toList();
+
+    groups.sort((a, b) =>
+        a.categoryTitle.toLowerCase().compareTo(b.categoryTitle.toLowerCase()));
+    return groups;
+  }
+
+  Widget _buildMobileEvidenceStudyCard({
+    required MobileEvidenceGroup category,
+    required EvidenceStudy study,
+    required int number,
+    required AppSpacing spacing,
+    required AppSizing sizing,
+    required AppTypography typography,
+  }) {
+    return InkWell(
+      onTap: () => _openEvidenceStudyFromSources(category.categoryKey, study),
+      borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+      child: Container(
+        width: double.infinity,
+        margin: EdgeInsets.only(bottom: spacing.sm),
+        padding: EdgeInsets.symmetric(
+          horizontal: spacing.md,
+          vertical: spacing.sm,
+        ),
+        decoration: BoxDecoration(
+          color:
+              AppThemeColors.of(context).cardBackground.withValues(alpha: 0.85),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+          borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 24,
+              child: Text(
+                number.toString().padLeft(2, '0'),
+                style: typography.labelXs.copyWith(
+                  color: AppThemeColors.of(context)
+                      .textMuted
+                      .withValues(alpha: 0.5),
+                ),
+              ),
+            ),
+            SizedBox(width: spacing.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    study.title,
+                    style: typography.title.copyWith(
+                      color: AppThemeColors.of(context).textMain,
+                      height: 1.3,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: spacing.xs / 2),
+                  Text(
+                    '${study.journal} · ${study.year} · ${study.authorsShort}',
+                    style: typography.labelSm.copyWith(
+                      color: AppThemeColors.of(context).textMuted,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: spacing.sm),
+            Icon(
+              Icons.open_in_new,
+              size: sizing.iconSm,
+              color: AppColors.pastelAqua.withValues(alpha: 0.7),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openEvidenceStudyFromSources(
+    String categoryKey,
+    EvidenceStudy study,
+  ) async {
+    LoggerService().logUserAction('sources_evidence_study_opened', params: {
+      'category': categoryKey,
+      'title': study.title,
+      'journal': study.journal,
+      'year': study.year,
+    });
+
+    try {
+      final url =
+          '${study.url}${study.url.contains('?') ? '&' : '?'}utm_source=nanoplastics_app';
+
+      if (PlatformAdaptive.isWeb) {
+        await PlatformAdaptive.launchExternalUrl(url);
+        return;
+      }
+
+      await launchUrl(
+        Uri.parse(url),
+        customTabsOptions: CustomTabsOptions(
+          colorSchemes: CustomTabsColorSchemes.defaults(
+            toolbarColor: const Color(0xFF141928),
+          ),
+          shareState: CustomTabsShareState.on,
+          urlBarHidingEnabled: true,
+          showTitle: true,
+          browser: const CustomTabsBrowserConfiguration(
+            fallbackCustomTabs: [
+              'org.mozilla.firefox',
+              'org.mozilla.firefox_beta',
+              'com.microsoft.emmx',
+            ],
+          ),
+        ),
+        safariVCOptions: const SafariViewControllerOptions(
+          preferredBarTintColor: Color(0xFF141928),
+          preferredControlTintColor: Colors.white,
+          barCollapsingEnabled: true,
+          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+        ),
+      );
+    } catch (e, st) {
+      LoggerService().logError(
+        'SourcesEvidenceStudyOpenFailed',
+        '${study.url}: $e',
+        st,
+      );
+    }
   }
 
   Widget _buildSectionHeader({

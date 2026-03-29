@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../config/app_colors.dart';
 import '../config/app_constants.dart';
@@ -14,6 +13,7 @@ import '../models/solver.dart';
 import 'user_settings/profile_registration_dialog.dart';
 import '../utils/route_observer.dart';
 import '../utils/app_theme_colors.dart';
+import '../utils/platform_adaptive.dart';
 
 class SolversLeaderboardScreen extends StatefulWidget {
   const SolversLeaderboardScreen({super.key});
@@ -150,7 +150,8 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.pastelMint.withValues(alpha: 0.3),
+                              color:
+                                  AppColors.pastelMint.withValues(alpha: 0.3),
                               blurRadius: 8,
                               spreadRadius: 1,
                             ),
@@ -455,7 +456,7 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
           label: l10n.leaderboardContactDescription,
           child: InkWell(
             borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
-            onTap: () => launchUrl(
+            onTap: () => PlatformAdaptive.launchExternalUri(
               Uri.parse('mailto:${l10n.leaderboardContactEmail}'),
             ),
             child: Padding(

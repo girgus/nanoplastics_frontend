@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 enum AttachmentType { image, video, document, audio }
 
@@ -7,15 +7,17 @@ class IdeaAttachment {
   final String name;
   final String mimeType;
   final AttachmentType type;
+  final Uint8List? bytes;
+  final int? sizeBytes;
 
   const IdeaAttachment({
     required this.path,
     required this.name,
     required this.mimeType,
     required this.type,
+    this.bytes,
+    this.sizeBytes,
   });
-
-  File get file => File(path);
 
   /// Icon codepoint for display in chips
   AttachmentType get displayType => type;

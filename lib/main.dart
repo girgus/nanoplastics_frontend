@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'config/app_theme.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/main_screen.dart';
+import 'web/web_app_shell.dart';
 import 'l10n/app_localizations.dart';
 import 'services/settings_manager.dart';
 import 'services/service_locator.dart';
@@ -43,11 +45,13 @@ void main() async {
     ),
   );
 
-  // Set preferred orientations
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  // Keep native apps portrait-first, but let web use full desktop layouts.
+  if (!kIsWeb) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
 
   // Note: Firebase is already initialized in LoggerService.initialize()
 
@@ -159,28 +163,31 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp>
     final darkModeEnabled = settingsManager.darkModeEnabled;
 
     return MaterialApp(
-        title: 'NanoSolve Hive',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
-        navigatorObservers: [routeObserver],
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en', ''), // English (default)
-          Locale('cs', ''), // Czech
-          Locale('es', ''), // Spanish
-          Locale('ru', ''), // Russian
-          Locale('fr', ''), // French
-        ],
-        locale: _locale,
-        home:
-            shouldShowOnboarding ? const OnboardingScreen() : const MainScreen(),
+      title: 'NanoSolve Hive',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
+      navigatorObservers: [routeObserver],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // English (default)
+        Locale('cs', ''), // Czech
+        Locale('es', ''), // Spanish
+        Locale('ru', ''), // Russian
+        Locale('fr', ''), // French
+      ],
+      locale: _locale,
+      home: kIsWeb
+          ? const NanoSolveWebApp()
+          : (shouldShowOnboarding
+              ? const OnboardingScreen()
+              : const MainScreen()),
     );
   }
 }

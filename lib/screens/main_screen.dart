@@ -21,6 +21,7 @@ import '../services/service_locator.dart';
 import '../services/settings_manager.dart';
 import '../services/update_service.dart';
 import '../utils/app_theme_colors.dart';
+import '../utils/platform_adaptive.dart';
 import '../utils/responsive_config.dart';
 
 enum ImpactType { human, planet }
@@ -113,6 +114,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final sizing = AppSizing.of(context);
     final responsive = ResponsiveConfig.fromContext(context);
+    final isDesktop = PlatformAdaptive.isDesktop(context);
 
     // Responsive background offset and scale
     final humanOffset = responsive.isBig ? -80.0 : -120.0;
@@ -175,41 +177,325 @@ class _MainScreenState extends State<MainScreen> {
                   ),
           ),
           // Main content
-          SafeArea(
-            bottom: false,
-            child: Column(
-              children: [
-                _buildHeader(),
-                Expanded(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) => SingleChildScrollView(
-                      physics: const ClampingScrollPhysics(),
-                      child: Padding(
-                        padding:
-                            EdgeInsets.only(bottom: sizing.hubContainerHeight),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minHeight: (constraints.maxHeight -
-                                    sizing.hubContainerHeight)
-                                .clamp(0, double.infinity),
+          if (isDesktop)
+            _buildDesktopShell()
+          else
+            SafeArea(
+              bottom: false,
+              child: Column(
+                children: [
+                  _buildHeader(),
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) => SingleChildScrollView(
+                        physics: const ClampingScrollPhysics(),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            bottom: sizing.hubContainerHeight,
                           ),
-                          child: _buildCategoryGrid(),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: (constraints.maxHeight -
+                                      sizing.hubContainerHeight)
+                                  .clamp(0, double.infinity),
+                            ),
+                            child: _buildCategoryGrid(),
+                          ),
                         ),
                       ),
                     ),
+                  ),
+                ],
+              ),
+            ),
+          if (!isDesktop)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: _buildControlHub(),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDesktopShell() {
+    final spacing = AppSpacing.of(context);
+
+    return SafeArea(
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: PlatformAdaptive.contentMaxWidth(context),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: spacing.xl2,
+              vertical: spacing.lg,
+            ),
+            child: Column(
+              children: [
+                _buildDesktopHeader(),
+                SizedBox(height: spacing.lg),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        width: 300,
+                        child: _buildDesktopSidebar(),
+                      ),
+                      SizedBox(width: spacing.lg),
+                      Expanded(
+                        child: _buildDesktopWorkspace(),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          // Control Hub overlay at bottom
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: _buildControlHub(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDesktopHeader() {
+    final spacing = AppSpacing.of(context);
+    final typography = AppTypography.of(context);
+    final themeColors = AppThemeColors.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: spacing.lg,
+        vertical: spacing.md,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.cardBgGlass.withValues(alpha: 0.58),
+        borderRadius: BorderRadius.circular(AppConstants.radiusXL),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+      ),
+      child: Row(
+        children: [
+          const NanosolveLogo(height: 56),
+          SizedBox(width: spacing.lg),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _selectedTab == ImpactType.human
+                      ? l10n.tabHuman
+                      : l10n.tabPlanet,
+                  style: typography.display.copyWith(
+                    color: themeColors.textMain,
+                  ),
+                ),
+                SizedBox(height: spacing.xs),
+                Text(
+                  l10n.appSubtitle,
+                  style: typography.body.copyWith(
+                    color: themeColors.textMuted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _DesktopActionButton(
+            icon: Icons.settings_outlined,
+            label: 'Settings',
+            isHighlighted: _isUpdateAvailable(),
+            onTap: () {
+              LoggerService().logUserAction('settings_tapped');
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const UserSettingsScreen(),
+                ),
+              );
+            },
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDesktopSidebar() {
+    final spacing = AppSpacing.of(context);
+    final typography = AppTypography.of(context);
+    final themeColors = AppThemeColors.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
+    return Container(
+      padding: EdgeInsets.all(spacing.lg),
+      decoration: BoxDecoration(
+        color: AppColors.cardBgGlass.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(AppConstants.radiusXXL),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Explore',
+            style: typography.label.copyWith(
+              color: themeColors.textMuted,
+            ),
+          ),
+          SizedBox(height: spacing.sm),
+          _DesktopNavTile(
+            label: l10n.tabHuman,
+            icon: Icons.person_outline,
+            color: AppColors.neonCyan,
+            isActive: _selectedTab == ImpactType.human,
+            onTap: () => _switchTab(ImpactType.human),
+          ),
+          SizedBox(height: spacing.sm),
+          _DesktopNavTile(
+            label: l10n.tabPlanet,
+            icon: Icons.public_outlined,
+            color: AppColors.neonOcean,
+            isActive: _selectedTab == ImpactType.planet,
+            onTap: () => _switchTab(ImpactType.planet),
+          ),
+          SizedBox(height: spacing.lg),
+          Text(
+            'Workspace',
+            style: typography.label.copyWith(
+              color: themeColors.textMuted,
+            ),
+          ),
+          SizedBox(height: spacing.sm),
+          _DesktopNavTile(
+            label: l10n.navSources,
+            icon: Icons.menu_book_outlined,
+            color: AppColors.pastelAqua,
+            isActive: false,
+            onTap: () => _navigateToResources(null),
+          ),
+          SizedBox(height: spacing.sm),
+          _DesktopNavTile(
+            label: l10n.navResults,
+            icon: Icons.auto_graph_outlined,
+            color: AppColors.pastelMint,
+            isActive: false,
+            onTap: _navigateToResults,
+          ),
+          const Spacer(),
+          Container(
+            padding: EdgeInsets.all(spacing.md),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.04),
+              borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Desktop web mode',
+                  style: typography.title.copyWith(
+                    color: themeColors.textMain,
+                  ),
+                ),
+                SizedBox(height: spacing.xs),
+                Text(
+                  'Links open in a new browser tab and the main workspace stays focused on research flow.',
+                  style: typography.bodySm.copyWith(
+                    color: themeColors.textMuted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDesktopWorkspace() {
+    final l10n = AppLocalizations.of(context)!;
+    final spacing = AppSpacing.of(context);
+    final typography = AppTypography.of(context);
+    final themeColors = AppThemeColors.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.cardBgGlass.withValues(alpha: 0.54),
+        borderRadius: BorderRadius.circular(AppConstants.radiusXXL),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+      ),
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(spacing.xl2),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(spacing.lg),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    (_selectedTab == ImpactType.human
+                            ? AppColors.neonCyan
+                            : AppColors.neonOcean)
+                        .withValues(alpha: 0.18),
+                    Colors.white.withValues(alpha: 0.02),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(AppConstants.radiusXL),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _selectedTab == ImpactType.human
+                              ? l10n.tabHuman
+                              : l10n.tabPlanet,
+                          style: typography.display.copyWith(
+                            color: themeColors.textMain,
+                          ),
+                        ),
+                        SizedBox(height: spacing.xs),
+                        Text(
+                          'Choose a domain and jump straight into evidence, sources, and idea generation from a desktop-friendly workspace.',
+                          style: typography.body.copyWith(
+                            color: themeColors.textMuted,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: spacing.lg),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: spacing.md,
+                      vertical: spacing.sm,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.18),
+                      borderRadius:
+                          BorderRadius.circular(AppConstants.radiusLarge),
+                    ),
+                    child: Text(
+                      '${(_selectedTab == ImpactType.human ? _getHumanCategories(l10n) : _getPlanetCategories(l10n)).length} research paths',
+                      style: typography.label.copyWith(
+                        color: themeColors.textMain,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: spacing.lg),
+            _buildCategoryGrid(),
+          ],
+        ),
       ),
     );
   }
@@ -407,7 +693,11 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     final responsive = ResponsiveConfig.fromContext(context);
-    final topPadding = responsive.isCompact ? spacing.md * 0.8 : spacing.md * 2.0;
+    if (PlatformAdaptive.isDesktop(context)) {
+      return _buildDesktopCategoryGrid(categories);
+    }
+    final topPadding =
+        responsive.isCompact ? spacing.md * 0.8 : spacing.md * 2.0;
     return Padding(
       key: _tourCategoryGridKey,
       padding: EdgeInsets.only(
@@ -429,6 +719,46 @@ class _MainScreenState extends State<MainScreen> {
           return buildRows(null);
         },
       ),
+    );
+  }
+
+  Widget _buildDesktopCategoryGrid(List<CategoryData> categories) {
+    final spacing = AppSpacing.of(context);
+    final sizing = AppSizing.of(context);
+    final typography = AppTypography.of(context);
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final columns = width >= 1240 ? 3 : 2;
+        final gap = spacing.md;
+        final cardWidth = (width - (gap * (columns - 1))) / columns;
+
+        return Wrap(
+          spacing: gap,
+          runSpacing: gap,
+          children: categories
+              .map(
+                (category) => SizedBox(
+                  width: cardWidth,
+                  child: _CategoryCard(
+                    category: category,
+                    iconContainerSize: sizing.categoryIconContainer * 1.3,
+                    iconSize: sizing.categoryIconSize * 1.2,
+                    padding: sizing.categoryPadding * 2.2,
+                    titleStyle: typography.title.copyWith(
+                      fontSize: (typography.title.fontSize ?? 17) * 1.08,
+                    ),
+                    descStyle: typography.body.copyWith(
+                      color: AppThemeColors.of(context).textMuted,
+                    ),
+                    onTap: () => _navigateToCategoryDetail(category),
+                  ),
+                ),
+              )
+              .toList(),
+        );
+      },
     );
   }
 
@@ -929,77 +1259,223 @@ class _CategoryCard extends StatelessWidget {
               child: Builder(
                 builder: (context) {
                   final spacing = AppSpacing.of(context);
-                  final screenWidth = MediaQuery.of(context).size.width;
-                  final estimatedCardWidth =
-                      (screenWidth - spacing.contentPaddingH * 2 - spacing.gridSpacing) / 2;
-                  final dense = estimatedCardWidth < 145;
                   final contentGap = spacing.xs * 0.5;
-                  final effectiveIconContainer =
-                      dense ? iconContainerSize * 0.9 : iconContainerSize;
-                  final effectiveIconSize = math.min(
-                    dense ? iconSize * 0.9 : iconSize,
-                    effectiveIconContainer * 0.82,
-                  );
-                  final effectiveTitleStyle = dense
-                      ? titleStyle.copyWith(
-                          fontSize: ((titleStyle.fontSize ?? 12.0) * 0.92)
-                              .clamp(11.0, double.infinity),
-                          height: 1.2,
-                        )
-                      : titleStyle;
-                  final effectiveDescStyle = dense
-                      ? descStyle.copyWith(
-                          fontSize: ((descStyle.fontSize ?? 12.0) * 0.92)
-                              .clamp(10.0, double.infinity),
-                          height: 1.3,
-                        )
-                      : descStyle;
 
-                  return OverflowBox(
-                    alignment: Alignment.topLeft,
-                    maxHeight: double.infinity,
-                    child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: effectiveIconContainer,
-                        height: effectiveIconContainer,
-                        decoration: BoxDecoration(
-                          color: category.color.withValues(alpha: 0.2),
-                          borderRadius:
-                              BorderRadius.circular(AppConstants.radiusSmall),
-                        ),
-                        child: Icon(
-                          category.icon,
-                          size: effectiveIconSize,
-                          color: category.color,
-                        ),
-                      ),
-                      SizedBox(height: contentGap),
-                      Text(
-                        category.title,
-                        style: effectiveTitleStyle.copyWith(
-                          color: AppThemeColors.of(context).textMain,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: true,
-                      ),
-                      Text(
-                        category.description,
-                        style: effectiveDescStyle,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: true,
-                      ),
-                    ],
-                  ),
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                      final cardWidth = constraints.maxWidth;
+                      final dense = cardWidth < 180;
+                      final effectiveIconContainer =
+                          dense ? iconContainerSize * 0.9 : iconContainerSize;
+                      final effectiveIconSize = math.min(
+                        dense ? iconSize * 0.9 : iconSize,
+                        effectiveIconContainer * 0.82,
+                      );
+                      final effectiveTitleStyle = dense
+                          ? titleStyle.copyWith(
+                              fontSize: ((titleStyle.fontSize ?? 12.0) * 0.92)
+                                  .clamp(11.0, double.infinity),
+                              height: 1.2,
+                            )
+                          : titleStyle;
+                      final effectiveDescStyle = dense
+                          ? descStyle.copyWith(
+                              fontSize: ((descStyle.fontSize ?? 12.0) * 0.92)
+                                  .clamp(10.0, double.infinity),
+                              height: 1.3,
+                            )
+                          : descStyle;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: effectiveIconContainer,
+                            height: effectiveIconContainer,
+                            decoration: BoxDecoration(
+                              color: category.color.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(
+                                AppConstants.radiusSmall,
+                              ),
+                            ),
+                            child: Icon(
+                              category.icon,
+                              size: effectiveIconSize,
+                              color: category.color,
+                            ),
+                          ),
+                          SizedBox(height: contentGap),
+                          Text(
+                            category.title,
+                            style: effectiveTitleStyle.copyWith(
+                              color: AppThemeColors.of(context).textMain,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                          ),
+                          Text(
+                            category.description,
+                            style: effectiveDescStyle,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                          ),
+                        ],
+                      );
+                    },
                   );
                 },
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DesktopNavTile extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final Color color;
+  final bool isActive;
+  final VoidCallback onTap;
+
+  const _DesktopNavTile({
+    required this.label,
+    required this.icon,
+    required this.color,
+    required this.isActive,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final spacing = AppSpacing.of(context);
+    final typography = AppTypography.of(context);
+
+    return Semantics(
+      button: true,
+      selected: isActive,
+      label: label,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(
+            horizontal: spacing.md,
+            vertical: spacing.md,
+          ),
+          decoration: BoxDecoration(
+            color: isActive
+                ? color.withValues(alpha: 0.14)
+                : Colors.white.withValues(alpha: 0.04),
+            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+            border: Border.all(
+              color: isActive
+                  ? color.withValues(alpha: 0.55)
+                  : Colors.white.withValues(alpha: 0.06),
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(icon, color: isActive ? color : AppColors.textMuted),
+              SizedBox(width: spacing.sm),
+              Expanded(
+                child: Text(
+                  label,
+                  style: typography.title.copyWith(
+                    color: isActive ? Colors.white : AppColors.textMuted,
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 14,
+                color: isActive
+                    ? color.withValues(alpha: 0.8)
+                    : Colors.white.withValues(alpha: 0.35),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DesktopActionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool isHighlighted;
+  final VoidCallback onTap;
+
+  const _DesktopActionButton({
+    required this.icon,
+    required this.label,
+    required this.isHighlighted,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final spacing = AppSpacing.of(context);
+    final typography = AppTypography.of(context);
+
+    return Semantics(
+      button: true,
+      label: label,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: spacing.md,
+            vertical: spacing.sm,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+            border: Border.all(
+              color: isHighlighted
+                  ? Colors.red.withValues(alpha: 0.35)
+                  : Colors.white.withValues(alpha: 0.08),
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Icon(icon, color: Colors.white),
+                  if (isHighlighted)
+                    Positioned(
+                      top: -2,
+                      right: -2,
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              SizedBox(width: spacing.sm),
+              Text(
+                label,
+                style: typography.label.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
         ),
       ),

@@ -9,6 +9,7 @@ import '../utils/app_sizing.dart';
 import '../utils/app_spacing.dart';
 import '../utils/app_theme_colors.dart';
 import '../utils/app_typography.dart';
+import '../utils/platform_adaptive.dart';
 import '../utils/responsive_config.dart';
 import '../widgets/nanosolve_logo.dart';
 
@@ -356,6 +357,11 @@ class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
     try {
       final url =
           '${study.url}${study.url.contains('?') ? '&' : '?'}utm_source=nanoplastics_app';
+
+      if (PlatformAdaptive.isWeb) {
+        await PlatformAdaptive.launchExternalUrl(url);
+        return;
+      }
 
       await launchUrl(
         Uri.parse(url),

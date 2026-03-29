@@ -5,3 +5,6 @@ flutter:
     - assets/docs/Nanoplastics_Report_FR_compressed.pdf
     - assets/docs/Nanoplastics_Report_RU_compressed.pdf
     - assets/docs/CS_WATER_compressed.pdf
+    - assets/docs/ESP-WATER_compressed.pdf
+    - assets/docs/FR-WATER_compressed.pdf
+    - assets/docs/RUS-WATER_compressed.pdf
