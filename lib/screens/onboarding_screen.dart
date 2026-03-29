@@ -127,6 +127,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   @override
   Widget build(BuildContext context) {
     final tc = AppThemeColors.of(context);
+    final responsive = ResponsiveConfig.fromContext(context);
+    final modalMargin = responsive.isLandscape
+        ? const EdgeInsets.all(AppConstants.space8)
+        : const EdgeInsets.all(AppConstants.space20);
     _l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Stack(
@@ -290,7 +294,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 color: Colors.transparent,
                 child: Center(
                   child: Container(
-                    margin: const EdgeInsets.all(AppConstants.space20),
+                    margin: modalMargin,
                     constraints: const BoxConstraints(maxWidth: 550),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -329,13 +333,16 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       child: Builder(
                         builder: (context) {
                           final spacing = AppSpacing.of(context);
+                          final compactSectionGap = responsive.isLandscape
+                              ? math.min(spacing.sectionSpacing, 12.0)
+                              : spacing.sectionSpacing;
                           return Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               _buildModalHeader(),
-                              SizedBox(height: spacing.sectionSpacing),
+                              SizedBox(height: compactSectionGap),
                               Flexible(child: _buildSlidesContainer()),
-                              SizedBox(height: spacing.sectionSpacing),
+                              SizedBox(height: compactSectionGap),
                               _buildModalFooter(),
                             ],
                           );
@@ -400,13 +407,25 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   }
 
   Widget _buildLanguageSelector() {
+    final responsive = ResponsiveConfig.fromContext(context);
     final sizing = AppSizing.of(context);
     final spacing = AppSpacing.of(context);
     final tc = AppThemeColors.of(context);
+    final selectorHeight = responsive.isLandscape
+        ? sizing.minTouchTarget.clamp(36.0, 48.0)
+        : sizing.minTouchTarget;
+    final horizontalPadding = responsive.isLandscape
+        ? math.min(spacing.lg, 12.0)
+        : spacing.lg;
+    final verticalPadding = responsive.isLandscape
+        ? math.min(spacing.xs, 4.0)
+        : spacing.xs;
 
     return Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.xs),
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: verticalPadding,
+      ),
       child: Row(
         children: LanguageSelectionMixin.supportedLanguages.map((lang) {
           final isSelected = selectedLanguage == lang['code'];
@@ -420,7 +439,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  height: sizing.minTouchTarget,
+                  height: selectorHeight,
                   decoration: BoxDecoration(
                     color: isSelected
                         ? AppColors.pastelAqua.withValues(alpha: 0.2)
@@ -600,9 +619,16 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final l10n = AppLocalizations.of(context)!;
     final slides = _getSlides(l10n);
     final spacing = AppSpacing.of(context);
+    final responsive = ResponsiveConfig.fromContext(context);
+    final footerPadding = responsive.isLandscape
+        ? math.min(spacing.lg, 12.0)
+        : spacing.lg;
+    final dotToButtonsGap = responsive.isLandscape
+        ? AppConstants.space8
+        : AppConstants.space20;
 
     return Padding(
-      padding: EdgeInsets.all(spacing.lg),
+      padding: EdgeInsets.all(footerPadding),
       child: Column(
         children: [
           // Dots indicator
@@ -625,7 +651,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               ),
             ),
           ),
-          const SizedBox(height: AppConstants.space20),
+          SizedBox(height: dotToButtonsGap),
 
           // Navigation buttons
           Row(
