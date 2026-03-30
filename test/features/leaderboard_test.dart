@@ -16,6 +16,7 @@ void main() {
       await setupServiceLocator({
         'display_name': 'Test User',
         'email': 'test@example.com',
+        'profile_registered': true,
       });
       fakeApi = FakeApiService();
       ServiceLocator().overrideApiServiceForTesting(fakeApi);
