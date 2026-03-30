@@ -414,12 +414,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final selectorHeight = responsive.isLandscape
         ? sizing.minTouchTarget.clamp(36.0, 48.0)
         : sizing.minTouchTarget;
-    final horizontalPadding = responsive.isLandscape
-        ? math.min(spacing.lg, 12.0)
-        : spacing.lg;
-    final verticalPadding = responsive.isLandscape
-        ? math.min(spacing.xs, 4.0)
-        : spacing.xs;
+    final horizontalPadding =
+        responsive.isLandscape ? math.min(spacing.lg, 12.0) : spacing.lg;
+    final verticalPadding =
+        responsive.isLandscape ? math.min(spacing.xs, 4.0) : spacing.xs;
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -620,12 +618,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final slides = _getSlides(l10n);
     final spacing = AppSpacing.of(context);
     final responsive = ResponsiveConfig.fromContext(context);
-    final footerPadding = responsive.isLandscape
-        ? math.min(spacing.lg, 12.0)
-        : spacing.lg;
-    final dotToButtonsGap = responsive.isLandscape
-        ? AppConstants.space8
-        : AppConstants.space20;
+    final footerPadding =
+        responsive.isLandscape ? math.min(spacing.lg, 12.0) : spacing.lg;
+    final dotToButtonsGap =
+        responsive.isLandscape ? AppConstants.space8 : AppConstants.space20;
 
     return Padding(
       padding: EdgeInsets.all(footerPadding),

@@ -78,6 +78,9 @@ class UserProfileManager {
 
   Future<void> setEmail(String email) async {
     await _prefs.setString(_emailKey, email);
+    if (email.trim().isNotEmpty) {
+      await _prefs.setBool(_profileRegisteredKey, true);
+    }
   }
 
   // Bio

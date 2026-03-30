@@ -125,6 +125,7 @@
 
   "detailCentralSystemsTitle": "Central Systems (Blood, Brain)",
   "detailCentralSystemsSubtitle": "Trojan horse in the body: barrier penetration, inflammation",
+  "detailCentralSystemsChargeHint": "Nanoplastics carry a static electric charge — the key that lets them cross the blood-brain barrier.",
   "detailCentralSystemsEntry1Highlight": "Aggressiveness: within 2 hours",
   "detailCentralSystemsEntry1Desc": "Inhaled nanoplastics quickly enter the bloodstream, carry an electrostatic charge and become coated with biomolecules (cholesterol, proteins) in the blood, forming a so-called bio-corona.",
   "detailCentralSystemsEntry1Bullet1": "Trojan horse effect - particle masking",
@@ -181,6 +182,7 @@
 
   "detailWorldOceanTitle": "World Ocean and Hydrosphere",
   "detailWorldOceanSubtitle": "Physicochemical sabotage & heat accumulation",
+  "detailWorldOceanChargeHint": "The static charge on nanoplastics disrupts water's hydrogen bond network, reducing the ocean's ability to absorb heat.",
   "detailWorldOceanEntry1Highlight": "Disruption of water hydrogen bonds",
   "detailWorldOceanEntry1Desc": "Nanoplastics bind to water molecules & create hydration shells that 'immobilize' large volumes of water.",
   "detailWorldOceanEntry1Bullet1": "Sharp decline in oceans' ability to dissipate heat",
@@ -188,6 +190,7 @@
 
   "detailAtmosphereTitle": "Atmosphere & Global Water Cycle",
   "detailAtmosphereSubtitle": "Atmospheric & hydrological disruption",
+  "detailAtmosphereChargeHint": "Charged nanoplastics act as condensation nuclei, hijacking cloud formation and destabilizing the global water cycle.",
   "detailAtmosphereEntry1Highlight": "Low & 'heavy' clouds",
   "detailAtmosphereEntry1Desc": "Nanoplastics act as aggressive condensation nuclei → formation of low, dense clouds that trap heat and destabilize climate.",
 
@@ -251,6 +254,19 @@
   "resultsEvaluationSystemTitle": "ABOUT THE EVALUATION SYSTEM",
   "resultsEvaluationSystemDesc1": "Your ideas are collected and mathematically analyzed using advanced algorithms. The system evaluates feasibility, impact, and innovation of each solution.",
   "resultsEvaluationSystemDesc2": "The most promising solutions will be presented to scientists and policymakers for practical implementation.",
+
+  "leaderboardEvalTitle": "How ideas are scored",
+  "leaderboardEvalIntro": "Each idea is evaluated by an AI agent specialized for its category. The agent scores 0–1000 across four dimensions, then assigns a tier.",
+  "leaderboardEvalDim1": "Scientific plausibility (0–300)",
+  "leaderboardEvalDim2": "Impact potential (0–300)",
+  "leaderboardEvalDim3": "Mechanistic depth (0–200)",
+  "leaderboardEvalDim4": "Innovation (0–200)",
+  "leaderboardEvalTierS": "S · 850–1000 — Charge neutralization + category protection",
+  "leaderboardEvalTierA": "A · 650–849 — Charge + systemic solution",
+  "leaderboardEvalTierB": "B · 400–649 — Effective, no charge solution",
+  "leaderboardEvalTierC": "C · 150–399 — General mitigation",
+  "leaderboardEvalTierP": "Participant · 1–149 — Relevant but vague",
+  "leaderboardEvalKeyInsight": "The highest-scoring ideas address static charge — the root mechanism that lets nanoplastics cross biological barriers.",
 
   "leaderboardTitle": "TOP 10 SOLVERS",
   "leaderboardSubtitle": "Leading contributors to nanoplastic solutions",

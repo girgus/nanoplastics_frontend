@@ -67,9 +67,7 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
   }
 
   void _checkUserRegistration() {
-    final displayName = _settingsManager.displayName.trim();
-    final email = _settingsManager.email.trim();
-    _userHasEmailAndBio = displayName.isNotEmpty && email.isNotEmpty;
+    _userHasEmailAndBio = _settingsManager.isProfileRegistered;
   }
 
   void _showRegistrationDialog() {
@@ -299,6 +297,8 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildTitleSection(context),
+                const SizedBox(height: AppConstants.space16),
+                _buildEvalSection(context),
                 const SizedBox(height: AppConstants.space24),
                 ...solvers.map((solver) => _buildSolverCard(solver)),
                 const SizedBox(height: AppConstants.space24),
@@ -425,6 +425,37 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
           overflow: TextOverflow.ellipsis,
         ),
       ],
+    );
+  }
+
+  Widget _buildEvalSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Container(
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppConstants.space12, vertical: AppConstants.space10),
+      decoration: BoxDecoration(
+        color: AppColors.pastelMint.withValues(alpha: 0.07),
+        borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+        border:
+            Border.all(color: AppColors.pastelMint.withValues(alpha: 0.2)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.bolt,
+              color: AppColors.pastelMint, size: AppConstants.iconSmall),
+          const SizedBox(width: AppConstants.space8),
+          Expanded(
+            child: Text(
+              l10n.leaderboardEvalKeyInsight,
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: AppColors.pastelMint,
+                    fontStyle: FontStyle.italic,
+                  ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

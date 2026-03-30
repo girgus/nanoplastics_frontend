@@ -410,6 +410,17 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
             ),
             textAlign: TextAlign.center,
           ),
+          if (widget.categoryData.chargeHint != null) ...[
+            SizedBox(height: spacing.sm),
+            Text(
+              widget.categoryData.chargeHint!,
+              style: typography.body.copyWith(
+                color: widget.categoryData.themeColor.withValues(alpha: 0.85),
+                fontStyle: FontStyle.italic,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
           _buildHeroIcon(),
           _buildInfoPanel(),
           const SizedBox(height: AppConstants.space30),

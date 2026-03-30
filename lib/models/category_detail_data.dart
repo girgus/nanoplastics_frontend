@@ -6,6 +6,7 @@ class CategoryDetailData {
   final String categoryKey;
   final String title;
   final String subtitle;
+  final String? chargeHint;
   final IconData icon;
   final Color themeColor;
   final Color glowColor;
@@ -17,6 +18,7 @@ class CategoryDetailData {
     required this.categoryKey,
     required this.title,
     required this.subtitle,
+    this.chargeHint,
     required this.icon,
     required this.themeColor,
     required this.glowColor,
@@ -423,6 +425,7 @@ class CategoryDetailDataFactory {
       categoryKey: 'human_central',
       title: l10n.detailCentralSystemsTitle,
       subtitle: l10n.detailCentralSystemsSubtitle,
+      chargeHint: l10n.detailCentralSystemsChargeHint,
       icon: Icons.psychology_outlined,
       themeColor: AppColors.neonCyan,
       glowColor: AppColors.neonCyanGlow,
@@ -1753,6 +1756,7 @@ class CategoryDetailDataFactory {
       categoryKey: 'planet_ocean',
       title: l10n.detailWorldOceanTitle,
       subtitle: l10n.detailWorldOceanSubtitle,
+      chargeHint: l10n.detailWorldOceanChargeHint,
       icon: Icons.waves_outlined,
       themeColor: AppColors.neonOcean,
       glowColor: AppColors.neonOceanGlow,
@@ -1920,6 +1924,7 @@ class CategoryDetailDataFactory {
       categoryKey: 'planet_atmosphere',
       title: l10n.detailAtmosphereTitle,
       subtitle: l10n.detailAtmosphereSubtitle,
+      chargeHint: l10n.detailAtmosphereChargeHint,
       icon: Icons.cloud_outlined,
       themeColor: AppColors.neonAtmos,
       glowColor: AppColors.neonAtmosGlow,

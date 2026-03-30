@@ -122,6 +122,7 @@
 
   "detailCentralSystemsTitle": "Centrální systémy (Krev, Mozek)",
   "detailCentralSystemsSubtitle": "Trojský kůň v těle: průnik bariérami, záněty",
+  "detailCentralSystemsChargeHint": "Nanoplasty nesou statický elektrický náboj — to je klíč, který jim umožňuje překonat hematoencefalickou bariéru.",
   "detailCentralSystemsEntry1Highlight": "Agresivita: do 2 hodin",
   "detailCentralSystemsEntry1Desc": "Nanoplasty vdechnutím se rychle dostávají do krve, nesou elektrostatický náboj a v krvi se obalí biomolekulami (cholesterol, proteiny), čímž vytvoří tzv. bio-koronu.",
   "detailCentralSystemsEntry1Bullet1": "Efekt Trojského koně - maskování částic",
@@ -178,6 +179,7 @@
 
   "detailWorldOceanTitle": "Světový oceán a hydrosféra",
   "detailWorldOceanSubtitle": "Fyzikálně-chemická sabotáž a akumulace tepla",
+  "detailWorldOceanChargeHint": "Statický náboj nanoplastů narušuje vodíkové vazby vody a snižuje schopnost oceánů pohlcovat teplo.",
   "detailWorldOceanEntry1Highlight": "Narušení vodíkových vazeb vody",
   "detailWorldOceanEntry1Desc": "Nanoplasty se vážou na molekuly vody a vytvářejí hydratační obaly, které 'znehybňují' velké objemy vody.",
   "detailWorldOceanEntry1Bullet1": "Prudký pokles schopnosti oceánů odvádět teplo",
@@ -185,6 +187,7 @@
 
   "detailAtmosphereTitle": "Atmosféra a globální vodní cyklus",
   "detailAtmosphereSubtitle": "Atmosférický a hydrologický rozvrat",
+  "detailAtmosphereChargeHint": "Nabité nanoplasty fungují jako kondenzační jádra a přebírají kontrolu nad vznikem mraků a globálním vodním cyklem.",
   "detailAtmosphereEntry1Highlight": "Nízké a 'těžké' mraky",
   "detailAtmosphereEntry1Desc": "Nanoplasty fungují jako agresivní kondenzační jádra → vznik nízkých, hustých mraků, které zadržují teplo a destabilizují klima.",
 
@@ -248,6 +251,19 @@
   "resultsEvaluationSystemTitle": "O SYSTÉMU VYHODNOCOVÁNÍ",
   "resultsEvaluationSystemDesc1": "Vaše nápady jsou sbírány a matematicky analyzovány pomocí pokročilých algoritmů. Systém vyhodnocuje feasibilitu, dopad a inovativnost každého řešení.",
   "resultsEvaluationSystemDesc2": "Nejperspektivnější řešení budou prezentována vědcům a tvůrcům politik pro praktickou implementaci.",
+
+  "leaderboardEvalTitle": "Jak se hodnotí nápady",
+  "leaderboardEvalIntro": "Každý nápad hodnotí AI agent specializovaný pro danou kategorii. Skóruje 0–1000 ve čtyřech dimenzích a přiřadí tier.",
+  "leaderboardEvalDim1": "Vědecká věrohodnost (0–300)",
+  "leaderboardEvalDim2": "Potenciál dopadu (0–300)",
+  "leaderboardEvalDim3": "Mechanistická hloubka (0–200)",
+  "leaderboardEvalDim4": "Inovace (0–200)",
+  "leaderboardEvalTierS": "S · 850–1000 — Neutralizace náboje + kategoriová ochrana",
+  "leaderboardEvalTierA": "A · 650–849 — Náboj + systémové řešení",
+  "leaderboardEvalTierB": "B · 400–649 — Efektivní, bez řešení náboje",
+  "leaderboardEvalTierC": "C · 150–399 — Obecná zmírnění",
+  "leaderboardEvalTierP": "Participant · 1–149 — Relevantní, ale vágní",
+  "leaderboardEvalKeyInsight": "Nejlépe hodnocené nápady řeší statický náboj — základní mechanismus, který nanoplastům umožňuje překonávat biologické bariéry.",
 
   "leaderboardTitle": "TOP 10 ŘEŠITELŮ",
   "leaderboardSubtitle": "Vedoucí přispěvatelé řešením nanoplastů",
