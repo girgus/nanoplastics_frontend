@@ -634,7 +634,21 @@ class _BrainstormBoxState extends State<BrainstormBox>
                     ),
                   ],
 
-                  const SizedBox(height: AppConstants.space16),
+                  const SizedBox(height: AppConstants.space12),
+
+                  // CC BY 4.0 consent notice
+                  Text(
+                    AppLocalizations.of(context)!.brainstormLicenseNotice,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppThemeColors.of(context)
+                              .textMuted
+                              .withValues(alpha: 0.6),
+                          fontSize: 10,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+
+                  const SizedBox(height: AppConstants.space8),
 
                   // Submit button
                   SizedBox(
