@@ -26,8 +26,7 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  String _selectedPlatform =
-      'android_full'; // 'android_full', 'play_store', 'ios'
+  String _selectedPlatform = 'play_store';
   late String appVersion;
   CustomTabsSession? _customTabsSession;
 
@@ -74,10 +73,10 @@ class _AboutScreenState extends State<AboutScreen> {
   String _getDownloadUrl() {
     switch (_selectedPlatform) {
       case 'play_store':
-        return 'https://play.google.com/store/apps/details?id=com.glmcz.nanoplastics_app';
-      case 'ios':
-        return ''; // Coming soon, not clickable
-      case 'android_full':
+        return 'https://play.google.com/store/apps/details?id=org.nanosolve.hive';
+      case 'app_store':
+        return 'https://apps.apple.com/app/id6760934677';
+      case 'public':
       default:
         return 'https://github.com/glmcz/nanoplastics_frontend/releases';
     }
@@ -88,9 +87,9 @@ class _AboutScreenState extends State<AboutScreen> {
     switch (_selectedPlatform) {
       case 'play_store':
         return l10n.aboutPlatformPlayStore;
-      case 'ios':
+      case 'app_store':
         return l10n.aboutPlatformIOS;
-      case 'android_full':
+      case 'public':
       default:
         return l10n.aboutPlatformAndroidFull;
     }
@@ -525,7 +524,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildPlatformButton(
-                      'android_full',
+                      'public',
                       l10n.aboutPlatformAndroidFull,
                       spacing,
                       sizing,
@@ -537,8 +536,7 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
               SizedBox(height: spacing.cardSpacing),
               _buildPlatformButton(
-                  'ios', l10n.aboutPlatformIOS, spacing, sizing, typography,
-                  isEnabled: false),
+                  'app_store', l10n.aboutPlatformIOS, spacing, sizing, typography),
             ],
           ),
           const SizedBox(height: AppConstants.space16),
@@ -718,7 +716,7 @@ class _AboutScreenState extends State<AboutScreen> {
         await PlatformAdaptive.launchExternalUri(uri);
         return;
       }
-      // Custom Tabs (Android) / Safari VC (iOS) — stays in-app, no app switch
+      // Custom Tabs (Android) / Safari VC (app_store) — stays in-app, no app switch
       await launchUrl(
         uri,
         customTabsOptions: CustomTabsOptions(
