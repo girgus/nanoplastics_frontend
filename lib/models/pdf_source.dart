@@ -948,6 +948,11 @@ class VideoSource {
 // Video Sources - English
 final List<VideoSource> videoSourcesEn = [
   VideoSource(
+    title: 'Nanoplastics: Hidden Connections and Emerging Risks | Conference in the European Parliament',
+    url: 'https://youtu.be/EZony1cFgjk?si=RVhtwSKnkmP9JmN_',
+    language: 'en',
+  ),
+  VideoSource(
     title: 'Nanoplastics. Threat to Life | ALLATRA Documentary',
     url: 'https://youtu.be/BVap0MdbCZg',
     language: 'en',
@@ -955,6 +960,11 @@ final List<VideoSource> videoSourcesEn = [
   VideoSource(
     title: 'Trap for Humanity | Popular Science Film',
     url: 'https://youtu.be/NBbbqRzzQGY',
+    language: 'en',
+  ),
+  VideoSource(
+    title: 'Why Is the Ocean Warming Up So Fast?',
+    url: 'https://youtu.be/2tscXOUUVgk?si=tg_X9qMRyfM2pQm4',
     language: 'en',
   ),
   VideoSource(
@@ -978,10 +988,20 @@ final List<VideoSource> videoSourcesEn = [
     url: 'https://youtu.be/0DNempKykno',
     language: 'en',
   ),
+  VideoSource(
+    title: 'Nanoplastics and Society: An Interview with Professor Antonio Ragusa',
+    url: 'https://youtu.be/eH_Q9DXO5Zk?si=qhCrouWaoLkZoi1R',
+    language: 'en',
+  ),
 ];
 
 // Video Sources - Spanish
 final List<VideoSource> videoSourcesEs = [
+  VideoSource(
+    title: 'Nanoplásticos. Una amenaza para la vida | Documental de ALLATRA',
+    url: 'https://youtu.be/FHYw4qVI5wI?si=_YCkmF7n3NljuS3e',
+    language: 'es',
+  ),
   VideoSource(
     title: 'Nanoplásticos. Una amenaza para la vida | Documental de ALLATRA',
     url: 'https://youtu.be/G8Kxul9QVDE',
@@ -995,6 +1015,11 @@ final List<VideoSource> videoSourcesEs = [
   VideoSource(
     title: 'Factor Antropogénico en la Muerte del Océano | Documental',
     url: 'https://youtu.be/V2vb6bbOzqg',
+    language: 'es',
+  ), 
+  VideoSource(
+    title: 'Por qué se está calentando el océano tan rápido? | Dr. Egon Cholakian',
+    url: 'https://youtu.be/uxMwnRAgle4?si=p6ZEImTPNMMUturR',
     language: 'es',
   ),
   VideoSource(
@@ -1017,6 +1042,11 @@ final List<VideoSource> videoSourcesEs = [
 
 // Video Sources - Russian
 final List<VideoSource> videoSourcesRu = [
+    VideoSource(
+    title: 'Нанопластик: скрытые связи и возникающие риски | Европейский парламент, Брюссель',
+    url: 'https://youtu.be/ha6T0t0q7JA?si=h4Y85L9BjX4s9hby',
+    language: 'ru',
+  ),
   VideoSource(
     title: 'Нанопластик. Угроза жизни | Научно-популярный фильм АЛЛАТРА',
     url: 'https://youtu.be/y9ephv8L1-Q',
@@ -1025,6 +1055,11 @@ final List<VideoSource> videoSourcesRu = [
   VideoSource(
     title: 'Ловушка для человечества | Научно-Популярный Фильм',
     url: 'https://youtu.be/7LGWum8MEBk',
+    language: 'ru',
+  ), 
+  VideoSource(
+    title: 'Почему океан нагревается так быстро? | Д-р Эгон Чолакян',
+    url: 'https://youtu.be/6wYLXZfnkEo?si=rWmzjBD38vkDF0I-',
     language: 'ru',
   ),
   VideoSource(
@@ -1052,6 +1087,11 @@ final List<VideoSource> videoSourcesRu = [
 
 // Video Sources - French
 final List<VideoSource> videoSourcesFr = [
+    VideoSource(
+    title: 'Nanoplastiques : liens cachés et risques émergents | Conférence au Parlement européen',
+    url: 'https://youtu.be/VxEhJuBTLWM?si=hwp9bbV4V499IAXb',
+    language: 'fr',
+  ),
   VideoSource(
     title: 'Nanoplastiques. Menace pour la vie | Documentaire ALLATRA',
     url: 'https://youtu.be/ilwHuxNgfa0',
@@ -1060,6 +1100,11 @@ final List<VideoSource> videoSourcesFr = [
   VideoSource(
     title: 'Un Piège Pour L\'humanité | Film De Vulgarisation Scientifique',
     url: 'https://youtu.be/xmMNIqyb8pA',
+    language: 'fr',
+  ),
+  VideoSource(
+    title: "Pourquoi l'océan se réchauffe-t-il si rapidement ? | Dr Egon Cholakian",
+    url: 'https://youtu.be/H5J6l_CxnuI?si=qNK0BMeCtBQG1uPz',
     language: 'fr',
   ),
   VideoSource(
@@ -1089,6 +1134,11 @@ final List<VideoSource> videoSourcesFr = [
 // Video Sources - Czech
 final List<VideoSource> videoSourcesCs = [
   VideoSource(
+    title: 'Nanoplasty: Skryté souvislosti a vznikající rizika | konference v Evropském parlamentu',
+    url: 'https://youtu.be/wzvzKiuBNaM?si=87_4toxs_96NpnSI',
+    language: 'cs',
+  ),
+  VideoSource(
     title: 'Nanoplasty. Hrozba pro život | Dokument ALLATRA',
     url: 'https://www.youtube.com/watch?v=MRhJPOAQCJc',
     language: 'cs',
@@ -1101,6 +1151,11 @@ final List<VideoSource> videoSourcesCs = [
   VideoSource(
     title: 'Past pro lidstvo | Vědecko-populární film',
     url: 'https://www.youtube.com/watch?v=v6FBZz4j1_Y',
+    language: 'cs',
+  ),
+  VideoSource(
+    title: 'Prečo sa oceán otepľuje tak rýchlo? | Dr. Egon Cholakian',
+    url: 'https://youtu.be/N88S-F6cvpw?si=n34fsRjLxYT91iBr',
     language: 'cs',
   ),
   VideoSource(
