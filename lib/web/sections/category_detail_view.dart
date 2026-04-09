@@ -650,35 +650,6 @@ class _ResearchNotesBlock extends StatelessWidget {
 }
 
 // ── Badge widgets ─────────────────────────────────────────────────────────────
-class _RiskBadge extends StatelessWidget {
-  final String label;
-  final Color color;
-
-  const _RiskBadge({required this.label, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.13),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        label.toUpperCase(),
-        style: TextStyle(
-          color: color,
-          fontSize: 10,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 0.06,
-          fontFamily: 'monospace',
-        ),
-      ),
-    );
-  }
-}
-
 class _MetaPill extends StatelessWidget {
   final String label;
   const _MetaPill({required this.label});
