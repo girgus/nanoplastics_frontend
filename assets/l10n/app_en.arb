@@ -37,16 +37,16 @@
   "planetCategoryPhysicalProperties": "Physical Properties & Effects",
   "planetCategoryPhysicalPropertiesDesc": "Soil, water, air",
 
-  "onboardingTitle1": "This is reality. We want to change it. But we need your brain.",
+  "onboardingTitle1": "This is reality. We want to change it, but we need your idea!",
   "onboardingHighlight1": "",
-  "onboardingDescription1": "",
+  "onboardingDescription1": "To make this change, we need your idea.",
 
-  "onboardingTitle2": "Choose one of the battlefields, join in, and find a solution.",
-  "onboardingHighlight2": "",
+  "onboardingTitle2": "Choose your specialization.",
+  "onboardingHighlight2": "Join in and find a solution.",
   "onboardingDescription2": "",
 
-  "onboardingTitle3": "Be one of us, and inspire others.",
-  "onboardingHighlight3": "",
+  "onboardingTitle3": "Be one of us",
+  "onboardingHighlight3": "and inspire others.",
   "onboardingDescription3": "",
 
   "onboardingNext": "Next",
@@ -356,7 +356,7 @@
   "aboutShareTitle": "Share NanoSolve",
   "aboutShareDesc": "Scan this QR code to download \nthe app",
   "aboutShareAppLink": "App Download Link",
-  "aboutFooterMessage": "Made with care for a cleaner planet",
+  "aboutFooterMessage": "Made with care for Humanity",
   "aboutCopyright": "2026 NanoSolve. All rights reserved.",
 
   "updateDownloadPaused": "Download paused",

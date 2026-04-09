@@ -12,12 +12,14 @@ class IdeasSection extends StatefulWidget {
   final AppLocalizations l10n;
   final List<CategoryDetailData> categories;
   final CategoryDetailData? initialCategory;
+  final String? initialContext;
 
   const IdeasSection({
     super.key,
     required this.l10n,
     required this.categories,
     this.initialCategory,
+    this.initialContext,
   });
 
   @override
@@ -37,18 +39,26 @@ class _IdeasSectionState extends State<IdeasSection> {
   String? _successBanner;
   CategoryDetailData? _selectedCategory;
 
+  String? _contextChip;
+
   @override
   void initState() {
     super.initState();
     _selectedCategory = widget.initialCategory;
-    final templateCategory = widget.initialCategory?.title;
-    if (templateCategory != null) {
+    if (widget.initialContext != null) {
+      _contextChip = widget.initialContext;
       _ideaController.text =
-          'Category: $templateCategory\n\nProblem:\n\nProposed solution:\n';
-      _ideaController.selection = TextSelection.collapsed(
-        offset: _ideaController.text.length,
-      );
+          'Based on finding: "${widget.initialContext}"\n\nProposed solution:\n';
+    } else {
+      final templateCategory = widget.initialCategory?.title;
+      if (templateCategory != null) {
+        _ideaController.text =
+            'Category: $templateCategory\n\nProblem:\n\nProposed solution:\n';
+      }
     }
+    _ideaController.selection = TextSelection.collapsed(
+      offset: _ideaController.text.length,
+    );
     _emailController.text = ServiceLocator().settingsManager.email;
     _emailFocusNode.addListener(() {
       if (!_emailFocusNode.hasFocus) {
@@ -133,6 +143,21 @@ class _IdeasSectionState extends State<IdeasSection> {
                         });
                       },
               ),
+              if (_contextChip != null) ...[
+                const SizedBox(height: 14),
+                Chip(
+                  avatar: const Text('💡'),
+                  label: Text(
+                    'Based on: ${_contextChip!.length > 60 ? '${_contextChip!.substring(0, 60)}…' : _contextChip!}',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  deleteIcon: const Icon(Icons.close, size: 14),
+                  onDeleted: () => setState(() => _contextChip = null),
+                  backgroundColor: const Color(0x1F38BDF8),
+                  side: const BorderSide(color: Color(0x4038BDF8)),
+                  labelStyle: const TextStyle(color: Color(0xFF38BDF8)),
+                ),
+              ],
               const SizedBox(height: 14),
               Text(
                 '${widget.l10n.ideasIdeaLabel} (${widget.l10n.ideasMinChars})',

@@ -1,4 +1,4 @@
-enum WebSection { explore, sources, ideas, leaderboard }
+enum WebSection { explore, sources, ideas, leaderboard, settings }
 
 enum WebDomain { human, planet }
 

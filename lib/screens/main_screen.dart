@@ -12,7 +12,9 @@ import '../l10n/app_localizations.dart';
 import '../models/category_data.dart';
 import '../models/category_detail_data.dart';
 import 'category_detail_new_screen.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'sources_screen.dart';
+import 'web/web_sources_screen.dart';
 import 'solvers_leaderboard_screen.dart';
 import 'user_settings/user_settings_screen.dart';
 import '../services/logger_service.dart';
@@ -1066,7 +1068,7 @@ class _MainScreenState extends State<MainScreen> {
   void _navigateToResources(CategoryData? category) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => const SourcesScreen(),
+        builder: (_) => kIsWeb ? const WebSourcesScreen() : const SourcesScreen(),
       ),
     );
   }

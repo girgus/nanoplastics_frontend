@@ -1,45 +1,41 @@
 import 'package:flutter/material.dart';
 
-import '../../config/app_colors.dart';
 import '../../l10n/app_localizations.dart';
 import '../../mixins/language_selection_mixin.dart';
+import '../../models/category_detail_data.dart';
 import '../../widgets/nanosolve_logo.dart';
-import '../web_state.dart';
 import '../web_theme.dart';
 
 class WebSidebar extends StatelessWidget {
   final AppLocalizations l10n;
   final bool expanded;
   final bool compactMode;
-  final WebDomain domain;
-  final WebSection section;
   final bool isChatOpen;
   final String selectedLanguage;
-  final ValueChanged<WebDomain> onDomainChanged;
-  final ValueChanged<WebSection> onSectionChanged;
-  final VoidCallback onGoHome;
+  final List<CategoryDetailData> categories;
+  final CategoryDetailData? selectedCategory;
   final VoidCallback onToggleChat;
   final ValueChanged<String> onSelectLanguage;
+  final ValueChanged<CategoryDetailData> onSelectCategory;
 
   const WebSidebar({
     super.key,
     required this.l10n,
     required this.expanded,
     required this.compactMode,
-    required this.domain,
-    required this.section,
     required this.isChatOpen,
     required this.selectedLanguage,
-    required this.onDomainChanged,
-    required this.onSectionChanged,
-    required this.onGoHome,
+    required this.categories,
+    required this.selectedCategory,
     required this.onToggleChat,
     required this.onSelectLanguage,
+    required this.onSelectCategory,
   });
 
   @override
   Widget build(BuildContext context) {
     final showLabels = expanded && !compactMode;
+
     final languagePicker = PopupMenuButton<String>(
       tooltip: l10n.sidebarLang,
       onSelected: onSelectLanguage,
@@ -61,22 +57,22 @@ class WebSidebar extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-          color: Colors.white.withValues(alpha: 0.03),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: WebTheme.borderSubtle),
+          color: WebTheme.surfaceHover,
         ),
         child: Row(
           mainAxisAlignment:
               showLabels ? MainAxisAlignment.start : MainAxisAlignment.center,
           children: [
-            const Icon(Icons.language, size: 16, color: Colors.white70),
+            const Icon(Icons.language, size: 16, color: WebTheme.textSecondary),
             if (showLabels) ...[
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   '${l10n.sidebarLang}: ${selectedLanguage.toUpperCase()}',
                   style: const TextStyle(
-                    color: Colors.white70,
+                    color: WebTheme.textSecondary,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -91,94 +87,84 @@ class WebSidebar extends StatelessWidget {
     );
 
     return Container(
-      width: expanded ? WebTheme.sidebarExpanded : WebTheme.sidebarCollapsed,
+      decoration: const BoxDecoration(
+        color: WebTheme.surfaceSidebar,
+        border: Border(right: BorderSide(color: WebTheme.borderSubtle)),
+      ),
       padding: const EdgeInsets.fromLTRB(8, 12, 8, 10),
       child: Column(
         children: [
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                SizedBox(
-                  height: 52,
-                  child: showLabels
-                      ? Align(
-                          alignment: Alignment.centerLeft,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(8),
-                            onTap: onGoHome,
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 4, vertical: 2),
-                              child: NanosolveLogo(height: 30),
-                            ),
-                          ),
-                        )
-                      : Center(
-                          child: IconButton(
-                            onPressed: onGoHome,
-                            icon: const Icon(Icons.bubble_chart_outlined,
-                                color: Colors.white70),
-                            tooltip: l10n.navExplore,
-                            visualDensity: VisualDensity.compact,
-                          ),
-                        ),
-                ),
-                const SizedBox(height: 10),
-                _DomainSwitch(
-                  showLabels: showLabels,
-                  active: domain,
-                  onChange: onDomainChanged,
-                  l10n: l10n,
-                ),
-                const SizedBox(height: 12),
-                _NavItem(
-                  icon: Icons.explore_outlined,
-                  label: l10n.navExplore,
-                  selected: section == WebSection.explore,
-                  showLabel: showLabels,
-                  onTap: () => onSectionChanged(WebSection.explore),
-                ),
-                _NavItem(
-                  icon: Icons.menu_book_outlined,
-                  label: l10n.navSources,
-                  selected: section == WebSection.sources,
-                  showLabel: showLabels,
-                  onTap: () => onSectionChanged(WebSection.sources),
-                ),
-                _NavItem(
-                  icon: Icons.lightbulb_outline,
-                  label: l10n.categoryDetailIdeas,
-                  selected: section == WebSection.ideas,
-                  showLabel: showLabels,
-                  onTap: () => onSectionChanged(WebSection.ideas),
-                ),
-                _NavItem(
-                  icon: Icons.leaderboard_outlined,
-                  label: l10n.navResults,
-                  selected: section == WebSection.leaderboard,
-                  showLabel: showLabels,
-                  onTap: () => onSectionChanged(WebSection.leaderboard),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                  child: Divider(
-                    color: Colors.white.withValues(alpha: 0.12),
-                    height: 1,
+          // ── Logo ─────────────────────────────────────────────────────────
+          SizedBox(
+            height: 44,
+            child: showLabels
+                ? const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 2),
+                      child: NanosolveLogo(height: 28),
+                    ),
+                  )
+                : const Center(
+                    child: Icon(Icons.bubble_chart_outlined,
+                        color: WebTheme.textSecondary),
                   ),
-                ),
-                _NavItem(
-                  icon: Icons.smart_toy_outlined,
-                  label: l10n.sidebarAiChat,
-                  selected: isChatOpen,
+          ),
+
+          const SizedBox(height: 4),
+          const Divider(height: 1, color: WebTheme.borderSubtle),
+
+          // ── Categories label ──────────────────────────────────────────────
+          if (showLabels)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
+              child: Row(
+                children: [
+                  const Text(
+                    'CATEGORIES',
+                    style: TextStyle(
+                      color: WebTheme.textMuted,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.1,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    '${categories.length}',
+                    style: const TextStyle(
+                      color: WebTheme.textMuted,
+                      fontSize: 10,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else
+            const SizedBox(height: 6),
+
+          // ── Category list ─────────────────────────────────────────────────
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                final cat = categories[index];
+                final active =
+                    selectedCategory?.categoryKey == cat.categoryKey;
+                return _CategoryRow(
+                  cat: cat,
+                  active: active,
                   showLabel: showLabels,
-                  badge: isChatOpen,
-                  onTap: onToggleChat,
-                ),
-              ],
+                  onTap: () => onSelectCategory(cat),
+                );
+              },
             ),
           ),
+
           const SizedBox(height: 8),
           languagePicker,
         ],
@@ -187,62 +173,61 @@ class WebSidebar extends StatelessWidget {
   }
 }
 
-class _NavItem extends StatefulWidget {
-  final IconData icon;
-  final String label;
-  final bool selected;
+// ── Category row ─────────────────────────────────────────────────────────────
+class _CategoryRow extends StatefulWidget {
+  final CategoryDetailData cat;
+  final bool active;
   final bool showLabel;
-  final bool badge;
   final VoidCallback onTap;
 
-  const _NavItem({
-    required this.icon,
-    required this.label,
-    required this.selected,
+  const _CategoryRow({
+    required this.cat,
+    required this.active,
     required this.showLabel,
     required this.onTap,
-    this.badge = false,
   });
 
   @override
-  State<_NavItem> createState() => _NavItemState();
+  State<_CategoryRow> createState() => _CategoryRowState();
 }
 
-class _NavItemState extends State<_NavItem> {
+class _CategoryRowState extends State<_CategoryRow> {
   bool _hovered = false;
 
   @override
   Widget build(BuildContext context) {
+    final isHuman = widget.cat.categoryKey.startsWith('human_');
+
     return Semantics(
       button: true,
-      selected: widget.selected,
-      label: widget.label,
+      selected: widget.active,
+      label: widget.cat.title,
       child: MouseRegion(
         onEnter: (_) => setState(() => _hovered = true),
         onExit: (_) => setState(() => _hovered = false),
         child: Tooltip(
-          message: widget.showLabel ? '' : widget.label,
+          message: widget.showLabel ? '' : widget.cat.title,
           child: InkWell(
             onTap: widget.onTap,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(WebTheme.itemRadius),
             child: AnimatedContainer(
               duration: WebTheme.fast,
-              margin: const EdgeInsets.only(bottom: 8),
+              margin: const EdgeInsets.only(bottom: 1),
               padding: EdgeInsets.symmetric(
-                horizontal: widget.showLabel ? 10 : 0,
-                vertical: 10,
+                horizontal: widget.showLabel ? 8 : 0,
+                vertical: 7,
               ),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: widget.selected
-                    ? AppColors.pastelAqua.withValues(alpha: 0.18)
-                    : (_hovered
-                        ? Colors.white.withValues(alpha: 0.07)
-                        : Colors.transparent),
-                border: Border.all(
-                  color: widget.selected
-                      ? AppColors.pastelAqua.withValues(alpha: 0.7)
-                      : Colors.white.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(WebTheme.itemRadius),
+                color: widget.active
+                    ? WebTheme.accentDim
+                    : (_hovered ? WebTheme.surfaceHover : Colors.transparent),
+                border: Border(
+                  left: BorderSide(
+                    color:
+                        widget.active ? WebTheme.accent : Colors.transparent,
+                    width: 2,
+                  ),
                 ),
               ),
               child: Row(
@@ -250,39 +235,58 @@ class _NavItemState extends State<_NavItem> {
                     ? MainAxisAlignment.start
                     : MainAxisAlignment.center,
                 children: [
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Icon(
-                        widget.icon,
-                        color: widget.selected
-                            ? AppColors.pastelAqua
-                            : Colors.white70,
-                      ),
-                      if (widget.badge)
-                        const Positioned(
-                          right: -2,
-                          top: -2,
-                          child: CircleAvatar(
-                            radius: 4,
-                            backgroundColor: AppColors.pastelMint,
-                          ),
-                        ),
-                    ],
+                  Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: widget.cat.themeColor.withValues(alpha: 0.14),
+                    ),
+                    child: Icon(
+                      widget.cat.icon,
+                      size: 14,
+                      color: widget.active
+                          ? WebTheme.accent
+                          : widget.cat.themeColor,
+                    ),
                   ),
                   if (widget.showLabel) ...[
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        widget.label,
+                        widget.cat.title,
                         style: TextStyle(
-                          color: widget.selected
-                              ? Colors.white
-                              : Colors.white.withValues(alpha: 0.82),
-                          fontWeight: FontWeight.w600,
+                          color: widget.active
+                              ? WebTheme.textPrimary
+                              : WebTheme.textSecondary,
+                          fontWeight: widget.active
+                              ? FontWeight.w600
+                              : FontWeight.w400,
+                          fontSize: 12,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 1),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                        color: isHuman
+                            ? const Color(0x1F38BDF8)
+                            : const Color(0x1F4ADE80),
+                      ),
+                      child: Text(
+                        isHuman ? 'H' : 'P',
+                        style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                          color: isHuman
+                              ? WebTheme.accent
+                              : const Color(0xFF4ADE80),
+                          fontFamily: 'monospace',
+                        ),
                       ),
                     ),
                   ],
@@ -290,134 +294,6 @@ class _NavItemState extends State<_NavItem> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DomainSwitch extends StatelessWidget {
-  final bool showLabels;
-  final WebDomain active;
-  final ValueChanged<WebDomain> onChange;
-  final AppLocalizations l10n;
-
-  const _DomainSwitch({
-    required this.showLabels,
-    required this.active,
-    required this.onChange,
-    required this.l10n,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (!showLabels) {
-      return Column(
-        children: [
-          _DomainChip(
-            label: l10n.tabHuman,
-            icon: Icons.person_outline,
-            active: active == WebDomain.human,
-            showLabel: false,
-            onTap: () => onChange(WebDomain.human),
-            color: AppColors.neonCyan,
-          ),
-          const SizedBox(height: 6),
-          _DomainChip(
-            label: l10n.tabPlanet,
-            icon: Icons.public,
-            active: active == WebDomain.planet,
-            showLabel: false,
-            onTap: () => onChange(WebDomain.planet),
-            color: AppColors.neonOcean,
-          ),
-        ],
-      );
-    }
-
-    return Row(
-      children: [
-        Expanded(
-          child: _DomainChip(
-            label: l10n.tabHuman,
-            icon: Icons.person_outline,
-            active: active == WebDomain.human,
-            showLabel: showLabels,
-            onTap: () => onChange(WebDomain.human),
-            color: AppColors.neonCyan,
-          ),
-        ),
-        const SizedBox(width: 6),
-        Expanded(
-          child: _DomainChip(
-            label: l10n.tabPlanet,
-            icon: Icons.public,
-            active: active == WebDomain.planet,
-            showLabel: showLabels,
-            onTap: () => onChange(WebDomain.planet),
-            color: AppColors.neonOcean,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _DomainChip extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final bool active;
-  final bool showLabel;
-  final VoidCallback onTap;
-  final Color color;
-
-  const _DomainChip({
-    required this.label,
-    required this.icon,
-    required this.active,
-    required this.showLabel,
-    required this.onTap,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        decoration: BoxDecoration(
-          color: active
-              ? color.withValues(alpha: 0.16)
-              : Colors.white.withValues(alpha: 0.04),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: active
-                ? color.withValues(alpha: 0.6)
-                : Colors.white.withValues(alpha: 0.08),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 16, color: active ? color : Colors.white70),
-            if (showLabel) ...[
-              const SizedBox(width: 6),
-              Flexible(
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    color: active ? Colors.white : Colors.white70,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ],
         ),
       ),
     );

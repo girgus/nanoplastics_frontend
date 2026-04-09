@@ -4,12 +4,10 @@ import '../../config/app_colors.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/category_detail_data.dart';
 import '../../models/pdf_source.dart';
-import '../web_state.dart';
 import '../web_theme.dart';
 
 class SourcesSection extends StatefulWidget {
   final AppLocalizations l10n;
-  final WebDomain domain;
   final List<CategoryDetailData> categories;
   final String query;
   final ValueChanged<String> onQueryChanged;
@@ -19,7 +17,6 @@ class SourcesSection extends StatefulWidget {
   const SourcesSection({
     super.key,
     required this.l10n,
-    required this.domain,
     required this.categories,
     required this.query,
     required this.onQueryChanged,
@@ -31,7 +28,10 @@ class SourcesSection extends StatefulWidget {
   State<SourcesSection> createState() => _SourcesSectionState();
 }
 
+enum _SourcesTab { webLinks, videos }
+
 class _SourcesSectionState extends State<SourcesSection> {
+  _SourcesTab _activeTab = _SourcesTab.webLinks;
   final Set<String> _collapsedCategoryKeys = <String>{};
   final TextEditingController _searchController = TextEditingController();
 
@@ -104,6 +104,10 @@ class _SourcesSectionState extends State<SourcesSection> {
           block.category.evidenceStudyCount + block.allatraSources.length;
     }
 
+    final videos = (allVideoSources[widget.activeLanguageCode] ?? videoSourcesEn)
+        .where((v) => !v.isReport)
+        .toList(growable: false);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -122,9 +126,7 @@ class _SourcesSectionState extends State<SourcesSection> {
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 4),
           child: Text(
             widget.l10n.sourcesLibrarySubtitle(
-              widget.domain.isHuman
-                  ? widget.l10n.tabHuman
-                  : widget.l10n.tabPlanet,
+              '${widget.l10n.tabHuman} & ${widget.l10n.tabPlanet}',
             ),
             style: TextStyle(
                 color: Colors.white.withValues(alpha: 0.74), fontSize: 12),
@@ -138,6 +140,90 @@ class _SourcesSectionState extends State<SourcesSection> {
                 color: Colors.white.withValues(alpha: 0.60), fontSize: 12),
           ),
         ),
+        // ── Tab bar ──
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _TabChip(
+                label: widget.l10n.sourcesTabWeb,
+                selected: _activeTab == _SourcesTab.webLinks,
+                onTap: () => setState(() => _activeTab = _SourcesTab.webLinks),
+              ),
+              const SizedBox(width: 8),
+              _TabChip(
+                label: widget.l10n.sourcesTabVideo,
+                selected: _activeTab == _SourcesTab.videos,
+                onTap: () => setState(() => _activeTab = _SourcesTab.videos),
+              ),
+            ],
+          ),
+        ),
+        if (_activeTab == _SourcesTab.videos) ...[
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+              itemCount: videos.length,
+              itemBuilder: (_, i) {
+                final video = videos[i];
+                return InkWell(
+                  onTap: () => widget.onOpenInNewTab(video.url),
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.04),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.08)),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: AppColors.pastelMint.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${i + 1}',
+                              style: const TextStyle(
+                                color: AppColors.pastelMint,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            video.title,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 13.5),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Tooltip(
+                          message: widget.l10n.sourcesOpenInNewTab,
+                          child: const Icon(Icons.play_circle_outline,
+                              size: 18, color: AppColors.pastelMint),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ] else ...[
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 6),
           child: TextField(
@@ -213,7 +299,7 @@ class _SourcesSectionState extends State<SourcesSection> {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
-                        color: WebTheme.surfaceCard(context),
+                        color: WebTheme.surfaceCard,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                             color: Colors.white.withValues(alpha: 0.08)),
@@ -492,15 +578,16 @@ class _SourcesSectionState extends State<SourcesSection> {
                   },
                 ),
         ),
+        ], // end else (webLinks tab)
       ],
     );
   }
 
   List<PDFSource> _allatraSourcesForCategory(CategoryDetailData category) {
     final categoryPool = [
-      if (widget.domain.isHuman) ...humanHealthSources,
-      if (!widget.domain.isHuman) ...earthPollutionSources,
-      if (!widget.domain.isHuman) ...waterAbilitiesSources,
+      ...humanHealthSources,
+      ...earthPollutionSources,
+      ...waterAbilitiesSources,
     ]
         .where((s) =>
             s.language == widget.activeLanguageCode &&
@@ -675,5 +762,47 @@ class _SourcesSectionState extends State<SourcesSection> {
     final base =
         baseUrls[widget.activeLanguageCode.toLowerCase()] ?? baseUrls['en']!;
     return '$base#page=$page';
+  }
+}
+
+class _TabChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _TabChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        decoration: BoxDecoration(
+          color: selected
+              ? AppColors.pastelMint.withValues(alpha: 0.18)
+              : Colors.white.withValues(alpha: 0.06),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: selected
+                ? AppColors.pastelMint.withValues(alpha: 0.5)
+                : Colors.white.withValues(alpha: 0.10),
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: selected ? AppColors.pastelMint : Colors.white70,
+            fontSize: 12,
+            fontWeight: selected ? FontWeight.w700 : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
   }
 }
