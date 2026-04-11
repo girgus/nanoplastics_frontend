@@ -6,7 +6,6 @@ import '../config/app_constants.dart';
 import '../utils/app_spacing.dart';
 import '../utils/app_sizing.dart';
 import '../utils/app_typography.dart';
-import '../widgets/nanosolve_logo.dart';
 import '../widgets/glowing_header_separator.dart';
 import '../l10n/app_localizations.dart';
 import '../models/category_detail_data.dart';
@@ -19,6 +18,10 @@ import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import '../services/web_link_cache_service.dart';
 import '../utils/app_theme_colors.dart';
 import '../utils/platform_adaptive.dart';
+import '../widgets/shared/screen_header.dart';
+import '../widgets/sources/evidence_study_card.dart';
+import '../widgets/sources/pdf_source_card.dart';
+import '../widgets/sources/video_source_card.dart';
 import 'pdf_viewer_screen.dart';
 import 'web_view_screen.dart';
 
@@ -84,7 +87,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
               ),
               child: Column(
                 children: [
-                  _SourcesScreenHeader(this),
+                  const ScreenHeader(),
                   _SourcesScreenTabs(
                     selectedTab: _selectedTab,
                     onTabChanged: (tab) => setState(() => _selectedTab = tab),
@@ -180,12 +183,10 @@ class _SourcesScreenState extends State<SourcesScreen> {
                 horizontal: spacing.contentPaddingH,
                 vertical: spacing.contentPaddingV),
             itemCount: selectedData.sources.length,
-            itemBuilder: (ctx, i) => _buildCompactSourceCard(
+            itemBuilder: (ctx, i) => PdfSourceCard(
               number: i + 1,
               source: selectedData.sources[i],
-              spacing: spacing,
-              sizing: sizing,
-              typography: typography,
+              onTap: () => _openPdfSource(selectedData.sources[i]),
             ),
           ),
         ),
@@ -296,13 +297,13 @@ class _SourcesScreenState extends State<SourcesScreen> {
                         ),
                         SizedBox(height: spacing.sm),
                         ...group.studies.asMap().entries.map((entry) {
-                          return _buildMobileEvidenceStudyCard(
-                            category: group,
+                          return EvidenceStudyCard(
                             study: entry.value,
                             number: entry.key + 1,
-                            spacing: spacing,
-                            sizing: sizing,
-                            typography: typography,
+                            onTap: () => _openEvidenceStudyFromSources(
+                              group.categoryKey,
+                              entry.value,
+                            ),
                           );
                         }),
                         SizedBox(height: spacing.lg),
@@ -360,81 +361,108 @@ class _SourcesScreenState extends State<SourcesScreen> {
     return groups;
   }
 
-  Widget _buildMobileEvidenceStudyCard({
-    required MobileEvidenceGroup category,
-    required EvidenceStudy study,
-    required int number,
-    required AppSpacing spacing,
-    required AppSizing sizing,
-    required AppTypography typography,
-  }) {
-    return InkWell(
-      onTap: () => _openEvidenceStudyFromSources(category.categoryKey, study),
-      borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-      child: Container(
-        width: double.infinity,
-        margin: EdgeInsets.only(bottom: spacing.sm),
-        padding: EdgeInsets.symmetric(
-          horizontal: spacing.md,
-          vertical: spacing.sm,
+
+  Future<void> _openPdfSource(PDFSource source) async {
+    LoggerService().logUserAction('pdf_source_clicked', params: {
+      'source': source.title,
+      'startPage': source.startPage,
+      'endPage': source.endPage,
+    });
+
+    if (source.isWebLink && !source.url!.contains('.pdf')) {
+      final navigator = Navigator.of(context);
+      await WebLinkCacheService().markVisited(source.url!);
+      navigator.push(MaterialPageRoute(
+        builder: (_) => WebViewScreen(url: source.url!, title: source.title),
+      ));
+      return;
+    }
+
+    final navigator = Navigator.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final themeColors = AppThemeColors.of(context);
+    final dialogBg = themeColors.dialogBackground;
+    final toolbarColor = themeColors.cardBackground;
+
+    if (source.pdfAssetPath != null && source.pdfAssetPath!.isNotEmpty) {
+      navigator.push(MaterialPageRoute(
+        builder: (_) => PDFViewerScreen(
+          title: source.title,
+          pdfAssetPath: source.pdfAssetPath,
+          startPage: source.startPage,
+          endPage: source.endPage,
+          description: source.description,
         ),
-        decoration: BoxDecoration(
-          color:
-              AppThemeColors.of(context).cardBackground.withValues(alpha: 0.85),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-          borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+      ));
+      return;
+    }
+
+    final lang = ServiceLocator().settingsManager.userLanguage;
+    final cached = await ServiceLocator().settingsManager.getPdfForLanguage(lang);
+    final needsDownload = cached == null || !await cached.exists();
+
+    if (needsDownload && context.mounted) {
+      showDialog(
+        context: context, // ignore: use_build_context_synchronously
+        barrierDismissible: false,
+        builder: (_) => AlertDialog(
+          backgroundColor: dialogBg,
+          title: const Text('Downloading PDF…',
+              style: TextStyle(color: AppColors.pastelAqua)),
+          content: const LinearProgressIndicator(
+            backgroundColor: Colors.white12,
+            valueColor: AlwaysStoppedAnimation<Color>(AppColors.pastelAqua),
+          ),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 24,
-              child: Text(
-                number.toString().padLeft(2, '0'),
-                style: typography.labelXs.copyWith(
-                  color: AppThemeColors.of(context)
-                      .textMuted
-                      .withValues(alpha: 0.5),
-                ),
-              ),
-            ),
-            SizedBox(width: spacing.sm),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    study.title,
-                    style: typography.title.copyWith(
-                      color: AppThemeColors.of(context).textMain,
-                      height: 1.3,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: spacing.xs / 2),
-                  Text(
-                    '${study.journal} · ${study.year} · ${study.authorsShort}',
-                    style: typography.labelSm.copyWith(
-                      color: AppThemeColors.of(context).textMuted,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: spacing.sm),
-            Icon(
-              Icons.open_in_new,
-              size: sizing.iconSm,
-              color: AppColors.pastelAqua.withValues(alpha: 0.7),
-            ),
-          ],
+      );
+    }
+
+    File? pdf;
+    try {
+      pdf = await ServiceLocator().pdfService.resolvePdf(language: lang);
+    } catch (e, st) {
+      LoggerService().logError('ResolvePdfFailed', e.toString(), st);
+    }
+
+    if (needsDownload && context.mounted) await navigator.maybePop();
+    if (!context.mounted) return;
+
+    if (pdf != null) {
+      navigator.push(MaterialPageRoute(
+        builder: (_) => PDFViewerScreen(
+          title: source.title,
+          pdfPath: pdf!.path,
+          startPage: source.startPage,
+          endPage: source.endPage,
+          description: source.description,
         ),
-      ),
-    );
+      ));
+    } else if (source.isWebLink) {
+      await WebLinkCacheService().markVisited(source.url!);
+      try {
+        await launchUrl(
+          Uri.parse(source.url!),
+          customTabsOptions: CustomTabsOptions(
+            colorSchemes: CustomTabsColorSchemes.defaults(toolbarColor: toolbarColor),
+            shareState: CustomTabsShareState.on,
+            urlBarHidingEnabled: true,
+            showTitle: true,
+          ),
+          safariVCOptions: const SafariViewControllerOptions(
+            preferredBarTintColor: AppColors.pastelLavender,
+            preferredControlTintColor: Colors.white,
+            barCollapsingEnabled: true,
+            dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+          ),
+        );
+      } catch (e) {
+        LoggerService().logError('PdfFallbackLaunchFailed', e.toString());
+      }
+    } else {
+      scaffoldMessenger.showSnackBar(
+        const SnackBar(content: Text('Failed to load PDF')),
+      );
+    }
   }
 
   Future<void> _openEvidenceStudyFromSources(
@@ -623,12 +651,9 @@ class _SourcesScreenState extends State<SourcesScreen> {
                 horizontal: spacing.contentPaddingH,
                 vertical: spacing.contentPaddingV),
             itemCount: selectedData.sources.length,
-            itemBuilder: (ctx, i) => _buildCompactVideoCard(
+            itemBuilder: (ctx, i) => VideoSourceCard(
               number: i + 1,
               video: selectedData.sources[i],
-              spacing: spacing,
-              sizing: sizing,
-              typography: typography,
             ),
           ),
         ),
@@ -636,501 +661,8 @@ class _SourcesScreenState extends State<SourcesScreen> {
     );
   }
 
-  Widget _buildCompactVideoCard({
-    required int number,
-    required VideoSource video,
-    required AppSpacing spacing,
-    required AppSizing sizing,
-    required AppTypography typography,
-  }) {
-    final chipColor =
-        video.isReport ? AppColors.pastelAqua : AppColors.pastelMint;
-    final chipLabel = video.isReport ? 'PDF Report' : 'Documentary';
 
-    return InkWell(
-      onTap: () async {
-        LoggerService().logUserAction('video_source_clicked', params: {
-          'title': video.title,
-          'url': video.url,
-          'language': video.language,
-          'isReport': video.isReport,
-        });
 
-        // Videos open in Chrome Custom Tab — stays in-app, supports full
-        // YouTube playback without WebView limitations
-        try {
-          await launchUrl(
-            Uri.parse(video.url),
-            customTabsOptions: CustomTabsOptions(
-              colorSchemes: CustomTabsColorSchemes.defaults(
-                toolbarColor: AppThemeColors.of(context).cardBackground,
-              ),
-              shareState: CustomTabsShareState.off,
-              urlBarHidingEnabled: true,
-              showTitle: true,
-            ),
-            safariVCOptions: const SafariViewControllerOptions(
-              preferredBarTintColor: Color(0xFF0A0A12),
-              preferredControlTintColor: Color(0xFF7FFFD4),
-              barCollapsingEnabled: true,
-            ),
-          );
-        } catch (e) {
-          LoggerService().logError('VideoLinkOpen', e.toString());
-        }
-      },
-      child: Container(
-        width: double.infinity,
-        margin: EdgeInsets.only(bottom: spacing.sm),
-        padding: EdgeInsets.symmetric(
-          horizontal: spacing.md,
-          vertical: spacing.sm,
-        ),
-        decoration: BoxDecoration(
-          color:
-              AppThemeColors.of(context).cardBackground.withValues(alpha: 0.85),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-          borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Number
-            SizedBox(
-              width: 24,
-              child: Text(
-                number.toString().padLeft(2, '0'),
-                style: typography.labelXs.copyWith(
-                  color: AppThemeColors.of(context)
-                      .textMuted
-                      .withValues(alpha: 0.5),
-                ),
-              ),
-            ),
-            SizedBox(width: spacing.sm),
-            // Title + chip
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    video.title,
-                    style: typography.title.copyWith(
-                      color: AppThemeColors.of(context).textMain,
-                      height: 1.3,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: spacing.xs / 2),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: chipColor.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(4),
-                      border:
-                          Border.all(color: chipColor.withValues(alpha: 0.25)),
-                    ),
-                    child: Text(
-                      chipLabel,
-                      style: typography.labelXs.copyWith(color: chipColor),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: spacing.sm),
-            // Icon
-            Icon(
-              video.isReport ? Icons.picture_as_pdf : Icons.play_circle_filled,
-              size: sizing.iconSm,
-              color: chipColor.withValues(alpha: 0.6),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Color _descriptionColor(String description) {
-    if (description.contains('Brain') ||
-        description.contains('Central') ||
-        description.contains('мозг') ||
-        description.contains('mozek') ||
-        description.contains('Centraux') ||
-        description.contains('Centrales')) {
-      return AppColors.neonCyan;
-    }
-    if (description.contains('Heart') ||
-        description.contains('Vital') ||
-        description.contains('srdce') ||
-        description.contains('Vitalit')) {
-      return AppColors.neonCrimson;
-    }
-    if (description.contains('Reproduc') ||
-        description.contains('Fertil') ||
-        description.contains('placenta') ||
-        description.contains('Репродук')) {
-      return AppColors.neonViolet;
-    }
-    if (description.contains('Entry') ||
-        description.contains('Inhal') ||
-        description.contains('vstupní') ||
-        description.contains('Entrées') ||
-        description.contains('Vías') ||
-        description.contains('Пути')) {
-      return AppColors.neonOrange;
-    }
-    if (description.contains('Filtrat') ||
-        description.contains('Detox') ||
-        description.contains('Filtrace') ||
-        description.contains('Filtr') ||
-        description.contains('Фильтр')) {
-      return AppColors.neonLime;
-    }
-    if (description.contains('Ocean') ||
-        description.contains('Marine') ||
-        description.contains('oceán') ||
-        description.contains('Océan') ||
-        description.contains('océano') ||
-        description.contains('мор')) {
-      return AppColors.neonOcean;
-    }
-    if (description.contains('Atmos') ||
-        description.contains('atmos') ||
-        description.contains('Atmosphère') ||
-        description.contains('Атмос')) {
-      return AppColors.neonAtmos;
-    }
-    if (description.contains('Flora') ||
-        description.contains('Fauna') ||
-        description.contains('Biosphere') ||
-        description.contains('Biosphère')) {
-      return AppColors.neonBio;
-    }
-    if (description.contains('Magnetic') ||
-        description.contains('Core') ||
-        description.contains('Magnét') ||
-        description.contains('ядро') ||
-        description.contains('Магнит')) {
-      return AppColors.neonMagma;
-    }
-    return AppColors.pastelAqua;
-  }
-
-  Widget _buildCompactSourceCard({
-    required int number,
-    required PDFSource source,
-    required AppSpacing spacing,
-    required AppSizing sizing,
-    required AppTypography typography,
-  }) {
-    final chipColor = _descriptionColor(source.description);
-    return InkWell(
-      onTap: () async {
-        LoggerService().logUserAction('pdf_source_clicked', params: {
-          'source': source.title,
-          'startPage': source.startPage,
-          'endPage': source.endPage,
-        });
-
-        // Non-PDF web links → in-app WebView (caches for offline use)
-        if (source.isWebLink && !source.url!.contains('.pdf')) {
-          final navigator = Navigator.of(context);
-          await WebLinkCacheService().markVisited(source.url!);
-          navigator.push(
-            MaterialPageRoute(
-              builder: (_) => WebViewScreen(
-                url: source.url!,
-                title: source.title,
-              ),
-            ),
-          );
-          return;
-        }
-
-        final navigator = Navigator.of(context);
-        final scaffoldMessenger = ScaffoldMessenger.of(context);
-        final themeColors = AppThemeColors.of(context);
-        final dialogBg = themeColors.dialogBackground;
-        final toolbarColor = themeColors.cardBackground;
-
-        if (source.pdfAssetPath != null && source.pdfAssetPath!.isNotEmpty) {
-          // Navigate immediately — PDFViewerScreen opens asset directly via
-          // PdfDocument.openAsset(), no extraction step needed.
-          navigator.push(
-            MaterialPageRoute(
-              builder: (_) => PDFViewerScreen(
-                title: source.title,
-                pdfAssetPath: source.pdfAssetPath,
-                startPage: source.startPage,
-                endPage: source.endPage,
-                description: source.description,
-              ),
-            ),
-          );
-        } else {
-          final lang = ServiceLocator().settingsManager.userLanguage;
-
-          final cached =
-              await ServiceLocator().settingsManager.getPdfForLanguage(lang);
-          final needsDownload = cached == null || !await cached.exists();
-
-          if (needsDownload && context.mounted) {
-            showDialog(
-              context: context, // ignore: use_build_context_synchronously
-              barrierDismissible: false,
-              builder: (_) => AlertDialog(
-                backgroundColor: dialogBg,
-                title: const Text(
-                  'Downloading PDF…',
-                  style: TextStyle(color: AppColors.pastelAqua),
-                ),
-                content: const LinearProgressIndicator(
-                  backgroundColor: Colors.white12,
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(AppColors.pastelAqua),
-                ),
-              ),
-            );
-          }
-
-          File? pdf;
-          try {
-            pdf = await ServiceLocator().pdfService.resolvePdf(language: lang);
-          } catch (e, st) {
-            LoggerService().logError('ResolvePdfFailed', e.toString(), st);
-          }
-
-          if (needsDownload && context.mounted) await navigator.maybePop();
-          if (!context.mounted) return;
-
-          if (pdf != null) {
-            final pdfPath = pdf.path;
-            navigator.push(
-              MaterialPageRoute(
-                builder: (_) => PDFViewerScreen(
-                  title: source.title,
-                  pdfPath: pdfPath,
-                  startPage: source.startPage,
-                  endPage: source.endPage,
-                  description: source.description,
-                ),
-              ),
-            );
-          } else if (source.isWebLink) {
-            // PDF unavailable — open URL as fallback via Custom Tabs.
-            // WebView can't render PDFs; Custom Tabs hands off to the
-            // system PDF viewer / browser while keeping the user in-app.
-            await WebLinkCacheService().markVisited(source.url!);
-            try {
-              await launchUrl(
-                Uri.parse(source.url!),
-                customTabsOptions: CustomTabsOptions(
-                  colorSchemes: CustomTabsColorSchemes.defaults(
-                    toolbarColor: toolbarColor,
-                  ),
-                  shareState: CustomTabsShareState.on,
-                  urlBarHidingEnabled: true,
-                  showTitle: true,
-                ),
-                safariVCOptions: const SafariViewControllerOptions(
-                  preferredBarTintColor: AppColors.pastelLavender,
-                  preferredControlTintColor: Colors.white,
-                  barCollapsingEnabled: true,
-                  dismissButtonStyle:
-                      SafariViewControllerDismissButtonStyle.close,
-                ),
-              );
-            } catch (e) {
-              LoggerService().logError('PdfFallbackLaunchFailed', e.toString());
-            }
-          } else {
-            scaffoldMessenger.showSnackBar(
-              const SnackBar(content: Text('Failed to load PDF')),
-            );
-          }
-        }
-      },
-      child: Container(
-        width: double.infinity,
-        margin: EdgeInsets.only(bottom: spacing.sm),
-        padding: EdgeInsets.symmetric(
-          horizontal: spacing.md,
-          vertical: spacing.sm,
-        ),
-        decoration: BoxDecoration(
-          color:
-              AppThemeColors.of(context).cardBackground.withValues(alpha: 0.85),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-          borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Number
-            SizedBox(
-              width: 24,
-              child: Text(
-                number.toString().padLeft(2, '0'),
-                style: typography.labelXs.copyWith(
-                  color: AppThemeColors.of(context)
-                      .textMuted
-                      .withValues(alpha: 0.5),
-                ),
-              ),
-            ),
-            SizedBox(width: spacing.sm),
-            // Title + subcategory chip
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    source.title,
-                    style: typography.title.copyWith(
-                      color: AppThemeColors.of(context).textMain,
-                      height: 1.3,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: spacing.xs / 2),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: chipColor.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(4),
-                      border:
-                          Border.all(color: chipColor.withValues(alpha: 0.25)),
-                    ),
-                    child: Text(
-                      source.description,
-                      style: typography.labelXs.copyWith(color: chipColor),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: spacing.sm),
-            // Page range + icon + offline badge
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  source.getPageRangeDisplay(),
-                  style: typography.labelSm.copyWith(
-                    color: AppThemeColors.of(context).textMuted,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (source.isWebLink && !source.url!.contains('.pdf'))
-                      FutureBuilder<bool>(
-                        future: WebLinkCacheService().hasVisited(source.url!),
-                        builder: (ctx, snap) {
-                          if (snap.data == true) {
-                            return Semantics(
-                              label: 'Available offline',
-                              child: Tooltip(
-                                message: 'Available offline',
-                                child: Icon(
-                                  Icons.cloud_done,
-                                  size: sizing.iconXs,
-                                  color: AppColors.pastelMint
-                                      .withValues(alpha: 0.7),
-                                ),
-                              ),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    if (source.isWebLink && !source.url!.contains('.pdf'))
-                      SizedBox(width: spacing.xs / 2),
-                    Icon(
-                      source.isWebLink && !source.url!.contains('.pdf')
-                          ? Icons.open_in_browser
-                          : Icons.picture_as_pdf,
-                      size: sizing.iconSm,
-                      color: AppColors.pastelAqua.withValues(alpha: 0.6),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Header Widget - extracted to prevent rebuild on tab change
-// ─────────────────────────────────────────────────────────────────────────────
-class _SourcesScreenHeader extends StatelessWidget {
-  final _SourcesScreenState state;
-
-  const _SourcesScreenHeader(this.state);
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final spacing = AppSpacing.of(context);
-    final sizing = AppSizing.of(context);
-    final typography = AppTypography.of(context);
-
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: spacing.contentPaddingH,
-          vertical: spacing.contentPaddingV),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: InkWell(
-              onTap: () => Navigator.of(context).maybePop(),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.arrow_back_ios,
-                      color: AppThemeColors.of(context).textMain,
-                      size: sizing.backIcon),
-                  const SizedBox(width: AppConstants.space4),
-                  Flexible(
-                    child: Text(
-                      l10n.categoryDetailBackToOverview,
-                      style: typography.back.copyWith(
-                        color: AppThemeColors.of(context).textMain,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
-                      softWrap: true,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: spacing.headerSpacing),
-          NanosolveLogo(height: sizing.logoHeightLg),
-        ],
-      ),
-    );
-  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

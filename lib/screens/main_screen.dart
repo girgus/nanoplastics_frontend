@@ -1,6 +1,3 @@
-import 'dart:math' as math;
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import '../config/app_colors.dart';
 import '../config/app_constants.dart';
@@ -25,10 +22,12 @@ import '../services/update_service.dart';
 import '../utils/app_theme_colors.dart';
 import '../utils/platform_adaptive.dart';
 import '../utils/responsive_config.dart';
+import '../widgets/hub/category_card.dart';
+import '../widgets/hub/desktop_action_button.dart';
+import '../widgets/hub/desktop_nav_tile.dart';
+import '../widgets/hub/hub_button.dart';
 
 enum ImpactType { human, planet }
-
-enum _HubButtonPosition { topLeft, topRight, bottomLeft, bottomRight }
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -305,7 +304,7 @@ class _MainScreenState extends State<MainScreen> {
               ],
             ),
           ),
-          _DesktopActionButton(
+          DesktopActionButton(
             icon: Icons.settings_outlined,
             label: 'Settings',
             isHighlighted: _isUpdateAvailable(),
@@ -346,7 +345,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           SizedBox(height: spacing.sm),
-          _DesktopNavTile(
+          DesktopNavTile(
             label: l10n.tabHuman,
             icon: Icons.person_outline,
             color: AppColors.neonCyan,
@@ -354,7 +353,7 @@ class _MainScreenState extends State<MainScreen> {
             onTap: () => _switchTab(ImpactType.human),
           ),
           SizedBox(height: spacing.sm),
-          _DesktopNavTile(
+          DesktopNavTile(
             label: l10n.tabPlanet,
             icon: Icons.public_outlined,
             color: AppColors.neonOcean,
@@ -369,7 +368,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           SizedBox(height: spacing.sm),
-          _DesktopNavTile(
+          DesktopNavTile(
             label: l10n.navSources,
             icon: Icons.menu_book_outlined,
             color: AppColors.pastelAqua,
@@ -377,7 +376,7 @@ class _MainScreenState extends State<MainScreen> {
             onTap: () => _navigateToResources(null),
           ),
           SizedBox(height: spacing.sm),
-          _DesktopNavTile(
+          DesktopNavTile(
             label: l10n.navResults,
             icon: Icons.auto_graph_outlined,
             color: AppColors.pastelMint,
@@ -651,7 +650,7 @@ class _MainScreenState extends State<MainScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: _CategoryCard(
+              child: CategoryCard(
                 category: categories[first],
                 iconContainerSize: sizing.categoryIconContainer,
                 iconSize: sizing.categoryIconSize,
@@ -666,7 +665,7 @@ class _MainScreenState extends State<MainScreen> {
             SizedBox(width: spacing.gridSpacing),
             if (second < categories.length)
               Expanded(
-                child: _CategoryCard(
+                child: CategoryCard(
                   category: categories[second],
                   iconContainerSize: sizing.categoryIconContainer,
                   iconSize: sizing.categoryIconSize,
@@ -743,7 +742,7 @@ class _MainScreenState extends State<MainScreen> {
               .map(
                 (category) => SizedBox(
                   width: cardWidth,
-                  child: _CategoryCard(
+                  child: CategoryCard(
                     category: category,
                     iconContainerSize: sizing.categoryIconContainer * 1.3,
                     iconSize: sizing.categoryIconSize * 1.2,
@@ -818,12 +817,12 @@ class _MainScreenState extends State<MainScreen> {
                               Expanded(
                                 child: KeyedSubtree(
                                   key: _tourHumanButtonKey,
-                                  child: _HubButton(
+                                  child: HubButton(
                                     buttonKey:
                                         const ValueKey('hub-button-human'),
                                     label: l10n.tabHuman,
                                     icon: Icons.person_outline,
-                                    position: _HubButtonPosition.topLeft,
+                                    position: HubButtonPosition.topLeft,
                                     isActive: _selectedTab == ImpactType.human,
                                     activeColor: AppColors.neonCyan,
                                     textStyle: typography.hubLabel,
@@ -844,12 +843,12 @@ class _MainScreenState extends State<MainScreen> {
                               Expanded(
                                 child: KeyedSubtree(
                                   key: _tourPlanetButtonKey,
-                                  child: _HubButton(
+                                  child: HubButton(
                                     buttonKey:
                                         const ValueKey('hub-button-planet'),
                                     label: l10n.tabPlanet,
                                     icon: Icons.public_outlined,
-                                    position: _HubButtonPosition.topRight,
+                                    position: HubButtonPosition.topRight,
                                     isActive: _selectedTab == ImpactType.planet,
                                     activeColor: AppColors.neonOcean,
                                     textStyle: typography.hubLabel,
@@ -877,12 +876,12 @@ class _MainScreenState extends State<MainScreen> {
                               Expanded(
                                 child: KeyedSubtree(
                                   key: _tourSourcesButtonKey,
-                                  child: _HubButton(
+                                  child: HubButton(
                                     buttonKey:
                                         const ValueKey('hub-button-sources'),
                                     label: l10n.navSources,
                                     icon: Icons.menu_book_outlined,
-                                    position: _HubButtonPosition.bottomLeft,
+                                    position: HubButtonPosition.bottomLeft,
                                     isActive: false,
                                     activeColor: AppColors.pastelAqua,
                                     textStyle: typography.hubLabel,
@@ -897,12 +896,12 @@ class _MainScreenState extends State<MainScreen> {
                               Expanded(
                                 child: KeyedSubtree(
                                   key: _tourResultsButtonKey,
-                                  child: _HubButton(
+                                  child: HubButton(
                                     buttonKey:
                                         const ValueKey('hub-button-results'),
                                     label: l10n.navResults,
                                     icon: Icons.auto_graph_outlined,
-                                    position: _HubButtonPosition.bottomRight,
+                                    position: HubButtonPosition.bottomRight,
                                     isActive: false,
                                     activeColor: AppColors.pastelMint,
                                     textStyle: typography.hubLabel,
@@ -1077,424 +1076,6 @@ class _MainScreenState extends State<MainScreen> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => const SolversLeaderboardScreen(),
-      ),
-    );
-  }
-}
-
-// ── Hub Button ──
-
-class _HubButton extends StatelessWidget {
-  final Key? buttonKey;
-  final String label;
-  final IconData icon;
-  final _HubButtonPosition position;
-  final bool isActive;
-  final Color activeColor;
-  final TextStyle textStyle;
-  final double iconSize;
-  final double activeGlowBlur;
-  final double internalGap;
-  final VoidCallback onTap;
-
-  const _HubButton({
-    this.buttonKey,
-    required this.label,
-    required this.icon,
-    required this.position,
-    required this.isActive,
-    required this.activeColor,
-    required this.textStyle,
-    required this.iconSize,
-    required this.activeGlowBlur,
-    required this.internalGap,
-    required this.onTap,
-  });
-
-  BorderRadius get _borderRadius {
-    const sharp = Radius.circular(AppConstants.radiusSharp);
-    const inner = Radius.circular(AppConstants.radiusHubInner);
-    switch (position) {
-      case _HubButtonPosition.topLeft:
-        return const BorderRadius.only(
-          topLeft: sharp,
-          topRight: sharp,
-          bottomLeft: sharp,
-          bottomRight: inner,
-        );
-      case _HubButtonPosition.topRight:
-        return const BorderRadius.only(
-          topLeft: sharp,
-          topRight: sharp,
-          bottomLeft: inner,
-          bottomRight: sharp,
-        );
-      case _HubButtonPosition.bottomLeft:
-        return const BorderRadius.only(
-          topLeft: sharp,
-          topRight: inner,
-          bottomLeft: sharp,
-          bottomRight: sharp,
-        );
-      case _HubButtonPosition.bottomRight:
-        return const BorderRadius.only(
-          topLeft: inner,
-          topRight: sharp,
-          bottomLeft: sharp,
-          bottomRight: sharp,
-        );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final borderRadius = _borderRadius;
-
-    return Semantics(
-      button: true,
-      label: label,
-      selected: isActive,
-      child: InkWell(
-        key: buttonKey,
-        onTap: onTap,
-        borderRadius: borderRadius,
-        child: ClipRRect(
-          borderRadius: borderRadius,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-            child: Container(
-              decoration: BoxDecoration(
-                color: isActive
-                    ? activeColor.withValues(alpha: 0.15)
-                    : AppColors.hubButtonBg.withValues(alpha: 0.7),
-                borderRadius: borderRadius,
-                border: Border.all(
-                  color: isActive
-                      ? activeColor
-                      : Colors.white.withValues(alpha: 0.08),
-                ),
-                boxShadow: isActive
-                    ? [
-                        BoxShadow(
-                          color: activeColor.withValues(alpha: 0.15),
-                          blurRadius: activeGlowBlur,
-                        ),
-                      ]
-                    : null,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  isActive
-                      ? Icon(icon, size: iconSize, color: activeColor)
-                      : Opacity(
-                          opacity: 0.6,
-                          child: Icon(
-                            icon,
-                            size: iconSize,
-                            color: AppColors.hubTextInactive,
-                          ),
-                        ),
-                  SizedBox(height: internalGap),
-                  Text(
-                    label.toUpperCase(),
-                    style: textStyle.copyWith(
-                      color:
-                          isActive ? Colors.white : AppColors.hubTextInactive,
-                    ),
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ── Category Card ──
-
-class _CategoryCard extends StatelessWidget {
-  final CategoryData category;
-  final VoidCallback onTap;
-  final double iconContainerSize;
-  final double iconSize;
-  final double padding;
-  final TextStyle titleStyle;
-  final TextStyle descStyle;
-
-  const _CategoryCard({
-    required this.category,
-    required this.onTap,
-    required this.iconContainerSize,
-    required this.iconSize,
-    required this.padding,
-    required this.titleStyle,
-    required this.descStyle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      label: category.title,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppConstants.radiusCard),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppConstants.radiusCard),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-            child: Container(
-              padding: EdgeInsets.all(padding),
-              decoration: BoxDecoration(
-                color: AppColors.cardBgGlass.withValues(alpha: 0.6),
-                borderRadius: BorderRadius.circular(AppConstants.radiusCard),
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.08),
-                ),
-              ),
-              child: Builder(
-                builder: (context) {
-                  final spacing = AppSpacing.of(context);
-                  final contentGap = spacing.xs * 0.5;
-
-                  return LayoutBuilder(
-                    builder: (context, constraints) {
-                      final cardWidth = constraints.maxWidth;
-                      final cardHeight = constraints.maxHeight;
-                      // Tight-height mode: landscape or very compressed cards.
-                      // Reduces icon and limits title to 1 line to prevent overflow.
-                      final tightHeight = cardHeight > 0 && cardHeight < 90;
-                      final dense = cardWidth < 180;
-                      final iconScale =
-                          tightHeight ? 0.75 : (dense ? 0.9 : 1.0);
-                      // In tight-height mode, cap icon to 40% of card height
-                      // so it never exceeds the row regardless of scaleW.
-                      // (icon + gap + 1-line title must fit within cardHeight)
-                      final effectiveIconContainer = tightHeight
-                          ? math.min(
-                              iconContainerSize * iconScale,
-                              (cardHeight * 0.40).clamp(20.0, double.infinity),
-                            )
-                          : iconContainerSize * iconScale;
-                      final effectiveIconSize = math.min(
-                        iconSize * iconScale,
-                        effectiveIconContainer * 0.82,
-                      );
-                      final effectiveTitleStyle = dense
-                          ? titleStyle.copyWith(
-                              fontSize: ((titleStyle.fontSize ?? 12.0) * 0.92)
-                                  .clamp(11.0, double.infinity),
-                              height: 1.2,
-                            )
-                          : titleStyle;
-                      final effectiveDescStyle = dense
-                          ? descStyle.copyWith(
-                              fontSize: ((descStyle.fontSize ?? 12.0) * 0.92)
-                                  .clamp(10.0, double.infinity),
-                              height: 1.3,
-                            )
-                          : descStyle;
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: effectiveIconContainer,
-                            height: effectiveIconContainer,
-                            decoration: BoxDecoration(
-                              color: category.color.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(
-                                AppConstants.radiusSmall,
-                              ),
-                            ),
-                            child: Icon(
-                              category.icon,
-                              size: effectiveIconSize,
-                              color: category.color,
-                            ),
-                          ),
-                          if (!tightHeight) SizedBox(height: contentGap),
-                          Text(
-                            category.title,
-                            style: effectiveTitleStyle.copyWith(
-                              color: AppThemeColors.of(context).textMain,
-                            ),
-                            maxLines: tightHeight ? 1 : 2,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
-                          ),
-                          Flexible(
-                            child: Text(
-                              category.description,
-                              style: effectiveDescStyle,
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: true,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DesktopNavTile extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final Color color;
-  final bool isActive;
-  final VoidCallback onTap;
-
-  const _DesktopNavTile({
-    required this.label,
-    required this.icon,
-    required this.color,
-    required this.isActive,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final spacing = AppSpacing.of(context);
-    final typography = AppTypography.of(context);
-
-    return Semantics(
-      button: true,
-      selected: isActive,
-      label: label,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(
-            horizontal: spacing.md,
-            vertical: spacing.md,
-          ),
-          decoration: BoxDecoration(
-            color: isActive
-                ? color.withValues(alpha: 0.14)
-                : Colors.white.withValues(alpha: 0.04),
-            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-            border: Border.all(
-              color: isActive
-                  ? color.withValues(alpha: 0.55)
-                  : Colors.white.withValues(alpha: 0.06),
-            ),
-          ),
-          child: Row(
-            children: [
-              Icon(icon, color: isActive ? color : AppColors.textMuted),
-              SizedBox(width: spacing.sm),
-              Expanded(
-                child: Text(
-                  label,
-                  style: typography.title.copyWith(
-                    color: isActive ? Colors.white : AppColors.textMuted,
-                  ),
-                ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 14,
-                color: isActive
-                    ? color.withValues(alpha: 0.8)
-                    : Colors.white.withValues(alpha: 0.35),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DesktopActionButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool isHighlighted;
-  final VoidCallback onTap;
-
-  const _DesktopActionButton({
-    required this.icon,
-    required this.label,
-    required this.isHighlighted,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final spacing = AppSpacing.of(context);
-    final typography = AppTypography.of(context);
-
-    return Semantics(
-      button: true,
-      label: label,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: spacing.md,
-            vertical: spacing.sm,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.05),
-            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-            border: Border.all(
-              color: isHighlighted
-                  ? Colors.red.withValues(alpha: 0.35)
-                  : Colors.white.withValues(alpha: 0.08),
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Icon(icon, color: Colors.white),
-                  if (isHighlighted)
-                    Positioned(
-                      top: -2,
-                      right: -2,
-                      child: Container(
-                        width: 8,
-                        height: 8,
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              SizedBox(width: spacing.sm),
-              Text(
-                label,
-                style: typography.label.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
