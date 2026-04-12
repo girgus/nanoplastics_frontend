@@ -111,7 +111,7 @@ class CategoryCard extends StatelessWidget {
                             style: effectiveTitleStyle.copyWith(
                               color: AppThemeColors.of(context).textMain,
                             ),
-                            maxLines: tightHeight ? 1 : 2,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                           ),

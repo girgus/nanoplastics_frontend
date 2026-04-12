@@ -25,7 +25,7 @@ import '../widgets/sources/video_source_card.dart';
 import 'pdf_viewer_screen.dart';
 import 'web_view_screen.dart';
 
-enum SourceType { webLinks, videoLinks }
+enum SourceType { webLinks, reportLinks, videoLinks }
 
 class SourcesScreen extends StatefulWidget {
   const SourcesScreen({super.key});
@@ -39,7 +39,7 @@ enum WebLinkSection { humanHealth, earthPollution, waterAbilities }
 enum VideoSection { videos, reports }
 
 class _SourcesScreenState extends State<SourcesScreen> {
-  SourceType _selectedTab = SourceType.webLinks;
+  SourceType _selectedTab = SourceType.reportLinks;
   WebLinkSection _selectedSection = WebLinkSection.humanHealth;
   VideoSection _selectedVideoSection = VideoSection.videos;
   String _webLinksSearchQuery = '';
@@ -93,9 +93,11 @@ class _SourcesScreenState extends State<SourcesScreen> {
                     onTabChanged: (tab) => setState(() => _selectedTab = tab),
                   ),
                   Expanded(
-                    child: _selectedTab == SourceType.webLinks
-                        ? _buildWebLinksTab()
-                        : _buildVideoLinksTab(),
+                    child: switch (_selectedTab) {
+                      SourceType.webLinks => _buildWebLinksTab(),
+                      SourceType.reportLinks => _buildReportTab(),
+                      SourceType.videoLinks => _buildVideoLinksTab(),
+                    },
                   ),
                 ],
               ),
@@ -103,6 +105,81 @@ class _SourcesScreenState extends State<SourcesScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildReportTab() {
+    final l10n = AppLocalizations.of(context)!;
+    final spacing = AppSpacing.of(context);
+    final sizing = AppSizing.of(context);
+    final typography = AppTypography.of(context);
+    final userLang = SettingsManager().userLanguage;
+
+    final sections = [
+      (
+        section: WebLinkSection.humanHealth,
+        title: l10n.sourcesSectionHumanHealth,
+        icon: Icons.favorite_outline,
+        sources:
+            humanHealthSources.where((s) => s.language == userLang).toList(),
+      ),
+      (
+        section: WebLinkSection.earthPollution,
+        title: l10n.sourcesSectionEarthPollution,
+        icon: Icons.public,
+        sources:
+            earthPollutionSources.where((s) => s.language == userLang).toList(),
+      ),
+      (
+        section: WebLinkSection.waterAbilities,
+        title: l10n.sourcesSectionWaterAbilities,
+        icon: Icons.water_drop_outlined,
+        sources:
+            waterAbilitiesSources.where((s) => s.language == userLang).toList(),
+      ),
+    ];
+
+    final selectedData =
+        sections.firstWhere((s) => s.section == _selectedSection);
+
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: spacing.contentPaddingH),
+          child: Column(
+            children: [
+              for (final s in sections) ...[
+                _buildSectionHeader(
+                  title: s.title,
+                  icon: s.icon,
+                  sourceCount: s.sources.length,
+                  isSelected: s.section == _selectedSection,
+                  accentColorOverride: AppColors.pastelLavender,
+                  spacing: spacing,
+                  sizing: sizing,
+                  typography: typography,
+                  onTap: () => setState(() => _selectedSection = s.section),
+                ),
+                SizedBox(height: spacing.xs),
+              ],
+            ],
+          ),
+        ),
+        SizedBox(height: spacing.sm),
+        Expanded(
+          child: ListView.builder(
+            padding: EdgeInsets.symmetric(
+                horizontal: spacing.contentPaddingH,
+                vertical: spacing.contentPaddingV),
+            itemCount: selectedData.sources.length,
+            itemBuilder: (ctx, i) => PdfSourceCard(
+              number: i + 1,
+              source: selectedData.sources[i],
+              onTap: () => _openPdfSource(selectedData.sources[i]),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -685,50 +762,108 @@ class _SourcesScreenTabs extends StatelessWidget {
 
     return Stack(
       children: [
-        Container(
-          margin: EdgeInsets.symmetric(
-              horizontal: spacing.tabMarginH, vertical: sizing.tabMarginV),
-          padding: EdgeInsets.all(spacing.tabInnerPadding),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.05),
-            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-          ),
-          child: Row(
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: spacing.tabMarginH),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: _buildTabButton(
-                  label: AppLocalizations.of(context)!.sourcesTabWeb,
-                  isActive: selectedTab == SourceType.webLinks,
-                  textStyle: typography.tab,
-                  padding: spacing.tabButtonPadding,
-                  onTap: () {
-                    onTabChanged(SourceType.webLinks);
-                    LoggerService().logUserAction('sources_tab_switched',
-                        params: {'tab': 'web'});
-                  },
+              // ── Web Links and Video Links ──
+              Padding(
+                padding: EdgeInsets.only(
+                  top: sizing.tabMarginV,
+                  bottom: spacing.tabInnerPadding * 0.5,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildTabButton(
+                      label: AppLocalizations.of(context)!.sourcesTabWeb,
+                      isActive: selectedTab == SourceType.webLinks,
+                      textStyle: typography.tab,
+                      padding: spacing.tabButtonPadding,
+                      onTap: () {
+                        onTabChanged(SourceType.webLinks);
+                        LoggerService().logUserAction('sources_tab_switched',
+                            params: {'tab': 'web'});
+                      },
+                    ),
+                    SizedBox(width: spacing.xl3),
+                    _buildTabButton(
+                      label: AppLocalizations.of(context)!.sourcesTabVideo,
+                      isActive: selectedTab == SourceType.videoLinks,
+                      textStyle: typography.tab,
+                      padding: spacing.tabButtonPadding,
+                      onTap: () {
+                        onTabChanged(SourceType.videoLinks);
+                        LoggerService().logUserAction('sources_tab_switched',
+                            params: {'tab': 'video'});
+                      },
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                child: _buildTabButton(
-                  label: AppLocalizations.of(context)!.sourcesTabVideo,
-                  isActive: selectedTab == SourceType.videoLinks,
-                  textStyle: typography.tab,
-                  padding: spacing.tabButtonPadding,
-                  onTap: () {
-                    onTabChanged(SourceType.videoLinks);
-                    LoggerService().logUserAction('sources_tab_switched',
-                        params: {'tab': 'video'});
-                  },
-                ),
+              // ── R pill: a little above the bottom ──
+              Padding(
+                padding: EdgeInsets.only(bottom: spacing.tabInnerPadding),
+                child: _buildReportPill(context, spacing, typography),
               ),
             ],
           ),
         ),
         ...GlowingHeaderSeparator.build(
           glowColor: AppColors.energy,
-        ),
+        ).map((w) => IgnorePointer(child: w)),
       ],
+    );
+  }
+
+  Widget _buildReportPill(
+      BuildContext context, AppSpacing spacing, AppTypography typography) {
+    final isActive = selectedTab == SourceType.reportLinks;
+    return Semantics(
+      button: true,
+      label: 'Allatra report chapters',
+      selected: isActive,
+      child: InkWell(
+        onTap: () {
+          onTabChanged(SourceType.reportLinks);
+          LoggerService().logUserAction('sources_tab_switched',
+              params: {'tab': 'report'});
+        },
+        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            vertical: (spacing.tabButtonPadding / 2).clamp(6.0, double.infinity),
+            horizontal: spacing.md.clamp(14.0, double.infinity),
+          ),
+          decoration: BoxDecoration(
+            color: isActive
+                ? AppColors.pastelLavender.withValues(alpha: 0.15)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+            border: Border.all(
+              color: isActive
+                  ? AppColors.pastelLavender.withValues(alpha: 0.4)
+                  : Colors.white.withValues(alpha: 0.12),
+            ),
+            boxShadow: isActive
+                ? [
+                    BoxShadow(
+                      color: AppColors.pastelLavender.withValues(alpha: 0.18),
+                      blurRadius: 12,
+                    )
+                  ]
+                : null,
+          ),
+          child: Text(
+            'R',
+            style: typography.tab.copyWith(
+              color: isActive ? AppColors.pastelLavender : AppColors.textMuted,
+              letterSpacing: 1.0,
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -739,33 +874,44 @@ class _SourcesScreenTabs extends StatelessWidget {
     required double padding,
     required VoidCallback onTap,
   }) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: padding, horizontal: padding),
-        decoration: BoxDecoration(
-          color: isActive
-              ? AppColors.pastelAqua.withValues(alpha: 0.15)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-          border: isActive
-              ? Border.all(color: AppColors.pastelAqua.withValues(alpha: 0.3))
-              : null,
-          boxShadow: isActive
-              ? [
-                  BoxShadow(
-                    color: AppColors.pastelAqua.withValues(alpha: 0.1),
-                    blurRadius: 15,
-                  )
-                ]
-              : null,
-        ),
-        child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: textStyle.copyWith(
-            color: isActive ? AppColors.pastelAqua : AppColors.textMuted,
-            letterSpacing: 0.5,
+    return Semantics(
+      button: true,
+      label: label,
+      selected: isActive,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            vertical: padding.clamp(8.0, double.infinity),
+            horizontal: padding.clamp(12.0, double.infinity),
+          ),
+          decoration: BoxDecoration(
+            color: isActive
+                ? AppColors.pastelAqua.withValues(alpha: 0.15)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+            border: Border.all(
+              color: isActive
+                  ? AppColors.pastelAqua.withValues(alpha: 0.3)
+                  : Colors.white.withValues(alpha: 0.12),
+            ),
+            boxShadow: isActive
+                ? [
+                    BoxShadow(
+                      color: AppColors.pastelAqua.withValues(alpha: 0.1),
+                      blurRadius: 15,
+                    )
+                  ]
+                : null,
+          ),
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: textStyle.copyWith(
+              color: isActive ? AppColors.pastelAqua : AppColors.textMuted,
+              letterSpacing: 0.5,
+            ),
           ),
         ),
       ),
