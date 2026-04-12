@@ -856,7 +856,7 @@ class _SourcesScreenTabs extends StatelessWidget {
                 : null,
           ),
           child: Text(
-            'R',
+            AppLocalizations.of(context)!.sourcesTabReport,
             style: typography.tab.copyWith(
               color: isActive ? AppColors.pastelLavender : AppColors.textMuted,
               letterSpacing: 1.0,
