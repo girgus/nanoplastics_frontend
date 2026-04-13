@@ -639,42 +639,42 @@ class _Footer extends StatelessWidget {
           border: Border(top: BorderSide(color: _line)),
         ),
         child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
-      child: _constrain(
-        child: Wrap(
-          alignment: WrapAlignment.spaceBetween,
-          runSpacing: 10,
-          children: [
-            const Text('© 2024–2026 Martin Durak. All rights reserved.',
-                style: TextStyle(color: _textSoft, fontSize: 12)),
-            Wrap(
-              spacing: 16,
+          padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
+          child: _constrain(
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              runSpacing: 10,
               children: [
-                _footerLink(
-                  'GitHub Repository',
-                  onTap: () {
-                    _openExternalUrl(_githubRepoUrl);
-                  },
-                ),
-                _footerLink(
-                  'Release History',
-                  onTap: () {
-                    _openExternalUrl(_githubLatestReleaseUrl);
-                  },
-                ),
-                _footerLink(
-                  'Privacy Policy',
-                  onTap: () {
-                    _openExternalUrl(_privacyPolicyUrl);
-                  },
+                const Text('© 2024–2026 Martin Durak. All rights reserved.',
+                    style: TextStyle(color: _textSoft, fontSize: 12)),
+                Wrap(
+                  spacing: 16,
+                  children: [
+                    _footerLink(
+                      'GitHub Repository',
+                      onTap: () {
+                        _openExternalUrl(_githubRepoUrl);
+                      },
+                    ),
+                    _footerLink(
+                      'Release History',
+                      onTap: () {
+                        _openExternalUrl(_githubLatestReleaseUrl);
+                      },
+                    ),
+                    _footerLink(
+                      'Privacy Policy',
+                      onTap: () {
+                        _openExternalUrl(_privacyPolicyUrl);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
-      ),
-    ),
     );
   }
 
