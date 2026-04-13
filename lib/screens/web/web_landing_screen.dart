@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:web/web.dart' as web;
+
+import '../../utils/url_utils.dart';
 
 import '../../config/app_colors.dart';
 import '../../web/web_app_shell.dart';
@@ -129,7 +130,7 @@ const _privacyPolicyUrl =
     'https://glmcz.github.io/nanoplastics_frontend/privacy/';
 
 void _openExternalUrl(String url) {
-  web.window.open(url, '_blank');
+  openExternalUrl(url);
 }
 
 // ── Screen ────────────────────────────────────────────────────────────────────
