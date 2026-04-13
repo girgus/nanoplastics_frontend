@@ -126,8 +126,11 @@ jobs:
       - name: Run Flutter Analyze
         run: flutter analyze
 
-      - name: Run Tests
-        run: flutter test
+      - name: Run Tests (Web platform)
+        run: flutter test --platform chrome
+
+      - name: Run Compliance Tests (Mobile platform)
+        run: flutter test test/compliance/google_play_release_test.dart
 
       # ---------------- L10N GENERATION ----------------
       - name: Generate l10n files

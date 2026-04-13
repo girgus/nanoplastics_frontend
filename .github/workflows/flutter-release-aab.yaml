@@ -85,6 +85,9 @@ jobs:
       - name: Run Flutter Analyze
         run: flutter analyze
 
+      - name: Run Compliance Tests (Mobile platform)
+        run: flutter test test/compliance/google_play_release_test.dart
+
       # --- BUILD PLAY AAB ---
       - name: Build PLAY AAB (Google Play)
         run: |

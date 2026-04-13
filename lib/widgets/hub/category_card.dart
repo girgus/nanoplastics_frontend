@@ -87,7 +87,7 @@ class CategoryCard extends StatelessWidget {
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
@@ -106,14 +106,17 @@ class CategoryCard extends StatelessWidget {
                             ),
                           ),
                           if (!tightHeight) SizedBox(height: contentGap),
-                          Text(
-                            category.title,
-                            style: effectiveTitleStyle.copyWith(
-                              color: AppThemeColors.of(context).textMain,
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: Text(
+                              category.title,
+                              style: effectiveTitleStyle.copyWith(
+                                color: AppThemeColors.of(context).textMain,
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
                             ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
                           ),
                           Flexible(
                             child: Text(

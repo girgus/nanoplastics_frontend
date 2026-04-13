@@ -19,7 +19,9 @@ import 'widgets/web_sidebar.dart';
 import 'widgets/web_topbar.dart';
 
 class NanoSolveWebApp extends StatefulWidget {
-  const NanoSolveWebApp({super.key});
+  final String? initialCategoryKey;
+
+  const NanoSolveWebApp({super.key, this.initialCategoryKey});
 
   @override
   State<NanoSolveWebApp> createState() => _NanoSolveWebAppState();
@@ -32,7 +34,7 @@ class _NanoSolveWebAppState extends State<NanoSolveWebApp>
   CategoryDetailData? _selectedCategory;
   String? _ideaPrefill;
 
-  bool _isSidebarHovered = false;
+  bool _sidebarExpanded = true;
 
   @override
   void initState() {
@@ -45,14 +47,20 @@ class _NanoSolveWebAppState extends State<NanoSolveWebApp>
     final l10n = AppLocalizations.of(context)!;
     final categories = CategoryDetailDataFactory.all(l10n);
 
-    // Auto-select first category on first build
+    // Select initial category once (prefer initialCategoryKey, else first)
     if (_selectedCategory == null && categories.isNotEmpty) {
-      _selectedCategory = categories.first;
+      _selectedCategory = widget.initialCategoryKey != null
+          ? categories.firstWhere(
+              (c) => c.categoryKey == widget.initialCategoryKey,
+              orElse: () => categories.first,
+            )
+          : categories.first;
     }
 
     final width = MediaQuery.sizeOf(context).width;
-    final compactSidebar = width < 1200;
-    final expandedSidebar = compactSidebar ? false : _isSidebarHovered;
+    final compactSidebar = width < 900;
+    // Sidebar expand/collapse is always user-controlled via the hamburger button.
+    final expandedSidebar = _sidebarExpanded;
 
     return Focus(
       autofocus: true,
@@ -77,13 +85,17 @@ class _NanoSolveWebAppState extends State<NanoSolveWebApp>
             WebTopBar(
               l10n: l10n,
               section: _section,
+              sidebarExpanded: expandedSidebar,
               selectedCategoryTitle: _selectedCategory?.title,
+              onToggleSidebar: () =>
+                  setState(() => _sidebarExpanded = !_sidebarExpanded),
               onSectionChanged: (s) => setState(() => _section = s),
               onGoHome: () => setState(() {
                 _section = WebSection.explore;
                 _selectedCategory =
                     categories.isNotEmpty ? categories.first : null;
               }),
+              onGoToLanding: () => Navigator.of(context).maybePop(),
             ),
             // ── Main layout: Sidebar + Content ──────────────────────────
             Expanded(
@@ -123,32 +135,24 @@ class _NanoSolveWebAppState extends State<NanoSolveWebApp>
                         child: Row(
                           children: [
                             // ── Sidebar ──────────────────────────
-                            MouseRegion(
-                              onEnter: (_) =>
-                                  setState(() => _isSidebarHovered = true),
-                              onExit: (_) =>
-                                  setState(() => _isSidebarHovered = false),
-                              child: AnimatedContainer(
-                                width: expandedSidebar
-                                    ? WebTheme.sidebarExpanded
-                                    : WebTheme.sidebarCollapsed,
-                                duration: WebTheme.slow,
-                                curve: WebTheme.sidebarCurve,
-                                child: WebSidebar(
-                                  l10n: l10n,
-                                  expanded: expandedSidebar,
-                                  compactMode: compactSidebar,
-                                  isChatOpen: false,
-                                  selectedLanguage: selectedLanguage,
-                                  categories: categories,
-                                  selectedCategory: _selectedCategory,
-                                  onToggleChat: () {},
-                                  onSelectLanguage: selectLanguage,
-                                  onSelectCategory: (cat) => setState(() {
-                                    _selectedCategory = cat;
-                                    _section = WebSection.explore;
-                                  }),
-                                ),
+                            AnimatedContainer(
+                              width: expandedSidebar
+                                  ? WebTheme.sidebarExpanded
+                                  : WebTheme.sidebarCollapsed,
+                              duration: WebTheme.slow,
+                              curve: WebTheme.sidebarCurve,
+                              child: WebSidebar(
+                                l10n: l10n,
+                                expanded: expandedSidebar,
+                                compactMode: compactSidebar,
+                                selectedLanguage: selectedLanguage,
+                                categories: categories,
+                                selectedCategory: _selectedCategory,
+                                onSelectLanguage: selectLanguage,
+                                onSelectCategory: (cat) => setState(() {
+                                  _selectedCategory = cat;
+                                  _section = WebSection.explore;
+                                }),
                               ),
                             ),
                             // ── Main Content ────────────────────

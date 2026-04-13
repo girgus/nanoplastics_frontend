@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Nanosolve - Academic Editorial Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Manrope:wght@200;400;600;800&amp;family=Space+Grotesk:wght@300;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#ecedf6",
+                        "on-primary": "#00654b",
+                        "on-secondary-fixed": "#003a42",
+                        "on-secondary-fixed-variant": "#005964",
+                        "inverse-surface": "#f9f9ff",
+                        "on-tertiary-container": "#f8f1ff",
+                        "tertiary": "#ac89ff",
+                        "on-surface-variant": "#a9abb3",
+                        "surface-container": "#161a21",
+                        "secondary-dim": "#00d4ec",
+                        "on-primary-container": "#005c44",
+                        "tertiary-fixed-dim": "#b190ff",
+                        "surface": "#080a0f",
+                        "outline": "#45484f",
+                        "tertiary-fixed": "#bda1ff",
+                        "on-tertiary-fixed-variant": "#4700a7",
+                        "on-error-container": "#ffa8a3",
+                        "surface-container-highest": "#1c2028",
+                        "secondary-fixed-dim": "#00d7f0",
+                        "surface-bright": "#22262f",
+                        "on-primary-fixed-variant": "#00664c",
+                        "inverse-on-surface": "#52555c",
+                        "on-secondary-container": "#e8fbff",
+                        "background": "#080a0f",
+                        "surface-tint": "#aaffdc",
+                        "primary-fixed": "#00fdc1",
+                        "secondary-container": "#004852",
+                        "surface-container-high": "#12161e",
+                        "primary-dim": "#00edb4",
+                        "primary-container": "#00fdc1",
+                        "tertiary-container": "#7000ff",
+                        "on-error": "#490006",
+                        "on-secondary": "#004d57",
+                        "secondary-fixed": "#26e6ff",
+                        "surface-variant": "#1c2028",
+                        "tertiary-dim": "#874cff",
+                        "secondary": "#00e3fd",
+                        "inverse-primary": "#006c51",
+                        "on-background": "#ecedf6",
+                        "primary-fixed-dim": "#00edb4",
+                        "outline-variant": "#32353b",
+                        "surface-dim": "#080a0f",
+                        "error-container": "#9f0519",
+                        "on-tertiary-fixed": "#1f0052",
+                        "surface-container-low": "#0d1017",
+                        "error": "#ff716c",
+                        "on-primary-fixed": "#004734",
+                        "error-dim": "#d7383b",
+                        "primary": "#aaffdc",
+                        "surface-container-lowest": "#000000",
+                        "on-tertiary": "#290067"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.5rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Space Grotesk", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .academic-grid {
+            background-image:
+                linear-gradient(to right, rgba(170, 255, 220, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(170, 255, 220, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .editorial-overlay {
+            background: radial-gradient(circle at 70% 30%, rgba(0, 227, 253, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 10% 80%, rgba(170, 255, 220, 0.05) 0%, transparent 50%);
+        }
+
+        .glass-panel {
+            background: rgba(18, 22, 30, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .high-contrast-card {
+            background: linear-gradient(135deg, rgba(170, 255, 220, 0.08) 0%, rgba(0, 227, 253, 0.05) 100%);
+            border: 1px solid rgba(170, 255, 220, 0.2);
+        }
+
+        .viz-glow {
+            filter: drop-shadow(0 0 30px rgba(0, 227, 253, 0.15));
+        }
+
+        .scanline {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(170, 255, 220, 0.2), transparent);
+            position: absolute;
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            from {
+                top: 0%;
+            }
+
+            to {
+                top: 100%;
+            }
+        }
+
+        .text-kern-wide {
+            letter-spacing: 0.15em;
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface font-body overflow-hidden selection:bg-primary/30 selection:text-primary">
+    <!-- Background Layers -->
+    <div class="fixed inset-0 academic-grid pointer-events-none"></div>
+    <div class="fixed inset-0 editorial-overlay pointer-events-none"></div>
+    <div class="scanline pointer-events-none"></div>
+    <!-- Main Content -->
+    <main class="relative w-full h-screen flex items-center justify-center pt-8 px-10">
+        <div class="w-full max-w-screen-2xl grid grid-cols-12 gap-8 items-start h-full">
+            <!-- Left Column: Editorial Content -->
+            <div class="col-span-12 lg:col-span-5 flex flex-col justify-center h-full space-y-6 pr-8">
+                <div class="space-y-6">
+                    <div
+                        class="inline-flex items-center px-4 py-2 rounded-xl bg-surface-container-high/40 border border-outline-variant/30 shadow-[0_0_30px_rgba(0,227,253,0.12)]">
+                        <img alt="Nanosolve Logo" class="h-14 xl:h-16 w-auto object-contain brightness-125 saturate-125"
+                            src="https://lh3.googleusercontent.com/aida/ADBb0uhOx8eoYoWwUHrgstJR1y7CNoOndmXqMCvkuTcIJLYGLDUQwfUsS7zEKePmHaihsrXTQ3FQUI5dvtmtCPJvhIhj1zeKQpLRQHM7CoSMQIodjlSLDujgX4DqXg2TmSd9fWkGdV7B-J5STYK5DMXBeOujqo4S7HSipd0N2nn46An6eSJ3KYBX-1NeBT1NpiSSC0iCvg7D-sLzoNXsmk1KvseV8EU9r4N0XmbnU1onnGon-3SL0nQtwUZTnVJEyC73PySfPJGs4XMkmbk" />
+                    </div>
+                    <h1
+                        class="font-headline font-light text-5xl xl:text-6xl text-on-surface leading-[1.1] tracking-tight">
+                        Science-backed <span class="font-semibold text-primary/90">Micro and Nanoplastic</span>
+                        platform.
+                    </h1>
+                    <p class="text-on-surface-variant leading-relaxed text-lg font-light max-w-xl">
+                        Mobile app for research-grade information, source exploration, and community solution ideas.
+                    </p>
+                </div>
+                <div
+                    class="inline-flex flex-wrap items-center gap-2 border border-outline-variant/30 rounded-lg px-3 py-2.5 w-fit bg-surface-container-low/70">
+                    <span class="font-label text-xs uppercase tracking-[0.18em] text-primary/90 mr-1">Langs</span>
+                    <span class="px-2.5 py-1 rounded bg-surface-container-high text-sm font-medium">EN</span>
+                    <span class="px-2.5 py-1 rounded bg-surface-container-high text-sm font-medium">CS</span>
+                    <span class="px-2.5 py-1 rounded bg-surface-container-high text-sm font-medium">FR</span>
+                    <span class="px-2.5 py-1 rounded bg-surface-container-high text-sm font-medium">ES</span>
+                    <span class="px-2.5 py-1 rounded bg-surface-container-high text-sm font-medium">RU</span>
+                </div>
+                <!-- Core Points -->
+                <div class="grid grid-cols-1 gap-3">
+                    <div
+                        class="group relative py-4 border-t border-outline-variant/30 flex gap-6 hover:bg-white/5 transition-colors duration-500 rounded-lg -mx-4 px-4">
+                        <div
+                            class="shrink-0 w-12 h-12 flex items-center justify-center rounded-lg bg-surface-container-high border border-outline-variant/20 group-hover:border-primary/40 transition-all">
+                            <span class="material-symbols-outlined text-primary text-2xl">menu_book</span>
+                        </div>
+                        <div class="space-y-1">
+                            <h3 class="font-headline font-semibold text-on-surface tracking-wide uppercase text-base">
+                                Research-Grade Information</h3>
+                            <p class="text-base text-on-surface-variant leading-relaxed font-light">
+                                Science-backed content on nanoplastic impacts for health and environment.
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="group relative py-4 border-t border-outline-variant/30 flex gap-6 hover:bg-white/5 transition-colors duration-500 rounded-lg -mx-4 px-4">
+                        <div
+                            class="shrink-0 w-12 h-12 flex items-center justify-center rounded-lg bg-surface-container-high border border-outline-variant/20 group-hover:border-secondary/40 transition-all">
+                            <span class="material-symbols-outlined text-secondary text-2xl">architecture</span>
+                        </div>
+                        <div class="space-y-1">
+                            <h3 class="font-headline font-semibold text-on-surface tracking-wide uppercase text-base">
+                                Community Ideas</h3>
+                            <p class="text-base text-on-surface-variant leading-relaxed font-light">
+                                Users can explore scientific sources, contribute ideas, and the best ideas are reviewed
+                                by scientists.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right Column: Visualization & Roadmap -->
+            <div class="col-span-12 lg:col-span-7 flex flex-col gap-0 h-full py-6">
+                <!-- Main Demo Panel -->
+                <div class="flex-1 glass-panel rounded-xl overflow-hidden relative p-8 xl:p-10">
+                    <div
+                        class="absolute -top-10 -right-10 w-48 h-48 rounded-full bg-secondary/10 blur-3xl pointer-events-none">
+                    </div>
+                    <div
+                        class="absolute -bottom-16 -left-12 w-56 h-56 rounded-full bg-primary/10 blur-3xl pointer-events-none">
+                    </div>
+
+                    <div class="relative z-10 h-full grid grid-cols-12 gap-8 items-stretch">
+                        <div class="col-span-12 xl:col-span-7 flex flex-col">
+                            <div class="space-y-5">
+                                <h3 class="font-headline text-5xl xl:text-6xl leading-tight">NanoSolve App
+                                    Overview</h3>
+                            </div>
+
+                            <div class="space-y-4 mt-5">
+                                <div
+                                    class="flex items-center gap-4 rounded-xl border border-outline-variant/30 bg-surface-container-high/50 px-5 py-4">
+                                    <span class="font-mono text-base text-secondary">01</span>
+                                    <span class="text-2xl font-semibold">Browse nanoplastics knowledge base</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-4 rounded-xl border border-outline-variant/30 bg-surface-container-high/50 px-5 py-4">
+                                    <span class="font-mono text-base text-primary">02</span>
+                                    <span class="text-2xl font-semibold">Read scientific sources and references</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-4 rounded-xl border border-outline-variant/30 bg-surface-container-high/50 px-5 py-4">
+                                    <span class="font-mono text-base text-tertiary">03</span>
+                                    <span class="text-2xl font-semibold">Share solution ideas with community</span>
+                                </div>
+                            </div>
+                            <div
+                                class="mt-5 rounded-xl border border-outline-variant/30 bg-surface-container-high/40 p-5">
+                                <div class="flex items-center gap-4">
+                                    <img src="nanosolve_qr_only.jpg" alt="NanoSolve download QR"
+                                        class="w-32 h-32 rounded-lg border border-outline-variant/30 bg-white object-cover" />
+                                    <div>
+                                        <p class="text-lg text-on-surface-variant">Download NanoSolve</p>
+                                        <div class="flex gap-2 mt-2">
+                                            <span
+                                                class="px-4 py-2 rounded-md text-base font-semibold bg-primary/15 text-primary border border-primary/25">Google
+                                                Play</span>
+                                            <span
+                                                class="px-4 py-2 rounded-md text-base font-semibold bg-on-surface/10 text-on-surface border border-outline-variant/30">iOS</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-span-12 xl:col-span-5 flex items-start justify-center pt-2">
+                            <div
+                                class="w-full max-w-[340px] rounded-[2rem] border border-outline-variant/40 bg-surface-container-highest p-3 shadow-2xl">
+                                <img src="app_screens_graphics/1000002206.png" alt="NanoSolve app screen"
+                                    class="w-full h-auto rounded-[1.6rem] border border-outline-variant/20 object-cover" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Support Card -->
+
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer
+        class="hidden fixed bottom-0 left-0 w-full justify-between items-center px-10 py-6 z-50 bg-surface/80 backdrop-blur-sm border-t border-outline-variant/5">
+        <div class="text-[10px] font-medium text-on-surface/30 uppercase tracking-[0.2em]">
+            © 2026 Nanosolve Research Group • High-Tech Collaborative Framework
+        </div>
+        <div class="flex gap-10 items-center">
+            <span class="text-[10px] text-on-surface/30 uppercase tracking-widest">Public Ledger: Active</span>
+            <div class="w-2 h-2 rounded-full bg-secondary"></div>
+        </div>
+    </footer>
+</body>
+
+</html>

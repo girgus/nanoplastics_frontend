@@ -6,7 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'config/app_theme.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/main_screen.dart';
-import 'web/web_app_shell.dart';
+import 'screens/web/web_landing_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'services/settings_manager.dart';
 import 'services/service_locator.dart';
@@ -184,7 +184,7 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp>
       ],
       locale: _locale,
       home: kIsWeb
-          ? const NanoSolveWebApp()
+          ? const WebLandingScreen()
           : (shouldShowOnboarding
               ? const OnboardingScreen()
               : const MainScreen()),

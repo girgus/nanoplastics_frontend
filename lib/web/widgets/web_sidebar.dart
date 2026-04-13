@@ -6,15 +6,17 @@ import '../../models/category_detail_data.dart';
 import '../../widgets/nanosolve_logo.dart';
 import '../web_theme.dart';
 
+// ── Left Panel Sidebar ────────────────────────────────────────────────────────
+// Displays the navigation sidebar with logo, category list, and language selector.
+// Toggles between expanded (showing labels) and collapsed (icons only) states.
+
 class WebSidebar extends StatelessWidget {
   final AppLocalizations l10n;
   final bool expanded;
   final bool compactMode;
-  final bool isChatOpen;
   final String selectedLanguage;
   final List<CategoryDetailData> categories;
   final CategoryDetailData? selectedCategory;
-  final VoidCallback onToggleChat;
   final ValueChanged<String> onSelectLanguage;
   final ValueChanged<CategoryDetailData> onSelectCategory;
 
@@ -23,11 +25,9 @@ class WebSidebar extends StatelessWidget {
     required this.l10n,
     required this.expanded,
     required this.compactMode,
-    required this.isChatOpen,
     required this.selectedLanguage,
     required this.categories,
     required this.selectedCategory,
-    required this.onToggleChat,
     required this.onSelectLanguage,
     required this.onSelectCategory,
   });
@@ -94,7 +94,8 @@ class WebSidebar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 12, 8, 10),
       child: Column(
         children: [
-          // ── Logo ─────────────────────────────────────────────────────────
+          // ── Logo Section ──────────────────────────────────────────────────
+          // Displays app logo (expanded) or icon (collapsed)
           SizedBox(
             height: 44,
             child: showLabels
@@ -115,7 +116,8 @@ class WebSidebar extends StatelessWidget {
           const SizedBox(height: 4),
           const Divider(height: 1, color: WebTheme.borderSubtle),
 
-          // ── Categories label ──────────────────────────────────────────────
+          // ── Categories Header ─────────────────────────────────────────────
+          // Shows category count when sidebar is expanded
           if (showLabels)
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
@@ -146,26 +148,62 @@ class WebSidebar extends StatelessWidget {
           else
             const SizedBox(height: 6),
 
-          // ── Category list ─────────────────────────────────────────────────
+          // ── Category List ─────────────────────────────────────────────────
+          // Scrollable list organized in Human and Planet sections
           Expanded(
-            child: ListView.builder(
+            child: ListView(
               padding: EdgeInsets.zero,
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                final cat = categories[index];
-                final active =
-                    selectedCategory?.categoryKey == cat.categoryKey;
-                return _CategoryRow(
-                  cat: cat,
-                  active: active,
-                  showLabel: showLabels,
-                  onTap: () => onSelectCategory(cat),
-                );
-              },
+              children: [
+                // Human Impact Categories
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
+                  child: Text(
+                    'Human',
+                    style: TextStyle(
+                      color: const Color(0xFF7DD3FC),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+                ...categories
+                    .where((cat) => cat.categoryKey.startsWith('human_'))
+                    .map((cat) => _CategoryRow(
+                          cat: cat,
+                          active: selectedCategory?.categoryKey == cat.categoryKey,
+                          showLabel: showLabels,
+                          onTap: () => onSelectCategory(cat),
+                        )),
+                const SizedBox(height: 12),
+                // Planet Impact Categories
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
+                  child: Text(
+                    'Planet',
+                    style: TextStyle(
+                      color: const Color(0xFF86EFAC),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+                ...categories
+                    .where((cat) => cat.categoryKey.startsWith('planet_'))
+                    .map((cat) => _CategoryRow(
+                          cat: cat,
+                          active: selectedCategory?.categoryKey == cat.categoryKey,
+                          showLabel: showLabels,
+                          onTap: () => onSelectCategory(cat),
+                        )),
+              ],
             ),
           ),
 
           const SizedBox(height: 8),
+          // ── Language Selector ─────────────────────────────────────────────
+          // Dropdown to change app language (EN, CS, ES, FR, RU)
           languagePicker,
         ],
       ),
@@ -173,7 +211,9 @@ class WebSidebar extends StatelessWidget {
   }
 }
 
-// ── Category row ─────────────────────────────────────────────────────────────
+// ── Category Row ─────────────────────────────────────────────────────────────
+// Individual category item in the sidebar with hover/active states.
+// Shows icon, category title (when expanded), and handles tap to select category.
 class _CategoryRow extends StatefulWidget {
   final CategoryDetailData cat;
   final bool active;
@@ -196,8 +236,6 @@ class _CategoryRowState extends State<_CategoryRow> {
 
   @override
   Widget build(BuildContext context) {
-    final isHuman = widget.cat.categoryKey.startsWith('human_');
-
     return Semantics(
       button: true,
       selected: widget.active,
@@ -254,7 +292,7 @@ class _CategoryRowState extends State<_CategoryRow> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        widget.cat.title,
+                        widget.cat.title.replaceAll(RegExp(r'\s*\([^)]*\)'), ''),
                         style: TextStyle(
                           color: widget.active
                               ? WebTheme.textPrimary
@@ -266,27 +304,6 @@ class _CategoryRowState extends State<_CategoryRow> {
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 1),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        color: isHuman
-                            ? const Color(0x1F38BDF8)
-                            : const Color(0x1F4ADE80),
-                      ),
-                      child: Text(
-                        isHuman ? 'H' : 'P',
-                        style: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w700,
-                          color: isHuman
-                              ? WebTheme.accent
-                              : const Color(0xFF4ADE80),
-                          fontFamily: 'monospace',
-                        ),
                       ),
                     ),
                   ],
