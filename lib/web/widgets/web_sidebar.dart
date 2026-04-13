@@ -155,12 +155,12 @@ class WebSidebar extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 // Human Impact Categories
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(10, 8, 10, 6),
                   child: Text(
                     'Human',
                     style: TextStyle(
-                      color: const Color(0xFF7DD3FC),
+                      color: Color(0xFF7DD3FC),
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.5,
@@ -177,12 +177,12 @@ class WebSidebar extends StatelessWidget {
                         )),
                 const SizedBox(height: 12),
                 // Planet Impact Categories
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(10, 8, 10, 6),
                   child: Text(
                     'Planet',
                     style: TextStyle(
-                      color: const Color(0xFF86EFAC),
+                      color: Color(0xFF86EFAC),
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.5,

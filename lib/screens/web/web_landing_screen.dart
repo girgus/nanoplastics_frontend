@@ -1,6 +1,5 @@
-import 'dart:html' as html;
-
 import 'package:flutter/material.dart';
+import 'package:web/web.dart' as web;
 
 import '../../config/app_colors.dart';
 import '../../web/web_app_shell.dart';
@@ -130,7 +129,7 @@ const _privacyPolicyUrl =
     'https://glmcz.github.io/nanoplastics_frontend/privacy/';
 
 void _openExternalUrl(String url) {
-  html.window.open(url, '_blank');
+  web.window.open(url, '_blank');
 }
 
 // ── Screen ────────────────────────────────────────────────────────────────────
@@ -197,7 +196,7 @@ class _WebLandingScreenState extends State<WebLandingScreen> {
                         onLaunchWorkspace: () => _openWorkspace(context)),
                     KeyedSubtree(
                       key: _whySectionKey,
-                      child: _WhySection(),
+                      child: const _WhySection(),
                     ),
                     KeyedSubtree(
                       key: _howSectionKey,
@@ -208,7 +207,7 @@ class _WebLandingScreenState extends State<WebLandingScreen> {
                     ),
                     KeyedSubtree(
                       key: _downloadSectionKey,
-                      child: _Footer(),
+                      child: const _Footer(),
                     ),
                   ],
                 ),
@@ -237,7 +236,7 @@ class _LandingTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: const Color(0xDB031622),
         border: const Border(bottom: BorderSide(color: _line)),
@@ -248,41 +247,43 @@ class _LandingTopBar extends StatelessWidget {
           )
         ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: _constrain(
-        child: Row(
-          children: [
-            const NanosolveLogo(height: 26),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('NanoSolve Hive',
-                    style: TextStyle(
-                        color: _textMain,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700)),
-                Text('Nanoplastics Action App',
-                    style: TextStyle(
-                        color: _textSoft,
-                        fontSize: 10,
-                        letterSpacing: 0.9,
-                        fontWeight: FontWeight.w600)),
-              ],
-            ),
-            const Spacer(),
-            _topLink('Why it works', onTap: onOpenWhy),
-            const SizedBox(width: 4),
-            _topLink('How it works', onTap: onOpenHow),
-            const SizedBox(width: 4),
-            _topLink('Download', onTap: onOpenDownload),
-            const SizedBox(width: 8),
-            _PillButton(
-              label: 'Launch Workspace',
-              onTap: onLaunchWorkspace,
-              primary: true,
-            ),
-          ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        child: _constrain(
+          child: Row(
+            children: [
+              const NanosolveLogo(height: 26),
+              const SizedBox(width: 10),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('NanoSolve Hive',
+                      style: TextStyle(
+                          color: _textMain,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700)),
+                  Text('Nanoplastics Action App',
+                      style: TextStyle(
+                          color: _textSoft,
+                          fontSize: 10,
+                          letterSpacing: 0.9,
+                          fontWeight: FontWeight.w600)),
+                ],
+              ),
+              const Spacer(),
+              _topLink('Why it works', onTap: onOpenWhy),
+              const SizedBox(width: 4),
+              _topLink('How it works', onTap: onOpenHow),
+              const SizedBox(width: 4),
+              _topLink('Download', onTap: onOpenDownload),
+              const SizedBox(width: 8),
+              _PillButton(
+                label: 'Launch Workspace',
+                onTap: onLaunchWorkspace,
+                primary: true,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -394,27 +395,27 @@ class _WhySection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
       child: _constrain(
-        child: _Card(
+        child: const _Card(
           child: Padding(
-            padding: const EdgeInsets.all(28),
+            padding: EdgeInsets.all(28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Why new users stick with NanoSolve Hive',
+                Text('Why new users stick with NanoSolve Hive',
                     style: TextStyle(
                         color: _textMain,
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.3)),
-                const SizedBox(height: 6),
-                const Text(
+                SizedBox(height: 6),
+                Text(
                     'The app is built to reduce first-use friction: clear categories, fast navigation, and practical actions instead of overwhelming theory.',
                     style: TextStyle(
                         color: _textSoft, fontSize: 13.5, height: 1.55)),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 _AdaptiveGrid(
                   minChildWidth: 260,
-                  children: const [
+                  children: [
                     _FeatureCard(
                       title: 'Structured science, not random articles',
                       desc:
@@ -499,7 +500,7 @@ class _CategoriesSection extends StatelessWidget {
                   letterSpacing: 0.8)),
         ),
         const SizedBox(width: 10),
-        Expanded(child: Divider(color: _line, height: 1)),
+        const Expanded(child: Divider(color: _line, height: 1)),
       ],
     );
   }
@@ -631,12 +632,14 @@ class _Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 32),
+    return Padding(
+      padding: const EdgeInsets.only(top: 32),
+      child: DecoratedBox(
+        decoration: const BoxDecoration(
+          border: Border(top: BorderSide(color: _line)),
+        ),
+        child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
-      decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: _line)),
-      ),
       child: _constrain(
         child: Wrap(
           alignment: WrapAlignment.spaceBetween,
@@ -670,6 +673,8 @@ class _Footer extends StatelessWidget {
           ],
         ),
       ),
+      ),
+    ),
     );
   }
 
