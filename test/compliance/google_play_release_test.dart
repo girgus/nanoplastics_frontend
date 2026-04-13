@@ -1,3 +1,6 @@
+@TestOn('vm')
+library;
+
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -29,17 +32,20 @@ void main() {
         expect(
           removedPermissions.contains(restricted),
           isTrue,
-          reason: 'Play manifest must explicitly remove $restricted for Play Store compliance',
+          reason:
+              'Play manifest must explicitly remove $restricted for Play Store compliance',
         );
       }
     });
 
-    test('Project defines a Play-specific flavor for sanitized Play builds', () {
+    test('Project defines a Play-specific flavor for sanitized Play builds',
+        () {
       final gradleContent = buildGradle.readAsStringSync();
       expect(
         gradleContent.contains('create("play")'),
         isTrue,
-        reason: 'Build definitions must expose a Play flavor that can drop unsafe permissions',
+        reason:
+            'Build definitions must expose a Play flavor that can drop unsafe permissions',
       );
     });
 
@@ -47,13 +53,15 @@ void main() {
       expect(
         privacyIndex.existsSync(),
         isTrue,
-        reason: 'Google Play requires a public privacy policy, so the docs should contain it',
+        reason:
+            'Google Play requires a public privacy policy, so the docs should contain it',
       );
       final htmlContent = privacyIndex.readAsStringSync().toLowerCase();
       expect(
         htmlContent.contains('privacy policy'),
         isTrue,
-        reason: 'The privacy page should include the phrase "privacy policy" so reviewers can verify intent',
+        reason:
+            'The privacy page should include the phrase "privacy policy" so reviewers can verify intent',
       );
     });
   });

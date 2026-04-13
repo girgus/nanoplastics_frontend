@@ -1,3 +1,10 @@
+// These tests exercise dart:io / path_provider / file-system behaviour that
+// only exists on mobile/desktop.  They must not run on the Chrome platform
+// (flutter test --platform chrome) where dart:io and path_provider channels
+// are unavailable and the asset-manifest future never completes.
+@TestOn('vm')
+library;
+
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
