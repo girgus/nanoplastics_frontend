@@ -32,7 +32,7 @@ dependencies:
   package_info_plus: ^4.2.0
   connectivity_plus: ^6.0.0
   android_package_installer: ^0.0.3
-  web: ^1.1.0
+  web: any
   # Google Play Store updates only
   in_app_update: ^4.2.3
   tutorial_coach_mark: ^1.2.8
