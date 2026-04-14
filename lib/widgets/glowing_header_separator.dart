@@ -27,56 +27,59 @@ class GlowingHeaderSeparator {
     double spreadRadius = 1,
   }) {
     return [
-      // Top gradient fade - creates smooth transition from header to content
+      // Top gradient fade
       Positioned(
         top: 0,
         left: 0,
         right: 0,
         height: 24,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                glowColor.withValues(alpha: topGradientAlpha),
-                glowColor.withValues(alpha: topGradientAlpha * 0.25),
-                Colors.transparent,
-              ],
-              stops: const [0.0, 0.5, 1.0],
+        child: IgnorePointer(
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  glowColor.withValues(alpha: topGradientAlpha),
+                  glowColor.withValues(alpha: topGradientAlpha * 0.25),
+                  Colors.transparent,
+                ],
+                stops: const [0.0, 0.5, 1.0],
+              ),
             ),
           ),
         ),
       ),
-      // Glowing line separator with enhanced visual effects
+      // Glowing line separator
       Positioned(
         top: 0,
         left: horizontalMargin,
         right: horizontalMargin,
-        child: Container(
-          height: lineHeight,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.transparent,
-                glowColor.withValues(alpha: 0.75),
-                Colors.transparent,
+        child: IgnorePointer(
+          child: Container(
+            height: lineHeight,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  glowColor.withValues(alpha: 0.75),
+                  Colors.transparent,
+                ],
+                stops: const [0.0, 0.5, 1.0],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: glowColor.withValues(alpha: 0.3),
+                  blurRadius: blurRadius,
+                  spreadRadius: spreadRadius,
+                ),
+                BoxShadow(
+                  color: glowColor.withValues(alpha: 0.15),
+                  blurRadius: blurRadius * 1.5,
+                  spreadRadius: spreadRadius * 0.5,
+                ),
               ],
-              stops: const [0.0, 0.5, 1.0],
             ),
-            boxShadow: [
-              BoxShadow(
-                color: glowColor.withValues(alpha: 0.3),
-                blurRadius: blurRadius,
-                spreadRadius: spreadRadius,
-              ),
-              // Additional subtle outer glow for depth
-              BoxShadow(
-                color: glowColor.withValues(alpha: 0.15),
-                blurRadius: blurRadius * 1.5,
-                spreadRadius: spreadRadius * 0.5,
-              ),
-            ],
           ),
         ),
       ),

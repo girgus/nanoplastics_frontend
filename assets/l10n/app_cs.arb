@@ -89,14 +89,16 @@
   "sourcesMainReportTitle": "NANOPLASTY V BIOSFÉŘE, OD MOLEKULÁRNÍHO DOPADU PO PLANETÁRNÍ KRIZI",
   "sourcesMainReportUrl": "https://allatra.org/storage/app/media/reports/en/Nanoplastics_in_the_Biosphere_Report.pdf",
   "sourcesBack": "← ZPĚT",
-  "sourcesTabWeb": "A. WEBOVÉ ODKAZY",
-  "sourcesTabVideo": "B. VIDEO-ODKAZY",
+  "sourcesTabWeb": "WEBOVÉ ODKAZY",
+  "sourcesTabVideo": "VIDEO-ODKAZY",
   "sourcesTabReport": "R",
+  "sourcesWebTabSearchbar" : "Hledej podle autora, názvu, vydáné, svazku...",
   "sourcesSectionHumanHealth": "Sekce I: Nanoplasty a lidské zdraví",
   "sourcesSectionEarthPollution": "Sekce II: Země a plastové zamoření",
   "sourcesSectionWaterAbilities": "Sekce III: Specifické vlastnosti vody",
   "sourcesSectionVideoContent": "B. Dokumentární a expertní obsah",
   "sourcesVideoSectionDocumentaries": "Dokumentární filmy",
+
 
   "videoLink1Title": "Nanoplasty. Hrozba pro život | ALLATRA Dokument",
   "videoLink1Source": "ALLATRA Dokument",

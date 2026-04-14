@@ -145,7 +145,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: spacing.contentPaddingH),
+          padding: EdgeInsets.fromLTRB(spacing.contentPaddingH, spacing.md, spacing.contentPaddingH, 0),
           child: Column(
             children: [
               for (final s in sections) ...[
@@ -284,7 +284,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
         Padding(
           padding: EdgeInsets.fromLTRB(
             spacing.contentPaddingH,
-            spacing.xs,
+            spacing.md,
             spacing.contentPaddingH,
             spacing.sm,
           ),
@@ -293,7 +293,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
             onChanged: (value) => setState(() => _webLinksSearchQuery = value),
             style: typography.body,
             decoration: InputDecoration(
-              hintText: 'Search links by title, author, journal…',
+              hintText: l10n.sourcesWebTabSearchbar,
               hintStyle: typography.bodySm.copyWith(
                 color: AppThemeColors.of(context).textMuted,
               ),
@@ -699,7 +699,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
       children: [
         // ── Navigation: 2 slim section headers ──
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: spacing.contentPaddingH),
+          padding: EdgeInsets.fromLTRB(spacing.contentPaddingH, spacing.md, spacing.contentPaddingH, 0),
           child: Column(
             children: [
               for (final s in sections) ...[
@@ -767,154 +767,275 @@ class _SourcesScreenTabs extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // ── Web Links and Video Links ──
+              // ── Segmented tab bar: Web | R | Video (connected borders) ──
               Padding(
                 padding: EdgeInsets.only(
                   top: sizing.tabMarginV,
-                  bottom: spacing.tabInnerPadding * 0.5,
+                  bottom: spacing.tabInnerPadding,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildTabButton(
-                      label: AppLocalizations.of(context)!.sourcesTabWeb,
-                      isActive: selectedTab == SourceType.webLinks,
-                      textStyle: typography.tab,
-                      padding: spacing.tabButtonPadding,
-                      onTap: () {
-                        onTabChanged(SourceType.webLinks);
-                        LoggerService().logUserAction('sources_tab_switched',
-                            params: {'tab': 'web'});
-                      },
-                    ),
-                    SizedBox(width: spacing.xl3),
-                    _buildTabButton(
-                      label: AppLocalizations.of(context)!.sourcesTabVideo,
-                      isActive: selectedTab == SourceType.videoLinks,
-                      textStyle: typography.tab,
-                      padding: spacing.tabButtonPadding,
-                      onTap: () {
-                        onTabChanged(SourceType.videoLinks);
-                        LoggerService().logUserAction('sources_tab_switched',
-                            params: {'tab': 'video'});
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              // ── R pill: a little above the bottom ──
-              Padding(
-                padding: EdgeInsets.only(bottom: spacing.tabInnerPadding),
-                child: _buildReportPill(context, spacing, typography),
+                child: _buildSegmentedTabs(context, spacing, typography),
               ),
             ],
           ),
         ),
         ...GlowingHeaderSeparator.build(
           glowColor: AppColors.energy,
-        ).map((w) => IgnorePointer(child: w)),
+        ),
       ],
     );
   }
 
-  Widget _buildReportPill(
+  Widget _buildSegmentedTabs(
       BuildContext context, AppSpacing spacing, AppTypography typography) {
-    final isActive = selectedTab == SourceType.reportLinks;
-    return Semantics(
-      button: true,
-      label: 'Allatra report chapters',
-      selected: isActive,
-      child: InkWell(
-        onTap: () {
-          onTabChanged(SourceType.reportLinks);
-          LoggerService().logUserAction('sources_tab_switched',
-              params: {'tab': 'report'});
-        },
-        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            vertical: (spacing.tabButtonPadding / 2).clamp(6.0, double.infinity),
-            horizontal: spacing.md.clamp(14.0, double.infinity),
-          ),
-          decoration: BoxDecoration(
-            color: isActive
-                ? AppColors.pastelLavender.withValues(alpha: 0.15)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-            border: Border.all(
-              color: isActive
-                  ? AppColors.pastelLavender.withValues(alpha: 0.4)
-                  : Colors.white.withValues(alpha: 0.12),
+    final webActive = selectedTab == SourceType.webLinks;
+    final reportActive = selectedTab == SourceType.reportLinks;
+    final videoActive = selectedTab == SourceType.videoLinks;
+
+    final dim = Colors.white.withValues(alpha: 0.12);
+    const r = AppConstants.radiusMedium;
+    final vPad = spacing.tabButtonPadding.clamp(8.0, double.infinity);
+    final hPad = spacing.tabButtonPadding.clamp(12.0, double.infinity);
+
+    BorderSide side(bool active, Color color) => BorderSide(
+          color: active ? color.withValues(alpha: 0.4) : dim,
+        );
+
+    Widget segment({
+      required String label,
+      required bool isActive,
+      required Color activeColor,
+      required Border border,
+      required BorderRadius borderRadius,
+      required VoidCallback onTap,
+      double? letterSpacing,
+      EdgeInsetsGeometry? customPadding,
+      bool concaveRight = false,
+      bool concaveLeft = false,
+    }) {
+      final effectivePadding =
+          customPadding ?? EdgeInsets.symmetric(vertical: vPad, horizontal: hPad);
+      final borderColor = isActive ? activeColor.withValues(alpha: 0.4) : dim;
+
+      if (concaveRight || concaveLeft) {
+        return Semantics(
+          button: true,
+          label: label,
+          selected: isActive,
+          child: InkWell(
+            onTap: onTap,
+            child: CustomPaint(
+              painter: _ConcaveTabPainter(
+                isActive: isActive,
+                activeColor: activeColor,
+                borderColor: borderColor,
+                concaveRight: concaveRight,
+                concaveLeft: concaveLeft,
+                cornerRadius: r,
+              ),
+              child: Padding(
+                padding: effectivePadding,
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: typography.tab.copyWith(
+                    color: isActive ? activeColor : AppColors.textMuted,
+                    letterSpacing: letterSpacing ?? 0.5,
+                  ),
+                ),
+              ),
             ),
-            boxShadow: isActive
-                ? [
-                    BoxShadow(
-                      color: AppColors.pastelLavender.withValues(alpha: 0.18),
-                      blurRadius: 12,
-                    )
-                  ]
-                : null,
           ),
-          child: Text(
-            AppLocalizations.of(context)!.sourcesTabReport,
-            style: typography.tab.copyWith(
-              color: isActive ? AppColors.pastelLavender : AppColors.textMuted,
-              letterSpacing: 1.0,
+        );
+      }
+
+      return Semantics(
+        button: true,
+        label: label,
+        selected: isActive,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: borderRadius,
+          child: Container(
+            padding: effectivePadding,
+            decoration: BoxDecoration(
+              color: isActive
+                  ? activeColor.withValues(alpha: 0.15)
+                  : Colors.transparent,
+              borderRadius: borderRadius,
+              border: border,
+              boxShadow: isActive
+                  ? [
+                      BoxShadow(
+                        color: activeColor.withValues(alpha: 0.18),
+                        blurRadius: 12,
+                      )
+                    ]
+                  : null,
+            ),
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: typography.tab.copyWith(
+                color: isActive ? activeColor : AppColors.textMuted,
+                letterSpacing: letterSpacing ?? 0.5,
+              ),
             ),
           ),
         ),
+      );
+    }
+
+    return IntrinsicHeight(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+
+        children: [
+          // Web — left rounded, concave right border
+          segment(
+            label: AppLocalizations.of(context)!.sourcesTabWeb,
+            isActive: webActive,
+            activeColor: AppColors.pastelAqua,
+            border: Border(
+              top: side(webActive, AppColors.pastelAqua),
+              left: side(webActive, AppColors.pastelAqua),
+              bottom: side(webActive, AppColors.pastelAqua),
+            ),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(r),
+              bottomLeft: Radius.circular(r),
+            ),
+            concaveRight: true,
+            onTap: () {
+              onTabChanged(SourceType.webLinks);
+              LoggerService().logUserAction('sources_tab_switched',
+                  params: {'tab': 'web'});
+            },
+          ),
+          // R — circle joystick
+          segment(
+            label: AppLocalizations.of(context)!.sourcesTabReport,
+            isActive: reportActive,
+            activeColor: AppColors.pastelLavender,
+            border: Border.all(
+              color: reportActive
+                  ? AppColors.pastelLavender.withValues(alpha: 0.4)
+                  : dim,
+            ),
+            borderRadius: BorderRadius.circular(999),
+            letterSpacing: 1.0,
+            customPadding: EdgeInsets.all(vPad),
+            onTap: () {
+              onTabChanged(SourceType.reportLinks);
+              LoggerService().logUserAction('sources_tab_switched',
+                  params: {'tab': 'report'});
+            },
+          ),
+          // Video — right rounded, concave left border
+          segment(
+            label: AppLocalizations.of(context)!.sourcesTabVideo,
+            isActive: videoActive,
+            activeColor: AppColors.pastelAqua,
+            border: Border(
+              top: side(videoActive, AppColors.pastelAqua),
+              right: side(videoActive, AppColors.pastelAqua),
+              bottom: side(videoActive, AppColors.pastelAqua),
+            ),
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(r),
+              bottomRight: Radius.circular(r),
+            ),
+            concaveLeft: true,
+            concaveRight: false,
+            onTap: () {
+              onTabChanged(SourceType.videoLinks);
+              LoggerService().logUserAction('sources_tab_switched',
+                  params: {'tab': 'video'});
+            },
+          ),
+        ],
       ),
+    );
+  }
+}
+
+class _ConcaveTabPainter extends CustomPainter {
+  const _ConcaveTabPainter({
+    required this.isActive,
+    required this.activeColor,
+    required this.borderColor,
+    required this.concaveRight,
+    required this.concaveLeft,
+    required this.cornerRadius,
+  });
+
+  final bool isActive;
+  final Color activeColor;
+  final Color borderColor;
+  final bool concaveRight;
+  final bool concaveLeft;
+  final double cornerRadius;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final path = _buildPath(size);
+    if (isActive) {
+      canvas.drawPath(
+        path,
+        Paint()
+          ..color = activeColor.withValues(alpha: 0.15)
+          ..style = PaintingStyle.fill,
+      );
+    }
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = borderColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.0,
     );
   }
 
-  Widget _buildTabButton({
-    required String label,
-    required bool isActive,
-    required TextStyle textStyle,
-    required double padding,
-    required VoidCallback onTap,
-  }) {
-    return Semantics(
-      button: true,
-      label: label,
-      selected: isActive,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            vertical: padding.clamp(8.0, double.infinity),
-            horizontal: padding.clamp(12.0, double.infinity),
-          ),
-          decoration: BoxDecoration(
-            color: isActive
-                ? AppColors.pastelAqua.withValues(alpha: 0.15)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-            border: Border.all(
-              color: isActive
-                  ? AppColors.pastelAqua.withValues(alpha: 0.3)
-                  : Colors.white.withValues(alpha: 0.12),
-            ),
-            boxShadow: isActive
-                ? [
-                    BoxShadow(
-                      color: AppColors.pastelAqua.withValues(alpha: 0.1),
-                      blurRadius: 15,
-                    )
-                  ]
-                : null,
-          ),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: textStyle.copyWith(
-              color: isActive ? AppColors.pastelAqua : AppColors.textMuted,
-              letterSpacing: 0.5,
-            ),
-          ),
-        ),
-      ),
-    );
+  Path _buildPath(Size size) {
+    final w = size.width;
+    final h = size.height;
+    final r = cornerRadius;
+    // Full-height arc that always touches the top/bottom corners.
+    // Depth = r pixels (same scale as corner rounding).
+    // R is derived so that the arc bows inward by exactly r at its midpoint.
+    final half = h / 1.8;
+    final R = (r * r + half * half) / (2 * r);
+    final path = Path();
+
+    if (concaveRight) {
+      // Left-rounded corners, full-height concave arc on right side
+      path.moveTo(r, 0);
+      path.lineTo(w, 0);
+      path.arcToPoint(Offset(w, h),
+          radius: Radius.circular(R), clockwise: false);
+      path.lineTo(r, h);
+      path.arcToPoint(Offset(0, h - r), radius: Radius.circular(r));
+      path.lineTo(0, r);
+      path.arcToPoint(Offset(r, 0), radius: Radius.circular(r));
+    } else {
+      // Right-rounded corners, full-height concave arc on left side
+      path.moveTo(0, 0);
+      path.lineTo(w - r, 0);
+      path.arcToPoint(Offset(w, r), radius: Radius.circular(r));
+      path.lineTo(w, h - r);
+      path.arcToPoint(Offset(w - r, h), radius: Radius.circular(r));
+      path.lineTo(0, h);
+      path.arcToPoint(Offset.zero,
+          radius: Radius.circular(R), clockwise: false);
+    }
+
+    path.close();
+    return path;
   }
+
+  @override
+  bool shouldRepaint(_ConcaveTabPainter old) =>
+      old.isActive != isActive ||
+      old.borderColor != borderColor ||
+      old.activeColor != activeColor;
 }
