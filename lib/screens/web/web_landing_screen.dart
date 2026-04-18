@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 import '../../main.dart';
 import '../../l10n/app_localizations.dart';
@@ -563,14 +564,14 @@ class _HeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         // Footnote
-        Row(
+        const Row(
           children: [
             Icon(Icons.verified_outlined, size: 13, color: _textMuted),
-            const SizedBox(width: 6),
+            SizedBox(width: 6),
             Flexible(
               child: Text(
                 'Independent, evidence-based insights for human and planetary health.',
-                style: const TextStyle(
+                style: TextStyle(
                   color: _textMuted,
                   fontSize: 12,
                   letterSpacing: 0.2,
@@ -695,10 +696,10 @@ class _HeroSignalPanel extends StatelessWidget {
                       const Icon(Icons.bolt_rounded, color: _accent, size: 16),
                 ),
                 const SizedBox(width: 10),
-                Expanded(
+                const Expanded(
                   child: Text(
                     'All relevant sources in one place',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: _textMain,
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
@@ -874,7 +875,7 @@ class _HowItWorksSection extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 32),
-                      Expanded(
+                      const Expanded(
                         flex: 1,
                         child: _MobileQRMockup(),
                       ),
@@ -970,11 +971,11 @@ class _MobileQRMockup extends StatelessWidget {
                                 color: _surfaceStrong.withValues(alpha: 0.86),
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 14),
-                                child: Row(
+                                child: const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text(
+                                    Text(
                                       '9:41',
                                       style: TextStyle(
                                         color: _textMain,
@@ -986,7 +987,7 @@ class _MobileQRMockup extends StatelessWidget {
                                       children: [
                                         Icon(Icons.signal_cellular_alt,
                                             size: 11, color: _textSoft),
-                                        const SizedBox(width: 3),
+                                        SizedBox(width: 3),
                                         Icon(Icons.battery_full,
                                             size: 11, color: _textSoft),
                                       ],
@@ -1053,7 +1054,7 @@ class _MobileQRMockup extends StatelessWidget {
               transform: Matrix4.identity()
                 ..setEntry(3, 2, 0.001)
                 ..rotateY(-0.08)
-                ..translate(0.0, 30.0, 0.0),
+                ..translateByVector3(Vector3(0.0, 30.0, 0.0)),
               child: Container(
                 width: 140,
                 padding: const EdgeInsets.all(14),
@@ -1514,7 +1515,6 @@ class _CategoryIllustrationPainter extends CustomPainter {
 
   void _drawFiltrationSystem(
       Canvas canvas, Size size, Paint basePaint, Paint accentPaint) {
-    final random = Random(42);
     // Vertical channels for filtration
     for (int col = 0; col < 4; col++) {
       final x = (col + 1) * (size.width / 5);
@@ -1770,8 +1770,9 @@ class _CategoryIllustrationPainter extends CustomPainter {
     Paint basePaint,
     Paint accentPaint,
   ) {
-    if (depth > 5 || start.dx < 0 || start.dx > size.width || start.dy < 0)
+    if (depth > 5 || start.dx < 0 || start.dx > size.width || start.dy < 0) {
       return;
+    }
 
     const length = 20.0;
     const angleChange = 20.0;
@@ -1827,7 +1828,6 @@ class _CategoryIllustrationPainter extends CustomPainter {
     }
 
     // Swirling field lines
-    final random = Random(42);
     for (int i = 0; i < 6; i++) {
       final angle = (i / 6) * 2 * pi;
       final fieldPaint = Paint()
@@ -1861,7 +1861,7 @@ class _CategoryIllustrationPainter extends CustomPainter {
       var currentY = 0.0;
 
       while (currentY < size.height) {
-        final segment = 15.0;
+        const segment = 15.0;
         final nextY = currentY + segment;
         final deviation = (random.nextDouble() - 0.5) * 20;
         final nextX = startX + deviation;

@@ -7,6 +7,7 @@ class Solver {
   final double rating;
   final String specialty;
   final bool isRegistered;
+  final bool hasAbstract;
 
   const Solver({
     required this.rank,
@@ -15,6 +16,7 @@ class Solver {
     required this.rating,
     required this.specialty,
     required this.isRegistered,
+    required this.hasAbstract,
   });
 
   /// Get display name based on registration status

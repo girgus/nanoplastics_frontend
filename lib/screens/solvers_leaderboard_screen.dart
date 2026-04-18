@@ -11,6 +11,7 @@ import '../services/settings_manager.dart';
 import '../services/service_locator.dart';
 import '../models/solver.dart';
 import 'user_settings/profile_registration_dialog.dart';
+import 'solver_ideas_screen.dart';
 import '../utils/route_observer.dart';
 import '../utils/app_theme_colors.dart';
 import '../utils/platform_adaptive.dart';
@@ -546,12 +547,13 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
       return avatars[rank - 1];
     }
 
-    return Container(
+    final cardRadius = BorderRadius.circular(AppConstants.radiusLarge);
+    final card = Container(
       margin: const EdgeInsets.only(bottom: AppConstants.space12),
       padding: const EdgeInsets.all(AppConstants.space16),
       decoration: BoxDecoration(
         color: AppThemeColors.of(context).cardBackground.withValues(alpha: 0.8),
-        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+        borderRadius: cardRadius,
         border: Border.all(
           color: isTopThree
               ? getRankColor().withValues(alpha: 0.5)
@@ -671,7 +673,35 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
               size: AppConstants.iconMedium,
               color: getRankColor(),
             ),
+          // Chevron hint when ideas with abstracts exist
+          if (solver.hasAbstract) ...[
+            const SizedBox(width: AppConstants.space8),
+            Icon(
+              Icons.chevron_right,
+              size: AppConstants.iconMedium,
+              color: getRankColor().withValues(alpha: 0.7),
+            ),
+          ],
         ],
+      ),
+    );
+
+    if (!solver.hasAbstract) return card;
+
+    return Semantics(
+      button: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: cardRadius,
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => SolverIdeasScreen(
+              solverName: solver.name,
+              rank: solver.rank,
+            ),
+          )),
+          child: card,
+        ),
       ),
     );
   }

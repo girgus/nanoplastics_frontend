@@ -16,6 +16,7 @@ class FakeApiService extends Fake implements ApiService {
       rating: 5.0 - i * 0.1,
       specialty: 'Biology',
       isRegistered: true,
+      hasAbstract: false,
     ),
   );
 

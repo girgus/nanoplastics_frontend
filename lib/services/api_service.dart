@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import '../models/solver.dart';
+import '../models/solver_idea.dart';
 import '../models/idea_attachment.dart';
 import '../config/backend_config.dart';
 import 'logger_service.dart';
@@ -220,6 +221,7 @@ class ApiService {
                   rating: (solverData['rating'] as num).toDouble(),
                   specialty: solverData['specialty'] as String? ?? 'General',
                   isRegistered: solverData['is_registered'] as bool,
+                  hasAbstract: solverData['has_abstract'] as bool? ?? false,
                 ))
             .toList();
       } else {
@@ -239,6 +241,40 @@ class ApiService {
       return [];
     } catch (e, stackTrace) {
       LoggerService().logError('Failed to fetch solvers', e, stackTrace);
+      return [];
+    }
+  }
+
+  /// Fetch ideas with abstracts for a specific solver
+  Future<List<SolverIdea>> getSolverIdeas(String solverName) async {
+    try {
+      final encodedName = Uri.encodeComponent(solverName);
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/solvers/$encodedName/ideas'),
+        headers: {'Content-Type': 'application/json'},
+      ).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as Map<String, dynamic>;
+        final ideas = data['ideas'] as List<dynamic>;
+        return ideas
+            .map((e) => SolverIdea.fromJson(e as Map<String, dynamic>))
+            .toList();
+      } else {
+        LoggerService().logError(
+            'Failed to load solver ideas: ${response.statusCode}', '');
+        return [];
+      }
+    } on SocketException {
+      LoggerService().logNetworkCall('/api/solvers/.../ideas',
+          method: 'GET', statusCode: 0);
+      return [];
+    } on TimeoutException {
+      LoggerService().logNetworkCall('/api/solvers/.../ideas',
+          method: 'GET', statusCode: 408);
+      return [];
+    } catch (e, stackTrace) {
+      LoggerService().logError('Failed to fetch solver ideas', e, stackTrace);
       return [];
     }
   }

@@ -68,6 +68,7 @@ void main() {
           rating: 4.9,
           specialty: 'Marine Biology',
           isRegistered: true,
+      hasAbstract: false,
         ),
       ];
 

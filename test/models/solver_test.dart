@@ -11,6 +11,7 @@ void main() {
         rating: 4.5,
         specialty: 'Marine Biology',
         isRegistered: true,
+      hasAbstract: false,
       );
       expect(solver.getDisplayName(), equals('Alice'));
     });
@@ -23,6 +24,7 @@ void main() {
         rating: 3.0,
         specialty: 'Chemistry',
         isRegistered: false,
+      hasAbstract: false,
       );
       final displayName = solver.getDisplayName();
       expect(displayName, startsWith('User_'));
@@ -38,6 +40,7 @@ void main() {
         rating: 1.0,
         specialty: 'Physics',
         isRegistered: false,
+      hasAbstract: false,
       );
       const solver2 = Solver(
         rank: 2,
@@ -46,6 +49,7 @@ void main() {
         rating: 2.0,
         specialty: 'Biology',
         isRegistered: false,
+      hasAbstract: false,
       );
       expect(solver1.getDisplayName(), equals(solver2.getDisplayName()));
     });
@@ -58,6 +62,7 @@ void main() {
         rating: 1.0,
         specialty: 'X',
         isRegistered: false,
+      hasAbstract: false,
       );
       const solver2 = Solver(
         rank: 1,
@@ -66,6 +71,7 @@ void main() {
         rating: 1.0,
         specialty: 'X',
         isRegistered: false,
+      hasAbstract: false,
       );
       expect(
         solver1.getDisplayName(),
@@ -83,6 +89,7 @@ void main() {
         rating: 4.5,
         specialty: 'Marine Biology',
         isRegistered: true,
+      hasAbstract: false,
       );
       expect(solver.getMaskedName(), equals('Alice'));
     });
@@ -95,6 +102,7 @@ void main() {
         rating: 1.0,
         specialty: 'X',
         isRegistered: false,
+      hasAbstract: false,
       );
       expect(solver.getMaskedName(), equals('****'));
     });
@@ -107,6 +115,7 @@ void main() {
         rating: 1.0,
         specialty: 'X',
         isRegistered: false,
+      hasAbstract: false,
       );
       // visibleLength = ceil(9/3) = 3, masked = 6 asterisks
       expect(solver.getMaskedName(), equals('Ale******'));
@@ -120,6 +129,7 @@ void main() {
         rating: 1.0,
         specialty: 'X',
         isRegistered: false,
+      hasAbstract: false,
       );
       // visibleLength = ceil(4/3) = 2, masked = 2 asterisks
       expect(solver.getMaskedName(), equals('Jo**'));
@@ -133,6 +143,7 @@ void main() {
         rating: 1.0,
         specialty: 'X',
         isRegistered: false,
+      hasAbstract: false,
       );
       // visibleLength = ceil(5/3) = 2, masked = 3 asterisks
       expect(solver.getMaskedName(), equals('Ma***'));
@@ -148,6 +159,7 @@ void main() {
         rating: 4.5,
         specialty: 'Marine Biology',
         isRegistered: true,
+      hasAbstract: false,
       );
       expect(solver.getSpecialty(), equals('Marine Biology'));
     });
@@ -160,6 +172,7 @@ void main() {
         rating: 1.0,
         specialty: 'Marine Biology',
         isRegistered: false,
+      hasAbstract: false,
       );
       expect(solver.getSpecialty(), equals('Unknown'));
     });
@@ -174,6 +187,7 @@ void main() {
         rating: 4.8,
         specialty: 'Environmental Science',
         isRegistered: true,
+      hasAbstract: false,
       );
       expect(solver.rank, equals(3));
       expect(solver.name, equals('TestUser'));
