@@ -30,10 +30,10 @@ class WebTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final crumbLabel = switch (section) {
-      WebSection.explore => selectedCategoryTitle ?? 'Workspace',
+      WebSection.explore => selectedCategoryTitle ?? l10n.webTopbarWorkspace,
       WebSection.sources => l10n.navSources,
-      WebSection.ideas => 'Ideas',
-      WebSection.leaderboard => 'Leaderboard',
+      WebSection.ideas => l10n.categoryDetailIdeas,
+      WebSection.leaderboard => l10n.webTopbarLeaderboard,
       WebSection.settings => l10n.settingsTitle,
     };
 
@@ -49,7 +49,9 @@ class WebTopBar extends StatelessWidget {
           // ── Sidebar toggle ────────────────────────────────────────────
           Semantics(
             button: true,
-            label: sidebarExpanded ? 'Collapse sidebar' : 'Expand sidebar',
+            label: sidebarExpanded
+                ? l10n.webSidebarCollapse
+                : l10n.webSidebarExpand,
             child: InkWell(
               onTap: onToggleSidebar,
               borderRadius: BorderRadius.circular(6),
@@ -57,17 +59,14 @@ class WebTopBar extends StatelessWidget {
                 duration: WebTheme.fast,
                 padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
-                  color: sidebarExpanded
-                      ? WebTheme.accentDim
-                      : Colors.transparent,
+                  color:
+                      sidebarExpanded ? WebTheme.accentDim : Colors.transparent,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Icon(
                   sidebarExpanded ? Icons.menu_open : Icons.menu,
                   size: 16,
-                  color: sidebarExpanded
-                      ? WebTheme.accent
-                      : WebTheme.textMuted,
+                  color: sidebarExpanded ? WebTheme.accent : WebTheme.textMuted,
                 ),
               ),
             ),
@@ -139,14 +138,14 @@ class WebTopBar extends StatelessWidget {
           const SizedBox(width: 2),
           _NavTab(
             icon: Icons.lightbulb_outline,
-            label: 'Ideas',
+            label: l10n.categoryDetailIdeas,
             active: section == WebSection.ideas,
             onTap: () => onSectionChanged?.call(WebSection.ideas),
           ),
           const SizedBox(width: 2),
           _NavTab(
             icon: Icons.leaderboard_outlined,
-            label: 'Leaderboard',
+            label: l10n.webTopbarLeaderboard,
             active: section == WebSection.leaderboard,
             onTap: () => onSectionChanged?.call(WebSection.leaderboard),
           ),
@@ -164,20 +163,21 @@ class WebTopBar extends StatelessWidget {
           if (onGoToLanding != null)
             Semantics(
               button: true,
-              label: 'Back to home',
+              label: l10n.webTopbarHome,
               child: InkWell(
                 onTap: onGoToLanding,
                 borderRadius: BorderRadius.circular(6),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.home_outlined,
+                      const Icon(Icons.home_outlined,
                           size: 14, color: WebTheme.textMuted),
-                      SizedBox(width: 4),
-                      Text('Home',
-                          style: TextStyle(
+                      const SizedBox(width: 4),
+                      Text(l10n.webTopbarHome,
+                          style: const TextStyle(
                               color: WebTheme.textMuted,
                               fontSize: 11,
                               fontWeight: FontWeight.w500)),
@@ -253,7 +253,8 @@ class _NavTabState extends State<_NavTab> {
                   style: TextStyle(
                     color: fg,
                     fontSize: 12,
-                    fontWeight: widget.active ? FontWeight.w600 : FontWeight.w400,
+                    fontWeight:
+                        widget.active ? FontWeight.w600 : FontWeight.w400,
                   ),
                 ),
               ],

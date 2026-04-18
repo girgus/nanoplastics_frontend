@@ -27,7 +27,7 @@ class SettingsSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'PREFERENCES',
+                  l10n.webSettingsPreferences,
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.7),
                     fontSize: 11,
@@ -46,7 +46,7 @@ class SettingsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
                 _SettingsBlock(
-                  title: 'LANGUAGE',
+                  title: l10n.webSettingsLanguageBlock,
                   children: [
                     _LanguageRow(
                       l10n: l10n,
@@ -57,7 +57,7 @@ class SettingsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 _SettingsBlock(
-                  title: 'CONNECT',
+                  title: l10n.webSettingsConnectBlock,
                   children: [
                     _LinkRow(
                       icon: Icons.language,
@@ -81,12 +81,13 @@ class SettingsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 _SettingsBlock(
-                  title: 'DOWNLOAD',
+                  title: l10n.webSettingsDownloadBlock,
                   children: [
                     _LinkRow(
                       icon: Icons.android,
                       label: l10n.aboutPlatformPlayStore,
-                      subtitle: 'play.google.com/store/apps/details?id=org.nanosolve.hive',
+                      subtitle:
+                          'play.google.com/store/apps/details?id=org.nanosolve.hive',
                       onTap: () {},
                     ),
                     _LinkRow(
@@ -98,16 +99,18 @@ class SettingsSection extends StatelessWidget {
                     _LinkRow(
                       icon: Icons.code,
                       label: l10n.aboutPlatformAndroidFull,
-                      subtitle: 'github.com/glmcz/nanoplastics_frontend/releases',
+                      subtitle:
+                          'github.com/glmcz/nanoplastics_frontend/releases',
                       onTap: () {},
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
                 _SettingsBlock(
-                  title: 'ABOUT',
+                  title: l10n.webSettingsAboutBlock,
                   children: [
-                    _InfoRow(label: l10n.aboutAppName, value: l10n.aboutCopyright),
+                    _InfoRow(
+                        label: l10n.aboutAppName, value: l10n.aboutCopyright),
                     _DescRow(text: l10n.aboutDescription),
                     _InfoRow(label: '🌱', value: l10n.aboutFooterMessage),
                   ],
@@ -146,8 +149,7 @@ class _SettingsBlock extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
             decoration: const BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(color: WebTheme.borderSubtle)),
+              border: Border(bottom: BorderSide(color: WebTheme.borderSubtle)),
             ),
             child: Text(
               title,
@@ -187,8 +189,7 @@ class _LanguageRow extends StatelessWidget {
 
     return Container(
       decoration: const BoxDecoration(
-        border:
-            Border(bottom: BorderSide(color: Color(0x0DFFFFFF))),
+        border: Border(bottom: BorderSide(color: Color(0x0DFFFFFF))),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       child: Row(
@@ -235,8 +236,7 @@ class _LanguageRow extends StatelessWidget {
               );
             }).toList(),
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 border: Border.all(color: WebTheme.borderSubtle),
                 borderRadius: BorderRadius.circular(4),
@@ -298,11 +298,9 @@ class _LinkRowState extends State<_LinkRow> {
           duration: WebTheme.fast,
           decoration: BoxDecoration(
             color: _hovered ? WebTheme.surfaceHover : Colors.transparent,
-            border: const Border(
-                bottom: BorderSide(color: Color(0x0DFFFFFF))),
+            border: const Border(bottom: BorderSide(color: Color(0x0DFFFFFF))),
           ),
-          padding:
-              const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           child: Row(
             children: [
               Icon(widget.icon, size: 16, color: WebTheme.textMuted),

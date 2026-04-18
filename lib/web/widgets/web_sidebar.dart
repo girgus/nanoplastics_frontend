@@ -102,8 +102,7 @@ class WebSidebar extends StatelessWidget {
                 ? const Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 2),
+                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       child: NanosolveLogo(height: 28),
                     ),
                   )
@@ -123,9 +122,9 @@ class WebSidebar extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
               child: Row(
                 children: [
-                  const Text(
-                    'CATEGORIES',
-                    style: TextStyle(
+                  Text(
+                    l10n.exploreResearchDomains,
+                    style: const TextStyle(
                       color: WebTheme.textMuted,
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
@@ -155,11 +154,11 @@ class WebSidebar extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 // Human Impact Categories
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(10, 8, 10, 6),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
                   child: Text(
-                    'Human',
-                    style: TextStyle(
+                    l10n.tabHuman,
+                    style: const TextStyle(
                       color: Color(0xFF7DD3FC),
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
@@ -171,17 +170,18 @@ class WebSidebar extends StatelessWidget {
                     .where((cat) => cat.categoryKey.startsWith('human_'))
                     .map((cat) => _CategoryRow(
                           cat: cat,
-                          active: selectedCategory?.categoryKey == cat.categoryKey,
+                          active:
+                              selectedCategory?.categoryKey == cat.categoryKey,
                           showLabel: showLabels,
                           onTap: () => onSelectCategory(cat),
                         )),
                 const SizedBox(height: 12),
                 // Planet Impact Categories
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(10, 8, 10, 6),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
                   child: Text(
-                    'Planet',
-                    style: TextStyle(
+                    l10n.tabPlanet,
+                    style: const TextStyle(
                       color: Color(0xFF86EFAC),
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
@@ -193,7 +193,8 @@ class WebSidebar extends StatelessWidget {
                     .where((cat) => cat.categoryKey.startsWith('planet_'))
                     .map((cat) => _CategoryRow(
                           cat: cat,
-                          active: selectedCategory?.categoryKey == cat.categoryKey,
+                          active:
+                              selectedCategory?.categoryKey == cat.categoryKey,
                           showLabel: showLabels,
                           onTap: () => onSelectCategory(cat),
                         )),
@@ -262,8 +263,7 @@ class _CategoryRowState extends State<_CategoryRow> {
                     : (_hovered ? WebTheme.surfaceHover : Colors.transparent),
                 border: Border(
                   left: BorderSide(
-                    color:
-                        widget.active ? WebTheme.accent : Colors.transparent,
+                    color: widget.active ? WebTheme.accent : Colors.transparent,
                     width: 2,
                   ),
                 ),
@@ -292,14 +292,14 @@ class _CategoryRowState extends State<_CategoryRow> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        widget.cat.title.replaceAll(RegExp(r'\s*\([^)]*\)'), ''),
+                        widget.cat.title
+                            .replaceAll(RegExp(r'\s*\([^)]*\)'), ''),
                         style: TextStyle(
                           color: widget.active
                               ? WebTheme.textPrimary
                               : WebTheme.textSecondary,
-                          fontWeight: widget.active
-                              ? FontWeight.w600
-                              : FontWeight.w400,
+                          fontWeight:
+                              widget.active ? FontWeight.w600 : FontWeight.w400,
                           fontSize: 12,
                         ),
                         maxLines: 1,

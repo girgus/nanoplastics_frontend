@@ -885,12 +885,10 @@ class _SourcesScreenTabs extends StatelessWidget {
       );
     }
 
-    return IntrinsicHeight(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-
-        children: [
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
           // Web — left rounded, concave right border
           segment(
             label: AppLocalizations.of(context)!.sourcesTabWeb,
@@ -953,8 +951,7 @@ class _SourcesScreenTabs extends StatelessWidget {
                   params: {'tab': 'video'});
             },
           ),
-        ],
-      ),
+      ],
     );
   }
 }

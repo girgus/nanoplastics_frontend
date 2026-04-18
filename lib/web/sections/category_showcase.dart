@@ -36,9 +36,9 @@ class CategoryShowcase extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Research Categories',
-                  style: TextStyle(
+                Text(
+                  l10n.webCategoryShowcaseTitle,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 32,
                     fontWeight: FontWeight.w900,
@@ -151,7 +151,8 @@ class _CategoryCard extends StatelessWidget {
               const SizedBox(height: 12),
               // Study count
               Text(
-                '${category.evidenceStudyCount} studies',
+                AppLocalizations.of(context)!
+                    .webStudyCount(category.evidenceStudyCount),
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.5),
                   fontSize: 11,

@@ -46,6 +46,14 @@ class _NanoSolveWebAppState extends State<NanoSolveWebApp>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final categories = CategoryDetailDataFactory.all(l10n);
+    final localeLanguage =
+        Localizations.localeOf(context).languageCode.toLowerCase();
+    final resolvedLanguage =
+        settingsManager.storedUserLanguage?.toLowerCase() ?? localeLanguage;
+
+    if (selectedLanguage != resolvedLanguage) {
+      selectedLanguage = resolvedLanguage;
+    }
 
     // Select initial category once (prefer initialCategoryKey, else first)
     if (_selectedCategory == null && categories.isNotEmpty) {
@@ -223,7 +231,7 @@ class _NanoSolveWebAppState extends State<NanoSolveWebApp>
           }),
           onSparkIdea: (text) {
             setState(() => _ideaPrefill = text);
-            _showSnack('Finding added to Post Idea form.');
+            _showSnack(l10n.webWorkspaceFindingAdded);
           },
           onOpenInNewTab: _openSourceInNewPanel,
         ),
@@ -258,22 +266,23 @@ class _NanoSolveWebAppState extends State<NanoSolveWebApp>
   }
 
   Future<void> _openSourceInNewPanel(String rawUrl) async {
+    final l10n = AppLocalizations.of(context)!;
     final normalized = rawUrl.trim();
     if (normalized.isEmpty) {
-      _showSnack('Invalid source link.');
+      _showSnack(l10n.webWorkspaceInvalidSourceLink);
       return;
     }
 
     Uri? uri = Uri.tryParse(normalized);
     uri ??= Uri.tryParse(Uri.encodeFull(normalized));
     if (uri == null || !(uri.hasScheme && uri.host.isNotEmpty)) {
-      _showSnack('Invalid source link.');
+      _showSnack(l10n.webWorkspaceInvalidSourceLink);
       return;
     }
 
     final opened = await PlatformAdaptive.launchExternalUri(uri);
     if (!opened && mounted) {
-      _showSnack('Could not open source link in a new tab.');
+      _showSnack(l10n.webWorkspaceOpenSourceFailed);
     }
   }
 

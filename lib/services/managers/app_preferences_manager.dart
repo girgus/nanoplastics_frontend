@@ -34,6 +34,8 @@ class AppPreferencesManager {
   // Language
   String get userLanguage => _prefs.getString(_userLanguageKey) ?? 'en';
 
+  String? get storedUserLanguage => _prefs.getString(_userLanguageKey);
+
   Future<void> setUserLanguage(String language) async {
     await _prefs.setString(_userLanguageKey, language);
   }

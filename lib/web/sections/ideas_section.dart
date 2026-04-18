@@ -48,12 +48,12 @@ class _IdeasSectionState extends State<IdeasSection> {
     if (widget.initialContext != null) {
       _contextChip = widget.initialContext;
       _ideaController.text =
-          'Based on finding: "${widget.initialContext}"\n\nProposed solution:\n';
+          '${widget.l10n.webIdeasTemplateFinding(widget.initialContext!)}\n\n${widget.l10n.webIdeasTemplateSolution}\n';
     } else {
       final templateCategory = widget.initialCategory?.title;
       if (templateCategory != null) {
         _ideaController.text =
-            'Category: $templateCategory\n\nProblem:\n\nProposed solution:\n';
+            '${widget.l10n.webIdeasTemplateCategory(templateCategory)}\n\n${widget.l10n.webIdeasTemplateProblem}\n\n${widget.l10n.webIdeasTemplateSolution}\n';
       }
     }
     _ideaController.selection = TextSelection.collapsed(
@@ -148,7 +148,11 @@ class _IdeasSectionState extends State<IdeasSection> {
                 Chip(
                   avatar: const Text('💡'),
                   label: Text(
-                    'Based on: ${_contextChip!.length > 60 ? '${_contextChip!.substring(0, 60)}…' : _contextChip!}',
+                    widget.l10n.webIdeasBasedOn(
+                      _contextChip!.length > 60
+                          ? '${_contextChip!.substring(0, 60)}…'
+                          : _contextChip!,
+                    ),
                     style: const TextStyle(fontSize: 12),
                   ),
                   deleteIcon: const Icon(Icons.close, size: 14),
@@ -182,7 +186,10 @@ class _IdeasSectionState extends State<IdeasSection> {
               Row(
                 children: [
                   Text(
-                    '${widget.l10n.ideasCharCount(text.length)} / min 10',
+                    widget.l10n.webIdeasCharacterStatus(
+                      text.length,
+                      widget.l10n.ideasMinChars,
+                    ),
                     style: TextStyle(
                       color: hasMinChars
                           ? const Color(0xFF7FFFD4)
@@ -356,7 +363,7 @@ class _IdeasSectionState extends State<IdeasSection> {
 
   Future<void> _pickAttachments() async {
     if (_attachments.length >= _maxAttachments) {
-      _showSnack('Maximum $_maxAttachments attachments allowed.');
+      _showSnack(widget.l10n.webIdeasMaxAttachments(_maxAttachments));
       return;
     }
 
@@ -397,7 +404,12 @@ class _IdeasSectionState extends State<IdeasSection> {
       final bytes = file.bytes;
       final size = file.size;
       if (size > _maxAttachmentSizeBytes) {
-        _showSnack('${file.name} is too large (max 95 MB).');
+        _showSnack(
+          widget.l10n.webIdeasFileTooLarge(
+            file.name,
+            _maxAttachmentSizeBytes ~/ (1024 * 1024),
+          ),
+        );
         continue;
       }
 

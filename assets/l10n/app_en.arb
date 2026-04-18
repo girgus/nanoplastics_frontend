@@ -573,5 +573,127 @@
   "aiChatTopic5": "Explain a study",
   "breadcrumbSeparator": "›",
   "emailRequired": "An email is required to continue.",
-  "selectCategoryFirst": "Please select a category first."
+  "selectCategoryFirst": "Please select a category first.",
+  "landingBrandSubtitle": "Nanoplastics Action App",
+  "landingNavWhy": "Why it works",
+  "landingNavHow": "How it works",
+  "landingNavDownload": "Download",
+  "landingLaunchWorkspace": "Launch Workspace",
+  "landingBadgePlatforms": "iOS · Android · GitHub",
+  "landingHeroTitle": "Understand nanoplastics.\nAct with evidence.",
+  "landingHeroSubtitle": "NanoSolve Hive turns dense scientific research into a guided experience so you can learn fast, share ideas, and contribute to real environmental problem-solving.",
+  "landingGooglePlayCta": "Get on Google Play",
+  "landingGithubBuildCta": "GitHub Build",
+  "landingHeroFootnote": "If Google Play is restricted in your country, use the GitHub build. iOS release tracked through GitHub Releases.",
+  "landingWhyTitle": "Why new users stick with NanoSolve Hive",
+  "landingWhySubtitle": "The app is built to reduce first-use friction: clear categories, fast navigation, and practical actions instead of overwhelming theory.",
+  "landingWhyFeatureStructuredTitle": "Structured science, not random articles",
+  "landingWhyFeatureStructuredDesc": "Health and planet impacts are organized into focused categories so users can understand complex topics without getting lost.",
+  "landingWhyFeatureActionableTitle": "Actionable from day one",
+  "landingWhyFeatureActionableDesc": "Every category includes a brainstorm area where users can submit ideas and help shape community solutions.",
+  "landingWhyFeatureTrustTitle": "Trust-focused data handling",
+  "landingWhyFeatureTrustDesc": "Privacy policy remains always one tap away, so users know exactly what is collected and why. User ideas are under CC BY 4.0 — free for research & public benefit.",
+  "landingWhyFeatureMetaGraphTitle": "Meta-Graph Agentic Research Acceleration",
+  "landingWhyFeatureMetaGraphDesc": "AI-powered knowledge graph orchestration that accelerates research synthesis. Powered by graph-based intelligence to guide agentic workflows. Currently in beta development.",
+  "landingCategoriesTitle": "Explore all 12 research categories",
+  "landingCategoriesSubtitle": "Jump directly into the interactive workspace. Each category loads the full evidence, source links, and brainstorm area.",
+  "landingOpenWorkspace": "Open workspace",
+  "landingFooterCopyright": "© 2024–2026 Martin Durak. All rights reserved.",
+  "landingFooterGithub": "GitHub Repository",
+  "landingFooterReleases": "Release History",
+  "landingFooterPrivacy": "Privacy Policy",
+  "webWorkspaceFindingAdded": "Finding added to Post Idea form.",
+  "webWorkspaceInvalidSourceLink": "Invalid source link.",
+  "webWorkspaceOpenSourceFailed": "Could not open source link in a new tab.",
+  "webTopbarWorkspace": "Workspace",
+  "webTopbarHome": "Home",
+  "webTopbarLeaderboard": "Leaderboard",
+  "webSidebarCollapse": "Collapse sidebar",
+  "webSidebarExpand": "Expand sidebar",
+  "webCategoryShowcaseTitle": "Research Categories",
+  "webStudyCount": "{count} studies",
+  "@webStudyCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "webSettingsPreferences": "PREFERENCES",
+  "webSettingsLanguageBlock": "LANGUAGE",
+  "webSettingsConnectBlock": "CONNECT",
+  "webSettingsDownloadBlock": "DOWNLOAD",
+  "webSettingsAboutBlock": "ABOUT",
+  "webIdeasTemplateFinding": "Based on finding: \"{finding}\"",
+  "@webIdeasTemplateFinding": {
+    "placeholders": {
+      "finding": {}
+    }
+  },
+  "webIdeasTemplateCategory": "Category: {category}",
+  "@webIdeasTemplateCategory": {
+    "placeholders": {
+      "category": {}
+    }
+  },
+  "webIdeasTemplateProblem": "Problem:",
+  "webIdeasTemplateSolution": "Proposed solution:",
+  "webIdeasBasedOn": "Based on: {value}",
+  "@webIdeasBasedOn": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "webIdeasCharacterStatus": "{count} characters / {minimum}",
+  "@webIdeasCharacterStatus": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "minimum": {}
+    }
+  },
+  "webIdeasMaxAttachments": "Maximum {count} attachments allowed.",
+  "@webIdeasMaxAttachments": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "webIdeasFileTooLarge": "{fileName} is too large (max {maxMb} MB).",
+  "@webIdeasFileTooLarge": {
+    "placeholders": {
+      "fileName": {},
+      "maxMb": {
+        "type": "int"
+      }
+    }
+  },
+  "webDiscoveriesTitle": "LATEST DISCOVERIES",
+  "webEvidenceByTopicTitle": "EVIDENCE BY TOPIC",
+  "webStudyLabel": "Study",
+  "webJoinEffortTitle": "JOIN THE EFFORT",
+  "webJoinEffortSubtitle": "Each contribution strengthens the community and evolves the knowledge graph.",
+  "webPostIdeaTitle": "Post an Idea",
+  "webPostIdeaDesc": "Contribute a solution or hypothesis. Your idea becomes part of the category knowledge graph.",
+  "webViewSourcesTitle": "View All Sources",
+  "webViewSourcesDesc": "{count} peer-reviewed papers. Filter by topic, year, or journal.",
+  "@webViewSourcesDesc": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "webSparkIdeaTooltip": "Spark idea from this finding",
+  "webShowLess": "Show less",
+  "webShowMore": "Show {count} more",
+  "@webShowMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -476,6 +476,69 @@
   "breadcrumbSeparator": "›",
   "emailRequired": "An email is required to continue.",
   "selectCategoryFirst": "Please select a category first.",
+  "landingBrandSubtitle": "Aplicación de acción contra nanoplásticos",
+  "landingNavWhy": "Por qué funciona",
+  "landingNavHow": "Cómo funciona",
+  "landingNavDownload": "Descargar",
+  "landingLaunchWorkspace": "Abrir espacio de trabajo",
+  "landingBadgePlatforms": "iOS · Android · GitHub",
+  "landingHeroTitle": "Comprende los nanoplásticos.\nActúa con evidencia.",
+  "landingHeroSubtitle": "NanoSolve Hive convierte la investigación científica compleja en una experiencia guiada para que aprendas rápido, compartas ideas y contribuyas a soluciones ambientales reales.",
+  "landingGooglePlayCta": "Obtener en Google Play",
+  "landingGithubBuildCta": "Build de GitHub",
+  "landingHeroFootnote": "Si Google Play está restringido en tu país, usa la build de GitHub. El lanzamiento para iOS se sigue a través de GitHub Releases.",
+  "landingWhyTitle": "Por qué los nuevos usuarios siguen usando NanoSolve Hive",
+  "landingWhySubtitle": "La app está diseñada para reducir la fricción del primer uso: categorías claras, navegación rápida y acciones prácticas en lugar de teoría abrumadora.",
+  "landingWhyFeatureStructuredTitle": "Ciencia estructurada, no artículos aleatorios",
+  "landingWhyFeatureStructuredDesc": "Los impactos en la salud y en el planeta están organizados en categorías enfocadas para que los usuarios entiendan temas complejos sin perderse.",
+  "landingWhyFeatureActionableTitle": "Accionable desde el primer día",
+  "landingWhyFeatureActionableDesc": "Cada categoría incluye un espacio de lluvia de ideas donde los usuarios pueden enviar propuestas y ayudar a construir soluciones comunitarias.",
+  "landingWhyFeatureTrustTitle": "Gestión de datos centrada en la confianza",
+  "landingWhyFeatureTrustDesc": "La política de privacidad está siempre a un toque de distancia, para que los usuarios sepan exactamente qué se recopila y por qué. Las ideas de los usuarios están bajo CC BY 4.0 — libres para investigación y beneficio público.",
+  "landingWhyFeatureMetaGraphTitle": "Aceleración de Investigación Mediante Grafos de Conocimiento Inteligentes",
+  "landingWhyFeatureMetaGraphDesc": "Orquestación de grafos de conocimiento impulsada por IA que acelera la síntesis de investigación. Potenciada por inteligencia basada en grafos para guiar flujos de trabajo agénticos. Actualmente en desarrollo beta.",
+  "landingCategoriesTitle": "Explora las 12 categorías de investigación",
+  "landingCategoriesSubtitle": "Entra directamente en el espacio de trabajo interactivo. Cada categoría carga la evidencia completa, las fuentes y el área de ideas.",
+  "landingOpenWorkspace": "Abrir espacio de trabajo",
+  "landingFooterCopyright": "© 2024–2026 Martin Durak. Todos los derechos reservados.",
+  "landingFooterGithub": "Repositorio de GitHub",
+  "landingFooterReleases": "Historial de versiones",
+  "landingFooterPrivacy": "Política de privacidad",
+  "webWorkspaceFindingAdded": "El hallazgo se añadió al formulario de idea.",
+  "webWorkspaceInvalidSourceLink": "Enlace de fuente no válido.",
+  "webWorkspaceOpenSourceFailed": "No se pudo abrir el enlace de la fuente en una nueva pestaña.",
+  "webTopbarWorkspace": "Espacio de trabajo",
+  "webTopbarHome": "Inicio",
+  "webTopbarLeaderboard": "Clasificación",
+  "webSidebarCollapse": "Contraer barra lateral",
+  "webSidebarExpand": "Expandir barra lateral",
+  "webCategoryShowcaseTitle": "Categorías de investigación",
+  "webStudyCount": "{count} estudios",
+  "webSettingsPreferences": "PREFERENCIAS",
+  "webSettingsLanguageBlock": "IDIOMA",
+  "webSettingsConnectBlock": "CONTACTO",
+  "webSettingsDownloadBlock": "DESCARGA",
+  "webSettingsAboutBlock": "ACERCA DE",
+  "webIdeasTemplateFinding": "Basado en el hallazgo: \"{finding}\"",
+  "webIdeasTemplateCategory": "Categoría: {category}",
+  "webIdeasTemplateProblem": "Problema:",
+  "webIdeasTemplateSolution": "Solución propuesta:",
+  "webIdeasBasedOn": "Basado en: {value}",
+  "webIdeasCharacterStatus": "{count} caracteres / {minimum}",
+  "webIdeasMaxAttachments": "Máximo {count} archivos adjuntos.",
+  "webIdeasFileTooLarge": "{fileName} es demasiado grande (máx. {maxMb} MB).",
+  "webDiscoveriesTitle": "ÚLTIMOS DESCUBRIMIENTOS",
+  "webEvidenceByTopicTitle": "EVIDENCIA POR TEMA",
+  "webStudyLabel": "Estudio",
+  "webJoinEffortTitle": "ÚNETE AL ESFUERZO",
+  "webJoinEffortSubtitle": "Cada contribución fortalece a la comunidad y hace evolucionar el grafo de conocimiento.",
+  "webPostIdeaTitle": "Publicar una idea",
+  "webPostIdeaDesc": "Aporta una solución o hipótesis. Tu idea pasa a formar parte del grafo de conocimiento de la categoría.",
+  "webViewSourcesTitle": "Ver todas las fuentes",
+  "webViewSourcesDesc": "{count} artículos revisados por pares. Filtra por tema, año o revista.",
+  "webSparkIdeaTooltip": "Crear una idea a partir de este hallazgo",
+  "webShowLess": "Mostrar menos",
+  "webShowMore": "Mostrar {count} más",
 
   "@sourcesLibrarySubtitle": {
     "placeholders": {
@@ -516,6 +579,65 @@
     }
   },
   "@ideasAttachmentsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@webStudyCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@webIdeasTemplateFinding": {
+    "placeholders": {
+      "finding": {}
+    }
+  },
+  "@webIdeasTemplateCategory": {
+    "placeholders": {
+      "category": {}
+    }
+  },
+  "@webIdeasBasedOn": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "@webIdeasCharacterStatus": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "minimum": {}
+    }
+  },
+  "@webIdeasMaxAttachments": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@webIdeasFileTooLarge": {
+    "placeholders": {
+      "fileName": {},
+      "maxMb": {
+        "type": "int"
+      }
+    }
+  },
+  "@webViewSourcesDesc": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@webShowMore": {
     "placeholders": {
       "count": {
         "type": "int"

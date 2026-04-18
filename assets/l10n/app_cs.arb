@@ -511,6 +511,69 @@
   "breadcrumbSeparator": "›",
   "emailRequired": "An email is required to continue.",
   "selectCategoryFirst": "Please select a category first.",
+  "landingBrandSubtitle": "Aplikace pro práci s nanoplasty",
+  "landingNavWhy": "Proč funguje",
+  "landingNavHow": "Jak funguje",
+  "landingNavDownload": "Stáhnout",
+  "landingLaunchWorkspace": "Spustit pracovní prostor",
+  "landingBadgePlatforms": "iOS · Android · GitHub",
+  "landingHeroTitle": "Pochopte nanoplasty.\nJednejte na základě důkazů.",
+  "landingHeroSubtitle": "NanoSolve Hive převádí hustý vědecký výzkum do vedeného prostředí, ve kterém se rychle zorientujete, sdílíte nápady a přispějete k reálnému řešení environmentálních problémů.",
+  "landingGooglePlayCta": "Získat na Google Play",
+  "landingGithubBuildCta": "Build z GitHubu",
+  "landingHeroFootnote": "Pokud je Google Play ve vaší zemi omezený, použijte build z GitHubu. Vydání pro iOS sledujeme přes GitHub Releases.",
+  "landingWhyTitle": "Proč noví uživatelé zůstávají v NanoSolve Hive",
+  "landingWhySubtitle": "Aplikace je navržena tak, aby snížila bariéru prvního použití: jasné kategorie, rychlá navigace a praktické kroky místo zahlcení teorií.",
+  "landingWhyFeatureStructuredTitle": "Strukturovaná věda, ne náhodné články",
+  "landingWhyFeatureStructuredDesc": "Dopady na zdraví i planetu jsou rozdělené do přehledných kategorií, aby se uživatelé v komplexních tématech neztratili.",
+  "landingWhyFeatureActionableTitle": "Praktické od prvního dne",
+  "landingWhyFeatureActionableDesc": "Každá kategorie obsahuje prostor pro brainstorming, kde mohou uživatelé posílat nápady a spoluutvářet komunitní řešení.",
+  "landingWhyFeatureTrustTitle": "Práce s daty zaměřená na důvěru",
+  "landingWhyFeatureTrustDesc": "Zásady ochrany soukromí jsou vždy na jedno klepnutí, takže uživatelé přesně vědí, co se sbírá a proč. Uživatelské nápady jsou pod CC BY 4.0 — volně pro výzkum a veřejný prospěch.",
+  "landingWhyFeatureMetaGraphTitle": "Akcelerace výzkumu se sítěmi znalostí a agenty",
+  "landingWhyFeatureMetaGraphDesc": "Orchestrace sítě znalostí poháněné umělou inteligencí, která urychluje syntézu výzkumu. Poháněno inteligencí založenou na sítích pro řízení agentních pracovních postupů. V současné době ve vývoji.",
+  "landingCategoriesTitle": "Prozkoumejte všech 12 výzkumných kategorií",
+  "landingCategoriesSubtitle": "Vstupte přímo do interaktivního pracovního prostoru. Každá kategorie načte důkazy, zdroje i brainstorming.",
+  "landingOpenWorkspace": "Otevřít pracovní prostor",
+  "landingFooterCopyright": "© 2024–2026 Martin Durak. Všechna práva vyhrazena.",
+  "landingFooterGithub": "GitHub repozitář",
+  "landingFooterReleases": "Historie vydání",
+  "landingFooterPrivacy": "Zásady ochrany soukromí",
+  "webWorkspaceFindingAdded": "Zjištění bylo přidáno do formuláře pro nápad.",
+  "webWorkspaceInvalidSourceLink": "Neplatný odkaz na zdroj.",
+  "webWorkspaceOpenSourceFailed": "Nepodařilo se otevřít odkaz na zdroj v nové kartě.",
+  "webTopbarWorkspace": "Pracovní prostor",
+  "webTopbarHome": "Domů",
+  "webTopbarLeaderboard": "Žebříček",
+  "webSidebarCollapse": "Sbalit postranní panel",
+  "webSidebarExpand": "Rozbalit postranní panel",
+  "webCategoryShowcaseTitle": "Výzkumné kategorie",
+  "webStudyCount": "{count} studií",
+  "webSettingsPreferences": "PŘEDVOLBY",
+  "webSettingsLanguageBlock": "JAZYK",
+  "webSettingsConnectBlock": "KONTAKT",
+  "webSettingsDownloadBlock": "STAŽENÍ",
+  "webSettingsAboutBlock": "O APLIKACI",
+  "webIdeasTemplateFinding": "Na základě zjištění: \"{finding}\"",
+  "webIdeasTemplateCategory": "Kategorie: {category}",
+  "webIdeasTemplateProblem": "Problém:",
+  "webIdeasTemplateSolution": "Navrhované řešení:",
+  "webIdeasBasedOn": "Na základě: {value}",
+  "webIdeasCharacterStatus": "{count} znaků / {minimum}",
+  "webIdeasMaxAttachments": "Maximálně {count} příloh.",
+  "webIdeasFileTooLarge": "{fileName} je příliš velký soubor (max {maxMb} MB).",
+  "webDiscoveriesTitle": "NEJNOVĚJŠÍ ZJIŠTĚNÍ",
+  "webEvidenceByTopicTitle": "DŮKAZY PODLE TÉMAT",
+  "webStudyLabel": "Studie",
+  "webJoinEffortTitle": "ZAPOJTE SE",
+  "webJoinEffortSubtitle": "Každý příspěvek posiluje komunitu a rozvíjí znalostní graf.",
+  "webPostIdeaTitle": "Poslat nápad",
+  "webPostIdeaDesc": "Přidejte řešení nebo hypotézu. Váš nápad se stane součástí znalostního grafu kategorie.",
+  "webViewSourcesTitle": "Zobrazit všechny zdroje",
+  "webViewSourcesDesc": "{count} recenzovaných studií. Filtrujte podle tématu, roku nebo časopisu.",
+  "webSparkIdeaTooltip": "Vytvořit nápad z tohoto zjištění",
+  "webShowLess": "Zobrazit méně",
+  "webShowMore": "Zobrazit o {count} více",
 
   "@sourcesLibrarySubtitle": {
     "placeholders": {
@@ -551,6 +614,65 @@
     }
   },
   "@ideasAttachmentsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@webStudyCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@webIdeasTemplateFinding": {
+    "placeholders": {
+      "finding": {}
+    }
+  },
+  "@webIdeasTemplateCategory": {
+    "placeholders": {
+      "category": {}
+    }
+  },
+  "@webIdeasBasedOn": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "@webIdeasCharacterStatus": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "minimum": {}
+    }
+  },
+  "@webIdeasMaxAttachments": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@webIdeasFileTooLarge": {
+    "placeholders": {
+      "fileName": {},
+      "maxMb": {
+        "type": "int"
+      }
+    }
+  },
+  "@webViewSourcesDesc": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@webShowMore": {
     "placeholders": {
       "count": {
         "type": "int"

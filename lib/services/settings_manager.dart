@@ -182,6 +182,11 @@ class SettingsManager {
     return _preferencesManager.userLanguage;
   }
 
+  String? get storedUserLanguage {
+    _checkInitialized();
+    return _preferencesManager.storedUserLanguage;
+  }
+
   Future<void> setUserLanguage(String language) async {
     _checkInitialized();
     await _preferencesManager.setUserLanguage(language);

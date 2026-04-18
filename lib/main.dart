@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'config/app_theme.dart';
 import 'screens/onboarding_screen.dart';
@@ -116,8 +117,7 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp>
   void initState() {
     super.initState();
     final settingsManager = SettingsManager();
-    final languageCode = settingsManager.userLanguage;
-    _locale = Locale(languageCode);
+    _locale = _resolveInitialLocale(settingsManager);
 
     _fadeController = AnimationController(
       vsync: this,
@@ -169,19 +169,8 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp>
       darkTheme: AppTheme.darkTheme,
       themeMode: darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
       navigatorObservers: [routeObserver],
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en', ''), // English (default)
-        Locale('cs', ''), // Czech
-        Locale('es', ''), // Spanish
-        Locale('ru', ''), // Russian
-        Locale('fr', ''), // French
-      ],
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       locale: _locale,
       home: kIsWeb
           ? const WebLandingScreen()
@@ -190,4 +179,45 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp>
               : const MainScreen()),
     );
   }
+}
+
+Locale _resolveInitialLocale(SettingsManager settingsManager) {
+  final storedLanguage = settingsManager.storedUserLanguage?.toLowerCase();
+  if (_isSupportedLanguageCode(storedLanguage)) {
+    return Locale(storedLanguage!);
+  }
+
+  if (kIsWeb) {
+    final browserLocale = _matchSupportedLocale(
+      ui.PlatformDispatcher.instance.locales,
+    );
+    if (browserLocale != null) {
+      return browserLocale;
+    }
+  }
+
+  return const Locale('en');
+}
+
+bool _isSupportedLanguageCode(String? languageCode) {
+  if (languageCode == null || languageCode.isEmpty) {
+    return false;
+  }
+
+  return AppLocalizations.supportedLocales.any(
+    (locale) => locale.languageCode == languageCode,
+  );
+}
+
+Locale? _matchSupportedLocale(List<Locale> preferredLocales) {
+  for (final locale in preferredLocales) {
+    final languageCode = locale.languageCode.toLowerCase();
+    for (final supported in AppLocalizations.supportedLocales) {
+      if (supported.languageCode == languageCode) {
+        return supported;
+      }
+    }
+  }
+
+  return null;
 }

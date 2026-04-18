@@ -38,7 +38,7 @@ class _CategoryDetailViewState extends State<CategoryDetailView> {
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(28, 28, 28, 20),
           sliver: SliverToBoxAdapter(
-            child: _HeroSection(data: data),
+            child: _HeroSection(data: data, l10n: widget.l10n),
           ),
         ),
 
@@ -48,6 +48,7 @@ class _CategoryDetailViewState extends State<CategoryDetailView> {
             padding: const EdgeInsets.symmetric(horizontal: 28),
             sliver: SliverToBoxAdapter(
               child: _DiscoveriesCarousel(
+                l10n: widget.l10n,
                 studies: data.allEvidenceStudies,
                 themeColor: data.themeColor,
                 onOpenInNewTab: widget.onOpenInNewTab,
@@ -64,6 +65,7 @@ class _CategoryDetailViewState extends State<CategoryDetailView> {
             sliver: SliverToBoxAdapter(
               child: _EvidenceSections(
                 key: ValueKey(data.categoryKey),
+                l10n: widget.l10n,
                 sections: data.evidenceSections,
                 themeColor: data.themeColor,
                 onOpenInNewTab: widget.onOpenInNewTab,
@@ -79,6 +81,7 @@ class _CategoryDetailViewState extends State<CategoryDetailView> {
           padding: const EdgeInsets.fromLTRB(28, 0, 28, 8),
           sliver: SliverToBoxAdapter(
             child: _CollaborateCTA(
+              l10n: widget.l10n,
               onPostIdea: widget.onPostIdea,
               onGoToSources: widget.onGoToSources,
               onSparkIdea: widget.onSparkIdea,
@@ -99,7 +102,9 @@ class _CategoryDetailViewState extends State<CategoryDetailView> {
 // Large icon + title + subtitle + study count and year range pills.
 class _HeroSection extends StatelessWidget {
   final CategoryDetailData data;
-  const _HeroSection({required this.data});
+  final AppLocalizations l10n;
+
+  const _HeroSection({required this.data, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +183,7 @@ class _HeroSection extends StatelessWidget {
             spacing: 6,
             runSpacing: 6,
             children: [
-              _MetaPill(label: '${data.evidenceStudyCount} studies'),
+              _MetaPill(label: l10n.webStudyCount(data.evidenceStudyCount)),
               if (yearLabel.isNotEmpty) _MetaPill(label: yearLabel),
             ],
           ),
@@ -191,11 +196,13 @@ class _HeroSection extends StatelessWidget {
 // ── Discoveries Carousel ──────────────────────────────────────────────────────
 // Horizontal scrollable row showing the 5 most recent research papers.
 class _DiscoveriesCarousel extends StatelessWidget {
+  final AppLocalizations l10n;
   final List<EvidenceStudy> studies;
   final Color themeColor;
   final Future<void> Function(String url) onOpenInNewTab;
 
   const _DiscoveriesCarousel({
+    required this.l10n,
     required this.studies,
     required this.themeColor,
     required this.onOpenInNewTab,
@@ -208,7 +215,7 @@ class _DiscoveriesCarousel extends StatelessWidget {
     final visible = sorted.take(5).toList();
 
     return _SectionBlock(
-      title: 'LATEST DISCOVERIES',
+      title: l10n.webDiscoveriesTitle,
       count: 0,
       showCount: false,
       children: [
@@ -219,6 +226,7 @@ class _DiscoveriesCarousel extends StatelessWidget {
             child: Row(
               children: visible
                   .map((s) => _StudyCard(
+                        studyLabel: l10n.webStudyLabel,
                         study: s,
                         themeColor: themeColor,
                         onTap: () => onOpenInNewTab(s.url),
@@ -234,11 +242,13 @@ class _DiscoveriesCarousel extends StatelessWidget {
 
 // ── Study Card (used in carousel) ─────────────────────────────────────────────
 class _StudyCard extends StatefulWidget {
+  final String studyLabel;
   final EvidenceStudy study;
   final Color themeColor;
   final VoidCallback onTap;
 
   const _StudyCard({
+    required this.studyLabel,
     required this.study,
     required this.themeColor,
     required this.onTap,
@@ -286,7 +296,7 @@ class _StudyCardState extends State<_StudyCard> {
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        widget.study.studyType ?? 'Study',
+                        widget.study.studyType ?? widget.studyLabel,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -361,6 +371,7 @@ class _YearBadge extends StatelessWidget {
 // ── Evidence Sections ─────────────────────────────────────────────────────────
 // Groups studies by topic (EvidenceSection), each collapsible.
 class _EvidenceSections extends StatelessWidget {
+  final AppLocalizations l10n;
   final List<EvidenceSection> sections;
   final Color themeColor;
   final Future<void> Function(String url) onOpenInNewTab;
@@ -368,6 +379,7 @@ class _EvidenceSections extends StatelessWidget {
 
   const _EvidenceSections({
     super.key,
+    required this.l10n,
     required this.sections,
     required this.themeColor,
     required this.onOpenInNewTab,
@@ -376,14 +388,14 @@ class _EvidenceSections extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalStudies =
-        sections.fold(0, (sum, s) => sum + s.studies.length);
+    final totalStudies = sections.fold(0, (sum, s) => sum + s.studies.length);
 
     return _SectionBlock(
-      title: 'EVIDENCE BY TOPIC',
+      title: l10n.webEvidenceByTopicTitle,
       count: totalStudies,
       children: sections
           .map((s) => _EvidenceSectionBlock(
+                l10n: l10n,
                 section: s,
                 themeColor: themeColor,
                 onOpenInNewTab: onOpenInNewTab,
@@ -397,12 +409,14 @@ class _EvidenceSections extends StatelessWidget {
 // ── Evidence Section Block ────────────────────────────────────────────────────
 // One collapsible topic block inside the evidence panel.
 class _EvidenceSectionBlock extends StatefulWidget {
+  final AppLocalizations l10n;
   final EvidenceSection section;
   final Color themeColor;
   final Future<void> Function(String url) onOpenInNewTab;
   final ValueChanged<String> onSparkIdea;
 
   const _EvidenceSectionBlock({
+    required this.l10n,
     required this.section,
     required this.themeColor,
     required this.onOpenInNewTab,
@@ -421,8 +435,7 @@ class _EvidenceSectionBlockState extends State<_EvidenceSectionBlock> {
   @override
   Widget build(BuildContext context) {
     final studies = widget.section.studies;
-    final visible =
-        _showAll ? studies : studies.take(_previewCount).toList();
+    final visible = _showAll ? studies : studies.take(_previewCount).toList();
     final hasMore = studies.length > _previewCount;
 
     return Column(
@@ -433,13 +446,11 @@ class _EvidenceSectionBlockState extends State<_EvidenceSectionBlock> {
           onTap: () => setState(() => _expanded = !_expanded),
           child: AnimatedContainer(
             duration: WebTheme.fast,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
-              color:
-                  _expanded ? WebTheme.surfacePanel : Colors.transparent,
-              border: const Border(
-                  top: BorderSide(color: WebTheme.borderSubtle)),
+              color: _expanded ? WebTheme.surfacePanel : Colors.transparent,
+              border:
+                  const Border(top: BorderSide(color: WebTheme.borderSubtle)),
             ),
             child: Row(
               children: [
@@ -495,9 +506,10 @@ class _EvidenceSectionBlockState extends State<_EvidenceSectionBlock> {
                 (e) => _FindingRow(
                   number: (e.key + 1).toString().padLeft(2, '0'),
                   text: e.value.title,
-                  tag: e.value.studyType ?? 'Study',
+                  tag: e.value.studyType ?? widget.l10n.webStudyLabel,
                   color: widget.themeColor,
                   onSpark: () => widget.onSparkIdea(e.value.title),
+                  sparkTooltip: widget.l10n.webSparkIdeaTooltip,
                   onOpenSource: e.value.url.isNotEmpty
                       ? () => widget.onOpenInNewTab(e.value.url)
                       : null,
@@ -505,6 +517,7 @@ class _EvidenceSectionBlockState extends State<_EvidenceSectionBlock> {
               ),
           if (hasMore)
             _ShowMoreRow(
+              l10n: widget.l10n,
               expanded: _showAll,
               remaining: studies.length - _previewCount,
               onToggle: () => setState(() => _showAll = !_showAll),
@@ -518,12 +531,14 @@ class _EvidenceSectionBlockState extends State<_EvidenceSectionBlock> {
 // ── Collaborate CTA ───────────────────────────────────────────────────────────
 // "JOIN THE EFFORT" — 3 action cards encouraging user contribution.
 class _CollaborateCTA extends StatelessWidget {
+  final AppLocalizations l10n;
   final VoidCallback onPostIdea;
   final VoidCallback onGoToSources;
   final ValueChanged<String> onSparkIdea;
   final int studyCount;
 
   const _CollaborateCTA({
+    required this.l10n,
     required this.onPostIdea,
     required this.onGoToSources,
     required this.onSparkIdea,
@@ -535,11 +550,11 @@ class _CollaborateCTA extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 6),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6),
           child: Text(
-            'JOIN THE EFFORT',
-            style: TextStyle(
+            l10n.webJoinEffortTitle,
+            style: const TextStyle(
               color: WebTheme.textMuted,
               fontSize: 10,
               fontWeight: FontWeight.w700,
@@ -547,11 +562,11 @@ class _CollaborateCTA extends StatelessWidget {
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(bottom: 14),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 14),
           child: Text(
-            'Each contribution strengthens the community and evolves the knowledge graph.',
-            style: TextStyle(
+            l10n.webJoinEffortSubtitle,
+            style: const TextStyle(
               color: WebTheme.textSecondary,
               fontSize: 12.5,
               height: 1.55,
@@ -565,17 +580,15 @@ class _CollaborateCTA extends StatelessWidget {
             _CTACard(
               icon: Icons.lightbulb_outline,
               color: const Color(0xFF3B82F6),
-              title: 'Post an Idea',
-              description:
-                  'Contribute a solution or hypothesis. Your idea becomes part of the category knowledge graph.',
+              title: l10n.webPostIdeaTitle,
+              description: l10n.webPostIdeaDesc,
               onTap: onPostIdea,
             ),
             _CTACard(
               icon: Icons.menu_book_outlined,
               color: WebTheme.accent,
-              title: 'View All Sources',
-              description:
-                  '$studyCount peer-reviewed papers. Filter by topic, year, or journal.',
+              title: l10n.webViewSourcesTitle,
+              description: l10n.webViewSourcesDesc(studyCount),
               onTap: onGoToSources,
             ),
           ],
@@ -697,11 +710,9 @@ class _SectionBlock extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
             decoration: const BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(color: WebTheme.borderSubtle)),
+              border: Border(bottom: BorderSide(color: WebTheme.borderSubtle)),
             ),
             child: Row(
               children: [
@@ -742,6 +753,7 @@ class _FindingRow extends StatefulWidget {
   final String tag;
   final Color color;
   final VoidCallback onSpark;
+  final String sparkTooltip;
   final VoidCallback? onOpenSource;
 
   const _FindingRow({
@@ -750,6 +762,7 @@ class _FindingRow extends StatefulWidget {
     required this.tag,
     required this.color,
     required this.onSpark,
+    required this.sparkTooltip,
     this.onOpenSource,
   });
 
@@ -770,9 +783,8 @@ class _FindingRowState extends State<_FindingRow> {
             : WebTheme.textPrimary,
         fontSize: 13,
         height: 1.45,
-        decoration: widget.onOpenSource != null
-            ? TextDecoration.underline
-            : null,
+        decoration:
+            widget.onOpenSource != null ? TextDecoration.underline : null,
         decorationColor: WebTheme.accent.withValues(alpha: 0.4),
       ),
     );
@@ -788,8 +800,7 @@ class _FindingRowState extends State<_FindingRow> {
             bottom: BorderSide(color: Color(0x0DFFFFFF)),
           ),
         ),
-        padding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -815,8 +826,7 @@ class _FindingRowState extends State<_FindingRow> {
             ),
             const SizedBox(width: 10),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
               decoration: BoxDecoration(
                 color: widget.color.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(3),
@@ -837,7 +847,7 @@ class _FindingRowState extends State<_FindingRow> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 6),
                 child: Tooltip(
-                  message: 'Spark idea from this finding',
+                  message: widget.sparkTooltip,
                   child: InkWell(
                     onTap: widget.onSpark,
                     borderRadius: BorderRadius.circular(4),
@@ -858,11 +868,13 @@ class _FindingRowState extends State<_FindingRow> {
 
 // ── Show More / Collapse Row ──────────────────────────────────────────────────
 class _ShowMoreRow extends StatelessWidget {
+  final AppLocalizations l10n;
   final bool expanded;
   final int remaining;
   final VoidCallback onToggle;
 
   const _ShowMoreRow({
+    required this.l10n,
     required this.expanded,
     required this.remaining,
     required this.onToggle,
@@ -873,8 +885,7 @@ class _ShowMoreRow extends StatelessWidget {
     return InkWell(
       onTap: onToggle,
       child: Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         child: Row(
           children: [
             Icon(
@@ -884,7 +895,7 @@ class _ShowMoreRow extends StatelessWidget {
             ),
             const SizedBox(width: 6),
             Text(
-              expanded ? 'Show less' : 'Show $remaining more',
+              expanded ? l10n.webShowLess : l10n.webShowMore(remaining),
               style: const TextStyle(
                 color: WebTheme.accent,
                 fontSize: 12,
