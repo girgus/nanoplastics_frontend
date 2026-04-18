@@ -1,11 +1,9 @@
 name: nanoplastics_app
 description: NanoSolve Hive - Crowdsourcing R&D solutions for nanoplastic pollution
 publish_to: 'none'
-version: 1.0.47+39
-
+version: 1.0.48+40
 environment:
   sdk: '>=3.0.0 <4.0.0'
-
 dependencies:
   flutter:
     sdk: flutter
@@ -41,30 +39,24 @@ dependencies:
   image: ^4.0.0
   crypto: ^3.0.0
   vector_math: ^2.1.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
   flutter_launcher_icons: ^0.13.1
   mocktail: ^1.0.4
-  integration_test:
-    sdk: flutter
-
 flutter_launcher_icons:
   android: true
-  ios: true
+  ios: false
   web:
     generate: true
   image_path: "assets/images/app_logo.png"
   min_sdk_android: 10
-  adaptive_icon_background: "#0A0F1E"
-  adaptive_icon_foreground: "assets/images/app_logo_adaptive_fg.png"
-
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/app_logo.png"
 flutter:
   generate: true
   uses-material-design: true
-
   assets:
     - assets/images/
     - assets/l10n/app_cs.arb
@@ -74,14 +66,16 @@ flutter:
     - assets/onboarding/slide3_collaboration.jpg
     - assets/docs/Nanoplastics_Report_EN_compressed.pdf
     - assets/docs/EN_WATER_compressed.pdf
-    
-    # - assets/docs/CS_WATER_compressed.pdf
-    # - assets/docs/ESP-WATER_compressed.pdf
-    # - assets/docs/FR-WATER_compressed.pdf
-    # - assets/docs/RUS-WATER_compressed.pdf
-    # - assets/docs/Nanoplastics_Report_CS_compressed.pdf
-    # - assets/docs/Nanoplastics_Report_ES_compressed.pdf
-    # - assets/docs/Nanoplastics_Report_FR_compressed.pdf
-    # - assets/docs/Nanoplastics_Report_RU_compressed.pdf
-
-
+    - assets/docs/CS_WATER_compressed.pdf
+    - assets/docs/CS_WATER_compressed.pdf
+    - assets/docs/ESP-WATER_compressed.pdf
+    - assets/docs/FR-WATER_compressed.pdf
+    - assets/docs/RUS-WATER_compressed.pdf
+    - assets/docs/Nanoplastics_Report_CS_compressed.pdf
+    - assets/docs/Nanoplastics_Report_ES_compressed.pdf
+    - assets/docs/Nanoplastics_Report_FR_compressed.pdf
+    - assets/docs/Nanoplastics_Report_RU_compressed.pdf
+    - assets/docs/CS_WATER_compressed.pdf
+    - assets/docs/ESP-WATER_compressed.pdf
+    - assets/docs/FR-WATER_compressed.pdf
+    - assets/docs/RUS-WATER_compressed.pdf

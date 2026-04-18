@@ -28,10 +28,13 @@ class SourcesSection extends StatefulWidget {
   State<SourcesSection> createState() => _SourcesSectionState();
 }
 
-enum _SourcesTab { webLinks, videos }
+enum _SourcesTab { webLinks, reports, videos }
+
+enum _ReportSection { humanHealth, earthPollution, waterAbilities }
 
 class _SourcesSectionState extends State<SourcesSection> {
   _SourcesTab _activeTab = _SourcesTab.webLinks;
+  _ReportSection _selectedReportSection = _ReportSection.humanHealth;
   final Set<String> _collapsedCategoryKeys = <String>{};
   final TextEditingController _searchController = TextEditingController();
 
@@ -104,9 +107,40 @@ class _SourcesSectionState extends State<SourcesSection> {
           block.category.evidenceStudyCount + block.allatraSources.length;
     }
 
-    final videos = (allVideoSources[widget.activeLanguageCode] ?? videoSourcesEn)
-        .where((v) => !v.isReport)
-        .toList(growable: false);
+    final videos =
+        (allVideoSources[widget.activeLanguageCode] ?? videoSourcesEn)
+            .where((v) => !v.isReport)
+            .toList(growable: false);
+
+    final reportSections = [
+      (
+        section: _ReportSection.humanHealth,
+        title: widget.l10n.sourcesSectionHumanHealth,
+        icon: Icons.favorite_outline,
+        sources: humanHealthSources
+            .where((s) => s.language == widget.activeLanguageCode)
+            .toList(growable: false),
+      ),
+      (
+        section: _ReportSection.earthPollution,
+        title: widget.l10n.sourcesSectionEarthPollution,
+        icon: Icons.public,
+        sources: earthPollutionSources
+            .where((s) => s.language == widget.activeLanguageCode)
+            .toList(growable: false),
+      ),
+      (
+        section: _ReportSection.waterAbilities,
+        title: widget.l10n.sourcesSectionWaterAbilities,
+        icon: Icons.water_drop_outlined,
+        sources: waterAbilitiesSources
+            .where((s) => s.language == widget.activeLanguageCode)
+            .toList(growable: false),
+      ),
+    ];
+
+    final selectedReportData =
+        reportSections.firstWhere((s) => s.section == _selectedReportSection);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,6 +184,13 @@ class _SourcesSectionState extends State<SourcesSection> {
                 label: widget.l10n.sourcesTabWeb,
                 selected: _activeTab == _SourcesTab.webLinks,
                 onTap: () => setState(() => _activeTab = _SourcesTab.webLinks),
+              ),
+              const SizedBox(width: 8),
+              _TabChip(
+                label: widget.l10n.sourcesTabReport,
+                selected: _activeTab == _SourcesTab.reports,
+                activeColor: AppColors.pastelLavender,
+                onTap: () => setState(() => _activeTab = _SourcesTab.reports),
               ),
               const SizedBox(width: 8),
               _TabChip(
@@ -224,360 +265,489 @@ class _SourcesSectionState extends State<SourcesSection> {
             ),
           ),
         ] else ...[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 6),
-          child: TextField(
-            controller: _searchController,
-            onChanged: widget.onQueryChanged,
-            style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              hintText: widget.l10n.sourcesSearchPlaceholder,
-              hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.55)),
-              prefixIcon: const Icon(Icons.search, color: Colors.white70),
-              suffixIcon: widget.query.isEmpty
-                  ? null
-                  : IconButton(
-                      onPressed: () {
-                        _searchController.clear();
-                        widget.onQueryChanged('');
-                      },
-                      icon: const Icon(Icons.close, color: Colors.white70),
-                    ),
-              filled: true,
-              fillColor: Colors.white.withValues(alpha: 0.05),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide:
-                    BorderSide(color: Colors.white.withValues(alpha: 0.08)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide:
-                    BorderSide(color: Colors.white.withValues(alpha: 0.08)),
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
-          child: Text(
-            widget.l10n.sourcesCountBadge(totalResults),
-            style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.55), fontSize: 11),
-          ),
-        ),
-        Expanded(
-          child: categoryBlocks.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        widget.l10n.sourcesNoResults(widget.query),
-                        style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.72)),
-                      ),
-                      const SizedBox(height: 8),
-                      TextButton(
-                        onPressed: () {
-                          _searchController.clear();
-                          widget.onQueryChanged('');
-                        },
-                        child: Text(widget.l10n.sourcesClearSearch),
-                      ),
-                    ],
-                  ),
-                )
-              : ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-                  itemCount: categoryBlocks.length,
-                  itemBuilder: (_, i) {
-                    final category = categoryBlocks[i].category;
-                    final allatraSources = categoryBlocks[i].allatraSources;
-                    final collapsed =
-                        _collapsedCategoryKeys.contains(category.categoryKey);
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 16),
-                      decoration: BoxDecoration(
-                        color: WebTheme.surfaceCard,
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.08)),
-                      ),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                if (collapsed) {
-                                  _collapsedCategoryKeys
-                                      .remove(category.categoryKey);
-                                } else {
-                                  _collapsedCategoryKeys
-                                      .add(category.categoryKey);
-                                }
-                              });
-                            },
-                            borderRadius: BorderRadius.circular(14),
-                            child: Padding(
-                              padding: const EdgeInsets.all(14),
-                              child: Row(
-                                children: [
-                                  AnimatedRotation(
-                                    duration: WebTheme.normal,
-                                    turns: collapsed ? 0.0 : 0.5,
-                                    child: Icon(
-                                      Icons.expand_more,
-                                      color: category.themeColor,
-                                      size: 18,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Icon(category.icon,
-                                      color: category.themeColor),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      category.title,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    widget.l10n.sourcesCountBadge(
-                                      category.evidenceStudyCount +
-                                          allatraSources.length,
-                                    ),
-                                    style: TextStyle(
-                                      color:
-                                          Colors.white.withValues(alpha: 0.65),
-                                      fontSize: 11,
-                                    ),
-                                  ),
-                                ],
+          if (_activeTab == _SourcesTab.reports) ...[
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                children: [
+                  ...reportSections.map((s) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: InkWell(
+                          onTap: () => setState(
+                              () => _selectedReportSection = s.section),
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: _selectedReportSection == s.section
+                                  ? AppColors.pastelLavender
+                                      .withValues(alpha: 0.14)
+                                  : Colors.white.withValues(alpha: 0.04),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: _selectedReportSection == s.section
+                                    ? AppColors.pastelLavender
+                                        .withValues(alpha: 0.35)
+                                    : Colors.white.withValues(alpha: 0.08),
                               ),
                             ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  s.icon,
+                                  size: 16,
+                                  color: _selectedReportSection == s.section
+                                      ? AppColors.pastelLavender
+                                      : Colors.white70,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    s.title,
+                                    style: TextStyle(
+                                      color: _selectedReportSection == s.section
+                                          ? AppColors.pastelLavender
+                                          : Colors.white,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '${s.sources.length}',
+                                  style: TextStyle(
+                                    color: Colors.white.withValues(alpha: 0.72),
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          if (!collapsed)
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ...category.evidenceSections.map((section) {
-                                    final headlineUrl =
-                                        _headlinePdfUrlForSection(
-                                      category: category,
-                                      section: section,
-                                      allatraSources: allatraSources,
-                                    );
+                        ),
+                      )),
+                  const SizedBox(height: 8),
+                  ...selectedReportData.sources.map((report) => InkWell(
+                        onTap: () => widget.onOpenInNewTab(report.url!),
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 9),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.08),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  '${report.title} — ${report.getPageRangeDisplay()}',
+                                  style: const TextStyle(color: Colors.white),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Tooltip(
+                                message: widget.l10n.sourcesOpenInNewTab,
+                                child: const Icon(
+                                  Icons.picture_as_pdf_outlined,
+                                  size: 16,
+                                  color: AppColors.pastelLavender,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )),
+                ],
+              ),
+            ),
+          ] else ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 6),
+              child: TextField(
+                controller: _searchController,
+                onChanged: widget.onQueryChanged,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: widget.l10n.sourcesSearchPlaceholder,
+                  hintStyle:
+                      TextStyle(color: Colors.white.withValues(alpha: 0.55)),
+                  prefixIcon: const Icon(Icons.search, color: Colors.white70),
+                  suffixIcon: widget.query.isEmpty
+                      ? null
+                      : IconButton(
+                          onPressed: () {
+                            _searchController.clear();
+                            widget.onQueryChanged('');
+                          },
+                          icon: const Icon(Icons.close, color: Colors.white70),
+                        ),
+                  filled: true,
+                  fillColor: Colors.white.withValues(alpha: 0.05),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide:
+                        BorderSide(color: Colors.white.withValues(alpha: 0.08)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide:
+                        BorderSide(color: Colors.white.withValues(alpha: 0.08)),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
+              child: Text(
+                widget.l10n.sourcesCountBadge(totalResults),
+                style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.55), fontSize: 11),
+              ),
+            ),
+            Expanded(
+              child: categoryBlocks.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            widget.l10n.sourcesNoResults(widget.query),
+                            style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.72)),
+                          ),
+                          const SizedBox(height: 8),
+                          TextButton(
+                            onPressed: () {
+                              _searchController.clear();
+                              widget.onQueryChanged('');
+                            },
+                            child: Text(widget.l10n.sourcesClearSearch),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                      itemCount: categoryBlocks.length,
+                      itemBuilder: (_, i) {
+                        final category = categoryBlocks[i].category;
+                        final allatraSources = categoryBlocks[i].allatraSources;
+                        final collapsed = _collapsedCategoryKeys
+                            .contains(category.categoryKey);
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            color: WebTheme.surfaceCard,
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.08)),
+                          ),
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    if (collapsed) {
+                                      _collapsedCategoryKeys
+                                          .remove(category.categoryKey);
+                                    } else {
+                                      _collapsedCategoryKeys
+                                          .add(category.categoryKey);
+                                    }
+                                  });
+                                },
+                                borderRadius: BorderRadius.circular(14),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(14),
+                                  child: Row(
+                                    children: [
+                                      AnimatedRotation(
+                                        duration: WebTheme.normal,
+                                        turns: collapsed ? 0.0 : 0.5,
+                                        child: Icon(
+                                          Icons.expand_more,
+                                          color: category.themeColor,
+                                          size: 18,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Icon(category.icon,
+                                          color: category.themeColor),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          category.title,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        widget.l10n.sourcesCountBadge(
+                                          category.evidenceStudyCount +
+                                              allatraSources.length,
+                                        ),
+                                        style: TextStyle(
+                                          color: Colors.white
+                                              .withValues(alpha: 0.65),
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              if (!collapsed)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(14, 0, 14, 14),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ...category.evidenceSections
+                                          .map((section) {
+                                        final headlineUrl =
+                                            _headlinePdfUrlForSection(
+                                          category: category,
+                                          section: section,
+                                          allatraSources: allatraSources,
+                                        );
 
-                                    return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 12),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          InkWell(
-                                            onTap: headlineUrl == null
-                                                ? null
-                                                : () => widget.onOpenInNewTab(
-                                                    headlineUrl),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: Container(
-                                              width: double.infinity,
-                                              padding: const EdgeInsets.all(10),
-                                              decoration: BoxDecoration(
-                                                color: category.themeColor
-                                                    .withValues(alpha: 0.08),
-                                                border: Border(
-                                                  left: BorderSide(
-                                                      color:
-                                                          category.themeColor,
-                                                      width: 3),
-                                                ),
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 12),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              InkWell(
+                                                onTap: headlineUrl == null
+                                                    ? null
+                                                    : () =>
+                                                        widget.onOpenInNewTab(
+                                                            headlineUrl),
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Text(
-                                                      '${widget.l10n.sourcesHeadlineLabel}: ${section.title}',
-                                                      style: TextStyle(
-                                                        color:
-                                                            category.themeColor,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  if (headlineUrl != null)
-                                                    Icon(
-                                                      Icons
-                                                          .picture_as_pdf_outlined,
-                                                      size: 15,
-                                                      color: category.themeColor
-                                                          .withValues(
-                                                              alpha: 0.9),
-                                                    ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            widget.l10n.sourcesStudiesLabel,
-                                            style: TextStyle(
-                                              color: Colors.white
-                                                  .withValues(alpha: 0.65),
-                                              fontSize: 11,
-                                              letterSpacing: 1.2,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 6),
-                                          ...section.studies.map((study) =>
-                                              InkWell(
-                                                onTap: () => widget
-                                                    .onOpenInNewTab(study.url),
                                                 child: Container(
-                                                  margin: const EdgeInsets.only(
-                                                      bottom: 6),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 9),
+                                                  width: double.infinity,
+                                                  padding:
+                                                      const EdgeInsets.all(10),
                                                   decoration: BoxDecoration(
-                                                    color: Colors.black
-                                                        .withValues(alpha: 0.2),
+                                                    color: category.themeColor
+                                                        .withValues(
+                                                            alpha: 0.08),
+                                                    border: Border(
+                                                      left: BorderSide(
+                                                          color: category
+                                                              .themeColor,
+                                                          width: 3),
+                                                    ),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10),
-                                                    border: Border.all(
-                                                        color: Colors.white
-                                                            .withValues(
-                                                                alpha: 0.08)),
                                                   ),
                                                   child: Row(
                                                     children: [
                                                       Expanded(
                                                         child: Text(
-                                                          '${study.authorsShort} (${study.year}) — ${study.journal}',
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
+                                                          '${widget.l10n.sourcesHeadlineLabel}: ${section.title}',
                                                           style: TextStyle(
-                                                            color: Colors.white
-                                                                .withValues(
-                                                                    alpha:
-                                                                        0.84),
-                                                            fontFamily:
-                                                                'monospace',
-                                                            fontSize: 12.5,
+                                                            color: category
+                                                                .themeColor,
+                                                            fontWeight:
+                                                                FontWeight.w700,
                                                           ),
                                                         ),
                                                       ),
-                                                      const SizedBox(width: 8),
-                                                      Tooltip(
-                                                        message: widget.l10n
-                                                            .sourcesOpenInNewTab,
-                                                        child: IconButton(
-                                                          onPressed: () => widget
-                                                              .onOpenInNewTab(
-                                                                  study.url),
-                                                          icon: const Icon(
-                                                              Icons.open_in_new,
-                                                              size: 16),
-                                                          color: AppColors
-                                                              .pastelAqua,
-                                                          visualDensity:
-                                                              VisualDensity
-                                                                  .compact,
+                                                      if (headlineUrl != null)
+                                                        Icon(
+                                                          Icons
+                                                              .picture_as_pdf_outlined,
+                                                          size: 15,
+                                                          color: category
+                                                              .themeColor
+                                                              .withValues(
+                                                                  alpha: 0.9),
                                                         ),
-                                                      ),
                                                     ],
                                                   ),
                                                 ),
-                                              )),
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                                  if (allatraSources.isNotEmpty) ...[
-                                    Text(
-                                      widget.l10n.sourcesAllatraLabel,
-                                      style: TextStyle(
-                                        color: category.themeColor,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 1.1,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    ...allatraSources.map((source) => InkWell(
-                                          onTap: () => widget
-                                              .onOpenInNewTab(source.url!),
-                                          child: Container(
-                                            margin: const EdgeInsets.only(
-                                                bottom: 6),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 9),
-                                            decoration: BoxDecoration(
-                                              color: Colors.black
-                                                  .withValues(alpha: 0.2),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                widget.l10n.sourcesStudiesLabel,
+                                                style: TextStyle(
                                                   color: Colors.white
-                                                      .withValues(alpha: 0.08)),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    '${source.title} — ${source.getPageRangeDisplay()}',
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
+                                                      .withValues(alpha: 0.65),
+                                                  fontSize: 11,
+                                                  letterSpacing: 1.2,
+                                                  fontWeight: FontWeight.w700,
                                                 ),
-                                                const SizedBox(width: 8),
-                                                Tooltip(
-                                                  message: widget
-                                                      .l10n.sourcesOpenInNewTab,
-                                                  child: IconButton(
-                                                    onPressed: () =>
+                                              ),
+                                              const SizedBox(height: 6),
+                                              ...section.studies.map((study) =>
+                                                  InkWell(
+                                                    onTap: () =>
                                                         widget.onOpenInNewTab(
-                                                            source.url!),
-                                                    icon: const Icon(
-                                                        Icons.open_in_new,
-                                                        size: 16),
-                                                    color: AppColors.pastelMint,
-                                                    visualDensity:
-                                                        VisualDensity.compact,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                                            study.url),
+                                                    child: Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              bottom: 6),
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 9),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.black
+                                                            .withValues(
+                                                                alpha: 0.2),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        border: Border.all(
+                                                            color: Colors.white
+                                                                .withValues(
+                                                                    alpha:
+                                                                        0.08)),
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Text(
+                                                              '${study.authorsShort} (${study.year}) — ${study.journal}',
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.84),
+                                                                fontFamily:
+                                                                    'monospace',
+                                                                fontSize: 12.5,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              width: 8),
+                                                          Tooltip(
+                                                            message: widget.l10n
+                                                                .sourcesOpenInNewTab,
+                                                            child: IconButton(
+                                                              onPressed: () => widget
+                                                                  .onOpenInNewTab(
+                                                                      study
+                                                                          .url),
+                                                              icon: const Icon(
+                                                                  Icons
+                                                                      .open_in_new,
+                                                                  size: 16),
+                                                              color: AppColors
+                                                                  .pastelAqua,
+                                                              visualDensity:
+                                                                  VisualDensity
+                                                                      .compact,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )),
+                                            ],
                                           ),
-                                        )),
-                                  ],
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-        ),
+                                        );
+                                      }),
+                                      if (allatraSources.isNotEmpty) ...[
+                                        Text(
+                                          widget.l10n.sourcesAllatraLabel,
+                                          style: TextStyle(
+                                            color: category.themeColor,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 1.1,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        ...allatraSources.map((source) =>
+                                            InkWell(
+                                              onTap: () => widget
+                                                  .onOpenInNewTab(source.url!),
+                                              child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    bottom: 6),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 9),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black
+                                                      .withValues(alpha: 0.2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                      color: Colors.white
+                                                          .withValues(
+                                                              alpha: 0.08)),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        '${source.title} — ${source.getPageRangeDisplay()}',
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 8),
+                                                    Tooltip(
+                                                      message: widget.l10n
+                                                          .sourcesOpenInNewTab,
+                                                      child: IconButton(
+                                                        onPressed: () => widget
+                                                            .onOpenInNewTab(
+                                                                source.url!),
+                                                        icon: const Icon(
+                                                            Icons.open_in_new,
+                                                            size: 16),
+                                                        color: AppColors
+                                                            .pastelMint,
+                                                        visualDensity:
+                                                            VisualDensity
+                                                                .compact,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
         ], // end else (webLinks tab)
       ],
     );
@@ -768,11 +938,13 @@ class _SourcesSectionState extends State<SourcesSection> {
 class _TabChip extends StatelessWidget {
   final String label;
   final bool selected;
+  final Color activeColor;
   final VoidCallback onTap;
 
   const _TabChip({
     required this.label,
     required this.selected,
+    this.activeColor = AppColors.pastelMint,
     required this.onTap,
   });
 
@@ -785,19 +957,19 @@ class _TabChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
         decoration: BoxDecoration(
           color: selected
-              ? AppColors.pastelMint.withValues(alpha: 0.18)
+              ? activeColor.withValues(alpha: 0.18)
               : Colors.white.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: selected
-                ? AppColors.pastelMint.withValues(alpha: 0.5)
+                ? activeColor.withValues(alpha: 0.5)
                 : Colors.white.withValues(alpha: 0.10),
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: selected ? AppColors.pastelMint : Colors.white70,
+            color: selected ? activeColor : Colors.white70,
             fontSize: 12,
             fontWeight: selected ? FontWeight.w700 : FontWeight.normal,
           ),
