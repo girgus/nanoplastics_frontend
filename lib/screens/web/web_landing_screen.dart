@@ -296,37 +296,11 @@ class _LandingTopBar extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         child: _constrain(
           child: Row(
-            children: [
-              const NanosolveLogo(height: 28),
-              const SizedBox(width: 12),
-              if (!compact)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'NanoSolve Hive',
-                      style: TextStyle(
-                        color: _textMain,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -0.2,
-                      ),
-                    ),
-                    const SizedBox(height: 1),
-                    Text(
-                      l10n.landingBrandSubtitle,
-                      style: const TextStyle(
-                        color: _textMuted,
-                        fontSize: 10,
-                        letterSpacing: 1.2,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
+            children: [ 
+              const NanosolveLogo(height: 50),
               const Spacer(),
               if (!compact) ...[
                 _topLink(l10n.landingNavWhy, onTap: onOpenWhy),

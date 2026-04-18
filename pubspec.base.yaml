@@ -40,6 +40,7 @@ dependencies:
   # Direct declarations of transitive deps actually used in lib/
   image: ^4.0.0
   crypto: ^3.0.0
+  vector_math: ^2.1.0
 
 
 

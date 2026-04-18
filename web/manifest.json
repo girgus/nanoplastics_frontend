@@ -1,11 +1,11 @@
 {
-    "name": "nanoplastics_app",
-    "short_name": "nanoplastics_app",
+    "name": "NanoSolve Hive",
+    "short_name": "NanoSolve",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0D1117",
+    "theme_color": "#A8D5BA",
+    "description": "Nanoplastic pollution solutions platform. Explore impacts, submit ideas, and climb the solver leaderboard.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
