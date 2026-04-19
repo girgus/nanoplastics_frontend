@@ -281,7 +281,9 @@ class _LandingTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final compact = MediaQuery.sizeOf(context).width < 980;
+    final width = MediaQuery.sizeOf(context).width;
+    final compact = width < 980;
+    final phone = width < 500;
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -299,7 +301,7 @@ class _LandingTopBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         child: _constrain(
           child: Row(
-            children: [ 
+            children: [
               const NanosolveLogo(height: 50),
               const Spacer(),
               if (!compact) ...[
@@ -307,12 +309,14 @@ class _LandingTopBar extends StatelessWidget {
                 const SizedBox(width: 2),
                 _topLink(l10n.landingNavHow, onTap: onOpenHow),
               ],
-              const SizedBox(width: 10),
-              _PillButton(
-                label: l10n.landingLaunchWorkspace,
-                onTap: onLaunchWorkspace,
-                primary: true,
-              ),
+              if (!phone) ...[
+                const SizedBox(width: 10),
+                _PillButton(
+                  label: l10n.landingLaunchWorkspace,
+                  onTap: onLaunchWorkspace,
+                  primary: true,
+                ),
+              ],
             ],
           ),
         ),
@@ -391,6 +395,7 @@ class _HeroSection extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final compact = constraints.maxWidth < 920;
+            final phone = constraints.maxWidth < 500;
 
             return _Card(
               child: ClipRRect(
@@ -415,17 +420,18 @@ class _HeroSection extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(compact ? 24 : 40),
+                      padding: EdgeInsets.all(phone ? 16 : compact ? 24 : 40),
                       child: compact
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _heroText(compact: true),
-                                const SizedBox(height: 24),
+                                _heroText(compact: true, phone: phone),
+                                SizedBox(height: phone ? 16 : 24),
                                 _HeroSignalPanel(
                                   l10n: l10n,
                                   selectedLanguage: selectedLanguage,
                                   onSelectLanguage: onSelectLanguage,
+                                  phone: phone,
                                 ),
                               ],
                             )
@@ -433,7 +439,9 @@ class _HeroSection extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                    flex: 13, child: _heroText(compact: false)),
+                                    flex: 13,
+                                    child:
+                                        _heroText(compact: false, phone: false)),
                                 const SizedBox(width: 32),
                                 Expanded(
                                   flex: 10,
@@ -441,6 +449,7 @@ class _HeroSection extends StatelessWidget {
                                     l10n: l10n,
                                     selectedLanguage: selectedLanguage,
                                     onSelectLanguage: onSelectLanguage,
+                                    phone: false,
                                   ),
                                 ),
                               ],
@@ -456,7 +465,7 @@ class _HeroSection extends StatelessWidget {
     );
   }
 
-  Widget _heroText({required bool compact}) {
+  Widget _heroText({required bool compact, required bool phone}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -499,16 +508,16 @@ class _HeroSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: phone ? 16 : 24),
         // Main headline
         Text(
           l10n.landingHeroTitle,
           style: TextStyle(
             color: _textMain,
-            fontSize: compact ? 32 : 42,
+            fontSize: phone ? 24 : compact ? 32 : 42,
             fontWeight: FontWeight.w800,
             height: 1.08,
-            letterSpacing: -1.0,
+            letterSpacing: phone ? -0.5 : -1.0,
           ),
         ),
         const SizedBox(height: 16),
@@ -563,11 +572,13 @@ class _HeroSignalPanel extends StatelessWidget {
   final AppLocalizations l10n;
   final String selectedLanguage;
   final ValueChanged<String> onSelectLanguage;
+  final bool phone;
 
   const _HeroSignalPanel({
     required this.l10n,
     required this.selectedLanguage,
     required this.onSelectLanguage,
+    this.phone = false,
   });
 
   @override
@@ -585,7 +596,7 @@ class _HeroSignalPanel extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(phone ? 12 : 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1906,14 +1917,22 @@ class _CategoryGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 3,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 20,
-      crossAxisSpacing: 20,
-      childAspectRatio: 1.8,
-      children: children,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final w = constraints.maxWidth;
+        final cols = w >= 980 ? 3 : w >= 600 ? 2 : 1;
+        final ratio = cols == 1 ? 2.2 : cols == 2 ? 1.6 : 1.8;
+        final gap = cols == 1 ? 12.0 : 20.0;
+        return GridView.count(
+          crossAxisCount: cols,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: gap,
+          crossAxisSpacing: cols == 1 ? 0 : gap,
+          childAspectRatio: ratio,
+          children: children,
+        );
+      },
     );
   }
 }
@@ -2195,18 +2214,12 @@ class _Footer extends StatelessWidget {
                       width: 0.5,
                     )),
                   ),
-                  child: Row(
-                    children: [
-                      Text(
-                        l10n.landingFooterCopyright,
-                        style: const TextStyle(
-                          color: _textMuted,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const Spacer(),
-                      Wrap(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final phone = constraints.maxWidth < 480;
+                      final links = Wrap(
                         spacing: 20,
+                        runSpacing: 8,
                         children: [
                           _footerLink(
                             l10n.landingFooterGithub,
@@ -2222,8 +2235,24 @@ class _Footer extends StatelessWidget {
                             onTap: () => _openExternalUrl(_privacyPolicyUrl),
                           ),
                         ],
-                      ),
-                    ],
+                      );
+                      final copyright = Text(
+                        l10n.landingFooterCopyright,
+                        style: const TextStyle(
+                          color: _textMuted,
+                          fontSize: 12,
+                        ),
+                      );
+                      if (phone) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [links, const SizedBox(height: 12), copyright],
+                        );
+                      }
+                      return Row(
+                        children: [copyright, const Spacer(), links],
+                      );
+                    },
                   ),
                 ),
               ],
@@ -2309,24 +2338,34 @@ class _SectionHeader extends StatelessWidget {
           ),
           const SizedBox(height: 14),
         ],
-        Text(
-          title,
-          style: const TextStyle(
-            color: _textMain,
-            fontSize: 28,
-            fontWeight: FontWeight.w800,
-            letterSpacing: -0.5,
-            height: 1.15,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          subtitle,
-          style: const TextStyle(
-            color: _textSoft,
-            fontSize: 14.5,
-            height: 1.6,
-          ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final phone = constraints.maxWidth < 480;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: _textMain,
+                    fontSize: phone ? 20 : 28,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: phone ? -0.2 : -0.5,
+                    height: 1.15,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: _textSoft,
+                    fontSize: phone ? 13 : 14.5,
+                    height: 1.6,
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ],
     );

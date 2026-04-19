@@ -215,7 +215,7 @@ class _AboutScreenState extends State<AboutScreen> {
             sizing: sizing,
             typography: typography,
             onTap: () =>
-                _launchUrl('https://glmcz.github.io/nanoplastics_frontend/'),
+                _launchUrl(AppLocalizations.of(context)!.aboutWebsiteUrl),
           ),
           SizedBox(height: spacing.cardSpacing),
           _buildLinkItem(
@@ -282,7 +282,7 @@ class _AboutScreenState extends State<AboutScreen> {
             sizing: sizing,
             typography: typography,
             onTap: () => _launchUrl(
-                'https://glmcz.github.io/nanoplastics_frontend/privacy/'),
+                '${AppLocalizations.of(context)!.aboutWebsiteUrl}/privacy/'),
           ),
           SizedBox(height: spacing.cardSpacing * 2),
           _buildSectionTitle(

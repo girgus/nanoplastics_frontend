@@ -62,7 +62,7 @@ class SettingsSection extends StatelessWidget {
                     _LinkRow(
                       icon: Icons.language,
                       label: l10n.aboutWebsite,
-                      subtitle: 'nanosolve.org',
+                      subtitle: 'web.nanosolve.org',
                       onTap: () {},
                     ),
                     _LinkRow(
