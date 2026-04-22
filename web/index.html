@@ -53,6 +53,65 @@
       window.flutterWebRenderer = 'html';
     }
   </script>
+  <!--
+    Cloudflare Turnstile bot defense.
+    Loaded once; widget mounts lazily on first requestToken() call.
+    Site key is public (safe to expose); secret key lives only on the backend.
+  -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+  <div id="ns-turnstile-container"
+    style="position:fixed;bottom:12px;right:12px;z-index:2147483647;"></div>
+  <script type="text/javascript">
+    (function () {
+      var SITE_KEY = '0x4AAAAAAC_0IH-cS-iLRru3';
+      var widgetId = null;
+      var pending = null; // { resolve, reject }
+
+      function ready(cb) {
+        if (window.turnstile) return cb();
+        var t = setInterval(function () {
+          if (window.turnstile) { clearInterval(t); cb(); }
+        }, 50);
+      }
+
+      function settle(token, error) {
+        if (!pending) return;
+        var p = pending; pending = null;
+        if (error) p.reject(new Error(error));
+        else p.resolve(token);
+      }
+
+      window.nanosolveTurnstile = {
+        requestToken: function () {
+          return new Promise(function (resolve, reject) {
+            if (pending) {
+              return reject(new Error('Turnstile request already in flight'));
+            }
+            pending = { resolve: resolve, reject: reject };
+
+            ready(function () {
+              try {
+                if (widgetId === null) {
+                  widgetId = window.turnstile.render('#ns-turnstile-container', {
+                    sitekey: SITE_KEY,
+                    size: 'flexible',
+                    callback: function (token) { settle(token, null); },
+                    'error-callback': function () { settle(null, 'turnstile-error'); },
+                    'expired-callback': function () { window.turnstile.reset(widgetId); },
+                    'timeout-callback': function () { settle(null, 'turnstile-timeout'); },
+                  });
+                } else {
+                  window.turnstile.reset(widgetId);
+                }
+              } catch (e) {
+                settle(null, String(e));
+              }
+            });
+          });
+        }
+      };
+    })();
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 

@@ -547,14 +547,14 @@ class _HeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         // Footnote
-        const Row(
+        Row(
           children: [
-            Icon(Icons.verified_outlined, size: 13, color: _textMuted),
-            SizedBox(width: 6),
+            const Icon(Icons.verified_outlined, size: 13, color: _textMuted),
+            const SizedBox(width: 6),
             Flexible(
               child: Text(
-                'Independent, evidence-based insights for human and planetary health.',
-                style: TextStyle(
+                l10n.landingHeroEvidenceNote,
+                style: const TextStyle(
                   color: _textMuted,
                   fontSize: 12,
                   letterSpacing: 0.2,

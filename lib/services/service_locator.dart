@@ -1,10 +1,21 @@
+import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import '../config/build_config.dart';
 import 'settings_manager.dart';
 import 'pdf_service.dart';
 import 'logger_service.dart';
 import 'update_service.dart';
+import 'update/update_service_api.dart';
+import 'update/noop_update_service.dart';
 import 'api_service.dart';
+
+/// iOS and web never self-update — App Store policy forbids alternative update
+/// mechanisms, and web updates by reloading. Runtime gate on top of the
+/// compile-time DISTRIBUTION flag, so a forgotten --dart-define can't leak the
+/// self-updater into a store bundle.
+bool get _selfUpdaterAllowed =>
+    BuildConfig.isGithubBuild && !kIsWeb && !Platform.isIOS;
 
 /// Enum representing internet connectivity states
 enum InternetState {
@@ -118,7 +129,7 @@ class ServiceLocator {
   late SettingsManager _settingsManager;
   late LoggerService _loggerService;
   late PdfService _pdfService;
-  late UpdateService _updateService;
+  late UpdateServiceApi _updateService;
   late InternetService _internetService;
   late ApiService _apiService;
 
@@ -154,8 +165,11 @@ class ServiceLocator {
     // API service — singleton for backend communication.
     _apiService = ApiService();
 
-    // Update service — stateless at construction, checks happen later.
-    _updateService = UpdateService();
+    // Update service — adapter chosen at compile time via BuildConfig.
+    // GitHub builds get the real self-updater; store builds get a no-op stub
+    // so the OS-level store owns updates. The const-folded branch lets Dart
+    // AOT tree-shake the unused implementation out of the store bundles.
+    _updateService = _selfUpdaterAllowed ? UpdateService() : NoOpUpdateService();
   }
 
   @visibleForTesting
@@ -167,10 +181,12 @@ class ServiceLocator {
     _internetService = InternetService._();
     // Skip connectivity init in tests — platform plugin unavailable in Dart VM.
     // InternetService stays in disconnected state, which is fine for unit tests.
-    _updateService = UpdateService(
-      settingsManager: _settingsManager,
-      internetService: _internetService,
-    );
+    _updateService = _selfUpdaterAllowed
+        ? UpdateService(
+            settingsManager: _settingsManager,
+            internetService: _internetService,
+          )
+        : NoOpUpdateService();
   }
 
   /// Get the singleton SettingsManager instance
@@ -182,8 +198,8 @@ class ServiceLocator {
   /// Get the singleton PdfService instance
   PdfService get pdfService => _pdfService;
 
-  /// Get the singleton UpdateService instance
-  UpdateService get updateService => _updateService;
+  /// Get the singleton UpdateService instance (GithubUpdateService or NoOp).
+  UpdateServiceApi get updateService => _updateService;
 
   /// Get the singleton InternetService instance
   InternetService get internetService => _internetService;

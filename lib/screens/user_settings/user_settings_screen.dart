@@ -9,7 +9,7 @@ import '../../widgets/nanosolve_logo.dart';
 import '../../widgets/glowing_header_separator.dart';
 import '../../utils/app_theme_colors.dart';
 import '../../services/settings_manager.dart';
-import '../../services/update_service.dart';
+import '../../services/update/update_service_api.dart';
 import '../../services/service_locator.dart';
 import '../../utils/responsive_config.dart';
 import 'user_profile.dart';
@@ -52,7 +52,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen>
   }
 
   Future<void> _checkInstallationResult() async {
-    final updateService = UpdateService();
+    final updateService = ServiceLocator().updateService;
     final installed = await updateService.checkInstallationComplete();
 
     if (!mounted) return;
@@ -156,28 +156,30 @@ class _UserSettingsScreenState extends State<UserSettingsScreen>
                     ),
                   ),
                 ),
-                // Settings wheel icon for version check
-                InkWell(
-                  onTap: _checkVersionAndShowDialog,
-                  customBorder: const CircleBorder(),
-                  child: Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.hubKnobBg.withValues(alpha: 0.3),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        width: 1,
+                // Settings wheel icon for version check.
+                // Hidden on store builds — Play/App Store handle updates themselves.
+                if (ServiceLocator().updateService.isEnabled)
+                  InkWell(
+                    onTap: _checkVersionAndShowDialog,
+                    customBorder: const CircleBorder(),
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.hubKnobBg.withValues(alpha: 0.3),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.settings,
+                        color: AppThemeColors.of(context).textMain,
+                        size: sizing.hubKnobIconSize,
                       ),
                     ),
-                    child: Icon(
-                      Icons.settings,
-                      color: AppThemeColors.of(context).textMain,
-                      size: sizing.hubKnobIconSize,
-                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -417,7 +419,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen>
     );
 
     try {
-      final updateService = UpdateService();
+      final updateService = ServiceLocator().updateService;
       final updateAvailable = await updateService.checkForUpdates(force: true);
 
       if (mounted) {
@@ -629,7 +631,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen>
   }
 
   Future<void> _retryInstallation() async {
-    final updateService = UpdateService();
+    final updateService = ServiceLocator().updateService;
     final success = await updateService.retryInstallation();
 
     if (!mounted) return;
@@ -645,7 +647,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen>
 
   Future<void> _startUpdateProcess() async {
     Navigator.of(context).pop();
-    final updateService = UpdateService();
+    final updateService = ServiceLocator().updateService;
     Function(UpdateState, double)? stateListener;
 
     // Show download progress dialog

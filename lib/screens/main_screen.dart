@@ -60,13 +60,18 @@ class _MainScreenState extends State<MainScreen> {
     _updateStateListener = (_, __) {
       if (mounted) setState(() {});
     };
-    ServiceLocator().updateService.addStateListener(_updateStateListener);
+    // Store builds inject NoOpUpdateService — no state changes to listen for.
+    if (ServiceLocator().updateService.isEnabled) {
+      ServiceLocator().updateService.addStateListener(_updateStateListener);
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) => _maybeLaunchTour());
   }
 
   @override
   void dispose() {
-    ServiceLocator().updateService.removeStateListener(_updateStateListener);
+    if (ServiceLocator().updateService.isEnabled) {
+      ServiceLocator().updateService.removeStateListener(_updateStateListener);
+    }
     super.dispose();
   }
 
@@ -101,6 +106,8 @@ class _MainScreenState extends State<MainScreen> {
   bool _isUpdateAvailable() {
     try {
       final updateService = ServiceLocator().updateService;
+      // Store builds: self-update disabled entirely, never show the badge.
+      if (!updateService.isEnabled) return false;
       final settingsManager = SettingsManager();
       // Check runtime state OR persisted flag (survives app restarts)
       final hasUpdate = updateService.currentState == UpdateState.available ||

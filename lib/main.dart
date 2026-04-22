@@ -56,10 +56,13 @@ void main() async {
 
   // Note: Firebase is already initialized in LoggerService.initialize()
 
-  // Schedule version check after 5 seconds
-  Future.delayed(const Duration(seconds: 5), () {
-    ServiceLocator().updateService.checkForUpdates();
-  });
+  // Schedule version check after 5 seconds — only on GitHub builds.
+  // Store-channel builds inject NoOpUpdateService, where isEnabled = false.
+  if (ServiceLocator().updateService.isEnabled) {
+    Future.delayed(const Duration(seconds: 5), () {
+      ServiceLocator().updateService.checkForUpdates();
+    });
+  }
 
   runApp(const RestartableApp());
 }

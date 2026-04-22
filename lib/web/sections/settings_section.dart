@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../mixins/language_selection_mixin.dart';
+import '../../utils/url_utils.dart';
 import '../web_theme.dart';
+
+const _websiteUrl = 'https://web.nanosolve.org';
+const _privacyUrl = 'https://web.nanosolve.org/privacy/';
+const _supportEmail = 'support@nanosolve.org';
+const _playStoreUrl =
+    'https://play.google.com/store/apps/details?id=org.nanosolve.hive';
+const _appStoreUrl = 'https://apps.apple.com/app/id6760934677';
+const _githubReleasesUrl =
+    'https://github.com/glmcz/nanoplastics_frontend/releases/latest/';
 
 class SettingsSection extends StatelessWidget {
   final AppLocalizations l10n;
@@ -63,19 +73,19 @@ class SettingsSection extends StatelessWidget {
                       icon: Icons.language,
                       label: l10n.aboutWebsite,
                       subtitle: 'web.nanosolve.org',
-                      onTap: () {},
+                      onTap: () => openExternalUrl(_websiteUrl),
                     ),
                     _LinkRow(
                       icon: Icons.email_outlined,
                       label: l10n.aboutContactUs,
-                      subtitle: 'support@nanosolve.org',
-                      onTap: () {},
+                      subtitle: _supportEmail,
+                      onTap: () => openExternalUrl('mailto:$_supportEmail'),
                     ),
                     _LinkRow(
                       icon: Icons.privacy_tip_outlined,
                       label: l10n.privacyTitle,
-                      subtitle: 'nanosolve.org/privacy',
-                      onTap: () {},
+                      subtitle: 'web.nanosolve.org/privacy',
+                      onTap: () => openExternalUrl(_privacyUrl),
                     ),
                   ],
                 ),
@@ -88,20 +98,20 @@ class SettingsSection extends StatelessWidget {
                       label: l10n.aboutPlatformPlayStore,
                       subtitle:
                           'play.google.com/store/apps/details?id=org.nanosolve.hive',
-                      onTap: () {},
+                      onTap: () => openExternalUrl(_playStoreUrl),
                     ),
                     _LinkRow(
                       icon: Icons.apple,
                       label: l10n.aboutPlatformIOS,
                       subtitle: 'apps.apple.com/app/id6760934677',
-                      onTap: () {},
+                      onTap: () => openExternalUrl(_appStoreUrl),
                     ),
                     _LinkRow(
                       icon: Icons.code,
                       label: l10n.aboutPlatformAndroidFull,
                       subtitle:
                           'github.com/glmcz/nanoplastics_frontend/releases',
-                      onTap: () {},
+                      onTap: () => openExternalUrl(_githubReleasesUrl),
                     ),
                   ],
                 ),

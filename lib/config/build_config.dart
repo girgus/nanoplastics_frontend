@@ -21,4 +21,24 @@ class BuildConfig {
     'IS_PLAY_STORE',
     defaultValue: false,
   );
+
+  /// Distribution channel — drives which update adapter gets injected.
+  ///
+  ///   --dart-define=DISTRIBUTION=github     → GitHub APK (self-update enabled, default)
+  ///   --dart-define=DISTRIBUTION=playStore  → Google Play (store handles updates)
+  ///   --dart-define=DISTRIBUTION=appStore   → Apple App Store (store handles updates)
+  ///
+  /// Kept as a raw const string so downstream `isXxx` flags are compile-time
+  /// constants — required for Dart AOT tree-shaking to drop the unused
+  /// update-service implementation from non-GitHub bundles.
+  static const _distribution = String.fromEnvironment(
+    'DISTRIBUTION',
+    defaultValue: 'github',
+  );
+
+  /// True for the direct-APK GitHub build (only channel that self-updates).
+  static const isGithubBuild = _distribution == 'github';
+
+  /// True for any store build (Play or App Store). Self-update must be disabled.
+  static const isStoreBuild = _distribution == 'playStore' || _distribution == 'appStore';
 }

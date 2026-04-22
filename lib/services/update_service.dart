@@ -13,6 +13,7 @@ import '../config/build_config.dart';
 import 'logger_service.dart';
 import 'service_locator.dart';
 import 'settings_manager.dart';
+import 'update/update_service_api.dart';
 
 /// TODO: for flag isPlayStoreBuild disable whole service.
 
@@ -86,9 +87,12 @@ class GitHubRelease {
 /// Service for handling in-app updates
 /// Checks for new versions from GitHub releases and manages Android flexible updates
 /// Provides state tracking and progress monitoring for update process
-class UpdateService {
+class UpdateService implements UpdateServiceApi {
   static late UpdateService _instance;
   static bool _initialized = false;
+
+  @override
+  bool get isEnabled => true;
 
   final SettingsManager _settingsManager;
   final InternetService _internetService;
@@ -132,16 +136,20 @@ class UpdateService {
   final List<Function(UpdateState, double)> _stateListeners = [];
 
   /// Get current update state
+  @override
   UpdateState get currentState => _currentState;
 
   /// Get current download progress (0.0 to 1.0)
+  @override
   double get downloadProgress => _downloadProgress;
 
   /// Check if download is paused
+  @override
   bool get isPaused => _isPaused;
 
   /// Subscribe to state changes
   /// Callback receives (state, progress) tuple
+  @override
   void addStateListener(Function(UpdateState, double) callback) {
     _stateListeners.add(callback);
     // Immediately notify with current state
@@ -149,11 +157,13 @@ class UpdateService {
   }
 
   /// Unsubscribe from state changes
+  @override
   void removeStateListener(Function(UpdateState, double) callback) {
     _stateListeners.remove(callback);
   }
 
   /// Pause the download
+  @override
   void pauseDownload() {
     if (_currentState.name == 'downloading' && !_isPaused) {
       _isPaused = true;
@@ -162,6 +172,7 @@ class UpdateService {
   }
 
   /// Resume the download
+  @override
   void resumeDownload() {
     if (_isPaused) {
       _isPaused = false;
@@ -170,6 +181,7 @@ class UpdateService {
   }
 
   /// Cancel the download
+  @override
   void cancelDownload() {
     _isCancelled = true;
     _downloadSubscription?.cancel();
@@ -288,6 +300,7 @@ class UpdateService {
   /// Returns true only if a new release is newer than the installed app version
   /// Notifies listeners of state changes during check
   /// Returns false if no internet connection (offline mode) or if running on Play Store
+  @override
   Future<bool> checkForUpdates({bool force = false}) async {
     // Disable update checks on Play Store builds (use in-app update instead)
     if (BuildConfig.isPlayStoreBuild) {
@@ -581,6 +594,7 @@ class UpdateService {
   /// Start update process (in-app APK download with installer launch)
   /// Returns true if update was successfully started, false if offline or error
   /// Notifies listeners of state changes during download and installation
+  @override
   Future<bool> startUpdate() async {
     final internetService = _internetService;
     final settingsManager = _settingsManager;
@@ -859,6 +873,7 @@ class UpdateService {
   /// Check if app was updated by comparing current version with expected version
   /// Call this when app resumes from background (after installer was launched)
   /// Returns true if installation completed successfully
+  @override
   Future<bool> checkInstallationComplete() async {
     try {
       final settingsManager = _settingsManager;
@@ -900,6 +915,7 @@ class UpdateService {
 
   /// Retry installation using already downloaded APK
   /// Returns true if installer was launched, false if APK not found
+  @override
   Future<bool> retryInstallation() async {
     try {
       final settingsManager = _settingsManager;

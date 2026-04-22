@@ -47,6 +47,7 @@ class ApiService {
     String? category,
     List<IdeaAttachment>? attachments,
     String? email,
+    String? turnstileToken,
   }) async {
     try {
       final settings = SettingsManager();
@@ -68,6 +69,10 @@ class ApiService {
 
       if (userEmail.isNotEmpty) {
         request.fields['email'] = userEmail;
+      }
+
+      if (turnstileToken != null && turnstileToken.isNotEmpty) {
+        request.fields['cf-turnstile-response'] = turnstileToken;
       }
 
       // Attach files

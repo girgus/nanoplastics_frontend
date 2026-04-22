@@ -41,12 +41,14 @@ class FakeApiService extends Fake implements ApiService {
     String? category,
     List<IdeaAttachment>? attachments,
     String? email,
+    String? turnstileToken,
   }) async {
     submitCalls.add({
       'description': description,
       'category': category,
       'attachments': attachments,
       'email': email,
+      'turnstileToken': turnstileToken,
     });
     return submitResult;
   }

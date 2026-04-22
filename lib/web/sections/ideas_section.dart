@@ -7,6 +7,7 @@ import '../../l10n/app_localizations.dart';
 import '../../models/category_detail_data.dart';
 import '../../models/idea_attachment.dart';
 import '../../services/service_locator.dart';
+import '../../utils/turnstile.dart';
 
 class IdeasSection extends StatefulWidget {
   final AppLocalizations l10n;
@@ -453,11 +454,18 @@ class _IdeasSectionState extends State<IdeasSection> {
     try {
       await _persistEmailDraft();
 
+      final turnstileToken = await getTurnstileToken();
+      if (turnstileToken == null || turnstileToken.isEmpty) {
+        if (mounted) _showSnack(widget.l10n.categoryDetailBrainstormError);
+        return;
+      }
+
       final result = await ServiceLocator().apiService.submitIdea(
             description: text,
             category: _selectedCategory!.categoryKey,
             attachments: List<IdeaAttachment>.from(_attachments),
             email: email.isEmpty ? null : email,
+            turnstileToken: turnstileToken,
           );
 
       if (!mounted) return;
