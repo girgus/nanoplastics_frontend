@@ -83,12 +83,12 @@ void main() {
       }
     });
 
-    test('has 10 English and 10 Czech sources', () {
+    test('has 11 English and 10 Czech sources', () {
       final enSources =
           humanHealthSources.where((s) => s.language == 'en').toList();
       final csSources =
           humanHealthSources.where((s) => s.language == 'cs').toList();
-      expect(enSources.length, equals(10));
+      expect(enSources.length, equals(11));
       expect(csSources.length, equals(10));
     });
   });
