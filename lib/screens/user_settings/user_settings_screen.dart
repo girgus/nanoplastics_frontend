@@ -198,7 +198,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen>
 
     // Adjust vertical padding: use smaller multiplier for normal/compact phones
     final verticalPadding =
-        spacing.contentPaddingV * (responsive.isBig ? 7 : 3);
+        spacing.contentPaddingV * (responsive.isBig ? 2 : 3);
 
     return LayoutBuilder(
       builder: (context, constraints) {
