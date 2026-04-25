@@ -9,6 +9,7 @@ class PDFSource {
       url; // Optional URL for web links (opens in browser instead of PDF viewer)
   final int?
       actualPageCount; // Optional: actual page count for main reports (when known)
+  final bool isNew; // Mark newly added sections for visual highlighting
 
   PDFSource({
     required this.title,
@@ -19,6 +20,7 @@ class PDFSource {
     this.language = 'en',
     this.url,
     this.actualPageCount,
+    this.isNew = false,
   });
 
   /// Returns true if this source should open as a web link
@@ -224,6 +226,15 @@ final List<PDFSource> humanHealthSources = [
     description: 'Physical Attack (Quantum, Molecular, Cellular Damage)',
     language: 'en',
     url: '$_enBase#page=92',
+  ),
+  PDFSource(
+    title: 'Neurobiological Risk: CNS Penetration & Brain Dysfunction',
+    startPage: 90,
+    endPage: 100,
+    description: 'Bioaccumulation in CNS & Neurodegeneration Risks',
+    language: 'en',
+    pdfAssetPath: 'assets/docs/EN_report_nanoplastics_a_systematic_risk_analysis_for_human_health_ecosystems_and_the_environment_compressed.pdf',
+    isNew: true,
   ),
   // ── French ────────────────────────────────────────────────────────────────
   PDFSource(
@@ -491,6 +502,15 @@ final List<PDFSource> earthPollutionSources = [
     url: _czBase,
   ),
   PDFSource(
+    title: 'Nové metody detekce a řešení nanoplastu',
+    startPage: 1,
+    endPage: 1 << 30,
+    description: 'Technologická řešení a metodiky detekce',
+    language: 'cs',
+    pdfAssetPath: 'assets/docs/CS_Nove_metody_detekce_a_reseni_nanoplastu.pdf',
+    isNew: true,
+  ),
+  PDFSource(
     title: 'Acidifikace oceánů rozkladem plastů',
     startPage: 45,
     endPage: 66,
@@ -602,6 +622,15 @@ final List<PDFSource> earthPollutionSources = [
     description: 'Magnetic Field & Earth\'s Core',
     language: 'en',
     url: '$_enBase#page=68',
+  ),
+  PDFSource(
+    title: 'MNP Influence on Climate & Ocean Processes',
+    startPage: 214,
+    endPage: 226,
+    description: 'Atmosphere & Ocean Acidification | Climate System Impact',
+    language: 'en',
+    pdfAssetPath: 'assets/docs/EN_report_nanoplastics_a_systematic_risk_analysis_for_human_health_ecosystems_and_the_environment_compressed.pdf',
+    isNew: true,
   ),
   PDFSource(
     title: 'Nanoplastics in the Biosphere Report (2025)',

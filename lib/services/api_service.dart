@@ -140,6 +140,25 @@ class ApiService {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        // Validate body is real server response, not a proxy/captive portal page
+        Map<String, dynamic>? parsedBody;
+        try {
+          parsedBody = json.decode(response.body) as Map<String, dynamic>?;
+        } catch (_) {}
+
+        if (parsedBody == null || !parsedBody.containsKey('id')) {
+          LoggerService().logError(
+            'idea_submission_fake_success',
+            'Got ${response.statusCode} but body missing id field. Likely proxy intercept. Body: ${response.body.substring(0, response.body.length.clamp(0, 200))}',
+          );
+          return {
+            'success': false,
+            'type': 'connection',
+            'message': 'Server is temporarily unavailable. Please try again later.',
+            'error': 'Invalid response body',
+          };
+        }
+
         LoggerService().logUserAction(
           'idea_submitted_successfully',
           params: {

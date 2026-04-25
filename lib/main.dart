@@ -3,18 +3,22 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'config/app_theme.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/main_screen.dart';
 import 'screens/web/web_landing_screen.dart';
 import 'l10n/app_localizations.dart';
+import 'l10n_web/web_localizations.dart';
 import 'services/settings_manager.dart';
 import 'services/service_locator.dart';
 import 'services/update_service.dart';
 import 'utils/route_observer.dart';
+import 'web/web_privacy_screen.dart';
 
 void main() async {
+  usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Settings Manager
@@ -172,9 +176,15 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp>
       darkTheme: AppTheme.darkTheme,
       themeMode: darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
       navigatorObservers: [routeObserver],
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      localizationsDelegates: const [
+        ...AppLocalizations.localizationsDelegates,
+        WebLocalizations.delegate,
+      ],
       supportedLocales: AppLocalizations.supportedLocales,
       locale: _locale,
+      routes: {
+        '/privacy': (_) => const WebPrivacyScreen(),
+      },
       home: kIsWeb
           ? const WebLandingScreen()
           : (shouldShowOnboarding

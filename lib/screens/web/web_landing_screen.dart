@@ -133,8 +133,6 @@ const _accentStrong = Color(0xFF2DD4BF);
 const _githubLatestReleaseUrl =
     'https://github.com/glmcz/nanoplastics_frontend/releases/latest/';
 const _githubRepoUrl = 'https://github.com/glmcz/nanoplastics_frontend';
-const _privacyPolicyUrl =
-    'https://glmcz.github.io/nanoplastics_frontend/privacy/';
 
 void _openExternalUrl(String url) {
   openExternalUrl(url);
@@ -624,8 +622,8 @@ class _HeroSignalPanel extends StatelessWidget {
           _SignalChipRow(
             icon: Icons.privacy_tip_outlined,
             title: l10n.landingFooterPrivacy,
-            subtitle: 'docs/privacy',
-            onTap: () => _openExternalUrl(_privacyPolicyUrl),
+            subtitle: '/privacy',
+            onTap: () => Navigator.pushNamed(context, '/privacy'),
           ),
           const SizedBox(height: 8),
           PopupMenuButton<String>(
@@ -2232,7 +2230,7 @@ class _Footer extends StatelessWidget {
                           ),
                           _footerLink(
                             l10n.landingFooterPrivacy,
-                            onTap: () => _openExternalUrl(_privacyPolicyUrl),
+                            onTap: () => Navigator.pushNamed(context, '/privacy'),
                           ),
                         ],
                       );

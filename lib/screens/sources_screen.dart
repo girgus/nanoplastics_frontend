@@ -115,27 +115,33 @@ class _SourcesScreenState extends State<SourcesScreen> {
     final typography = AppTypography.of(context);
     final userLang = SettingsManager().userLanguage;
 
+    List<PDFSource> sortSources(List<PDFSource> sources) {
+      final newItems = sources.where((s) => s.isNew).toList();
+      final oldItems = sources.where((s) => !s.isNew).toList();
+      return [...newItems, ...oldItems];
+    }
+
     final sections = [
       (
         section: WebLinkSection.humanHealth,
         title: l10n.sourcesSectionHumanHealth,
         icon: Icons.favorite_outline,
-        sources:
-            humanHealthSources.where((s) => s.language == userLang).toList(),
+        sources: sortSources(
+            humanHealthSources.where((s) => s.language == userLang).toList()),
       ),
       (
         section: WebLinkSection.earthPollution,
         title: l10n.sourcesSectionEarthPollution,
         icon: Icons.public,
-        sources:
-            earthPollutionSources.where((s) => s.language == userLang).toList(),
+        sources: sortSources(
+            earthPollutionSources.where((s) => s.language == userLang).toList()),
       ),
       (
         section: WebLinkSection.waterAbilities,
         title: l10n.sourcesSectionWaterAbilities,
         icon: Icons.water_drop_outlined,
-        sources:
-            waterAbilitiesSources.where((s) => s.language == userLang).toList(),
+        sources: sortSources(
+            waterAbilitiesSources.where((s) => s.language == userLang).toList()),
       ),
     ];
 

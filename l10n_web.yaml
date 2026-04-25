@@ -1,0 +1,11 @@
+arb-dir: assets/l10n_web
+template-arb-file: web_en.arb
+output-localization-file: web_localizations.dart
+output-class: WebLocalizations
+output-dir: lib/l10n_web
+preferred-supported-locales:
+  - en
+  - cs
+  - es
+  - fr
+  - ru

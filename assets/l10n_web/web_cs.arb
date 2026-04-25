@@ -1,0 +1,102 @@
+{
+  "@@locale": "cs",
+
+  "privacyPageTitle": "Zásady ochrany osobních údajů",
+  "privacyLastUpdated": "Poslední aktualizace: únor 2026",
+
+  "privacyS1Title": "1. Úvod",
+  "privacyS1P1": "NanoSolve Hive (\"Aplikace\", \"my\", \"nás\" nebo \"naše\") se zavazuje chránit vaše soukromí. Tyto zásady ochrany osobních údajů vysvětlují, jak shromažďujeme, používáme, zpřístupňujeme a jinak nakládáme s vašimi informacemi při používání naší mobilní aplikace.",
+  "privacyS1P2": "Používáním NanoSolve Hive souhlasíte s těmito zásadami ochrany osobních údajů. Pokud s našimi zásadami ochrany osobních údajů nesouhlasíte, naši aplikaci prosím nepoužívejte.",
+
+  "privacyS2Title": "2. Informace, které shromažďujeme",
+  "privacyS2DeviceTitle": "Informace o zařízení",
+  "privacyS2DeviceItems": "Typ zařízení a operační systém\nJedineční identifikátory zařízení\nInformace o mobilní síti\nJazyk a časové pásmo zařízení",
+  "privacyS2UsageTitle": "Informace o používání",
+  "privacyS2UsageItems": "Funkce, ke kterým v aplikaci přistupujete\nStránky nebo obsah, se kterým interagujete\nČas strávený v aplikaci\nVyhledávací dotazy a prohlížené kategorie",
+  "privacyS2AnalyticsTitle": "Analytická data a data o výkonu",
+  "privacyS2AnalyticsItems": "Metriky výkonu aplikace a zprávy o pádech\nProtokoly chyb a diagnostická data\nData Firebase Analytics\nDélka a frekvence relací",
+  "privacyS2UserTitle": "Volitelné informace poskytnuté uživatelem",
+  "privacyS2UserItems": "Zobrazované jméno/přezdívka (pro účast v žebříčku)\nE-mailová adresa (pro registraci profilu a oznámení)\nNávrhy řešení, přílohy a další příspěvky, které odesíláte",
+
+  "privacyS3Title": "3. Odeslané nápady — otevřená licence",
+  "privacyS3HighlightLabel": "Stručně:",
+  "privacyS3Highlight": "Autorská práva k vašemu nápadu zůstávají vám. Odesláním ho licencujete otevřeně pod CC BY 4.0 — aby ho mohl jakýkoli vědec, nezisková organizace nebo vláda využít v boji se znečištěním nanoplasty. Uvádíme vás jako autora. Nikdo nemůže nápad uzamknout.",
+  "privacyS3OwnerTitle": "Zachováváte si vlastnictví",
+  "privacyS3OwnerP": "Všechny nápady, texty a přílohy, které odešlete, zůstávají vaším duševním vlastnictvím. NanoSolve Hive si nenárokuje vlastnictví vašich příspěvků.",
+  "privacyS3LicenseTitle": "Licence, kterou udělujete",
+  "privacyS3LicenseP": "Odesláním příspěvku udělujete NanoSolve Hive a veřejnosti celosvětovou, bezplatnou, neodvolatelnou licenci podle Creative Commons Attribution 4.0 International (CC BY 4.0) k používání, sdílení, přizpůsobování a rozvíjení vašeho příspěvku — včetně vědeckého výzkumu, politických návrhů a environmentálních aplikací — za podmínky uvedení vašeho zobrazovaného jména nebo přezdívky.",
+  "privacyS3LicenseLinkText": "creativecommons.org/licenses/by/4.0/",
+  "privacyS3WhyTitle": "Proč otevřená licence?",
+  "privacyS3WhyP": "Znečištění nanoplasty je globální problém, který nesnese právní překážky. Otevřená licence znamená, že řešení navržené v jedné zemi může být studováno, implementováno a rozvíjeno kdekoli na světě — stejně jako open-source software urychluje technologický rozvoj. Váš nápad je tím cennější, čím volněji se šíří.",
+  "privacyS3PatentsTitle": "Obranné patenty",
+  "privacyS3PatentsP": "U nápadů s vysokým dopadem může NanoSolve Hive — s výslovným písemným souhlasem autora — usilovat o obranný patent. Jediným účelem je zabránit průmyslovým hráčům v patentování řešení a jeho potlačení. Jakýkoli takový patent zůstává bezplatný pro výzkum a využití ve veřejném zájmu.",
+  "privacyS3NeverTitle": "Co nikdy neuděláme",
+  "privacyS3NeverItems": "Prodáme váš nápad pro soukromý komerční zisk bez vašeho výslovného souhlasu\nVydáme váš nápad za svůj\nOdstraníme vaše autorství po zveřejnění",
+  "privacyS3AnonTitle": "Anonymní příspěvky",
+  "privacyS3AnonP": "Pokud příspěvek odešlete bez jména, licence CC BY 4.0 se stále uplatňuje, ale uvedení autorství není vyžadováno ani možné. U anonymních příspěvků nebudete moci zpětně uplatnit autorství.",
+
+  "privacyS5Title": "5. Jak používáme vaše informace",
+  "privacyS5Items": "Zlepšení aplikace: Udržování a rozvoj funkčnosti a funkcí aplikace\nAnalýza používání: Pochopení vzorců používání pro zlepšení uživatelského zážitku\nDiagnostika problémů: Identifikace a oprava technických problémů a chyb\nZasílání aktualizací: Informování o důležitých aktualizacích nebo bezpečnostních oznámeních\nDodržování zákonů: Plnění právních závazků a regulatorních požadavků\nKomunitní funkce: Zobrazení vašeho profilu a řešení ve veřejném žebříčku (s vaším souhlasem)",
+
+  "privacyS6Title": "6. Ukládání dat a zabezpečení",
+  "privacyS6Items": "Neukládáme žádné citlivé nebo důvěrné údaje nad rámec registračního e-mailu/přezdívky a nápadů nebo příloh, které výslovně odešlete.\nVerejná data (e-mail uživatele, přezdívka) jsou bezpečně uložena na našich serverech s příslušnými kontrolami přístupu.\nObsah nápadů a přidružená metadata zůstávají v anonymizované podobě po odstranění osobních identifikátorů.\nNikdy nesdílíme osobní údaje s třetími stranami bez vašeho výslovného souhlasu.",
+  "privacyS6HighlightLabel": "Minimalizace dat:",
+  "privacyS6Highlight": "Shromažďujeme pouze informace nezbytné pro provoz aplikace a poskytování požadovaných služeb. Neshromažďujeme informace nad rámec toho, co je potřeba.",
+
+  "privacyS7Title": "7. Služby třetích stran",
+  "privacyS7Intro": "Naše aplikace využívá následující služby třetích stran, každá s vlastními zásadami ochrany osobních údajů:",
+  "privacyS7FirebaseTitle": "Firebase (Google)",
+  "privacyS7FirebaseItems": "Účel: Hlášení pádů, analytika a sledování výkonu\nShromažďovaná data: Pády aplikace, metriky výkonu, informace o relacích\nOvládání: Analytiku můžete deaktivovat v Nastavení aplikace → Soukromí a zabezpečení",
+  "privacyS7PlayTitle": "Google Play Services",
+  "privacyS7PlayP": "Účel: Distribuce aplikace a funkce aktualizace v aplikaci",
+  "privacyS7Note": "S těmito službami nesdílíme osobní identifikační informace (jako je vaše jméno nebo e-mail), pokud to výslovně nepovolíte.",
+
+  "privacyS8Title": "8. Vaše práva a možnosti",
+  "privacyS8AccessTitle": "Přístup k vašim datům",
+  "privacyS8AccessP": "Máte právo požádat o kopii všech osobních údajů, které o vás uchováváme.",
+  "privacyS8CorrectTitle": "Oprava vašich informací",
+  "privacyS8CorrectP": "Informace o profilu můžete kdykoli aktualizovat v sekci Nastavení → Profil uživatele.",
+  "privacyS8DeleteTitle": "Smazání vašich dat",
+  "privacyS8DeleteP": "Úplné smazání svého účtu a přidružených dat můžete požádat prostřednictvím Nastavení → Soukromí a zabezpečení.",
+  "privacyS8OptoutTitle": "Odhlášení z analytiky",
+  "privacyS8OptoutP": "Sběr analytiky a hlášení pádů můžete deaktivovat prostřednictvím Nastavení → Soukromí a zabezpečení. To nemá vliv na základní funkčnost aplikace.",
+  "privacyS8ManageTitle": "Správa komunikací",
+  "privacyS8ManageP": "Nastavení oznámení a komunikace můžete spravovat v aplikaci.",
+
+  "privacyS9Title": "9. Soukromí dětí",
+  "privacyS9P": "NanoSolve Hive není určeno pro uživatele mladší 13 let. Vědomě neshromažďujeme osobní informace od dětí mladších 13 let. Pokud zjistíme, že nám dítě mladší 13 let poskytlo osobní informace, tyto informace smažeme a účet dítěte zrušíme.",
+
+  "privacyS10Title": "10. Uchovávání dat",
+  "privacyS10Items": "Odeslané nápady: Uchovávány na dobu neurčitou, dokud je neodstraníte\nProfil uživatele: Uchováván po dobu aktivity účtu; smazán při zrušení účtu\nAnalytická data: Uchovávána 14 měsíců ve Firebase, poté automaticky smazána\nProtokoly pádů: Uchovávány 90 dní ve Firebase, poté automaticky smazány\nNastavení aplikace: Uloženo lokálně na vašem zařízení; smazáno při odinstalování aplikace",
+
+  "privacyS11Title": "11. Mezinárodní přenosy dat",
+  "privacyS11P": "Vaše data mohou být přenášena, ukládána a zpracovávána v jiných zemích, než je vaše země bydliště. Tyto země mohou mít odlišné zákony o ochraně dat. Používáním NanoSolve Hive souhlasíte s takovými přenosy a zpracováním.",
+
+  "privacyS12Title": "12. Změny těchto zásad ochrany osobních údajů",
+  "privacyS12P1": "Tyto zásady ochrany osobních údajů můžeme pravidelně aktualizovat, aby odrážely změny v našich postupech, technologiích, právních požadavcích nebo jiných faktorech. O podstatných změnách vás budeme informovat:",
+  "privacyS12Items": "Zveřejněním aktualizovaných zásad v aplikaci\nAktualizací data \"Poslední aktualizace\" v horní části této stránky\nVyžádáním vašeho souhlasu, pokud to vyžaduje platné právo",
+  "privacyS12P2": "Pokračováním v používání aplikace po zveřejnění revidovaných zásad ochrany osobních údajů vyjadřujete, že změny přijímáte a souhlasíte s nimi.",
+
+  "privacyS13Title": "13. Práva obyvatel Kalifornie (CCPA)",
+  "privacyS13P": "Pokud jste obyvatelem Kalifornie, máte podle Kalifornského zákona o ochraně soukromí spotřebitelů (CCPA) další práva, včetně práva vědět, smazat a odhlásit se z prodeje vašich osobních informací. Pro uplatnění těchto práv nás prosím kontaktujte pomocí níže uvedených informací.",
+
+  "privacyS14Title": "14. Práva evropských uživatelů (GDPR)",
+  "privacyS14P": "Pokud se nacházíte v Evropské unii, máte práva podle Obecného nařízení o ochraně osobních údajů (GDPR), včetně práva na přístup, opravu, výmaz a přenositelnost dat. Máte také právo vznést námitku proti zpracování a právo podat stížnost u místního úřadu pro ochranu osobních údajů.",
+
+  "privacyS15Title": "15. Kontaktujte nás",
+  "privacyS15P1": "Pokud máte obavy o soukromí, dotazy k těmto zásadám nebo chcete uplatnit některé ze svých práv, kontaktujte nás prosím:",
+  "privacyS15HighlightTeam": "Tým pro soukromí NanoSolve Hive",
+  "privacyS15HighlightEmail": "E-mail: support@nanosolve.com",
+  "privacyS15HighlightContact": "Nebo použijte možnost \"Kontaktujte nás\" v Nastavení aplikace → sekce O aplikaci",
+  "privacyS15P2": "Na váš požadavek odpovíme do 30 dnů.",
+  "privacyS15P3": "Když nás požádáte o smazání vašich osobních údajů, odstraníme veškeré identifikační informace spojené s vaším účtem, ale přijímáme, že nápady, příspěvky nebo jiný anonymizovaný obsah, který jste dříve odeslali, může zůstat v databázi jako součást souhrnné analytiky, protože tyto záznamy již neobsahují osobní identifikátory.",
+
+  "privacyS16Title": "16. Další zdroje",
+  "privacyS16GithubLabel": "GitHub — Otevřený zdrojový kód",
+  "privacyS16FirebaseLabel": "Zásady ochrany osobních údajů Firebase",
+  "privacyS16GoogleLabel": "Zásady ochrany osobních údajů Google",
+
+  "privacyFooterCopyright": "© 2026 Martin Durak. Všechna práva vyhrazena.",
+  "privacyFooterHome": "Domů",
+  "privacyFooterGithub": "GitHub"
+}

@@ -1,13 +1,15 @@
 name: nanoplastics_app
 description: NanoSolve Hive - Crowdsourcing R&D solutions for nanoplastic pollution
 publish_to: 'none'
-version: 1.0.50+42
+version: 1.0.51+43
 environment:
   sdk: '>=3.0.0 <4.0.0'
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
+    sdk: flutter
+  flutter_web_plugins:
     sdk: flutter
   intl: any
   http: ^1.1.0
@@ -66,6 +68,8 @@ flutter:
     - assets/onboarding/slide3_collaboration.jpg
     - assets/docs/Nanoplastics_Report_EN_compressed.pdf
     - assets/docs/EN_WATER_compressed.pdf
+    - assets/docs/EN_report_nanoplastics_a_systematic_risk_analysis_for_human_health_ecosystems_and_the_environment_compressed.pdf
+    # - assets/docs/CS_Nove_metody_detekce_a_reseni_nanoplastu.pdf
     # - assets/docs/CS_WATER_compressed.pdf
     # - assets/docs/CS_WATER_compressed.pdf
     # - assets/docs/ESP-WATER_compressed.pdf

@@ -6,7 +6,6 @@ import '../../utils/url_utils.dart';
 import '../web_theme.dart';
 
 const _websiteUrl = 'https://web.nanosolve.org';
-const _privacyUrl = 'https://web.nanosolve.org/privacy/';
 const _supportEmail = 'support@nanosolve.org';
 const _playStoreUrl =
     'https://play.google.com/store/apps/details?id=org.nanosolve.hive';
@@ -85,7 +84,7 @@ class SettingsSection extends StatelessWidget {
                       icon: Icons.privacy_tip_outlined,
                       label: l10n.privacyTitle,
                       subtitle: 'web.nanosolve.org/privacy',
-                      onTap: () => openExternalUrl(_privacyUrl),
+                      onTap: () => Navigator.pushNamed(context, '/privacy'),
                     ),
                   ],
                 ),

@@ -1,0 +1,637 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'web_localizations_cs.dart';
+import 'web_localizations_en.dart';
+import 'web_localizations_es.dart';
+import 'web_localizations_fr.dart';
+import 'web_localizations_ru.dart';
+
+// ignore_for_file: type=lint
+
+/// Callers can lookup localized strings with an instance of WebLocalizations
+/// returned by `WebLocalizations.of(context)`.
+///
+/// Applications need to include `WebLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'l10n_web/web_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: WebLocalizations.localizationsDelegates,
+///   supportedLocales: WebLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the WebLocalizations.supportedLocales
+/// property.
+abstract class WebLocalizations {
+  WebLocalizations(String locale)
+      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static WebLocalizations? of(BuildContext context) {
+    return Localizations.of<WebLocalizations>(context, WebLocalizations);
+  }
+
+  static const LocalizationsDelegate<WebLocalizations> delegate =
+      _WebLocalizationsDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('cs'),
+    Locale('es'),
+    Locale('fr'),
+    Locale('ru')
+  ];
+
+  /// No description provided for @privacyPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPageTitle;
+
+  /// No description provided for @privacyLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Updated: February 2026'**
+  String get privacyLastUpdated;
+
+  /// No description provided for @privacyS1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Introduction'**
+  String get privacyS1Title;
+
+  /// No description provided for @privacyS1P1.
+  ///
+  /// In en, this message translates to:
+  /// **'NanoSolve Hive (\"App\", \"we\", \"our\", or \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and otherwise handle your information when you use our mobile application.'**
+  String get privacyS1P1;
+
+  /// No description provided for @privacyS1P2.
+  ///
+  /// In en, this message translates to:
+  /// **'By using NanoSolve Hive, you agree to this Privacy Policy. If you do not agree with our privacy practices, please do not use our application.'**
+  String get privacyS1P2;
+
+  /// No description provided for @privacyS2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Information We Collect'**
+  String get privacyS2Title;
+
+  /// No description provided for @privacyS2DeviceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Device Information'**
+  String get privacyS2DeviceTitle;
+
+  /// No description provided for @privacyS2DeviceItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Device type and operating system\nUnique device identifiers\nMobile network information\nDevice locale and timezone'**
+  String get privacyS2DeviceItems;
+
+  /// No description provided for @privacyS2UsageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage Information'**
+  String get privacyS2UsageTitle;
+
+  /// No description provided for @privacyS2UsageItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Features you access within the application\nPages or content you interact with\nTime spent in the application\nSearch queries and categories viewed'**
+  String get privacyS2UsageItems;
+
+  /// No description provided for @privacyS2AnalyticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics and Performance Data'**
+  String get privacyS2AnalyticsTitle;
+
+  /// No description provided for @privacyS2AnalyticsItems.
+  ///
+  /// In en, this message translates to:
+  /// **'App performance metrics and crash reports\nError logs and diagnostics\nFirebase Analytics data\nSession duration and frequency'**
+  String get privacyS2AnalyticsItems;
+
+  /// No description provided for @privacyS2UserTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional User-Provided Information'**
+  String get privacyS2UserTitle;
+
+  /// No description provided for @privacyS2UserItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Display name/nickname (for leaderboard participation)\nEmail address (for profile registration and notifications)\nSolution ideas, attachments, and other contributions you submit'**
+  String get privacyS2UserItems;
+
+  /// No description provided for @privacyS3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Submitted Ideas — Open License'**
+  String get privacyS3Title;
+
+  /// No description provided for @privacyS3HighlightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Short version:'**
+  String get privacyS3HighlightLabel;
+
+  /// No description provided for @privacyS3Highlight.
+  ///
+  /// In en, this message translates to:
+  /// **'You keep the copyright to your idea. By submitting, you license it openly under CC BY 4.0 — so any scientist, NGO, or government can use it to fight nanoplastic pollution. We credit you. No one can lock the idea away.'**
+  String get privacyS3Highlight;
+
+  /// No description provided for @privacyS3OwnerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You retain ownership'**
+  String get privacyS3OwnerTitle;
+
+  /// No description provided for @privacyS3OwnerP.
+  ///
+  /// In en, this message translates to:
+  /// **'All ideas, texts, and attachments you submit remain your intellectual property. NanoSolve Hive makes no claim to ownership of your contributions.'**
+  String get privacyS3OwnerP;
+
+  /// No description provided for @privacyS3LicenseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'License you grant'**
+  String get privacyS3LicenseTitle;
+
+  /// No description provided for @privacyS3LicenseP.
+  ///
+  /// In en, this message translates to:
+  /// **'By submitting a Contribution, you grant NanoSolve Hive and the public a worldwide, royalty-free, irrevocable license under Creative Commons Attribution 4.0 International (CC BY 4.0) to use, share, adapt, and build upon your Contribution — including for scientific research, policy proposals, and environmental applications — provided attribution is given to your display name or nickname.'**
+  String get privacyS3LicenseP;
+
+  /// No description provided for @privacyS3LicenseLinkText.
+  ///
+  /// In en, this message translates to:
+  /// **'creativecommons.org/licenses/by/4.0/'**
+  String get privacyS3LicenseLinkText;
+
+  /// No description provided for @privacyS3WhyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Why open?'**
+  String get privacyS3WhyTitle;
+
+  /// No description provided for @privacyS3WhyP.
+  ///
+  /// In en, this message translates to:
+  /// **'Nanoplastic pollution is a global problem with no time for legal barriers. Open licensing means a solution submitted in one country can be studied, implemented, and built upon anywhere — the same way open-source software accelerates technology. Your idea compounds in value the more freely it spreads.'**
+  String get privacyS3WhyP;
+
+  /// No description provided for @privacyS3PatentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Defensive patents'**
+  String get privacyS3PatentsTitle;
+
+  /// No description provided for @privacyS3PatentsP.
+  ///
+  /// In en, this message translates to:
+  /// **'For high-impact ideas, NanoSolve Hive may — with the submitter\'s explicit written consent — pursue a defensive patent. The sole purpose is to prevent industry actors from patenting the solution and suppressing it. Any such patent remains royalty-free for research and public-benefit use.'**
+  String get privacyS3PatentsP;
+
+  /// No description provided for @privacyS3NeverTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What we will never do'**
+  String get privacyS3NeverTitle;
+
+  /// No description provided for @privacyS3NeverItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell your idea for private commercial profit without your explicit consent\nMisrepresent your idea as our own\nRemove your attribution after publishing'**
+  String get privacyS3NeverItems;
+
+  /// No description provided for @privacyS3AnonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Anonymous submissions'**
+  String get privacyS3AnonTitle;
+
+  /// No description provided for @privacyS3AnonP.
+  ///
+  /// In en, this message translates to:
+  /// **'If you submit without a name, the CC BY 4.0 license still applies but no attribution is required or possible. You will not be able to claim authorship after the fact for anonymous submissions.'**
+  String get privacyS3AnonP;
+
+  /// No description provided for @privacyS5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'5. How We Use Your Information'**
+  String get privacyS5Title;
+
+  /// No description provided for @privacyS5Items.
+  ///
+  /// In en, this message translates to:
+  /// **'Improve the App: Maintain and enhance application functionality and features\nAnalyze Usage: Understand usage patterns to improve user experience\nDiagnose Issues: Identify and fix technical problems and bugs\nSend Updates: Notify you of important updates or security notices\nComply with Law: Meet legal obligations and regulatory requirements\nCommunity Features: Display your profile and solutions on the public leaderboard (with your consent)'**
+  String get privacyS5Items;
+
+  /// No description provided for @privacyS6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'6. Data Storage and Security'**
+  String get privacyS6Title;
+
+  /// No description provided for @privacyS6Items.
+  ///
+  /// In en, this message translates to:
+  /// **'We don\'t store any sensitive or confidential data beyond the registration email/nickname and the ideas or attachments you explicitly submit.\nPublic data (user email, nickname) is stored securely on our servers with appropriate access controls.\nIdea content and associated metadata remain in anonymized form after removing personal identifiers.\nWe never share personal data with third parties without your explicit consent.'**
+  String get privacyS6Items;
+
+  /// No description provided for @privacyS6HighlightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Minimization:'**
+  String get privacyS6HighlightLabel;
+
+  /// No description provided for @privacyS6Highlight.
+  ///
+  /// In en, this message translates to:
+  /// **'We only collect information necessary to operate the application and provide the requested services. We do not collect information beyond what is needed.'**
+  String get privacyS6Highlight;
+
+  /// No description provided for @privacyS7Title.
+  ///
+  /// In en, this message translates to:
+  /// **'7. Third-Party Services'**
+  String get privacyS7Title;
+
+  /// No description provided for @privacyS7Intro.
+  ///
+  /// In en, this message translates to:
+  /// **'Our application uses the following third-party services, each with their own privacy policies:'**
+  String get privacyS7Intro;
+
+  /// No description provided for @privacyS7FirebaseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Firebase (Google)'**
+  String get privacyS7FirebaseTitle;
+
+  /// No description provided for @privacyS7FirebaseItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Purpose: Crash reporting, analytics, and performance monitoring\nData Collected: App crashes, performance metrics, session information\nControl: You can disable analytics in app Settings → Privacy & Security'**
+  String get privacyS7FirebaseItems;
+
+  /// No description provided for @privacyS7PlayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play Services'**
+  String get privacyS7PlayTitle;
+
+  /// No description provided for @privacyS7PlayP.
+  ///
+  /// In en, this message translates to:
+  /// **'Purpose: App distribution and in-app update functionality'**
+  String get privacyS7PlayP;
+
+  /// No description provided for @privacyS7Note.
+  ///
+  /// In en, this message translates to:
+  /// **'We do not share personal identifiable information (such as your name or email) with these services unless you explicitly authorize it.'**
+  String get privacyS7Note;
+
+  /// No description provided for @privacyS8Title.
+  ///
+  /// In en, this message translates to:
+  /// **'8. Your Rights and Choices'**
+  String get privacyS8Title;
+
+  /// No description provided for @privacyS8AccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Access Your Data'**
+  String get privacyS8AccessTitle;
+
+  /// No description provided for @privacyS8AccessP.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to request a copy of all personal data we hold about you.'**
+  String get privacyS8AccessP;
+
+  /// No description provided for @privacyS8CorrectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct Your Information'**
+  String get privacyS8CorrectTitle;
+
+  /// No description provided for @privacyS8CorrectP.
+  ///
+  /// In en, this message translates to:
+  /// **'You can update your profile information through the app\'s Settings → User Profile section at any time.'**
+  String get privacyS8CorrectP;
+
+  /// No description provided for @privacyS8DeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Your Data'**
+  String get privacyS8DeleteTitle;
+
+  /// No description provided for @privacyS8DeleteP.
+  ///
+  /// In en, this message translates to:
+  /// **'You can request complete deletion of your account and associated data through Settings → Privacy & Security.'**
+  String get privacyS8DeleteP;
+
+  /// No description provided for @privacyS8OptoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Opt-Out of Analytics'**
+  String get privacyS8OptoutTitle;
+
+  /// No description provided for @privacyS8OptoutP.
+  ///
+  /// In en, this message translates to:
+  /// **'You can disable analytics collection and crash reporting through Settings → Privacy & Security. This does not affect core app functionality.'**
+  String get privacyS8OptoutP;
+
+  /// No description provided for @privacyS8ManageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Communications'**
+  String get privacyS8ManageTitle;
+
+  /// No description provided for @privacyS8ManageP.
+  ///
+  /// In en, this message translates to:
+  /// **'You can manage your notification preferences and communication settings within the application.'**
+  String get privacyS8ManageP;
+
+  /// No description provided for @privacyS9Title.
+  ///
+  /// In en, this message translates to:
+  /// **'9. Children\'s Privacy'**
+  String get privacyS9Title;
+
+  /// No description provided for @privacyS9P.
+  ///
+  /// In en, this message translates to:
+  /// **'NanoSolve Hive is not intended for users under 13 years old. We do not knowingly collect personal information from children under 13. If we become aware that a child under 13 has provided us with personal information, we will delete such information and terminate the child\'s account.'**
+  String get privacyS9P;
+
+  /// No description provided for @privacyS10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'10. Data Retention'**
+  String get privacyS10Title;
+
+  /// No description provided for @privacyS10Items.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted Ideas: Retained indefinitely unless deleted by you\nUser Profile: Retained while account is active; deleted upon account deletion\nAnalytics Data: Retained for 14 months by Firebase, then automatically deleted\nCrash Logs: Retained for 90 days by Firebase, then automatically deleted\nApp Settings: Stored locally on your device; deleted when you uninstall the app'**
+  String get privacyS10Items;
+
+  /// No description provided for @privacyS11Title.
+  ///
+  /// In en, this message translates to:
+  /// **'11. International Data Transfers'**
+  String get privacyS11Title;
+
+  /// No description provided for @privacyS11P.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data may be transferred, stored, and processed in countries other than your country of residence. These countries may have different data protection laws. By using NanoSolve Hive, you consent to such transfers and processing.'**
+  String get privacyS11P;
+
+  /// No description provided for @privacyS12Title.
+  ///
+  /// In en, this message translates to:
+  /// **'12. Changes to This Privacy Policy'**
+  String get privacyS12Title;
+
+  /// No description provided for @privacyS12P1.
+  ///
+  /// In en, this message translates to:
+  /// **'We may update this Privacy Policy periodically to reflect changes in our practices, technology, legal requirements, or other factors. We will notify you of material changes by:'**
+  String get privacyS12P1;
+
+  /// No description provided for @privacyS12Items.
+  ///
+  /// In en, this message translates to:
+  /// **'Posting the updated policy within the application\nUpdating the \"Last Updated\" date at the top of this page\nRequesting your consent if required by applicable law'**
+  String get privacyS12Items;
+
+  /// No description provided for @privacyS12P2.
+  ///
+  /// In en, this message translates to:
+  /// **'Your continued use of the application following the posting of revised Privacy Policy means that you accept and agree to the changes.'**
+  String get privacyS12P2;
+
+  /// No description provided for @privacyS13Title.
+  ///
+  /// In en, this message translates to:
+  /// **'13. California Privacy Rights (CCPA)'**
+  String get privacyS13Title;
+
+  /// No description provided for @privacyS13P.
+  ///
+  /// In en, this message translates to:
+  /// **'If you are a California resident, you have additional rights under the California Consumer Privacy Act (CCPA), including the right to know, delete, and opt-out of sales of your personal information. To exercise these rights, please contact us using the information below.'**
+  String get privacyS13P;
+
+  /// No description provided for @privacyS14Title.
+  ///
+  /// In en, this message translates to:
+  /// **'14. European Privacy Rights (GDPR)'**
+  String get privacyS14Title;
+
+  /// No description provided for @privacyS14P.
+  ///
+  /// In en, this message translates to:
+  /// **'If you are in the European Union, you have rights under the General Data Protection Regulation (GDPR), including the right to access, rectification, erasure, and data portability. You also have the right to object to processing and the right to lodge a complaint with your local data protection authority.'**
+  String get privacyS14P;
+
+  /// No description provided for @privacyS15Title.
+  ///
+  /// In en, this message translates to:
+  /// **'15. Contact Us'**
+  String get privacyS15Title;
+
+  /// No description provided for @privacyS15P1.
+  ///
+  /// In en, this message translates to:
+  /// **'If you have privacy concerns, questions about this policy, or wish to exercise any of your rights, please contact us:'**
+  String get privacyS15P1;
+
+  /// No description provided for @privacyS15HighlightTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'NanoSolve Hive Privacy Team'**
+  String get privacyS15HighlightTeam;
+
+  /// No description provided for @privacyS15HighlightEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email: support@nanosolve.com'**
+  String get privacyS15HighlightEmail;
+
+  /// No description provided for @privacyS15HighlightContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Or use the \"Contact Us\" option in the app Settings → About section'**
+  String get privacyS15HighlightContact;
+
+  /// No description provided for @privacyS15P2.
+  ///
+  /// In en, this message translates to:
+  /// **'We will respond to your request within 30 days.'**
+  String get privacyS15P2;
+
+  /// No description provided for @privacyS15P3.
+  ///
+  /// In en, this message translates to:
+  /// **'When you ask us to delete your personal data, we will remove any identifying information tied to your account, but accept that ideas, contributions, or other anonymized content you previously submitted may remain in the database as part of aggregated analytics, as those entries no longer contain personal identifiers.'**
+  String get privacyS15P3;
+
+  /// No description provided for @privacyS16Title.
+  ///
+  /// In en, this message translates to:
+  /// **'16. Additional Resources'**
+  String get privacyS16Title;
+
+  /// No description provided for @privacyS16GithubLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub Repository — Open source code'**
+  String get privacyS16GithubLabel;
+
+  /// No description provided for @privacyS16FirebaseLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Firebase Privacy Policy'**
+  String get privacyS16FirebaseLabel;
+
+  /// No description provided for @privacyS16GoogleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Privacy Policy'**
+  String get privacyS16GoogleLabel;
+
+  /// No description provided for @privacyFooterCopyright.
+  ///
+  /// In en, this message translates to:
+  /// **'© 2026 Martin Durak. All rights reserved.'**
+  String get privacyFooterCopyright;
+
+  /// No description provided for @privacyFooterHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get privacyFooterHome;
+
+  /// No description provided for @privacyFooterGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub'**
+  String get privacyFooterGithub;
+}
+
+class _WebLocalizationsDelegate
+    extends LocalizationsDelegate<WebLocalizations> {
+  const _WebLocalizationsDelegate();
+
+  @override
+  Future<WebLocalizations> load(Locale locale) {
+    return SynchronousFuture<WebLocalizations>(lookupWebLocalizations(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) =>
+      <String>['cs', 'en', 'es', 'fr', 'ru'].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_WebLocalizationsDelegate old) => false;
+}
+
+WebLocalizations lookupWebLocalizations(Locale locale) {
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'cs':
+      return WebLocalizationsCs();
+    case 'en':
+      return WebLocalizationsEn();
+    case 'es':
+      return WebLocalizationsEs();
+    case 'fr':
+      return WebLocalizationsFr();
+    case 'ru':
+      return WebLocalizationsRu();
+  }
+
+  throw FlutterError(
+      'WebLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
+}

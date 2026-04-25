@@ -1,0 +1,102 @@
+{
+  "@@locale": "fr",
+
+  "privacyPageTitle": "Politique de confidentialité",
+  "privacyLastUpdated": "Dernière mise à jour : février 2026",
+
+  "privacyS1Title": "1. Introduction",
+  "privacyS1P1": "NanoSolve Hive (« Application », « nous », « notre » ou « nos ») s'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons, divulguons et traitons autrement vos informations lorsque vous utilisez notre application mobile.",
+  "privacyS1P2": "En utilisant NanoSolve Hive, vous acceptez cette politique de confidentialité. Si vous n'êtes pas d'accord avec nos pratiques en matière de confidentialité, veuillez ne pas utiliser notre application.",
+
+  "privacyS2Title": "2. Informations que nous collectons",
+  "privacyS2DeviceTitle": "Informations sur l'appareil",
+  "privacyS2DeviceItems": "Type d'appareil et système d'exploitation\nIdentifiants uniques de l'appareil\nInformations sur le réseau mobile\nParamètres régionaux et fuseau horaire de l'appareil",
+  "privacyS2UsageTitle": "Informations d'utilisation",
+  "privacyS2UsageItems": "Fonctionnalités auxquelles vous accédez dans l'application\nPages ou contenus avec lesquels vous interagissez\nTemps passé dans l'application\nRequêtes de recherche et catégories consultées",
+  "privacyS2AnalyticsTitle": "Données analytiques et de performance",
+  "privacyS2AnalyticsItems": "Métriques de performance de l'application et rapports de plantage\nJournaux d'erreurs et diagnostics\nDonnées Firebase Analytics\nDurée et fréquence des sessions",
+  "privacyS2UserTitle": "Informations optionnelles fournies par l'utilisateur",
+  "privacyS2UserItems": "Nom d'affichage/pseudo (pour la participation au classement)\nAdresse e-mail (pour l'inscription au profil et les notifications)\nIdées de solutions, pièces jointes et autres contributions que vous soumettez",
+
+  "privacyS3Title": "3. Idées soumises — Licence ouverte",
+  "privacyS3HighlightLabel": "En bref :",
+  "privacyS3Highlight": "Vous conservez les droits d'auteur sur votre idée. En la soumettant, vous la licenciez ouvertement sous CC BY 4.0 — afin que tout scientifique, ONG ou gouvernement puisse l'utiliser pour lutter contre la pollution aux nanoplastiques. Nous vous créditons. Personne ne peut verrouiller l'idée.",
+  "privacyS3OwnerTitle": "Vous conservez la propriété",
+  "privacyS3OwnerP": "Toutes les idées, textes et pièces jointes que vous soumettez restent votre propriété intellectuelle. NanoSolve Hive ne revendique aucun droit de propriété sur vos contributions.",
+  "privacyS3LicenseTitle": "Licence que vous accordez",
+  "privacyS3LicenseP": "En soumettant une Contribution, vous accordez à NanoSolve Hive et au public une licence mondiale, libre de redevances et irrévocable en vertu de Creative Commons Attribution 4.0 International (CC BY 4.0) pour utiliser, partager, adapter et développer votre Contribution — y compris pour la recherche scientifique, les propositions de politique et les applications environnementales — à condition que l'attribution soit donnée à votre nom d'affichage ou pseudo.",
+  "privacyS3LicenseLinkText": "creativecommons.org/licenses/by/4.0/",
+  "privacyS3WhyTitle": "Pourquoi ouvert ?",
+  "privacyS3WhyP": "La pollution aux nanoplastiques est un problème mondial sans temps pour les obstacles juridiques. La licence ouverte signifie qu'une solution soumise dans un pays peut être étudiée, mise en œuvre et développée partout — de la même façon que le logiciel open source accélère la technologie. Votre idée prend de la valeur plus elle se diffuse librement.",
+  "privacyS3PatentsTitle": "Brevets défensifs",
+  "privacyS3PatentsP": "Pour les idées à fort impact, NanoSolve Hive peut — avec le consentement écrit explicite du soumettant — poursuivre un brevet défensif. Le seul but est d'empêcher les acteurs industriels de breveter la solution et de la supprimer. Tout brevet de ce type reste libre de redevances pour la recherche et l'utilisation dans l'intérêt public.",
+  "privacyS3NeverTitle": "Ce que nous ne ferons jamais",
+  "privacyS3NeverItems": "Vendre votre idée pour un profit commercial privé sans votre consentement explicite\nPrésenter votre idée comme la nôtre\nSupprimer votre attribution après publication",
+  "privacyS3AnonTitle": "Soumissions anonymes",
+  "privacyS3AnonP": "Si vous soumettez sans nom, la licence CC BY 4.0 s'applique toujours mais aucune attribution n'est requise ni possible. Vous ne pourrez pas revendiquer la paternité a posteriori pour les soumissions anonymes.",
+
+  "privacyS5Title": "5. Comment nous utilisons vos informations",
+  "privacyS5Items": "Améliorer l'application : Maintenir et améliorer les fonctionnalités de l'application\nAnalyser l'utilisation : Comprendre les modèles d'utilisation pour améliorer l'expérience utilisateur\nDiagnostiquer les problèmes : Identifier et corriger les problèmes techniques et les bugs\nEnvoyer des mises à jour : Vous informer des mises à jour importantes ou des avis de sécurité\nRespecter la loi : Respecter les obligations légales et les exigences réglementaires\nFonctionnalités communautaires : Afficher votre profil et vos solutions dans le classement public (avec votre consentement)",
+
+  "privacyS6Title": "6. Stockage des données et sécurité",
+  "privacyS6Items": "Nous ne stockons aucune donnée sensible ou confidentielle au-delà de l'e-mail/pseudo d'inscription et des idées ou pièces jointes que vous soumettez explicitement.\nLes données publiques (e-mail de l'utilisateur, pseudo) sont stockées de manière sécurisée sur nos serveurs avec des contrôles d'accès appropriés.\nLe contenu des idées et les métadonnées associées restent sous forme anonymisée après la suppression des identifiants personnels.\nNous ne partageons jamais des données personnelles avec des tiers sans votre consentement explicite.",
+  "privacyS6HighlightLabel": "Minimisation des données :",
+  "privacyS6Highlight": "Nous ne collectons que les informations nécessaires au fonctionnement de l'application et à la fourniture des services demandés. Nous ne collectons pas d'informations au-delà de ce qui est nécessaire.",
+
+  "privacyS7Title": "7. Services tiers",
+  "privacyS7Intro": "Notre application utilise les services tiers suivants, chacun avec ses propres politiques de confidentialité :",
+  "privacyS7FirebaseTitle": "Firebase (Google)",
+  "privacyS7FirebaseItems": "Objectif : Rapports de plantage, analyses et surveillance des performances\nDonnées collectées : Plantages de l'application, métriques de performance, informations de session\nContrôle : Vous pouvez désactiver les analyses dans Paramètres de l'application → Confidentialité et sécurité",
+  "privacyS7PlayTitle": "Google Play Services",
+  "privacyS7PlayP": "Objectif : Distribution de l'application et fonctionnalité de mise à jour intégrée",
+  "privacyS7Note": "Nous ne partageons pas d'informations d'identification personnelle (comme votre nom ou e-mail) avec ces services sauf si vous l'autorisez explicitement.",
+
+  "privacyS8Title": "8. Vos droits et choix",
+  "privacyS8AccessTitle": "Accéder à vos données",
+  "privacyS8AccessP": "Vous avez le droit de demander une copie de toutes les données personnelles que nous détenons vous concernant.",
+  "privacyS8CorrectTitle": "Corriger vos informations",
+  "privacyS8CorrectP": "Vous pouvez mettre à jour les informations de votre profil via la section Paramètres → Profil utilisateur de l'application à tout moment.",
+  "privacyS8DeleteTitle": "Supprimer vos données",
+  "privacyS8DeleteP": "Vous pouvez demander la suppression complète de votre compte et des données associées via Paramètres → Confidentialité et sécurité.",
+  "privacyS8OptoutTitle": "Se désabonner des analyses",
+  "privacyS8OptoutP": "Vous pouvez désactiver la collecte d'analyses et les rapports de plantage via Paramètres → Confidentialité et sécurité. Cela n'affecte pas les fonctionnalités principales de l'application.",
+  "privacyS8ManageTitle": "Gérer les communications",
+  "privacyS8ManageP": "Vous pouvez gérer vos préférences de notification et les paramètres de communication dans l'application.",
+
+  "privacyS9Title": "9. Confidentialité des enfants",
+  "privacyS9P": "NanoSolve Hive n'est pas destiné aux utilisateurs de moins de 13 ans. Nous ne collectons pas sciemment d'informations personnelles auprès d'enfants de moins de 13 ans. Si nous apprenons qu'un enfant de moins de 13 ans nous a fourni des informations personnelles, nous supprimerons ces informations et résilierons le compte de l'enfant.",
+
+  "privacyS10Title": "10. Conservation des données",
+  "privacyS10Items": "Idées soumises : Conservées indéfiniment sauf si vous les supprimez\nProfil utilisateur : Conservé tant que le compte est actif ; supprimé lors de la suppression du compte\nDonnées analytiques : Conservées pendant 14 mois par Firebase, puis automatiquement supprimées\nJournaux de plantage : Conservés pendant 90 jours par Firebase, puis automatiquement supprimés\nParamètres de l'application : Stockés localement sur votre appareil ; supprimés lorsque vous désinstallez l'application",
+
+  "privacyS11Title": "11. Transferts internationaux de données",
+  "privacyS11P": "Vos données peuvent être transférées, stockées et traitées dans des pays autres que votre pays de résidence. Ces pays peuvent avoir des lois différentes en matière de protection des données. En utilisant NanoSolve Hive, vous consentez à ces transferts et traitements.",
+
+  "privacyS12Title": "12. Modifications de cette politique de confidentialité",
+  "privacyS12P1": "Nous pouvons mettre à jour cette politique de confidentialité périodiquement pour refléter des changements dans nos pratiques, technologies, exigences légales ou autres facteurs. Nous vous informerons des changements importants en :",
+  "privacyS12Items": "Publiant la politique mise à jour dans l'application\nMettant à jour la date de « Dernière mise à jour » en haut de cette page\nDemandant votre consentement si requis par la loi applicable",
+  "privacyS12P2": "La poursuite de votre utilisation de l'application après la publication de la politique de confidentialité révisée signifie que vous acceptez et approuvez les changements.",
+
+  "privacyS13Title": "13. Droits de confidentialité de Californie (CCPA)",
+  "privacyS13P": "Si vous êtes résident de Californie, vous avez des droits supplémentaires en vertu de la loi californienne sur la protection de la vie privée des consommateurs (CCPA), y compris le droit de savoir, de supprimer et de vous désabonner de la vente de vos informations personnelles. Pour exercer ces droits, veuillez nous contacter en utilisant les informations ci-dessous.",
+
+  "privacyS14Title": "14. Droits de confidentialité européens (RGPD)",
+  "privacyS14P": "Si vous vous trouvez dans l'Union européenne, vous disposez de droits en vertu du Règlement général sur la protection des données (RGPD), notamment le droit d'accès, de rectification, d'effacement et de portabilité des données. Vous avez également le droit de vous opposer au traitement et le droit de déposer une plainte auprès de votre autorité locale de protection des données.",
+
+  "privacyS15Title": "15. Nous contacter",
+  "privacyS15P1": "Si vous avez des préoccupations en matière de confidentialité, des questions sur cette politique ou souhaitez exercer l'un de vos droits, veuillez nous contacter :",
+  "privacyS15HighlightTeam": "Équipe de confidentialité NanoSolve Hive",
+  "privacyS15HighlightEmail": "E-mail : support@nanosolve.com",
+  "privacyS15HighlightContact": "Ou utilisez l'option « Nous contacter » dans les Paramètres de l'application → section À propos",
+  "privacyS15P2": "Nous répondrons à votre demande dans les 30 jours.",
+  "privacyS15P3": "Lorsque vous nous demandez de supprimer vos données personnelles, nous supprimerons toutes les informations d'identification liées à votre compte, mais nous acceptons que les idées, contributions ou autre contenu anonymisé que vous avez précédemment soumis puissent rester dans la base de données dans le cadre d'analyses agrégées, car ces entrées ne contiennent plus d'identifiants personnels.",
+
+  "privacyS16Title": "16. Ressources supplémentaires",
+  "privacyS16GithubLabel": "Dépôt GitHub — Code source ouvert",
+  "privacyS16FirebaseLabel": "Politique de confidentialité Firebase",
+  "privacyS16GoogleLabel": "Politique de confidentialité Google",
+
+  "privacyFooterCopyright": "© 2026 Martin Durak. Tous droits réservés.",
+  "privacyFooterHome": "Accueil",
+  "privacyFooterGithub": "GitHub"
+}
