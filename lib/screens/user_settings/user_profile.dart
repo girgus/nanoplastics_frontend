@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../l10n/app_localizations.dart';
 import '../../config/app_colors.dart';
 import '../../config/app_constants.dart';
@@ -36,6 +40,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   bool _hasChanges = false;
   Timer? _autoSaveTimer;
 
+  String? _avatarPath;
+  bool _avatarLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -54,6 +61,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     _analyticsEnabled = _settingsManager.analyticsEnabled;
     _emailNotificationsEnabled = _settingsManager.emailNotificationsEnabled;
     _pushNotificationsEnabled = _settingsManager.pushNotificationsEnabled;
+
+    _avatarPath = _settingsManager.avatarPath;
 
     _displayNameController.addListener(_onFieldChanged);
     _emailController.addListener(_onFieldChanged);
@@ -316,9 +325,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       child: Column(
         children: [
           InkWell(
-            onTap: () {
-              // Avatar selection logic
-            },
+            onTap: _avatarLoading ? null : _pickAvatar,
             child: Container(
               width: sizing.avatarMd,
               height: sizing.avatarMd,
@@ -337,11 +344,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ],
               ),
-              child: Icon(
-                Icons.person,
-                size: sizing.avatarIconSize,
-                color: AppColors.pastelMint.withValues(alpha: 0.7),
-              ),
+              child: _avatarLoading
+                  ? const CircularProgressIndicator()
+                  : (_avatarPath != null
+                      ? ClipOval(
+                          child: Image.file(
+                            File(_avatarPath!),
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Icon(
+                          Icons.person,
+                          size: sizing.avatarIconSize,
+                          color: AppColors.pastelMint.withValues(alpha: 0.7),
+                        )),
             ),
           ),
           const SizedBox(height: AppConstants.space12),
@@ -618,6 +634,100 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _pickAvatar() async {
+    if (_avatarLoading) return;
+
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => Container(
+        color: AppThemeColors.of(context).cardBackground,
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Gallery'),
+              onTap: () => Navigator.pop(context, ImageSource.gallery),
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Camera'),
+              onTap: () => Navigator.pop(context, ImageSource.camera),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (source == null) return;
+
+    setState(() => _avatarLoading = true);
+
+    try {
+      final pickedFile = await ImagePicker().pickImage(
+        source: source,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+
+      if (pickedFile == null) {
+        setState(() => _avatarLoading = false);
+        return;
+      }
+
+      final file = File(pickedFile.path);
+      final fileSize = await file.length();
+      const maxSize = 5 * 1024 * 1024;
+
+      if (fileSize > maxSize) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Image must be less than 5 MB')),
+          );
+        }
+        setState(() => _avatarLoading = false);
+        return;
+      }
+
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+      );
+
+      if (croppedFile == null) {
+        setState(() => _avatarLoading = false);
+        return;
+      }
+
+      final appDocDir = await getApplicationDocumentsDirectory();
+      final fileName =
+          'avatar_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final savedFile =
+          File('${appDocDir.path}/$fileName');
+
+      await File(croppedFile.path).copy(savedFile.path);
+      await _settingsManager.setAvatarPath(savedFile.path);
+
+      if (mounted) {
+        setState(() {
+          _avatarPath = savedFile.path;
+          _avatarLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error uploading avatar: $e')),
+        );
+      }
+      setState(() => _avatarLoading = false);
+    }
   }
 
   void _showResetConfirmation() {
