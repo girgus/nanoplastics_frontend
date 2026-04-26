@@ -102,15 +102,12 @@ jobs:
           files: build/app/outputs/bundle/playRelease/nanoplastics_app_play.aab
           fail_on_unmatched_files: false
 
-      # --- PUBLISH TO GOOGLE PLAY INTERNAL TRACK ---
-      # Disabled during the 12-day initial Play Console review period.
-      # Re-enable by removing the `if: false` line once the account is out of review.
-      - name: Publish to Google Play Internal Track
-        if: false
+      # --- PUBLISH TO GOOGLE PLAY PRODUCTION TRACK ---
+      - name: Publish to Google Play Production Track
         uses: r0adkll/upload-google-play@v1
         with:
           packageName: org.nanosolve.hive
           releaseFiles: build/app/outputs/bundle/playRelease/app-play-release.aab
-          track: internal
+          track: production
           serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
           status: completed
