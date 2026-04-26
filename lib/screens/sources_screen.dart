@@ -22,6 +22,7 @@ import '../widgets/shared/screen_header.dart';
 import '../widgets/sources/evidence_study_card.dart';
 import '../widgets/sources/pdf_source_card.dart';
 import '../widgets/sources/video_source_card.dart';
+import '../utils/pdf_utils.dart';
 import 'pdf_viewer_screen.dart';
 import 'web_view_screen.dart';
 
@@ -468,6 +469,17 @@ class _SourcesScreenState extends State<SourcesScreen> {
     final toolbarColor = themeColors.cardBackground;
 
     if (source.pdfAssetPath != null && source.pdfAssetPath!.isNotEmpty) {
+      final bundled = await assetExists(source.pdfAssetPath!);
+      if (!context.mounted) return;
+      if (!bundled) {
+        scaffoldMessenger.showSnackBar(
+          const SnackBar(
+            content: Text('PDF not available in this build'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        return;
+      }
       navigator.push(MaterialPageRoute(
         builder: (_) => PDFViewerScreen(
           title: source.title,

@@ -77,8 +77,8 @@ flutter:
     - assets/onboarding/slide2_missions.jpg
     - assets/onboarding/slide3_collaboration.jpg
     - assets/docs/Nanoplastics_Report_EN_compressed.pdf
+    - assets/docs/EN_report_nanoplastics_a_systematic_risk_analysis_for_human_health_ecosystems_and_the_environment_compressed.pdf
     - assets/docs/EN_WATER_compressed.pdf
-    - assets/docs/CS_WATER_compressed.pdf
     - assets/docs/CS_WATER_compressed.pdf
     - assets/docs/ESP-WATER_compressed.pdf
     - assets/docs/FR-WATER_compressed.pdf

@@ -10,12 +10,15 @@ import 'update/update_service_api.dart';
 import 'update/noop_update_service.dart';
 import 'api_service.dart';
 
-/// iOS and web never self-update — App Store policy forbids alternative update
-/// mechanisms, and web updates by reloading. Runtime gate on top of the
-/// compile-time DISTRIBUTION flag, so a forgotten --dart-define can't leak the
-/// self-updater into a store bundle.
+/// iOS, web, and store builds never self-update.
+/// Belt-and-suspenders: compile-time DISTRIBUTION + IS_PLAY_STORE flags AND
+/// runtime Platform.isIOS check — either gate alone is sufficient, both together
+/// ensure a forgotten --dart-define can't leak the self-updater into a store bundle.
 bool get _selfUpdaterAllowed =>
-    BuildConfig.isGithubBuild && !kIsWeb && !Platform.isIOS;
+    BuildConfig.isGithubBuild &&
+    !BuildConfig.isPlayStoreBuild &&
+    !kIsWeb &&
+    !Platform.isIOS;
 
 /// Enum representing internet connectivity states
 enum InternetState {

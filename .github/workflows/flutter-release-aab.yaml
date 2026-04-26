@@ -91,7 +91,7 @@ jobs:
       # --- BUILD PLAY AAB ---
       - name: Build PLAY AAB (Google Play)
         run: |
-          flutter build appbundle --release --flavor play --dart-define=BUNDLE_ALL_LANGS=true --dart-define=BACKEND_URL=${{ env.BACKEND_URL }} --dart-define=IS_PLAY_STORE=true
+          flutter build appbundle --release --flavor play --dart-define=BUNDLE_ALL_LANGS=true --dart-define=BACKEND_URL=${{ env.BACKEND_URL }} --dart-define=IS_PLAY_STORE=true --dart-define=DISTRIBUTION=playStore
           cp build/app/outputs/bundle/playRelease/app-play-release.aab build/app/outputs/bundle/playRelease/nanoplastics_app_play.aab || true
 
       # --- UPLOAD TO RELEASE ---

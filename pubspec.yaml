@@ -72,7 +72,6 @@ flutter:
     - assets/docs/EN_report_nanoplastics_a_systematic_risk_analysis_for_human_health_ecosystems_and_the_environment_compressed.pdf
     # - assets/docs/CS_Nove_metody_detekce_a_reseni_nanoplastu.pdf
     # - assets/docs/CS_WATER_compressed.pdf
-    # - assets/docs/CS_WATER_compressed.pdf
     # - assets/docs/ESP-WATER_compressed.pdf
     # - assets/docs/FR-WATER_compressed.pdf
     # - assets/docs/RUS-WATER_compressed.pdf
@@ -80,7 +79,3 @@ flutter:
     # - assets/docs/Nanoplastics_Report_ES_compressed.pdf
     # - assets/docs/Nanoplastics_Report_FR_compressed.pdf
     # - assets/docs/Nanoplastics_Report_RU_compressed.pdf
-    # - assets/docs/CS_WATER_compressed.pdf
-    # - assets/docs/ESP-WATER_compressed.pdf
-    # - assets/docs/FR-WATER_compressed.pdf
-    # - assets/docs/RUS-WATER_compressed.pdf
