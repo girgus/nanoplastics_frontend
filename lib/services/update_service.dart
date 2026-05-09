@@ -15,8 +15,6 @@ import 'service_locator.dart';
 import 'settings_manager.dart';
 import 'update/update_service_api.dart';
 
-/// TODO: for flag isPlayStoreBuild disable whole service.
-
 
 /// Enum representing the different states of the app update process
 enum UpdateState {
@@ -106,6 +104,11 @@ class UpdateService implements UpdateServiceApi {
     SettingsManager? settingsManager,
     InternetService? internetService,
   }) {
+    assert(
+      BuildConfig.isGithubBuild,
+      'UpdateService instantiated in non-GitHub build. '
+      'Pass --dart-define=DISTRIBUTION=github to build script.',
+    );
     if (!_initialized) {
       final sl = ServiceLocator();
       _instance = UpdateService._internal(

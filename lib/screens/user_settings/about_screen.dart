@@ -281,8 +281,14 @@ class _AboutScreenState extends State<AboutScreen> {
             spacing: spacing,
             sizing: sizing,
             typography: typography,
-            onTap: () => _launchUrl(
-                '${AppLocalizations.of(context)!.aboutWebsiteUrl}/privacy/'),
+            onTap: () {
+              if (PlatformAdaptive.isWeb) {
+                Navigator.of(context).pushNamed('/privacy');
+              } else {
+                _launchUrl(
+                    '${AppLocalizations.of(context)!.aboutWebsiteUrl}/privacy/');
+              }
+            },
           ),
           SizedBox(height: spacing.cardSpacing * 2),
           _buildSectionTitle(

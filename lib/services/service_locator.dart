@@ -1,6 +1,5 @@
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import '../config/build_config.dart';
 import 'settings_manager.dart';
 import 'pdf_service.dart';
@@ -9,16 +8,6 @@ import 'update_service.dart';
 import 'update/update_service_api.dart';
 import 'update/noop_update_service.dart';
 import 'api_service.dart';
-
-/// iOS, web, and store builds never self-update.
-/// Belt-and-suspenders: compile-time DISTRIBUTION + IS_PLAY_STORE flags AND
-/// runtime Platform.isIOS check — either gate alone is sufficient, both together
-/// ensure a forgotten --dart-define can't leak the self-updater into a store bundle.
-bool get _selfUpdaterAllowed =>
-    BuildConfig.isGithubBuild &&
-    !BuildConfig.isPlayStoreBuild &&
-    !kIsWeb &&
-    !Platform.isIOS;
 
 /// Enum representing internet connectivity states
 enum InternetState {
@@ -169,10 +158,12 @@ class ServiceLocator {
     _apiService = ApiService();
 
     // Update service — adapter chosen at compile time via BuildConfig.
-    // GitHub builds get the real self-updater; store builds get a no-op stub
-    // so the OS-level store owns updates. The const-folded branch lets Dart
-    // AOT tree-shake the unused implementation out of the store bundles.
-    _updateService = _selfUpdaterAllowed ? UpdateService() : NoOpUpdateService();
+    // GitHub builds get the real self-updater; store/web builds get a no-op stub.
+    // Both BuildConfig.isGithubBuild and kIsWeb are compile-time constants, so
+    // Dart AOT tree-shakes the unused branch out of store, iOS, and web binaries.
+    _updateService = BuildConfig.isGithubBuild && !kIsWeb
+        ? UpdateService()
+        : NoOpUpdateService();
   }
 
   @visibleForTesting
@@ -184,7 +175,7 @@ class ServiceLocator {
     _internetService = InternetService._();
     // Skip connectivity init in tests — platform plugin unavailable in Dart VM.
     // InternetService stays in disconnected state, which is fine for unit tests.
-    _updateService = _selfUpdaterAllowed
+    _updateService = BuildConfig.isGithubBuild && !kIsWeb
         ? UpdateService(
             settingsManager: _settingsManager,
             internetService: _internetService,
