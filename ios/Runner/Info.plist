@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -22,7 +24,27 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>mailto</string>
+		<string>http</string>
+		<string>https</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to capture photos and videos to attach to your ideas.</string>
+	<key>NSDocumentUsageDescription</key>
+	<string>Used to save and share PDF reports from the app.</string>
+	<key>NSLocalizedDescription</key>
+	<string>Save and share PDF documents</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to record voice notes to attach to your ideas.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to select photos and videos to attach to your ideas.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -40,34 +62,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<!-- Standard encryption only. -->
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
-	<!-- Camera & microphone — required by image_picker and record packages -->
-	<key>NSCameraUsageDescription</key>
-	<string>Used to capture photos and videos to attach to your ideas.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Used to record voice notes to attach to your ideas.</string>
-	<!-- Photo library — required by image_picker -->
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used to select photos and videos to attach to your ideas.</string>
-	<!-- File access — required for saving and sharing PDFs -->
-	<key>NSDocumentUsageDescription</key>
-	<string>Used to save and share PDF reports from the app.</string>
-	<!-- iCloud Documents — allow saving to iCloud if user chooses -->
-	<key>NSLocalizedDescription</key>
-	<string>Save and share PDF documents</string>
-	<!-- Email & URL schemes — required for mailto: and web links -->
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>mailto</string>
-		<string>http</string>
-		<string>https</string>
 	</array>
 </dict>
 </plist>
