@@ -139,7 +139,7 @@ jobs:
       # ---------------- FULL FLAVOR APK (sideload / in-app update) ----------------
       - name: Build FULL APK
         run: |
-          flutter build apk --release --flavor full --dart-define=BUNDLE_ALL_LANGS=true --dart-define=BACKEND_URL=${{ env.BACKEND_URL }}
+          flutter build apk --release --flavor full --dart-define=BUNDLE_ALL_LANGS=true --dart-define=DISTRIBUTION=github --dart-define=BACKEND_URL=${{ env.BACKEND_URL }}
           mv build/app/outputs/flutter-apk/app-full-release.apk build/app/outputs/flutter-apk/nanoplastics_app.apk
 
       # ---------- GENERATE LITE PUBSPEC ------
@@ -157,7 +157,7 @@ jobs:
       # ---------------- LITE FLAVOR APK (sideload / in-app update) ----------------
       - name: Build LITE APK
         run: |
-          flutter build apk --release --flavor lite --dart-define=BUNDLE_ALL_LANGS=false --dart-define=BACKEND_URL=${{ env.BACKEND_URL }}
+          flutter build apk --release --flavor lite --dart-define=BUNDLE_ALL_LANGS=false --dart-define=DISTRIBUTION=github --dart-define=BACKEND_URL=${{ env.BACKEND_URL }}
           mv build/app/outputs/flutter-apk/app-lite-release.apk build/app/outputs/flutter-apk/nanoplastics_app_lite.apk
 
       - name: Compute release metadata
