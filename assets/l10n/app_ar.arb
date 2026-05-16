@@ -1,0 +1,700 @@
+{
+  "@@locale": "ar",
+
+  "appTitle": "NANOSOLVE",
+  "appSubtitle": "العلم، المجتمع، المستقبل",
+
+  "tabHuman": "البشر",
+  "tabPlanet": "الكوكب",
+
+  "navExplore": "استكشاف",
+  "navSources": "المصادر",
+  "navResults": "النتائج",
+
+  "humanCategoryCentralSystems": "الجهاز العصبي المركزي",
+  "humanCategoryCentralSystemsDesc": "العصبي، الدوري",
+  "humanCategoryFiltrationDetox": "الترشيح وإزالة السموم",
+  "humanCategoryFiltrationDetoxDesc": "الكلى، الكبد، اللمف",
+  "humanCategoryVitalityTissue": "الحيوية وصحة الأنسجة",
+  "humanCategoryVitalityTissueDesc": "الرئتان، الجلد",
+  "humanCategoryReproduction": "التكاثر الخلوي",
+  "humanCategoryReproductionDesc": "الهرمونات، الخلايا",
+  "humanCategoryEntryGates": "نقاط الدخول والتعرض",
+  "humanCategoryEntryGatesDesc": "الجلد، التنفس، الغذاء",
+  "humanCategoryWaysOfDesctruction": "طرق التدمير",
+  "humanCategoryWaysOfDesctructionDesc": "أشكال التدمير المعروفة",
+
+  "planetCategoryWorldOcean": "الغلاف المائي العالمي والبحار",
+  "planetCategoryWorldOceanDesc": "الحياة البحرية، الماء",
+  "planetCategoryAtmosphere": "الغلاف الجوي والمناخ",
+  "planetCategoryAtmosphereDesc": "الهواء، المناخ",
+  "planetCategoryFloraFauna": "النباتات والحيوانات",
+  "planetCategoryFloraFaunaDesc": "النباتات، الحيوانات",
+  "planetCategoryMagneticField": "المجال المغناطيسي ونواة الأرض",
+  "planetCategoryMagneticFieldDesc": "شذوذات النواة",
+  "planetCategoryEntryGates": "نقاط الدخول والتلوث",
+  "planetCategoryEntryGatesDesc": "الصناعة، النفايات",
+  "planetCategoryPhysicalProperties": "الخصائص الفيزيائية والتأثيرات",
+  "planetCategoryPhysicalPropertiesDesc": "التربة، الماء، الهواء",
+
+  "onboardingTitle1": "هذا هو الواقع. نريد تغييره، لكننا نحتاج إلى فكرتك!",
+  "onboardingHighlight1": "",
+  "onboardingDescription1": "لإحداث هذا التغيير، نحتاج إلى فكرتك.",
+
+  "onboardingTitle2": "اختر مجالك وابحث عن حلول.",
+  "onboardingHighlight2": "انضم وابحث عن حل.",
+  "onboardingDescription2": "",
+
+  "onboardingTitle3": "كن واحداً منا",
+  "onboardingHighlight3": "وألهم الآخرين.",
+  "onboardingDescription3": "",
+
+  "onboardingNext": "التالي",
+  "onboardingPrevious": "السابق",
+  "onboardingStart": "ابدأ",
+  "onboardingSkip": "تخطي",
+  "onboardingBack": "رجوع",
+
+  "categoryDetailBack": "رجوع",
+  "categoryDetailBackToOverview": "رجوع",
+  "categoryDetailBrainstorm": "عصف ذهني",
+  "categoryDetailLibrary": "المكتبة",
+  "categoryDetailIdeas": "الأفكار",
+  "categoryDetailResults": "النتائج",
+  "categoryDetailBrainstormTitle": "فكرتك حول هذا الموضوع",
+  "categoryDetailBrainstormUser": "@NanoSolver",
+  "categoryDetailBrainstormPlaceholder": "صِف فكرتك أو فرضيتك أو ملاحظتك هنا...",
+  "categoryDetailBrainstormSubmit": "إرسال للتقييم",
+  "categoryDetailBrainstormSuccess": "تم إرسال الفكرة للتقييم!",
+  "categoryDetailBrainstormError": "فشل الإرسال (بسبب مشكلة في الإنترنت). تم حفظ فكرتك كمسودة.",
+  "categoryDetailBrainstormEditUsername": "تعديل اسم المستخدم",
+  "categoryDetailBrainstormUsernameHint": "أدخل اسم المستخدم",
+  "categoryDetailBrainstormCancel": "إلغاء",
+  "categoryDetailBrainstormSave": "حفظ",
+  "categoryDetailBrainstormMinLength": "فكرتك تحتاج إلى 10 أحرف على الأقل.",
+  "@categoryDetailBrainstormMinLength": {
+    "description": "Validation hint shown below the idea textarea in BrainstormBox when text is under 10 characters"
+  },
+  "brainstormNoEmailHintTitle": "تنافس في أفضل 10 حلّالين",
+  "brainstormNoEmailHintBody": "بدون بريد إلكتروني، مشاركاتك لن تُحتسب في التصنيف.",
+  "brainstormEmailLinked": "تم حفظ البريد الإلكتروني — أنت الآن تتنافس في أفضل 10 حلّالين.",
+  "brainstormLicenseNotice": "بالإرسال، تمنح ترخيص هذه الفكرة بموجب CC BY 4.0 — مجاني للبحث والمنفعة العامة.",
+  "categoryDetailSourcesTitle": "المصادر ذات الصلة",
+  "categoryDetailSourcesCount": "مصادر",
+
+  "sourcesTitle": "المصادر",
+  "sourcesSubtitle": "المكتبة والمواد التعليمية",
+
+  "resultsTitle": "النتائج",
+  "resultsSubtitle": "التقييم والحلول",
+
+  "sourcesMainReportLabel": "⭐ التقرير الرئيسي (2025)",
+  "sourcesMainReportTitle": "NANOPLASTICS IN THE BIOSPHERE, FROM MOLECULAR IMPACT TO PLANETARY CRISIS",
+  "sourcesMainReportUrl": "https://allatra.org/storage/app/media/reports/en/Nanoplastics_in_the_Biosphere_Report.pdf",
+  "sourcesBack": "← رجوع",
+  "sourcesTabWeb": "روابط الويب",
+  "sourcesTabVideo": "روابط الفيديو",
+  "sourcesTabReport": "R",
+  "sourcesWebTabSearchbar": "ابحث بالعنوان، المؤلف، السنة، المجلة...",
+  "sourcesSectionHumanHealth": "I: النانوبلاستيك وصحة الإنسان",
+  "sourcesSectionEarthPollution": "II: الأرض وتلوث البلاستيك",
+  "sourcesSectionWaterAbilities": "III: قدرات الماء الخاصة",
+  "sourcesSectionVideoContent": "ب. المحتوى الوثائقي والمتخصص",
+  "sourcesVideoSectionDocumentaries": "الأفلام الوثائقية",
+
+  "videoLink1Title": "Nanoplastics. Threat to Life | ALLATRA Documentary",
+  "videoLink1Source": "ALLATRA Documentary",
+  "videoLink1Url": "https://youtu.be/BVap0MdbCZg?list=PL4b5lQBqqnUGsIhduDunOHm0gcSnrr8AT",
+
+  "videoLink2Title": "Trap for Humanity | Popular Science Film",
+  "videoLink2Source": "Popular Science Film",
+  "videoLink2Url": "https://youtu.be/NBbbqRzzQGY?list=PL4b5lQBqqnUGsIhduDunOHm0gcSnrr8AT",
+
+  "videoLink3Title": "Anthropogenic Factor in the Ocean's Demise | Popular Science Film",
+  "videoLink3Source": "Popular Science Film",
+  "videoLink3Url": "https://youtu.be/CDWrsgX4syc?list=PL4b5lQBqqnUGsIhduDunOHm0gcSnrr8AT",
+
+  "videoLink4Title": "What Destroys You on a Quantum Level?",
+  "videoLink4Source": "Documentary",
+  "videoLink4Url": "https://youtu.be/0CBfe7w8oUU",
+
+  "videoLink5Title": "Nanoplastics. The Last Generation Has Already Been Born",
+  "videoLink5Source": "Documentary",
+  "videoLink5Url": "https://youtu.be/qsarcxl1jls",
+
+  "videoLink6Title": "ALLATRA at UN Summit COP16 | Climate Crisis and Ocean Pollution Documentary",
+  "videoLink6Source": "Climate Crisis Documentary",
+  "videoLink6Url": "https://youtu.be/0DNempKykno?list=PL4b5lQBqqnUGsIhduDunOHm0gcSnrr8AT",
+
+  "detailCentralSystemsTitle": "الأنظمة المركزية (الدم، الدماغ)",
+  "detailCentralSystemsSubtitle": "حصان طروادة في الجسم: اختراق الحواجز، الالتهاب",
+  "detailCentralSystemsChargeHint": "يحمل النانوبلاستيك شحنة كهربائية ساكنة — المفتاح الذي يسمح له باختراق الحاجز الدموي الدماغي.",
+  "detailCentralSystemsEntry1Highlight": "العدوانية: خلال ساعتين",
+  "detailCentralSystemsEntry1Desc": "يدخل النانوبلاستيك المستنشق بسرعة إلى مجرى الدم، ويحمل شحنة كهرستاتيكية ويتغلف بالجزيئات الحيوية (الكوليسترول، البروتينات) في الدم، مكوّناً ما يُعرف بالإكليل الحيوي.",
+  "detailCentralSystemsEntry1Bullet1": "تأثير حصان طروادة — إخفاء الجسيمات",
+  "detailCentralSystemsEntry1Bullet2": "اختراق الحاجز الدموي الدماغي",
+  "detailCentralSystemsEntry1Bullet3": "تعطيل وظيفة الخلايا العصبية وإشارات الأعصاب",
+  "detailCentralSystemsEntry2Highlight": "اختراق الدماغ",
+  "detailCentralSystemsEntry2Desc": "تُظهر الأبحاث أنها تعبر الحاجز الدموي الدماغي، وتخترق الدماغ وتعطل وظيفة الخلايا العصبية.",
+
+  "detailFiltrationDetoxTitle": "الترشيح وإزالة السموم (الكبد، الكلى)",
+  "detailFiltrationDetoxSubtitle": "إرهاق المرشح والانهيار الأيضي",
+  "detailFiltrationDetoxEntry1Highlight": "العدوانية: فور الابتلاع",
+  "detailFiltrationDetoxEntry1Desc": "70% من جهاز المناعة موجود في الأمعاء. بعد الابتلاع، يعطل النانوبلاستيك الحاجز المعوي ويسبب متلازمة الأمعاء المتسربة.",
+  "detailFiltrationDetoxEntry1Bullet1": "تسرب السموم والمسببات المرضية إلى الدم",
+  "detailFiltrationDetoxEntry1Bullet2": "إضعاف جهاز المناعة",
+  "detailFiltrationDetoxEntry1Bullet3": "التهاب جهازي",
+  "detailFiltrationDetoxEntry2Highlight": "تراكم في الأعضاء",
+  "detailFiltrationDetoxEntry2Desc": "تتراكم الجسيمات في الكبد والكلى، حيث تعطل العمليات الأيضية ووظائف إزالة السموم.",
+
+  "detailVitalityTissuesTitle": "الحيوية والأنسجة (القلب، العضلات)",
+  "detailVitalityTissuesSubtitle": "التشويش الكهربائي وشيخوخة الخلايا",
+  "detailVitalityTissuesEntry1Highlight": "خلل وظيفي في الميتوكوندريا",
+  "detailVitalityTissuesEntry1Desc": "يحمل النانوبلاستيك شحنة كهرستاتيكية تتجدد باستمرار في الجسم (تأثير الكهربية الاحتكاكية).",
+  "detailVitalityTissuesEntry1Bullet1": "التشويش الكهربائي يشوّه بروتينات الخلايا",
+  "detailVitalityTissuesEntry1Bullet2": "تلف الميتوكوندريا",
+  "detailVitalityTissuesEntry1Bullet3": "انخفاض إنتاج ATP (طاقة الخلية)",
+  "detailVitalityTissuesEntry1Bullet4": "الشيخوخة المبكرة وموت الأنسجة",
+
+  "detailReproductionTitle": "الأصل والحماية (التكاثر)",
+  "detailReproductionSubtitle": "تلف جيني للأجيال القادمة",
+  "detailReproductionEntry1Highlight": "تلف تكاثري وجيني",
+  "detailReproductionEntry1Desc": "يمكن للنانوبلاستيك اختراق الحاجز المشيمي والدخول إلى حليب الثدي. يسبب تلفاً في الحمض النووي وطفرات في الخلايا.",
+  "detailReproductionEntry1Bullet1": "انخفاض الخصوبة",
+  "detailReproductionEntry1Bullet2": "زيادة العيوب التطورية",
+  "detailReproductionEntry1Bullet3": "اضطراب الغدة الصعترية عند المواليد",
+  "detailReproductionEntry1Bullet4": "الانتقال بين الأجيال أثناء انقسام الخلايا",
+
+  "detailEntryGatesTitle": "بوابات الدخول (الاستنشاق، الابتلاع)",
+  "detailEntryGatesSubtitle": "مسارات التلوث: الهواء، الماء، الغذاء",
+  "detailEntryGatesEntry1Highlight": "الاستنشاق (التنفس)",
+  "detailEntryGatesEntry1Desc": "الطريق الأسرع — الاختراق عبر الرئتين مباشرة إلى مجرى الدم.",
+  "detailEntryGatesEntry2Highlight": "الابتلاع (البلع)",
+  "detailEntryGatesEntry2Desc": "الدخول عبر الماء والغذاء والمشروبات الملوثة.",
+  "detailEntryGatesEntry3Highlight": "الامتصاص (الجلد)",
+  "detailEntryGatesEntry3Desc": "الاختراق عبر مسام الجلد عند الاتصال بالماء أو الهواء.",
+
+  "detailPhysicalAttackTitle": "طرق التدمير المعروفة",
+  "detailPhysicalAttackSubtitle": "نظرة شاملة على التأثيرات السلبية على الكائن الحي",
+  "detailPhysicalAttackEntry1Highlight": "الشحنة الكهرستاتيكية",
+  "detailPhysicalAttackEntry1Desc": "تحمل الجسيمات شحنة دائمة تعزز التصاقها بالهياكل الخلوية.",
+  "detailPhysicalAttackEntry2Highlight": "التداخل الكهربائي",
+  "detailPhysicalAttackEntry2Desc": "يمكن للشحنة تعطيل الإشارات الكهربائية الحيوية ونبضات الأعصاب.",
+  "detailPhysicalAttackEntry3Highlight": "التشوه الهيكلي",
+  "detailPhysicalAttackEntry3Desc": "يمكن للتفاعل مع البروتينات تعطيل بنيتها الفراغية وروابطها الهيدروجينية.",
+
+  "detailWorldOceanTitle": "المحيط العالمي والغلاف المائي",
+  "detailWorldOceanSubtitle": "التخريب الفيزيوكيميائي وتراكم الحرارة",
+  "detailWorldOceanChargeHint": "تعطل الشحنة الساكنة على النانوبلاستيك شبكة الروابط الهيدروجينية للماء، مما يقلل من قدرة المحيط على امتصاص الحرارة.",
+  "detailWorldOceanEntry1Highlight": "تعطيل الروابط الهيدروجينية للماء",
+  "detailWorldOceanEntry1Desc": "يرتبط النانوبلاستيك بجزيئات الماء ويخلق أغلفة مائية تُجمّد كميات كبيرة من الماء.",
+  "detailWorldOceanEntry1Bullet1": "انخفاض حاد في قدرة المحيطات على تبديد الحرارة",
+  "detailWorldOceanEntry1Bullet2": "تغييرات في الخصائص الفيزيائية لمياه البحر",
+
+  "detailAtmosphereTitle": "الغلاف الجوي ودورة الماء العالمية",
+  "detailAtmosphereSubtitle": "تعطيل جوي وهيدرولوجي",
+  "detailAtmosphereChargeHint": "يعمل النانوبلاستيك المشحون كنوى تكثيف، مما يؤثر على تكوين السحاب ويزعزع استقرار دورة الماء العالمية.",
+  "detailAtmosphereEntry1Highlight": "سحب منخفضة وكثيفة",
+  "detailAtmosphereEntry1Desc": "يعمل النانوبلاستيك كنوى تكثيف عدوانية ← تكوين سحب منخفضة وكثيفة تحبس الحرارة وتزعزع استقرار المناخ.",
+
+  "detailFloraFaunaTitle": "النباتات والحيوانات وأحياء التربة",
+  "detailFloraFaunaSubtitle": "انهيار النظام البيئي البيولوجي وسلسلة الغذاء",
+  "detailFloraFaunaEntry1Highlight": "تعطيل الإشارات الكهربائية الحيوية",
+  "detailFloraFaunaEntry1Desc": "يخلق النانوبلاستيك المشحون كهرستاتيكياً تشويشاً يعطل تواصل النباتات (شبكات الجذور) والحشرات.",
+  "detailFloraFaunaEntry1Bullet1": "فقدان تكيف النظام البيئي",
+  "detailFloraFaunaEntry1Bullet2": "تعطيل سلاسل الغذاء",
+  "detailFloraFaunaEntry2Highlight": "تلف عملية التمثيل الضوئي",
+  "detailFloraFaunaEntry2Desc": "يُلحق النانوبلاستيك أضراراً جسدية بالبلاستيدات الخضراء ← انخفاض إنتاج الطاقة والأكسجين، وإضعاف المنتجين الأوليين.",
+
+  "detailMagneticFieldTitle": "المجال المغناطيسي ونواة الأرض",
+  "detailMagneticFieldSubtitle": "زعزعة جيوديناميكية ومغناطيسية",
+  "detailMagneticFieldEntry1Highlight": "زعزعة استقرار المجال المغناطيسي",
+  "detailMagneticFieldEntry1Desc": "قد يؤثر تغلغل النانوبلاستيك في الهياكل الجيولوجية على العمليات الجيوديناميكية والمجال المغناطيسي للأرض.",
+
+  "detailPlanetEntryGatesTitle": "بوابات الأزمة",
+  "detailPlanetEntryGatesSubtitle": "فشل نظام البلاستيك، مكبات النفايات، الماء",
+  "detailPlanetEntryGatesEntry1Highlight": "فشل نظام البلاستيك",
+  "detailPlanetEntryGatesEntry1Desc": "مكبات النفايات والمحيطات والممرات المائية كمصادر رئيسية لتلوث النانوبلاستيك.",
+
+  "detailPhysicalPropertiesTitle": "الخصائص الفيزيائية",
+  "detailPhysicalPropertiesSubtitle": "آليات الانهيار الرئيسية (الروابط، الإشارات)",
+  "detailPhysicalPropertiesEntry1Highlight": "تعطيل الروابط الهيدروجينية للماء",
+  "detailPhysicalPropertiesEntry1Desc": "يرتبط النانوبلاستيك بجزيئات الماء ويخلق أغلفة مائية تُجمّد كميات كبيرة من الماء ← انخفاض حاد في قدرة المحيطات على تبديد الحرارة.",
+  "detailPhysicalPropertiesEntry2Highlight": "سحب منخفضة وكثيفة",
+  "detailPhysicalPropertiesEntry2Desc": "يعمل النانوبلاستيك كنوى تكثيف عدوانية ← تكوين سحب منخفضة وكثيفة تحبس الحرارة وتزعزع استقرار المناخ.",
+  "detailPhysicalPropertiesEntry3Highlight": "تعطيل الإشارات الكهربائية الحيوية",
+  "detailPhysicalPropertiesEntry3Desc": "يخلق النانوبلاستيك المشحون كهرستاتيكياً تشويشاً يعطل تواصل النباتات (شبكات الجذور) والحشرات ← فقدان تكيف النظام البيئي.",
+  "detailPhysicalPropertiesEntry4Highlight": "تلف عملية التمثيل الضوئي",
+  "detailPhysicalPropertiesEntry4Desc": "يُلحق النانوبلاستيك أضراراً جسدية بالبلاستيدات الخضراء ← انخفاض إنتاج الطاقة والأكسجين، وإضعاف المنتجين الأوليين.",
+
+  "sourceBioaccumulationBrain": "التراكم الحيوي في دماغ الإنسان",
+  "sourceAutismSpectrumBPA": "اضطرابات طيف التوحد وBPA",
+  "sourceCrossingBloodBrainBarrier": "عبور الحاجز الدموي الدماغي",
+  "sourceReductionMNPBoilingWater": "تقليل امتصاص MNP بغلي الماء",
+  "sourceContaminationDairyProducts": "تلوث منتجات الألبان",
+  "sourceQuantumEffectsProtonTransfer": "التأثيرات الكمية ونقل البروتون في الخلايا",
+  "sourceCardiovascularRisksAtheromas": "مخاطر قلبية وعائية (تصلب الشرايين)",
+  "sourcePlasticsInMaleSemen": "البلاستيك في السائل المنوي الذكري",
+  "sourcePlasticsInFemaleFollicularFluid": "البلاستيك في السائل الجريبي الأنثوي",
+  "sourceAdverseBirthOutcomesUSAPhthalates": "نتائج ولادة سلبية في الولايات المتحدة (الفثالات)",
+  "sourcePhthalateExposureCancerChildren": "التعرض للفثالات والسرطان عند الأطفال",
+  "sourceEmissionPlasticsOceanToAtmosphere": "انبعاث البلاستيك من المحيط إلى الغلاف الجوي",
+  "sourceOceanAcidificationPlasticDegradation": "تحمض المحيطات من تحلل البلاستيك",
+  "sourceContaminationDeepestOcean": "تلوث أعمق أجزاء المحيط",
+  "sourceCoralReefCollapse": "انهيار الشعاب المرجانية",
+  "sourceIceFormationAtmosphereMNP": "تكوين الجليد في الغلاف الجوي مع MNP",
+  "sourceMNPCloudsImpactPrecipitation": "MNP في السحب والتأثير على هطول الأمطار",
+  "sourceGlobalPhotosynthesisLosses": "خسائر التمثيل الضوئي العالمية",
+  "sourceFragmentGrowthPacificGarbagePatch": "نمو الشظايا في بقعة القمامة في المحيط الهادئ",
+  "sourceGeophysicalBreak1995": "الكسر الجيوفيزيائي في عام 1995",
+
+  "resultsBackButton": "← رجوع",
+  "resultsTitle": "نتائج التحليل",
+  "resultsSubtitle": "التقييم الرياضي للأفكار والحلول",
+  "resultsStatsTotalIdeas": "إجمالي عدد الأفكار",
+  "resultsStatsAnalyzedCategories": "الفئات المحللة",
+  "resultsStatsActiveSolvers": "الحلّالون النشطون",
+  "resultsEvaluationSystemTitle": "حول نظام التقييم",
+  "resultsEvaluationSystemDesc1": "يتم جمع أفكارك وتحليلها رياضياً باستخدام خوارزميات متقدمة. يقيّم النظام جدوى كل حل وتأثيره وابتكاره.",
+  "resultsEvaluationSystemDesc2": "ستُعرض أكثر الحلول واعدة على العلماء وصانعي القرار للتطبيق العملي.",
+
+  "leaderboardEvalTitle": "كيف يتم تسجيل الأفكار",
+  "leaderboardEvalIntro": "يتم تقييم كل فكرة بواسطة وكيل ذكاء اصطناعي متخصص في فئتها. يُسجّل الوكيل من 0 إلى 1000 عبر أربعة أبعاد، ثم يعيّن مستوى.",
+  "leaderboardEvalDim1": "الجدية العلمية (0–300)",
+  "leaderboardEvalDim2": "إمكانية التأثير (0–300)",
+  "leaderboardEvalDim3": "العمق الميكانيكي (0–200)",
+  "leaderboardEvalDim4": "الابتكار (0–200)",
+  "leaderboardEvalTierS": "S · 850–1000 — تحييد الشحنة + حماية الفئة",
+  "leaderboardEvalTierA": "A · 650–849 — الشحنة + حل جهازي",
+  "leaderboardEvalTierB": "B · 400–649 — فعّال، بدون حل شحنة",
+  "leaderboardEvalTierC": "C · 150–399 — تخفيف عام",
+  "leaderboardEvalTierP": "مشارك · 1–149 — ذو صلة لكن غامض",
+  "leaderboardEvalKeyInsight": "أعلى الأفكار درجاتٍ تعالج الشحنة الساكنة — الآلية الجذرية التي تسمح للنانوبلاستيك بعبور الحواجز البيولوجية.",
+
+  "leaderboardTitle": "أفضل 10 حلّالين",
+  "leaderboardSubtitle": "أبرز المساهمين في حلول النانوبلاستيك",
+  "leaderboardAccessRestricted": "الوصول إلى لوحة المتصدرين مقيّد",
+  "leaderboardAccessDescription": "سجّل ببريدك الإلكتروني واسمك لعرض قائمة أفضل 10 والتعرف على حلولك.",
+  "leaderboardRegisterNow": "سجّل الآن",
+  "leaderboardContactTitle": "تريد التعاون؟",
+  "leaderboardContactDescription": "تواصل معنا إذا كنت ترغب في الشراكة أو المساهمة بالبيانات أو الانضمام إلى مبادرة NanoSolve.",
+  "leaderboardContactEmail": "support@nanosolve.org",
+
+  "settingsBack": "رجوع",
+  "settingsTitle": "الإعدادات",
+  "settingsSubtitle": "إدارة تفضيلاتك",
+  "settingsProfile": "الملف الشخصي",
+  "settingsLanguage": "اللغة",
+  "settingsPrivacySecurity": "الخصوصية والأمان",
+  "settingsAbout": "حول",
+  "settingsIntroTour": "جولة تعريفية",
+  "settingsIntroTourSubtitle": "شاهد مقدمة التطبيق مرة أخرى",
+
+  "profileTitle": "إعدادات الملف الشخصي",
+  "profileSubtitle": "تخصيص ملفك الشخصي وتفضيلاتك",
+  "profilePersonalInfo": "المعلومات الشخصية",
+  "profileDisplayName": "الاسم المعروض",
+  "profileDisplayNameHint": "أدخل اسمك الكامل أو اسمك المستعار",
+  "profileEmail": "البريد الإلكتروني",
+  "profileEmailHint": "أدخل بريدك الإلكتروني",
+  "profileBio": "نبذة شخصية",
+  "profileBioHint": "أخبرنا عن نفسك",
+  "profileAppearance": "المظهر",
+  "profileDarkMode": "الوضع الداكن",
+  "profileDarkModeDesc": "استخدام المظهر الداكن في التطبيق",
+  "profileNotifications": "الإشعارات",
+  "profilePushNotifications": "إشعارات الدفع",
+  "profilePushNotificationsDesc": "استقبال إشعارات الدفع على جهازك",
+  "profileEmailNotifications": "إشعارات البريد الإلكتروني",
+  "profileEmailNotificationsDesc": "استقبال التحديثات عبر البريد الإلكتروني",
+  "profilePrivacy": "الخصوصية",
+  "profileAnalytics": "التحليلات",
+  "profileAnalyticsDesc": "ساعدنا في التحسين بمشاركة بيانات الاستخدام",
+  "profileDangerZone": "منطقة الخطر",
+  "profileDeleteAccount": "حذف الحساب",
+  "profileDeleteAccountDesc": "إزالة حسابك وبياناتك بشكل دائم",
+  "profileChangeAvatar": "تغيير الصورة الرمزية",
+
+  "languageTitle": "اللغة",
+  "languageSubtitle": "اختر لغتك المفضلة",
+  "languageChanged": "تم تغيير اللغة إلى",
+  "languageInfoMessage": "سيتم تحديث التطبيق إلى لغتك المختارة. قد يحتاج بعض المحتوى إلى إعادة تشغيل التطبيق.",
+
+  "privacyTitle": "الخصوصية والأمان",
+  "privacySubtitle": "إدارة تفضيلات الخصوصية",
+  "privacyDataAnalytics": "البيانات والتحليلات",
+  "privacyAnalytics": "التحليلات",
+  "privacyAnalyticsDesc": "ساعدنا في التحسين بمشاركة بيانات الاستخدام المجهولة",
+  "privacySecurity": "الأمان",
+  "privacyDataEncryption": "تشفير البيانات",
+  "privacyDataEncryptionDesc": "بياناتك مشفّرة أثناء النقل باستخدام HTTPS. بيانات الملف الشخصي المحلية مُخزَّنة بأمان على جهازك.",
+  "privacyLocalStorage": "التخزين المحلي",
+  "privacyLocalStorageDesc": "تُخزَّن تفضيلاتك بأمان على جهازك",
+  "privacyNotifications": "الإشعارات",
+  "privacyUpdateNotifications": "تنبيهات تحديث التطبيق",
+  "privacyUpdateNotificationsDesc": "التحقق من إصدارات التطبيق الجديدة عند بدء التشغيل وإشعارك عند توفر تحديث",
+  "privacyLegal": "قانوني",
+  "privacyPolicy": "سياسة الخصوصية",
+  "privacyTermsOfService": "شروط الخدمة",
+
+  "aboutTitle": "حول",
+  "aboutAppName": "NanoSolve Hive",
+  "aboutVersion": "الإصدار",
+  "aboutSection": "حول NanoSolve",
+  "aboutDescription": "NanoSolve Hive هي منصة مفتوحة المصدر تحوّل أبحاث النانوبلاستيك إلى إجراءات. نجمع رؤى مبنية على الأدلة حول صحة الإنسان والكوكب، ونستعين بالحشود لإيجاد حلول لتسريع الاكتشاف العلمي.",
+  "aboutConnect": "تواصل",
+  "aboutWebsite": "الموقع الإلكتروني",
+  "aboutWebsiteUrl": "https://web.nanosolve.org",
+  "aboutContactUs": "اتصل بنا",
+  "aboutContactUsDesc": "تواصل مع فريقنا",
+  "aboutLegal": "قانوني",
+  "aboutPrivacyPolicy": "سياسة الخصوصية",
+  "aboutPrivacyPolicyDesc": "كيف نتعامل مع بياناتك",
+  "aboutTermsOfService": "شروط الخدمة",
+  "aboutTermsOfServiceDesc": "الشروط والأحكام",
+  "aboutOpenSourceLicenses": "تراخيص المصادر المفتوحة",
+  "aboutOpenSourceLicensesDesc": "مكتبات الطرف الثالث التي نستخدمها",
+  "aboutShare": "مشاركة",
+  "aboutShareTitle": "مشاركة NanoSolve",
+  "aboutShareDesc": "امسح رمز QR هذا لتنزيل\nالتطبيق",
+  "aboutShareAppLink": "رابط تنزيل التطبيق",
+  "aboutFooterMessage": "صُنع بعناية للإنسانية",
+  "aboutCopyright": "2026 NanoSolve. جميع الحقوق محفوظة.",
+
+  "updateDownloadPaused": "تم إيقاف التنزيل مؤقتاً",
+  "updateDownloadResumed": "تم استئناف التنزيل",
+  "updateDownloadCancelled": "تم إلغاء التنزيل",
+  "updateCheckSkippedNoInternet": "تم تخطي التحقق من التحديث - لا يوجد إنترنت",
+  "updateCheckSkippedRecently": "تم تخطي التحقق من التحديث - تم التحقق مؤخراً",
+  "updateCheckFailedFetchRelease": "فشل جلب إصدار GitHub",
+  "updateCheckAppUpToDate": "التطبيق محدّث",
+  "updateCheckSkippedNoBaseline": "تم تخطي التحقق من التحديث - لا يوجد إصدار محلي أساسي",
+  "updateApkUrlNotFound": "لم يتم العثور على رابط APK في إصدار GitHub",
+  "updateApkValidDownloadFound": "تم العثور على APK صالح محمّل",
+  "updateApkSkipRedownload": "يوجد APK صالح محمّل، يتم تخطي إعادة التنزيل",
+  "updateNewReleaseDetected": "تم اكتشاف إصدار جديد",
+  "updateApkFileNotFound": "لم يتم العثور على ملف APK المحمّل في المسار",
+  "updateApkSizeMismatch": "عدم تطابق حجم APK المحمّل",
+  "updateErrorCheckingApk": "خطأ أثناء التحقق من APK المحمّل",
+  "updateCleanedOldApk": "تم تنظيف APK القديم",
+  "updateErrorApkCleanup": "خطأ في تنظيف APK",
+  "updateErrorDeletingApk": "خطأ في حذف APK القديم",
+  "updateStartBlockedNoInternet": "تم حظر بدء التحديث - لا يوجد إنترنت",
+  "updateStartBlockedMissingUrl": "تم حظر بدء التحديث - رابط التنزيل مفقود",
+  "updateStartingDownload": "بدء تنزيل تحديث التطبيق",
+  "updateIosNotImplemented": "إعادة توجيه تحديث iOS غير مُنفَّذة بعد",
+  "updateErrorStarting": "خطأ في بدء التحديث",
+  "updateDownloadsDirectoryNotAvailable": "مجلد التنزيلات غير متاح",
+  "updateApkDownloadFailed": "فشل تنزيل APK",
+  "updateApkDownloadedSuccessfully": "تم تنزيل APK بنجاح",
+  "updateApkSizeMismatchAfterDownload": "عدم تطابق حجم APK بعد التنزيل",
+  "updateErrorDownloadingApk": "خطأ أثناء تنزيل APK",
+  "updateApkInstallerLaunched": "تم تشغيل مثبّت APK",
+  "updateErrorLaunchingApk": "فشل تشغيل مثبّت APK",
+  "updateErrorLaunchingApkDetail": "خطأ في تشغيل مثبّت APK",
+  "updateCompletingFlexible": "جارٍ إكمال التحديث المرن",
+  "updateErrorCompleting": "خطأ في إكمال التحديث",
+  "updateErrorCheckingForUpdates": "خطأ أثناء التحقق من التحديثات",
+  "updateErrorReadingVersion": "خطأ في قراءة إصدار التطبيق المثبّت",
+  "updateErrorVersionComparison": "خطأ في مقارنة الإصدارات",
+  "updateCheckingForUpdates": "جارٍ التحقق من التحديثات...",
+  "updateFailedToCheck": "فشل التحقق من التحديثات",
+  "updateAppUpToDateTitle": "التطبيق محدّث",
+  "updateAppUpToDateMsg": "أنت تستخدم أحدث إصدار من NanoSolve Hive.",
+  "updateAvailableTitle": "تحديث متاح",
+  "updateAvailableMsg": "يتوفر إصدار جديد.",
+  "updateGithubDownloadInfo": "سيفتح هذا تنزيل GitHub. بعد الانتهاء، ثبّت APK من مجلد التنزيلات. قد تحتاج إلى السماح بـ «تثبيت التطبيقات من مصادر غير معروفة».",
+  "updateError": "خطأ",
+  "updateStarting": "جارٍ بدء التحديث...",
+  "updateDownloadingProgress": "جارٍ تنزيل APK...",
+  "updateLaunchingInstaller": "جارٍ تشغيل المثبّت...",
+  "updateOpeningInstaller": "جارٍ فتح المثبّت...",
+  "updateDownloadCompleteTitle": "اكتمل التنزيل",
+  "updateDownloadCompleteMsg": "سيفتح المثبّت تلقائياً. إذا لم يفتح، ابحث عن APK في مجلد التنزيلات وانقر عليه للتثبيت.",
+  "updateFailedToStart": "فشل بدء عملية التحديث. يرجى المحاولة لاحقاً أو التنزيل يدوياً.",
+  "updateUnexpectedError": "حدث خطأ غير متوقع",
+  "updateButtonOk": "موافق",
+  "updateButtonLater": "لاحقاً",
+  "updateButtonUpdateNow": "تحديث الآن",
+  "updateDownloadInstructions": "سيفتح هذا تنزيل GitHub. بعد الانتهاء، ثبّت APK من مجلد التنزيلات. قد تحتاج إلى السماح بـ «تثبيت التطبيقات من مصادر غير معروفة».",
+  "updateInstallationCancelledTitle": "تم إلغاء التثبيت",
+  "updateInstallationCancelledMsg": "تم إلغاء تحديث التطبيق. يمكنك إعادة محاولة التثبيت في أي وقت من الإعدادات.",
+  "updateButtonRetryInstall": "إعادة محاولة التثبيت",
+  "updateInstallationSuccessTitle": "اكتمل التحديث",
+  "updateInstallationSuccessMsg": "تم تحديث NanoSolve Hive بنجاح إلى أحدث إصدار.",
+  "aboutVariantLiteBuild": "ENG",
+  "aboutVariantFullBuild": "كل اللغات",
+  "aboutPlatformAndroidFull": "GitHub",
+  "aboutPlatformPlayStore": "Google Play",
+  "aboutPlatformIOS": "iOS",
+
+  "tourCategoryGridBody": "انقر على أي بطاقة لاستكشاف مجالات البحث ونشر أفكار.",
+  "tourHumanPlanetBody": "بدّل بين صحة الإنسان ونظام الكوكب البيئي. انشر أفكاراً للمساهمة في الحلول.",
+  "tourSourcesButtonBody": "الوصول إلى الأبحاث المحكّمة ودراسات الحالة والتقارير القابلة للتنزيل حسب فئة التأثير.",
+  "tourResultsButtonBody": "عرض أفكار المجتمع المصنّفة بالذكاء الاصطناعي. قدّم أفكارك هنا للتنافس على لوحة المتصدرين.",
+  "tourSettingsBody": "إدارة ملفك الشخصي واللغة وتفضيلات التطبيق. انقر لضبط اللغة وخيارات المشاركة والمزيد.",
+  "tourBtnSkip": "تخطي",
+  "tourBtnNext": "التالي",
+  "tourBtnDone": "تم",
+  "tourBtnSkipTour": "تخطي الجولة",
+
+  "downloadingLanguage": "جارٍ تنزيل {languageName}",
+  "@downloadingLanguage": {
+    "description": "Title shown when downloading language files",
+    "placeholders": {
+      "languageName": {
+        "type": "String"
+      }
+    }
+  },
+  "downloadFailed": "فشل التنزيل",
+  "downloadFailedMessage": "تعذّر تنزيل ملفات لغة {languageName}. هل تريد إعادة المحاولة أو استخدام الإنجليزية؟",
+  "@downloadFailedMessage": {
+    "description": "Message shown when PDF or language download fails",
+    "placeholders": {
+      "languageName": {
+        "type": "String"
+      }
+    }
+  },
+  "useEnglish": "استخدام الإنجليزية",
+  "retry": "إعادة المحاولة",
+  "cancel": "إلغاء",
+
+  "failedToLoadPdf": "فشل تحميل PDF",
+  "downloadingPdf": "جارٍ تنزيل PDF...",
+  "pdfLoadingLabel": "جارٍ تحميل PDF...",
+  "pdfSavedSuccess": "✓ تم حفظ PDF بنجاح",
+
+  "profileNameRequired": "يرجى إدخال اسمك الكامل",
+  "profileEmailRequired": "يرجى إدخال عنوان بريدك الإلكتروني",
+  "profileEmailInvalid": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+  "profileRegistered": "تم تسجيل الملف الشخصي بنجاح!",
+
+  "sidebarLang": "اللغة",
+  "sidebarAiChat": "مساعد الذكاء الاصطناعي",
+  "exploreResearchDomains": "مجالات البحث",
+  "exploreHumanTitle": "التأثير على صحة الإنسان",
+  "explorePlanetTitle": "التأثير على أنظمة الأرض",
+  "exploreHumanDesc": "ستة مسارات حرجة يعطل من خلالها تلوث النانوبلاستيك علم الأحياء البشري — من الجهاز العصبي المركزي إلى التنظيم الهرموني.",
+  "explorePlanetDesc": "ستة أنظمة كوكبية تحت تهديد متسارع من تلوث النانوبلاستيك — من سلاسل الغذاء المحيطية إلى الكيمياء الجوية.",
+  "exploreCardCta": "استكشاف",
+  "exploreAllDomains": "كل المجالات",
+  "sourcesLibraryTitle": "مكتبة الأدلة",
+  "sourcesLibrarySubtitle": "المصادر · {domain}",
+  "@sourcesLibrarySubtitle": {
+    "placeholders": {
+      "domain": {}
+    }
+  },
+  "sourcesDescription": "ابحث في أكثر من {count}+ إدخالاً بحثياً منتقىً",
+  "@sourcesDescription": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sourcesSearchPlaceholder": "ابحث في المصادر...",
+  "sourcesNoResults": "لا توجد مصادر تطابق \"{query}\"",
+  "@sourcesNoResults": {
+    "placeholders": {
+      "query": {}
+    }
+  },
+  "sourcesClearSearch": "مسح البحث",
+  "sourcesCountBadge": "{count} مصادر",
+  "@sourcesCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sourcesHeadlineLabel": "العنوان الرئيسي",
+  "sourcesStudiesLabel": "الدراسات",
+  "sourcesAllatraLabel": "تقارير ALLATRA",
+  "sourcesOpenPdf": "فتح PDF ص.{page}",
+  "@sourcesOpenPdf": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      }
+    }
+  },
+  "sourcesOpenInNewTab": "فتح في تبويب جديد",
+  "ideasTitle": "قدّم فكرتك",
+  "ideasSubtitle": "اقترح حلاً. سيقيّم ذكاؤنا الاصطناعي تأثيره.",
+  "ideasCategoryLabel": "الفئة",
+  "ideasIdeaLabel": "فكرتك",
+  "ideasMinChars": "10 أحرف على الأقل",
+  "ideasCharCount": "{count} حرف",
+  "@ideasCharCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ideasAttachmentsLabel": "المرفقات ({count} / 10)",
+  "@ideasAttachmentsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ideasAddFiles": "إضافة ملفات",
+  "ideasAttachHint": "PDF، صور، فيديو — بحد أقصى 95 ميجابايت لكل ملف",
+  "ideasNoAttachments": "لا توجد مرفقات بعد",
+  "ideasSubmitting": "جارٍ الإرسال...",
+  "ideasSuccess": "تم إرسال فكرتك! سنقيّم تأثيرها.",
+  "ideasEmailInlineHint": "أضف بريدك الإلكتروني لتتبع مشاركتك (اختياري)",
+  "ideasEmailInlinePlaceholder": "your@email.com",
+  "leaderboardContributorsTitle": "أبرز المساهمين",
+  "leaderboardContributorsSubtitle": "أفكار مرتبة حسب درجة التأثير المقيَّمة بالذكاء الاصطناعي",
+  "leaderboardRegisterCta": "سجّل للظهور على لوحة المتصدرين",
+  "leaderboardEmpty": "كن أول من يقدّم فكرة مُسجَّلة.",
+  "leaderboardPostIdeaCta": "انشر فكرة",
+  "leaderboardRankHeader": "الترتيب",
+  "leaderboardNameHeader": "الاسم",
+  "leaderboardSpecialtyHeader": "التخصص",
+  "leaderboardIdeasHeader": "الأفكار",
+  "leaderboardScoreHeader": "النقاط",
+  "aiChatTitle": "NanoSolve AI",
+  "aiChatWelcome": "مرحباً! أنا مساعدك البحثي في مجال النانوبلاستيك. اسألني عن التأثيرات الصحية أو استراتيجيات التخفيف أو احصل على مساعدة في تحسين أفكارك.",
+  "aiChatComingSoon": "مساعد الذكاء الاصطناعي قادم قريباً. في الوقت الحالي، استكشف مكتبة الأدلة التي تضم أكثر من 200 مصدر بحثي منتقى.",
+  "aiChatInputPlaceholder": "اسأل عن النانوبلاستيك...",
+  "aiChatOpenLibrary": "فتح مكتبة الأدلة",
+  "aiChatTopic1": "المخاطر الصحية",
+  "aiChatTopic2": "التخفيف",
+  "aiChatTopic3": "الفجوات في الأدلة",
+  "aiChatTopic4": "تحسين فكرتي",
+  "aiChatTopic5": "شرح دراسة",
+  "breadcrumbSeparator": "›",
+  "emailRequired": "البريد الإلكتروني مطلوب للمتابعة.",
+  "selectCategoryFirst": "يرجى اختيار فئة أولاً.",
+  "landingBrandSubtitle": "منصة النانوبلاستيك",
+  "landingNavWhy": "لماذا يعمل",
+  "landingNavHow": "كيف يعمل",
+  "landingNavDownload": "تنزيل",
+  "landingLaunchWorkspace": "تشغيل مساحة العمل",
+  "landingBadgePlatforms": "iOS · Android · GitHub",
+  "landingHeroTitle": "افهم النانوبلاستيك.\nتصرّف بناءً على الأدلة.",
+  "landingHeroSubtitle": "تحوّل NanoSolve Hive الأبحاث العلمية الكثيفة إلى تجربة موجَّهة حتى تتعلم بسرعة وتشارك أفكاراً وتساهم في حل مشكلات بيئية حقيقية.",
+  "landingGooglePlayCta": "احصل عليه من Google Play",
+  "landingGithubBuildCta": "إصدار GitHub",
+  "landingHeroFootnote": "إذا كان Google Play مقيّداً في بلدك، استخدم إصدار GitHub. يُتابَع إصدار iOS عبر GitHub Releases.",
+  "landingHeroEvidenceNote": "رؤى مستقلة مبنية على الأدلة لصحة الإنسان والكوكب.",
+  "landingWhyTitle": "لماذا يواصل المستخدمون الجدد استخدام NanoSolve Hive",
+  "landingWhySubtitle": "التطبيق مصمم لتقليل الاحتكاك عند الاستخدام الأول: فئات واضحة، تنقل سريع، وإجراءات عملية بدلاً من النظريات المعقدة.",
+  "landingWhyFeatureStructuredTitle": "علم منظّم، لا مقالات عشوائية",
+  "landingWhyFeatureStructuredDesc": "تأثيرات الصحة والكوكب منظّمة في فئات مركّزة حتى يفهم المستخدمون الموضوعات المعقدة دون الضياع.",
+  "landingWhyFeatureActionableTitle": "قابل للتطبيق من اليوم الأول",
+  "landingWhyFeatureActionableDesc": "تتضمن كل فئة مساحة عصف ذهني حيث يمكن للمستخدمين تقديم أفكار والمساعدة في تشكيل حلول مجتمعية.",
+  "landingWhyFeatureTrustTitle": "التعامل مع البيانات بثقة",
+  "landingWhyFeatureTrustDesc": "تظل سياسة الخصوصية على بعد نقرة واحدة دائماً، حتى يعرف المستخدمون بالضبط ما يُجمَع ولماذا. أفكار المستخدمين بموجب CC BY 4.0 — مجانية للبحث والمنفعة العامة.",
+  "landingWhyFeatureMetaGraphTitle": "تسريع البحث باستخدام Meta-Graph Agentic",
+  "landingWhyFeatureMetaGraphDesc": "رسم بياني للمعرفة الوصفية لمهام سير عمل البحث الآلي بالذكاء الاصطناعي.\nحالياً في مرحلة التطوير التجريبية.",
+  "landingCategoriesTitle": "استكشف جميع فئات البحث الـ 12",
+  "landingCategoriesSubtitle": "انتقل مباشرة إلى مساحة العمل التفاعلية. تحمّل كل فئة الأدلة الكاملة وروابط المصادر ومنطقة العصف الذهني.",
+  "landingOpenWorkspace": "فتح مساحة العمل",
+  "landingFooterCopyright": "© 2024–2026 Martin Durak. جميع الحقوق محفوظة.",
+  "landingFooterGithub": "مستودع GitHub",
+  "landingFooterReleases": "سجل الإصدارات",
+  "landingFooterPrivacy": "سياسة الخصوصية",
+  "webWorkspaceFindingAdded": "تمت إضافة النتيجة إلى نموذج نشر الفكرة.",
+  "webWorkspaceInvalidSourceLink": "رابط المصدر غير صالح.",
+  "webWorkspaceOpenSourceFailed": "تعذّر فتح رابط المصدر في تبويب جديد.",
+  "webTopbarWorkspace": "مساحة العمل",
+  "webTopbarHome": "الرئيسية",
+  "webTopbarLeaderboard": "لوحة المتصدرين",
+  "webSidebarCollapse": "طيّ الشريط الجانبي",
+  "webSidebarExpand": "توسيع الشريط الجانبي",
+  "webCategoryShowcaseTitle": "فئات البحث",
+  "webStudyCount": "{count} دراسة",
+  "@webStudyCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "webSettingsPreferences": "التفضيلات",
+  "webSettingsLanguageBlock": "اللغة",
+  "webSettingsConnectBlock": "التواصل",
+  "webSettingsDownloadBlock": "التنزيل",
+  "webSettingsAboutBlock": "حول",
+  "webIdeasTemplateFinding": "استناداً إلى نتيجة: \"{finding}\"",
+  "@webIdeasTemplateFinding": {
+    "placeholders": {
+      "finding": {}
+    }
+  },
+  "webIdeasTemplateCategory": "الفئة: {category}",
+  "@webIdeasTemplateCategory": {
+    "placeholders": {
+      "category": {}
+    }
+  },
+  "webIdeasTemplateProblem": "المشكلة:",
+  "webIdeasTemplateSolution": "الحل المقترح:",
+  "webIdeasBasedOn": "استناداً إلى: {value}",
+  "@webIdeasBasedOn": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "webIdeasCharacterStatus": "{count} حرف / {minimum}",
+  "@webIdeasCharacterStatus": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "minimum": {}
+    }
+  },
+  "webIdeasMaxAttachments": "الحد الأقصى {count} مرفقات مسموح.",
+  "@webIdeasMaxAttachments": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "webIdeasFileTooLarge": "{fileName} كبير جداً (الحد الأقصى {maxMb} ميجابايت).",
+  "@webIdeasFileTooLarge": {
+    "placeholders": {
+      "fileName": {},
+      "maxMb": {
+        "type": "int"
+      }
+    }
+  },
+  "webDiscoveriesTitle": "أحدث الاكتشافات",
+  "webEvidenceByTopicTitle": "الأدلة حسب الموضوع",
+  "webStudyLabel": "دراسة",
+  "webJoinEffortTitle": "انضم إلى الجهد",
+  "webJoinEffortSubtitle": "كل مساهمة تقوّي المجتمع وتطوّر الرسم البياني للمعرفة.",
+  "webPostIdeaTitle": "انشر فكرة",
+  "webPostIdeaDesc": "ساهم بحل أو فرضية. تصبح فكرتك جزءاً من الرسم البياني للمعرفة في الفئة.",
+  "webViewSourcesTitle": "عرض جميع المصادر",
+  "webViewSourcesDesc": "{count} ورقة بحثية محكّمة. الفلترة حسب الموضوع أو السنة أو المجلة.",
+  "@webViewSourcesDesc": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "webSparkIdeaTooltip": "استلهم فكرة من هذه النتيجة",
+  "webShowLess": "عرض أقل",
+  "webShowMore": "عرض {count} أكثر",
+  "@webShowMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}

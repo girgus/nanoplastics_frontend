@@ -419,7 +419,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final verticalPadding =
         responsive.isLandscape ? math.min(spacing.xs, 4.0) : spacing.xs;
 
-    return Padding(
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Padding(
       padding: EdgeInsets.symmetric(
         horizontal: horizontalPadding,
         vertical: verticalPadding,
@@ -463,6 +465,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           );
         }).toList(),
       ),
+    ),
     );
   }
 

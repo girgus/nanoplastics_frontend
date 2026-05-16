@@ -168,12 +168,13 @@ class _MainScreenState extends State<MainScreen> {
                         center: Alignment.center,
                         radius: 1.3,
                         colors: [
-                          AppThemeColors.of(context)
-                              .pageBackground
-                              .withValues(alpha: 0.35),
-                          AppThemeColors.of(context)
-                              .pageBackground
-                              .withValues(alpha: 0.65),
+                          AppThemeColors.of(context).pageBackground.withValues(
+                              alpha: AppThemeColors.of(context)
+                                      .backgroundOverlayAlpha *
+                                  0.7),
+                          AppThemeColors.of(context).pageBackground.withValues(
+                              alpha: AppThemeColors.of(context)
+                                  .backgroundOverlayAlpha),
                         ],
                         stops: const [0.0, 1.0],
                       ),
@@ -181,7 +182,7 @@ class _MainScreenState extends State<MainScreen> {
                   )
                 : Container(
                     color: AppThemeColors.of(context).pageBackground.withValues(
-                        alpha: AppThemeColors.of(context).isDark ? 0.45 : 0.45),
+                        alpha: AppThemeColors.of(context).backgroundOverlayAlpha),
                   ),
           ),
           // Main content

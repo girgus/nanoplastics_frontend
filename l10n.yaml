@@ -4,8 +4,9 @@ output-localization-file: app_localizations.dart
 output-dir: lib/l10n
 untranslated-messages-file: ./untranslated-messages-file.txt
 preferred-supported-locales:
-  - cs
+  - ar
   - en
   - es
   - fr
   - ru
+  - cs

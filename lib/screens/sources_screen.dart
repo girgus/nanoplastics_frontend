@@ -80,30 +80,38 @@ class _SourcesScreenState extends State<SourcesScreen> {
             stops: const [0.0, 0.4, 1.0],
           ),
         ),
-        child: SafeArea(
-          child: Center(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: PlatformAdaptive.contentMaxWidth(context),
-              ),
-              child: Column(
-                children: [
-                  const ScreenHeader(),
-                  _SourcesScreenTabs(
-                    selectedTab: _selectedTab,
-                    onTabChanged: (tab) => setState(() => _selectedTab = tab),
+        child: Column(
+          children: [
+            SafeArea(
+              bottom: false,
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: PlatformAdaptive.contentMaxWidth(context),
                   ),
-                  Expanded(
-                    child: switch (_selectedTab) {
-                      SourceType.webLinks => _buildWebLinksTab(),
-                      SourceType.reportLinks => _buildReportTab(),
-                      SourceType.videoLinks => _buildVideoLinksTab(),
-                    },
-                  ),
-                ],
+                  child: const ScreenHeader(),
+                ),
               ),
             ),
-          ),
+            _SourcesScreenTabs(
+              selectedTab: _selectedTab,
+              onTabChanged: (tab) => setState(() => _selectedTab = tab),
+            ),
+            Expanded(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: PlatformAdaptive.contentMaxWidth(context),
+                  ),
+                  child: switch (_selectedTab) {
+                    SourceType.webLinks => _buildWebLinksTab(),
+                    SourceType.reportLinks => _buildReportTab(),
+                    SourceType.videoLinks => _buildVideoLinksTab(),
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -115,6 +123,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
     final sizing = AppSizing.of(context);
     final typography = AppTypography.of(context);
     final userLang = SettingsManager().userLanguage;
+    final reportLang = userLang == 'ar' ? 'en' : userLang;
 
     List<PDFSource> sortSources(List<PDFSource> sources) {
       final newItems = sources.where((s) => s.isNew).toList();
@@ -128,21 +137,21 @@ class _SourcesScreenState extends State<SourcesScreen> {
         title: l10n.sourcesSectionHumanHealth,
         icon: Icons.favorite_outline,
         sources: sortSources(
-            humanHealthSources.where((s) => s.language == userLang).toList()),
+            humanHealthSources.where((s) => s.language == reportLang).toList()),
       ),
       (
         section: WebLinkSection.earthPollution,
         title: l10n.sourcesSectionEarthPollution,
         icon: Icons.public,
         sources: sortSources(
-            earthPollutionSources.where((s) => s.language == userLang).toList()),
+            earthPollutionSources.where((s) => s.language == reportLang).toList()),
       ),
       (
         section: WebLinkSection.waterAbilities,
         title: l10n.sourcesSectionWaterAbilities,
         icon: Icons.water_drop_outlined,
         sources: sortSources(
-            waterAbilitiesSources.where((s) => s.language == userLang).toList()),
+            waterAbilitiesSources.where((s) => s.language == reportLang).toList()),
       ),
     ];
 
@@ -778,28 +787,32 @@ class _SourcesScreenTabs extends StatelessWidget {
     final sizing = AppSizing.of(context);
     final typography = AppTypography.of(context);
 
-    return Stack(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: spacing.tabMarginH),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // ── Segmented tab bar: Web | R | Video (connected borders) ──
-              Padding(
-                padding: EdgeInsets.only(
-                  top: sizing.tabMarginV,
-                  bottom: spacing.tabInnerPadding,
+    return SizedBox(
+      width: double.infinity,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: spacing.tabMarginH),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ── Segmented tab bar: Web | R | Video (connected borders) ──
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: sizing.tabMarginV,
+                    bottom: spacing.tabInnerPadding,
+                  ),
+                  child: _buildSegmentedTabs(context, spacing, typography),
                 ),
-                child: _buildSegmentedTabs(context, spacing, typography),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        ...GlowingHeaderSeparator.build(
-          glowColor: AppColors.energy,
-        ),
-      ],
+          ...GlowingHeaderSeparator.build(
+            glowColor: AppColors.energy,
+          ),
+        ],
+      ),
     );
   }
 

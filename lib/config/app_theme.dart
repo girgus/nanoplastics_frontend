@@ -20,23 +20,52 @@ extension CustomTextStyles on TextTheme {
 
 class AppTheme {
   static ThemeData get lightTheme {
-    // Ocean Blue — vibrant mid-dark blue, unmistakably distinct from near-black dark mode.
-    // Brightness.light is kept so AppThemeColors.isDark = false, while all
-    // surfaces use ocean blue values from AppThemeColors.
-    const Color blueCard = Color(0xFF0A3350);
-    const Color textMain =
-        AppColors.textMain; // white (good contrast on dark blue)
-    const Color textMuted = Color(0xFF8EC8E0); // cyan-blue muted
+    // Daylight Biosphere — genuinely light theme with near-white mint background
+    // and deep forest text. Brightness.light kept so AppThemeColors.isDark = false.
+    // All surface colors are driven by AppThemeColors tokens; these Material
+    // defaults handle system widgets (TextField, Dialog, AppBar, etc.).
+    const Color scaffoldBg = Color(0xFFF5F9F8); // near-white mint
+    const Color cardBg = Colors.white;
+    const Color textMain = Color(0xFF1A2E28); // deep forest
+    const Color textMuted = Color(0xFF4A7165); // muted green
 
     return ThemeData(
       brightness: Brightness.light,
-      scaffoldBackgroundColor: const Color(0xFF0C3D5C),
-      primaryColor: AppColors.accent,
+      scaffoldBackgroundColor: scaffoldBg,
+      primaryColor: AppColors.neonCyan,
       colorScheme: const ColorScheme.light(
-        primary: AppColors.accent,
-        surface: blueCard,
+        primary: AppColors.neonCyan,
+        surface: cardBg,
+        onSurface: textMain,
+        onPrimary: Colors.white,
       ),
       fontFamily: 'SF Pro',
+      cardTheme: CardThemeData(
+        color: cardBg,
+        elevation: 0,
+        shadowColor: const Color(0xFF1A2E28).withValues(alpha: 0.08),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: const Color(0xFFE3EEE9),
+        hintStyle: const TextStyle(color: Color(0xFF7AA096)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFF1A2E28), width: 0.5),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+              BorderSide(color: const Color(0xFF1A2E28).withValues(alpha: 0.15)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.neonCyan, width: 1.5),
+        ),
+      ),
       textTheme: const TextTheme(
         displayLarge: TextStyle(
           fontSize: 30,
@@ -128,7 +157,8 @@ class AppTheme {
         ),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: blueCard,
+        backgroundColor: scaffoldBg,
+        foregroundColor: textMain,
         elevation: 0,
       ),
     );

@@ -8,11 +8,12 @@ import '../main.dart';
 mixin LanguageSelectionMixin<T extends StatefulWidget> on State<T> {
   /// List of supported languages with flags and codes.
   static const List<Map<String, String>> supportedLanguages = [
+    {'code': 'ar', 'flag': '🇸🇦', 'name': 'العربية'},
     {'code': 'en', 'flag': '🇺🇸', 'name': 'English'},
-    {'code': 'cs', 'flag': '🇨🇿', 'name': 'Čeština'},
     {'code': 'es', 'flag': '🇪🇸', 'name': 'Español'},
     {'code': 'fr', 'flag': '🇫🇷', 'name': 'Français'},
     {'code': 'ru', 'flag': '🇷🇺', 'name': 'Русский'},
+    {'code': 'cs', 'flag': '🇨🇿', 'name': 'Čeština'},
   ];
 
   late SettingsManager settingsManager;

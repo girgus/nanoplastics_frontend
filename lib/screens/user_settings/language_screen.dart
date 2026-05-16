@@ -23,15 +23,17 @@ class _LanguageScreenState extends State<LanguageScreen>
     with LanguageSelectionMixin {
   final List<LanguageOption> _languages = [
     const LanguageOption(
-        code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸'),
+        code: 'ar', name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦'),
     const LanguageOption(
-        code: 'cs', name: 'Czech', nativeName: 'Čeština', flag: '🇨🇿'),
+        code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸'),
     const LanguageOption(
         code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸'),
     const LanguageOption(
         code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷'),
     const LanguageOption(
         code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺'),
+    const LanguageOption(
+        code: 'cs', name: 'Czech', nativeName: 'Čeština', flag: '🇨🇿'),
   ];
 
   @override
