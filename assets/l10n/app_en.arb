@@ -470,6 +470,21 @@
   "profileEmailRequired": "Please enter your email address",
   "profileEmailInvalid": "Please enter a valid email address",
   "profileRegistered": "Profile registered successfully!",
+  "profileRegJoinTitle": "Join the Community",
+  "profileRegJoinSubtitle": "Share your profile to get recognized on the leaderboard",
+  "profileRegSpecialtyLabel": "Specialty (Optional)",
+  "profileRegSpecialtyHint": "e.g., Environmental Science",
+  "profileRegDataSecure": "Your data is secure and will only be used for the leaderboard",
+  "profileRegSkip": "Skip",
+  "profileRegSubmit": "Register",
+  "profileRegSaveError": "Error saving profile: {error}",
+  "@profileRegSaveError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
 
   "sidebarLang": "Language",
   "sidebarAiChat": "AI Assistant",

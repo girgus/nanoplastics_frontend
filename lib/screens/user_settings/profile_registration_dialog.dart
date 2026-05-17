@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 import '../../config/app_colors.dart';
 import '../../config/app_constants.dart';
 import '../../utils/app_sizing.dart';
@@ -48,14 +49,14 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
   }
 
   void _saveProfile() async {
+    final l10n = AppLocalizations.of(context)!;
     final trimmedName = _nameController.text.trim();
     final trimmedEmail = _emailController.text.trim();
 
-    // Validation
     if (trimmedName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter your full name'),
+        SnackBar(
+          content: Text(l10n.profileNameRequired),
           backgroundColor: Colors.red,
         ),
       );
@@ -64,19 +65,18 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
 
     if (trimmedEmail.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter your email address'),
+        SnackBar(
+          content: Text(l10n.profileEmailRequired),
           backgroundColor: Colors.red,
         ),
       );
       return;
     }
 
-    // Email validation
     if (!_isValidEmail(trimmedEmail)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid email address'),
+        SnackBar(
+          content: Text(l10n.profileEmailInvalid),
           backgroundColor: Colors.red,
         ),
       );
@@ -93,8 +93,8 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Profile registered successfully!'),
+          SnackBar(
+            content: Text(l10n.profileRegistered),
             backgroundColor: Colors.green,
           ),
         );
@@ -104,7 +104,7 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error saving profile: $e'),
+            content: Text(l10n.profileRegSaveError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -125,6 +125,7 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.all(AppConstants.space20),
@@ -200,7 +201,7 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
                   colors: [AppColors.pastelMint, AppColors.pastelAqua],
                 ).createShader(bounds),
                 child: Text(
-                  'Join the Community',
+                  l10n.profileRegJoinTitle,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w900,
@@ -212,7 +213,7 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
               ),
               const SizedBox(height: AppConstants.space8),
               Text(
-                'Share your profile to get recognized on the leaderboard',
+                l10n.profileRegJoinSubtitle,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppThemeColors.of(context).textMuted,
                       height: 1.4,
@@ -225,26 +226,24 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
               // Name Field
               _buildTextField(
                 controller: _nameController,
-                label: 'Full Name',
-                hint: 'Enter your name',
+                label: l10n.profileDisplayName,
+                hint: l10n.profileDisplayNameHint,
                 icon: Icons.person_outline,
               ),
               const SizedBox(height: AppConstants.space16),
 
-              // Email Field
               _buildTextField(
                 controller: _emailController,
-                label: 'Email',
-                hint: 'Enter your email',
+                label: l10n.profileEmail,
+                hint: l10n.profileEmailHint,
                 icon: Icons.email_outlined,
               ),
               const SizedBox(height: AppConstants.space16),
 
-              // Specialty Field
               _buildTextField(
                 controller: _specialtyController,
-                label: 'Specialty (Optional)',
-                hint: 'e.g., Environmental Science',
+                label: l10n.profileRegSpecialtyLabel,
+                hint: l10n.profileRegSpecialtyHint,
                 icon: Icons.science_outlined,
               ),
               const SizedBox(height: AppConstants.space24),
@@ -271,7 +270,7 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
                     const SizedBox(width: AppConstants.space8),
                     Expanded(
                       child: Text(
-                        'Your data is secure and will only be used for the leaderboard',
+                        l10n.profileRegDataSecure,
                         style:
                             Theme.of(context).textTheme.labelMedium?.copyWith(
                                   color: AppThemeColors.of(context).textMuted,
@@ -299,7 +298,7 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
                             vertical: AppConstants.space12),
                       ),
                       child: Text(
-                        'Skip',
+                        l10n.profileRegSkip,
                         style: TextStyle(
                           color: AppThemeColors.of(context).textMuted,
                           fontWeight: FontWeight.w600,
@@ -334,9 +333,9 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
                                 ),
                               ),
                             )
-                          : const Text(
-                              'Register',
-                              style: TextStyle(
+                          : Text(
+                              l10n.profileRegSubmit,
+                              style: const TextStyle(
                                 color: Color(0xFF0A0A12),
                                 fontWeight: FontWeight.w700,
                               ),
