@@ -13,6 +13,7 @@ class FakeApiService extends Fake implements ApiService {
       rank: i + 1,
       name: 'Solver ${i + 1}',
       solutionsCount: 10 - i,
+      totalScore: 0,
       rating: 5.0 - i * 0.1,
       specialty: 'Biology',
       isRegistered: true,

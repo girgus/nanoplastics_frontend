@@ -41,22 +41,25 @@ class ScreenHeader extends StatelessWidget {
             width: double.infinity,
             child: InkWell(
               onTap: onBack ?? () => Navigator.of(context).maybePop(),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.arrow_back_ios,
-                      color: themeColors.textMain, size: sizing.backIcon),
-                  const SizedBox(width: AppConstants.space4),
-                  Flexible(
-                    child: Text(
-                      label,
-                      style: typography.back.copyWith(color: themeColors.textMain),
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
-                      softWrap: true,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: sizing.minTouchTarget),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.arrow_back_ios,
+                        color: themeColors.textMain, size: sizing.backIcon),
+                    const SizedBox(width: AppConstants.space4),
+                    Flexible(
+                      child: Text(
+                        label,
+                        style: typography.back.copyWith(color: themeColors.textMain),
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                        softWrap: true,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

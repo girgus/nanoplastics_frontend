@@ -125,8 +125,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
           label: 'Back',
           child: InkWell(
             onTap: () => Navigator.of(context).maybePop(),
-            child: const Icon(Icons.arrow_back_ios,
-                color: AppColors.pastelAqua, size: 20),
+            child: const SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Icon(Icons.arrow_back_ios,
+                  color: AppColors.pastelAqua, size: 20),
+            ),
           ),
         ),
         title: Text(

@@ -61,6 +61,10 @@ class ResolvedPdf {
   const ResolvedPdf({required this.isAsset, required this.path});
 }
 
+/// Languages that have a report PDF available (bundled or on server).
+/// Any other language falls back to English.
+const _supportedReportLangs = {'en', 'cs', 'es', 'fr', 'ru'};
+
 /// Resolves the main report PDF for the current (or given) language.
 ///
 /// - EN is always loaded from bundled assets.
@@ -68,8 +72,10 @@ class ResolvedPdf {
 ///   are loaded from bundled assets.
 /// - Otherwise: check local download cache first, return null if missing
 ///   (caller must trigger a download).
+/// - Languages with no report (e.g. Arabic) fall back to EN.
 Future<ResolvedPdf?> resolveMainReport([String? langCode]) async {
-  final code = (langCode ?? SettingsManager().userLanguage).toLowerCase();
+  final raw = (langCode ?? SettingsManager().userLanguage).toLowerCase();
+  final code = _supportedReportLangs.contains(raw) ? raw : 'en';
 
   // EN is always bundled; in full build all langs are bundled
   if (code == 'en' || BuildConfig.bundleAllLangs) {
@@ -167,7 +173,8 @@ Future<String> downloadReport(
 /// Convenience: returns the asset path string for EN.
 /// For code that only needs the simple EN path (backwards compat).
 String getMainReportPath([String? langCode]) {
-  final code = (langCode ?? SettingsManager().userLanguage).toLowerCase();
+  final raw = (langCode ?? SettingsManager().userLanguage).toLowerCase();
+  final code = _supportedReportLangs.contains(raw) ? raw : 'en';
   if (code == 'en') {
     return getMainReportAssetPath();
   }

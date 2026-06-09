@@ -324,28 +324,31 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
             width: double.infinity,
             child: InkWell(
               onTap: () => Navigator.of(context).maybePop(),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.arrow_back_ios,
-                    color: AppThemeColors.of(context).textMain,
-                    size: sizing.backIcon,
-                  ),
-                  const SizedBox(width: AppConstants.space4),
-                  Flexible(
-                    child: Text(
-                      l10n.categoryDetailBackToOverview,
-                      style: typography.back.copyWith(
-                        color: AppThemeColors.of(context).textMain,
-                        fontSize: backFontSize,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
-                      softWrap: true,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: sizing.minTouchTarget),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.arrow_back_ios,
+                      color: AppThemeColors.of(context).textMain,
+                      size: sizing.backIcon,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: AppConstants.space4),
+                    Flexible(
+                      child: Text(
+                        l10n.categoryDetailBackToOverview,
+                        style: typography.back.copyWith(
+                          color: AppThemeColors.of(context).textMain,
+                          fontSize: backFontSize,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -422,6 +425,10 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
             ),
           ],
           _buildHeroIcon(),
+          if (widget.categoryData.categoryKey == 'planet_ocean') ...[
+            const SizedBox(height: AppConstants.space20),
+            _buildExploreOceanButton(),
+          ],
           _buildInfoPanel(),
           const SizedBox(height: AppConstants.space30),
         ],
@@ -608,6 +615,66 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
                 size: sizing.iconXs,
                 color: themeColor.withValues(alpha: 0.7),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExploreOceanButton() {
+    final themeColor = widget.categoryData.themeColor;
+    final typography = AppTypography.of(context);
+    final sizing = AppSizing.of(context);
+
+    return Semantics(
+      button: true,
+      label: 'Explore Microplastics Data',
+      child: InkWell(
+        onTap: () {
+          LoggerService().logUserAction('microplastics_explorer_opened',
+              params: {'category': widget.categoryData.categoryKey});
+          // TODO: navigate to MicroplasticsExplorerScreen once implemented
+        },
+        excludeFromSemantics: true,
+        borderRadius: BorderRadius.circular(AppConstants.radiusXL),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(
+              vertical: sizing.radiusLg, horizontal: sizing.radiusMd),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                themeColor.withValues(alpha: 0.22),
+                themeColor.withValues(alpha: 0.08),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(AppConstants.radiusXL),
+            border: Border.all(color: themeColor.withValues(alpha: 0.45)),
+            boxShadow: [
+              BoxShadow(
+                color: themeColor.withValues(alpha: 0.18),
+                blurRadius: 24,
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.waves_outlined, color: themeColor, size: sizing.iconSm),
+              const SizedBox(width: AppConstants.space8),
+              Text(
+                'EXPLORE MICROPLASTICS DATA',
+                style: typography.label.copyWith(
+                  color: themeColor,
+                  letterSpacing: 1.5,
+                ),
+              ),
+              const SizedBox(width: AppConstants.space8),
+              Icon(Icons.arrow_forward_ios,
+                  color: themeColor.withValues(alpha: 0.7),
+                  size: sizing.iconXs),
             ],
           ),
         ),

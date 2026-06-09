@@ -306,8 +306,8 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
       final sanitizedTitle =
           widget.title.replaceAll(RegExp(r'[^\w\s-]'), '').replaceAll(' ', '_');
 
-      // On iOS, use application documents directory (more persistent than temp)
-      final saveDir = await getApplicationDocumentsDirectory();
+      // Use temp directory — accessible to share extensions on iOS
+      final saveDir = await getTemporaryDirectory();
       final tempFile = File('${saveDir.path}/Nanoplastics_$sanitizedTitle.pdf');
       await tempFile.writeAsBytes(bytes);
 
@@ -321,20 +321,13 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
           : const Rect.fromLTWH(0, 0, 1, 1);
 
       await Share.shareXFiles(
-        [XFile(tempFile.path)],
+        [XFile(tempFile.path, mimeType: 'application/pdf')],
         subject: widget.title,
         sharePositionOrigin: origin,
       );
 
       LoggerService().logUserAction('pdf_shared', params: {
         'title': widget.title,
-      });
-
-      // Clean up after share (with small delay to ensure share completes)
-      Future.delayed(const Duration(seconds: 2), () {
-        try {
-          tempFile.deleteSync();
-        } catch (_) {}
       });
     } catch (e) {
       LoggerService().logError('PDFShareFailed', e);
@@ -524,7 +517,10 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
               flex: 1,
               child: InkWell(
                 onTap: () => Navigator.of(context).maybePop(),
-                child: Padding(
+                child: ConstrainedBox(
+                  constraints:
+                      BoxConstraints(minHeight: sizing.minTouchTarget),
+                  child: Padding(
                   padding: isPortrait
                       ? EdgeInsets.symmetric(
                           horizontal: spacing.xs, vertical: spacing.xs)
@@ -561,6 +557,7 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
                           color: AppThemeColors.of(context).textMain,
                           size: sizing.iconXss,
                         ),
+                  ),
                 ),
               ),
             ),

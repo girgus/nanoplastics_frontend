@@ -4,8 +4,10 @@ class Solver {
   final int rank;
   final String name;
   final int solutionsCount;
+  final int totalScore;
   final double rating;
   final String specialty;
+  final String? category;
   final bool isRegistered;
   final bool hasAbstract;
 
@@ -13,8 +15,10 @@ class Solver {
     required this.rank,
     required this.name,
     required this.solutionsCount,
+    required this.totalScore,
     required this.rating,
     required this.specialty,
+    this.category,
     required this.isRegistered,
     required this.hasAbstract,
   });

@@ -133,26 +133,30 @@ class _UserSettingsScreenState extends State<UserSettingsScreen>
                 Expanded(
                   child: InkWell(
                     onTap: () => Navigator.of(context).maybePop(),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.arrow_back_ios,
-                          color: AppThemeColors.of(context).textMain,
-                          size: sizing.backIcon,
-                        ),
-                        const SizedBox(width: AppConstants.space4),
-                        Flexible(
-                          child: Text(
-                            _l10n.categoryDetailBackToOverview,
-                            style: typography.back.copyWith(
-                                color: AppThemeColors.of(context).textMain),
-                            maxLines: 2,
-                            overflow: TextOverflow.fade,
-                            softWrap: true,
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: sizing.minTouchTarget),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.arrow_back_ios,
+                            color: AppThemeColors.of(context).textMain,
+                            size: sizing.backIcon,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: AppConstants.space4),
+                          Flexible(
+                            child: Text(
+                              _l10n.categoryDetailBackToOverview,
+                              style: typography.back.copyWith(
+                                  color: AppThemeColors.of(context).textMain),
+                              maxLines: 2,
+                              overflow: TextOverflow.fade,
+                              softWrap: true,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -9,6 +9,7 @@ import '../utils/app_theme_colors.dart';
 import '../widgets/nanosolve_logo.dart';
 import '../services/service_locator.dart';
 import '../models/solver_idea.dart';
+import 'solver_idea_detail_screen.dart';
 
 class SolverIdeasScreen extends StatefulWidget {
   final String solverName;
@@ -98,45 +99,50 @@ class _SolverIdeasScreenState extends State<SolverIdeasScreen> {
           children: [
             InkWell(
               onTap: () => Navigator.of(context).maybePop(),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.arrow_back_ios,
-                      color: AppThemeColors.of(context).textMain,
-                      size: sizing.backIcon),
-                  const SizedBox(width: AppConstants.space4),
-                  Flexible(
-                    child: Text(
-                      widget.solverName,
-                      style: typography.back.copyWith(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: sizing.minTouchTarget),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.arrow_back_ios,
                         color: AppThemeColors.of(context).textMain,
+                        size: sizing.backIcon),
+                    const SizedBox(width: AppConstants.space4),
+                    Flexible(
+                      child: Text(
+                        widget.solverName,
+                        style: typography.back.copyWith(
+                          color: AppThemeColors.of(context).textMain,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  const SizedBox(width: AppConstants.space8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppConstants.space8,
-                        vertical: AppConstants.space2),
-                    decoration: BoxDecoration(
-                      color: rankColor().withValues(alpha: 0.15),
-                      borderRadius:
-                          BorderRadius.circular(AppConstants.radiusSmall),
-                      border:
-                          Border.all(color: rankColor().withValues(alpha: 0.5)),
+                    const SizedBox(width: AppConstants.space8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppConstants.space8,
+                          vertical: AppConstants.space2),
+                      decoration: BoxDecoration(
+                        color: rankColor().withValues(alpha: 0.15),
+                        borderRadius:
+                            BorderRadius.circular(AppConstants.radiusSmall),
+                        border: Border.all(
+                            color: rankColor().withValues(alpha: 0.5)),
+                      ),
+                      child: Text(
+                        '#${widget.rank}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(
+                              color: rankColor(),
+                              fontWeight: FontWeight.w900,
+                            ),
+                      ),
                     ),
-                    child: Text(
-                      '#${widget.rank}',
-                      style:
-                          Theme.of(context).textTheme.labelMedium!.copyWith(
-                                color: rankColor(),
-                                fontWeight: FontWeight.w900,
-                              ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             SizedBox(height: spacing.headerSpacing),
@@ -230,13 +236,20 @@ class _SolverIdeasScreenState extends State<SolverIdeasScreen> {
   }
 
   Widget _buildIdeaCard(BuildContext context, SolverIdea idea) {
-    return Container(
+    final hasDetail = idea.description.isNotEmpty;
+    final cardRadius = BorderRadius.circular(AppConstants.radiusLarge);
+
+    final card = Container(
       margin: const EdgeInsets.only(bottom: AppConstants.space12),
       padding: const EdgeInsets.all(AppConstants.space16),
       decoration: BoxDecoration(
         color: AppThemeColors.of(context).cardBackground.withValues(alpha: 0.8),
-        borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+        borderRadius: cardRadius,
+        border: Border.all(
+          color: hasDetail
+              ? AppColors.pastelMint.withValues(alpha: 0.3)
+              : Colors.white.withValues(alpha: 0.1),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,36 +260,71 @@ class _SolverIdeasScreenState extends State<SolverIdeasScreen> {
                   color: AppThemeColors.of(context).textMain,
                   height: 1.5,
                 ),
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
           ),
-          if (idea.category != null) ...[
-            const SizedBox(height: AppConstants.space10),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.space8,
-                  vertical: AppConstants.space2),
-              decoration: BoxDecoration(
-                color: AppColors.pastelMint.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
-                border:
-                    Border.all(color: AppColors.pastelMint.withValues(alpha: 0.3)),
-              ),
-              child: Text(
-                idea.category!,
-                style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                      color: AppColors.pastelMint,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            ),
-          ],
-          const SizedBox(height: AppConstants.space8),
-          Text(
-            idea.createdAt,
-            style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                  color: AppThemeColors.of(context).textMuted,
+          const SizedBox(height: AppConstants.space10),
+          Row(
+            children: [
+              if (idea.category != null) ...[
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppConstants.space8,
+                      vertical: AppConstants.space2),
+                  decoration: BoxDecoration(
+                    color: AppColors.pastelMint.withValues(alpha: 0.15),
+                    borderRadius:
+                        BorderRadius.circular(AppConstants.radiusSmall),
+                    border: Border.all(
+                        color: AppColors.pastelMint.withValues(alpha: 0.3)),
+                  ),
+                  child: Text(
+                    idea.category!,
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                          color: AppColors.pastelMint,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
                 ),
+                const SizedBox(width: AppConstants.space8),
+              ],
+              Expanded(
+                child: Text(
+                  idea.createdAt,
+                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                        color: AppThemeColors.of(context).textMuted,
+                      ),
+                ),
+              ),
+              if (hasDetail)
+                Icon(
+                  Icons.chevron_right,
+                  size: AppConstants.iconSmall,
+                  color: AppColors.pastelMint.withValues(alpha: 0.7),
+                ),
+            ],
           ),
         ],
+      ),
+    );
+
+    if (!hasDetail) return card;
+
+    return Semantics(
+      button: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: cardRadius,
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => SolverIdeaDetailScreen(
+              idea: idea,
+              solverName: widget.solverName,
+              rank: widget.rank,
+            ),
+          )),
+          child: card,
+        ),
       ),
     );
   }

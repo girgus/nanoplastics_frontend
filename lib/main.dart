@@ -185,6 +185,33 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp>
       routes: {
         '/privacy': (_) => const WebPrivacyScreen(),
       },
+      builder: kIsWeb
+          ? null
+          : (context, child) {
+              final isRTL =
+                  Directionality.of(context) == TextDirection.rtl;
+              if (!isRTL) return child!;
+              return Stack(
+                children: [
+                  child!,
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: 20,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onHorizontalDragEnd: (details) {
+                        if ((details.primaryVelocity ?? 0) < -300) {
+                          Navigator.of(context, rootNavigator: false)
+                              .maybePop();
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
       home: kIsWeb
           ? const WebLandingScreen()
           : (shouldShowOnboarding

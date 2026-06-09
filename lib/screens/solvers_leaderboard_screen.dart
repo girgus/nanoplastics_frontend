@@ -194,25 +194,28 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
               width: double.infinity,
               child: InkWell(
                 onTap: () => Navigator.of(context).maybePop(),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.arrow_back_ios,
-                        color: AppThemeColors.of(context).textMain,
-                        size: sizing.backIcon),
-                    const SizedBox(width: AppConstants.space4),
-                    Flexible(
-                      child: Text(
-                        l10n.categoryDetailBackToOverview,
-                        style: typography.back.copyWith(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: sizing.minTouchTarget),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.arrow_back_ios,
                           color: AppThemeColors.of(context).textMain,
+                          size: sizing.backIcon),
+                      const SizedBox(width: AppConstants.space4),
+                      Flexible(
+                        child: Text(
+                          l10n.categoryDetailBackToOverview,
+                          style: typography.back.copyWith(
+                            color: AppThemeColors.of(context).textMain,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.fade,
+                          softWrap: true,
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.fade,
-                        softWrap: true,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -653,16 +656,72 @@ class _SolversLeaderboardScreenState extends State<SolversLeaderboardScreen>
                     ),
                   ],
                 ),
-                const SizedBox(height: AppConstants.space4),
-                Text(
-                  solver.specialty,
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: AppColors.pastelMint.withValues(alpha: 0.7),
-                        fontStyle: FontStyle.italic,
+                if (solver.category != null) ...[
+                  const SizedBox(height: AppConstants.space4),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppConstants.space6,
+                          vertical: AppConstants.space2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.pastelAqua.withValues(alpha: 0.15),
+                          borderRadius:
+                              BorderRadius.circular(AppConstants.radiusSmall),
+                          border: Border.all(
+                              color:
+                                  AppColors.pastelAqua.withValues(alpha: 0.4)),
+                        ),
+                        child: Text(
+                          solver.category!,
+                          style:
+                              Theme.of(context).textTheme.labelSmall!.copyWith(
+                                    color: AppColors.pastelAqua,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                      if (solver.totalScore > 0) ...[
+                        const SizedBox(width: AppConstants.space6),
+                        Icon(Icons.star,
+                            size: AppConstants.iconXS,
+                            color: getRankColor().withValues(alpha: 0.8)),
+                        const SizedBox(width: AppConstants.space2),
+                        Text(
+                          '${solver.totalScore}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(
+                                color: getRankColor().withValues(alpha: 0.8),
+                                fontWeight: FontWeight.w700,
+                              ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ] else if (solver.totalScore > 0) ...[
+                  const SizedBox(height: AppConstants.space4),
+                  Row(
+                    children: [
+                      Icon(Icons.star,
+                          size: AppConstants.iconXS,
+                          color: getRankColor().withValues(alpha: 0.8)),
+                      const SizedBox(width: AppConstants.space2),
+                      Text(
+                        '${solver.totalScore}',
+                        style:
+                            Theme.of(context).textTheme.labelSmall!.copyWith(
+                                  color: getRankColor().withValues(alpha: 0.8),
+                                  fontWeight: FontWeight.w700,
+                                ),
+                      ),
+                    ],
+                  ),
+                ],
               ],
             ),
           ),

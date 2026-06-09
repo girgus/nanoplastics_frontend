@@ -195,26 +195,30 @@ class _CategoryEvidenceScreenState extends State<CategoryEvidenceScreen> {
             width: double.infinity,
             child: InkWell(
               onTap: () => Navigator.of(context).maybePop(),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.arrow_back_ios,
-                    color: AppThemeColors.of(context).textMain,
-                    size: sizing.backIcon,
-                  ),
-                  const SizedBox(width: AppConstants.space4),
-                  Flexible(
-                    child: Text(
-                      l10n.categoryDetailBackToOverview,
-                      style: typography.back.copyWith(
-                        color: AppThemeColors.of(context).textMain,
-                        fontSize: backFontSize,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: sizing.minTouchTarget),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.arrow_back_ios,
+                      color: AppThemeColors.of(context).textMain,
+                      size: sizing.backIcon,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: AppConstants.space4),
+                    Flexible(
+                      child: Text(
+                        l10n.categoryDetailBackToOverview,
+                        style: typography.back.copyWith(
+                          color: AppThemeColors.of(context).textMain,
+                          fontSize: backFontSize,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

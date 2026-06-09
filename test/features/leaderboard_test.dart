@@ -65,6 +65,7 @@ void main() {
           rank: 1,
           name: 'Alice Researcher',
           solutionsCount: 42,
+      totalScore: 0,
           rating: 4.9,
           specialty: 'Marine Biology',
           isRegistered: true,
