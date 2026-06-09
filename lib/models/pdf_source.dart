@@ -977,7 +977,12 @@ class VideoSource {
 // Video Sources - English
 final List<VideoSource> videoSourcesEn = [
   VideoSource(
-    title: 'Nanoplastics: Hidden Connections and Emerging Risks | Conference in the European Parliament',
+    title: 'Dr. Long (Oncologist) Warns About Nanoplastics in the Human Body',
+    url: 'https://youtu.be/C3gtFQVSQFs?si=24eDIryFp-FTucwM',
+    language: 'en',
+  ),
+  VideoSource(
+    title: 'Conference in EU parliament: "Nanoplastics: Hidden Connections and Emerging Risks"',
     url: 'https://youtu.be/EZony1cFgjk?si=RVhtwSKnkmP9JmN_',
     language: 'en',
   ),
