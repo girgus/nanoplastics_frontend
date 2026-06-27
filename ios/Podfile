@@ -43,7 +43,7 @@ post_install do |installer|
       config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
       # firebase_crashlytics ObjC headers import the non-modular Firebase umbrella header.
       # Disabling DEFINES_MODULE for this target removes the module boundary check.
-      if target.name == 'firebase_crashlytics'
+      if ['firebase_crashlytics', 'firebase_messaging'].include?(target.name)
         config.build_settings['DEFINES_MODULE'] = 'NO'
       end
     end

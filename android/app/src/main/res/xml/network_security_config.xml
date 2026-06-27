@@ -15,4 +15,9 @@
     <domain includeSubdomains="true">localhost</domain>
     <domain includeSubdomains="true">127.0.0.1</domain>
   </domain-config>
+
+  <!-- Allow HTTPS for production API (Android requires explicit config) -->
+  <domain-config cleartextTrafficPermitted="false">
+    <domain includeSubdomains="true">api.nanosolve.org</domain>
+  </domain-config>
 </network-security-config>

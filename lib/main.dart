@@ -8,14 +8,19 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'config/app_theme.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/main_screen.dart';
+import 'screens/paper_detail_screen.dart';
 import 'screens/web/web_landing_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n_web/web_localizations.dart';
+import 'services/digest_service.dart';
 import 'services/settings_manager.dart';
 import 'services/service_locator.dart';
 import 'services/update_service.dart';
+import 'services/push_notification_service.dart';
 import 'utils/route_observer.dart';
 import 'web/web_privacy_screen.dart';
+
+final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   usePathUrlStrategy();
@@ -58,7 +63,28 @@ void main() async {
     ]);
   }
 
-  // Note: Firebase is already initialized in LoggerService.initialize()
+  // Register FCM listeners before runApp — must be early so onMessageOpenedApp isn't missed
+  PushNotificationService().registerHandlers();
+
+  // Notification tap → fetch paper → open PaperDetailScreen
+  PushNotificationService.onPaperOpen = (paperId) async {
+    debugPrint('[NAV] onPaperOpen fired: $paperId');
+    final paper = await DigestService().fetchPaperById(paperId);
+    debugPrint('[NAV] paper fetched: ${paper?.title ?? "null"}');
+    debugPrint('[NAV] navigatorKey.currentState: ${appNavigatorKey.currentState}');
+    if (paper == null) return;
+    // Wait for navigator to be ready if app is resuming from background
+    await Future.delayed(const Duration(milliseconds: 300));
+    appNavigatorKey.currentState?.push(
+      MaterialPageRoute(builder: (_) => PaperDetailScreen(paper: paper)),
+    );
+  };
+
+  // Note: Firebase is already initialized in LoggerService.initialize() — not awaited.
+  // Delay FCM init to let Firebase finish before accessing FirebaseMessaging.
+  Future.delayed(const Duration(seconds: 3), () {
+    PushNotificationService().init();
+  });
 
   // Schedule version check after 5 seconds — only on GitHub builds.
   // Store-channel builds inject NoOpUpdateService, where isEnabled = false.
@@ -172,6 +198,7 @@ class _NanoSolveHiveAppState extends State<NanoSolveHiveApp>
     return MaterialApp(
       title: 'NanoSolve Hive',
       debugShowCheckedModeBanner: false,
+      navigatorKey: appNavigatorKey,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: darkModeEnabled ? ThemeMode.dark : ThemeMode.light,

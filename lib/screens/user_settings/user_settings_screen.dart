@@ -17,6 +17,7 @@ import 'language_screen.dart';
 import 'privacy_security_screen.dart';
 import 'about_screen.dart';
 import '../onboarding_screen.dart';
+import '../vault_screen.dart';
 
 class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});
@@ -225,6 +226,18 @@ class _UserSettingsScreenState extends State<UserSettingsScreen>
                 typography: typography,
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const UserProfileScreen()),
+                ),
+              ),
+              SizedBox(height: spacing.cardSpacing),
+              _buildSettingItem(
+                title: AppLocalizations.of(context)!.myVault,
+                icon: Icons.bookmark_border,
+                color: AppColors.neonCyan,
+                spacing: spacing,
+                sizing: sizing,
+                typography: typography,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const VaultScreen()),
                 ),
               ),
               SizedBox(height: spacing.cardSpacing),

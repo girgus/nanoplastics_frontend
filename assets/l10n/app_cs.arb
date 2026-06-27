@@ -287,6 +287,45 @@
   "settingsAbout": "O aplikaci",
   "settingsIntroTour": "Úvodní průvodce",
   "settingsIntroTourSubtitle": "Spustit úvodní prohlídku znovu",
+  "settingsTresor": "Moje Tresor",
+  "settingsKeywords": "Klíčová slova výzkumu",
+
+  "digestFeedTitle": "Výzkumný přehled",
+  "digestFeedSubtitle": "Nejnovější články o nanoplastů",
+  "digestFeedEmpty": "Zatím žádné nové články",
+  "digestFeedLastChecked": "Poslední kontrola {date}",
+  "digestFeedPaperCount": "{count} nový{plural} článek",
+
+  "paperDetailTitle": "Podrobnosti články",
+  "paperDetailOpenSource": "Otevřít článek",
+  "paperDetailCopyDoi": "Kopírovat DOI",
+  "paperDetailCopied": "Zkopírováno!",
+  "paperDetailCategory": "Kategorie",
+  "paperDetailSubcategory": "Podkategorie",
+  "paperDetailLabels": "Klíčová slova",
+  "paperDetailJournal": "Časopis",
+  "paperDetailPublished": "Zveřejněno",
+
+  "tresorTitle": "Moje Tresor",
+  "tresorSubtitle": "Uložené výzkumné články",
+  "tresorEmpty": "Zatím žádné články neuloženy",
+  "tresorExport": "Exportovat sbírku",
+  "tresorExportSubject": "Výzkumné články NanoSolve",
+  "tresorExportEmpty": "Nic k exportu",
+
+  "digestSettingsTitle": "Předvolby výzkumu",
+  "digestSettingsSubtitle": "Přizpůsobte si přehled výzkumu",
+  "digestSettingsDailyDigest": "Denní přehled",
+  "digestSettingsDailyDigestHint": "Přijímejte denní články odpovídající vašim zájmům",
+  "digestSettingsKeywords": "Klíčová slova hledání",
+  "digestSettingsKeywordAdd": "Přidat klíčové slovo",
+  "digestSettingsKeywordPlaceholder": "Zadejte klíčové slovo (např. PFAS, pitná voda)",
+  "digestSettingsKeywordHint": "např. nanoplasty, náboj",
+  "digestSettingsSave": "Uložit předvolby",
+  "digestSettingsSaved": "Předvolby uloženy",
+  "digestSettingsError": "Nepodařilo se uložit předvolby",
+  "digestSettingsKeywordRequired": "Zadejte klíčové slovo",
+  "digestSettingsKeywordDuplicate": "Klíčové slovo již přidáno",
 
   "profileTitle": "Nastavení profilu",
   "profileSubtitle": "Přizpůsobte svůj profil a předvolby",
@@ -687,5 +726,12 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "vaultTitle": "Trezor",
+  "myVault": "Můj trezor",
+  "vaultSaveButton": "Uložit do trezoru",
+  "vaultRemoveButton": "Odebrat z trezoru",
+  "vaultExportLabel": "Exportovat trezor jako textový soubor",
+  "vaultEmptyMessage": "Trezor je prázdný"
 }

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'web_localizations_ar.dart';
 import 'web_localizations_cs.dart';
 import 'web_localizations_en.dart';
 import 'web_localizations_es.dart';
@@ -97,6 +98,7 @@ abstract class WebLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('ar'),
     Locale('en'),
     Locale('cs'),
     Locale('es'),
@@ -607,8 +609,14 @@ class _WebLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['cs', 'en', 'es', 'fr', 'ru'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>[
+        'ar',
+        'cs',
+        'en',
+        'es',
+        'fr',
+        'ru'
+      ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_WebLocalizationsDelegate old) => false;
@@ -617,6 +625,8 @@ class _WebLocalizationsDelegate
 WebLocalizations lookupWebLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'ar':
+      return WebLocalizationsAr();
     case 'cs':
       return WebLocalizationsCs();
     case 'en':

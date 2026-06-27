@@ -664,11 +664,14 @@ class _CategoryDetailNewScreenState extends State<CategoryDetailNewScreen>
             children: [
               Icon(Icons.waves_outlined, color: themeColor, size: sizing.iconSm),
               const SizedBox(width: AppConstants.space8),
-              Text(
-                'EXPLORE MICROPLASTICS DATA',
-                style: typography.label.copyWith(
-                  color: themeColor,
-                  letterSpacing: 1.5,
+              Flexible(
+                child: Text(
+                  'EXPLORE MICROPLASTICS DATA',
+                  style: typography.label.copyWith(
+                    color: themeColor,
+                    letterSpacing: 1.5,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               const SizedBox(width: AppConstants.space8),

@@ -283,6 +283,46 @@
   "languageChanged": "Язык изменен на",
   "languageInfoMessage": "Приложение обновится на выбранный вами язык. Некоторый контент может потребовать перезапуска приложения.",
 
+  "settingsTresor": "Мой Сокровищница",
+  "settingsKeywords": "Ключевые слова исследования",
+
+  "digestFeedTitle": "Обзор исследований",
+  "digestFeedSubtitle": "Последние статьи о нанопластиках",
+  "digestFeedEmpty": "Нет новых статей",
+  "digestFeedLastChecked": "Последняя проверка {date}",
+  "digestFeedPaperCount": "{count} новая{plural} статья",
+
+  "paperDetailTitle": "Детали статьи",
+  "paperDetailOpenSource": "Открыть статью",
+  "paperDetailCopyDoi": "Копировать DOI",
+  "paperDetailCopied": "Скопировано!",
+  "paperDetailCategory": "Категория",
+  "paperDetailSubcategory": "Подкатегория",
+  "paperDetailLabels": "Ключевые слова",
+  "paperDetailJournal": "Журнал",
+  "paperDetailPublished": "Опубликовано",
+
+  "tresorTitle": "Мой Сокровищница",
+  "tresorSubtitle": "Сохраненные статьи исследований",
+  "tresorEmpty": "Нет сохраненных статей",
+  "tresorExport": "Экспортировать коллекцию",
+  "tresorExportSubject": "Статьи исследований NanoSolve",
+  "tresorExportEmpty": "Нечего экспортировать",
+
+  "digestSettingsTitle": "Предпочтения исследований",
+  "digestSettingsSubtitle": "Настройте свой обзор исследований",
+  "digestSettingsDailyDigest": "Ежедневный обзор",
+  "digestSettingsDailyDigestHint": "Получайте ежедневные статьи по вашим интересам",
+  "digestSettingsKeywords": "Ключевые слова поиска",
+  "digestSettingsKeywordAdd": "Добавить ключевое слово",
+  "digestSettingsKeywordPlaceholder": "Введите ключевое слово (например PFAS, питьевая вода)",
+  "digestSettingsKeywordHint": "например нанопластики, заряд",
+  "digestSettingsSave": "Сохранить предпочтения",
+  "digestSettingsSaved": "Предпочтения сохранены",
+  "digestSettingsError": "Ошибка сохранения предпочтений",
+  "digestSettingsKeywordRequired": "Введите ключевое слово",
+  "digestSettingsKeywordDuplicate": "Ключевое слово уже добавлено",
+
   "privacyTitle": "Конфиденциальность и безопасность",
   "privacySubtitle": "Управляйте настройками конфиденциальности",
   "privacyDataAnalytics": "Данные и аналитика",
@@ -652,5 +692,12 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "vaultTitle": "Хранилище",
+  "myVault": "Мое хранилище",
+  "vaultSaveButton": "Сохранить в хранилище",
+  "vaultRemoveButton": "Удалить из хранилища",
+  "vaultExportLabel": "Экспортировать хранилище в текстовый файл",
+  "vaultEmptyMessage": "Хранилище пусто"
 }

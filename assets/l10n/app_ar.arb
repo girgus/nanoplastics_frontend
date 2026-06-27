@@ -704,5 +704,12 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "vaultTitle": "الخزينة",
+  "myVault": "خزينتي",
+  "vaultSaveButton": "حفظ في الخزينة",
+  "vaultRemoveButton": "إزالة من الخزينة",
+  "vaultExportLabel": "تصدير الخزينة كملف نصي",
+  "vaultEmptyMessage": "الخزينة فارغة"
 }

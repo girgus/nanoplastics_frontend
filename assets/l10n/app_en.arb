@@ -289,6 +289,45 @@
   "settingsAbout": "About",
   "settingsIntroTour": "Intro Tour",
   "settingsIntroTourSubtitle": "Watch the app introduction again",
+  "settingsTresor": "My Tresor",
+  "settingsKeywords": "Research Keywords",
+
+  "digestFeedTitle": "Research Digest",
+  "digestFeedSubtitle": "Latest nanoplastic research papers",
+  "digestFeedEmpty": "No new papers yet",
+  "digestFeedLastChecked": "Last checked {date}",
+  "digestFeedPaperCount": "{count} new paper{plural}",
+
+  "paperDetailTitle": "Paper Details",
+  "paperDetailOpenSource": "Open Paper",
+  "paperDetailCopyDoi": "Copy DOI",
+  "paperDetailCopied": "Copied!",
+  "paperDetailCategory": "Category",
+  "paperDetailSubcategory": "Subcategory",
+  "paperDetailLabels": "Keywords",
+  "paperDetailJournal": "Journal",
+  "paperDetailPublished": "Published",
+
+  "tresorTitle": "My Tresor",
+  "tresorSubtitle": "Saved research papers",
+  "tresorEmpty": "No papers saved yet",
+  "tresorExport": "Export Collection",
+  "tresorExportSubject": "NanoSolve Research Papers",
+  "tresorExportEmpty": "Nothing to export",
+
+  "digestSettingsTitle": "Research Preferences",
+  "digestSettingsSubtitle": "Customize your research digest",
+  "digestSettingsDailyDigest": "Daily Digest",
+  "digestSettingsDailyDigestHint": "Receive daily papers matching your interests",
+  "digestSettingsKeywords": "Search Keywords",
+  "digestSettingsKeywordAdd": "Add keyword",
+  "digestSettingsKeywordPlaceholder": "Enter keyword (e.g., PFAS, drinking water)",
+  "digestSettingsKeywordHint": "e.g. nanoplastics, charge",
+  "digestSettingsSave": "Save Preferences",
+  "digestSettingsSaved": "Preferences saved",
+  "digestSettingsError": "Failed to save preferences",
+  "digestSettingsKeywordRequired": "Enter a keyword",
+  "digestSettingsKeywordDuplicate": "Keyword already added",
 
   "profileTitle": "Profile Settings",
   "profileSubtitle": "Customize your profile and preferences",
@@ -711,5 +750,12 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "vaultTitle": "Vault",
+  "myVault": "My Vault",
+  "vaultSaveButton": "Save to Vault",
+  "vaultRemoveButton": "Remove from Vault",
+  "vaultExportLabel": "Export vault as text file",
+  "vaultEmptyMessage": "Vault is empty"
 }

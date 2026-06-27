@@ -406,6 +406,22 @@ class SettingsManager {
     await _updateStateManager.clearUpdateState();
   }
 
+  // ── Research digest preferences ──────────────────────────────────────────────
+
+  static const _digestKeywordsKey = 'digest_search_keywords';
+
+  List<String> get digestKeywords {
+    _checkInitialized();
+    final raw = _prefs.getString(_digestKeywordsKey) ?? '';
+    if (raw.isEmpty) return ['nanoplastics', 'microplastics'];
+    return raw.split(',').map((k) => k.trim()).where((k) => k.isNotEmpty).toList();
+  }
+
+  Future<void> setDigestKeywords(List<String> keywords) async {
+    _checkInitialized();
+    await _prefs.setString(_digestKeywordsKey, keywords.join(','));
+  }
+
   @visibleForTesting
   static void resetForTesting() {
     _isInitialized = false;

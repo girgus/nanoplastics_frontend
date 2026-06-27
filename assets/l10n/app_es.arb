@@ -283,6 +283,46 @@
   "languageChanged": "Idioma cambiado a",
   "languageInfoMessage": "La aplicación se actualizará a tu idioma seleccionado. Algunos contenidos pueden requerir reiniciar la aplicación.",
 
+  "settingsTresor": "Mi Tesoro",
+  "settingsKeywords": "Palabras clave de investigación",
+
+  "digestFeedTitle": "Resumen de Investigación",
+  "digestFeedSubtitle": "Últimos artículos sobre nanoplásticos",
+  "digestFeedEmpty": "Sin artículos nuevos",
+  "digestFeedLastChecked": "Última actualización {date}",
+  "digestFeedPaperCount": "{count} artículo{plural} nuevo",
+
+  "paperDetailTitle": "Detalles del Artículo",
+  "paperDetailOpenSource": "Abrir Artículo",
+  "paperDetailCopyDoi": "Copiar DOI",
+  "paperDetailCopied": "¡Copiado!",
+  "paperDetailCategory": "Categoría",
+  "paperDetailSubcategory": "Subcategoría",
+  "paperDetailLabels": "Palabras clave",
+  "paperDetailJournal": "Revista",
+  "paperDetailPublished": "Publicado",
+
+  "tresorTitle": "Mi Tesoro",
+  "tresorSubtitle": "Artículos de investigación guardados",
+  "tresorEmpty": "Sin artículos guardados",
+  "tresorExport": "Exportar colección",
+  "tresorExportSubject": "Artículos de investigación NanoSolve",
+  "tresorExportEmpty": "Nada que exportar",
+
+  "digestSettingsTitle": "Preferencias de Investigación",
+  "digestSettingsSubtitle": "Personaliza tu resumen de investigación",
+  "digestSettingsDailyDigest": "Resumen Diario",
+  "digestSettingsDailyDigestHint": "Recibe artículos diarios según tus intereses",
+  "digestSettingsKeywords": "Palabras clave de búsqueda",
+  "digestSettingsKeywordAdd": "Agregar palabra clave",
+  "digestSettingsKeywordPlaceholder": "Ingresa palabra clave (ej. PFAS, agua potable)",
+  "digestSettingsKeywordHint": "ej. nanoplásticos, carga",
+  "digestSettingsSave": "Guardar preferencias",
+  "digestSettingsSaved": "Preferencias guardadas",
+  "digestSettingsError": "Error al guardar preferencias",
+  "digestSettingsKeywordRequired": "Ingresa una palabra clave",
+  "digestSettingsKeywordDuplicate": "Palabra clave ya agregada",
+
   "privacyTitle": "Privacidad y seguridad",
   "privacySubtitle": "Gestiona tus preferencias de privacidad",
   "privacyDataAnalytics": "Datos y analítica",
@@ -652,5 +692,12 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "vaultTitle": "Bóveda",
+  "myVault": "Mi Bóveda",
+  "vaultSaveButton": "Guardar en Bóveda",
+  "vaultRemoveButton": "Eliminar de Bóveda",
+  "vaultExportLabel": "Exportar bóveda como archivo de texto",
+  "vaultEmptyMessage": "La bóveda está vacía"
 }

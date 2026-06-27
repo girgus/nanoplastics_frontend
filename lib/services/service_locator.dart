@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import '../config/build_config.dart';
@@ -8,6 +9,7 @@ import 'update_service.dart';
 import 'update/update_service_api.dart';
 import 'update/noop_update_service.dart';
 import 'api_service.dart';
+import 'digest_service.dart';
 
 /// Enum representing internet connectivity states
 enum InternetState {
@@ -124,6 +126,7 @@ class ServiceLocator {
   late UpdateServiceApi _updateService;
   late InternetService _internetService;
   late ApiService _apiService;
+  late DigestService _digestService;
 
   factory ServiceLocator() => _instance;
 
@@ -157,6 +160,10 @@ class ServiceLocator {
     // API service — singleton for backend communication.
     _apiService = ApiService();
 
+    // Digest service — syncs user + tresor on startup, fire-and-forget.
+    _digestService = DigestService();
+    unawaited(_digestService.syncUser());
+
     // Update service — adapter chosen at compile time via BuildConfig.
     // GitHub builds get the real self-updater; store/web builds get a no-op stub.
     // Both BuildConfig.isGithubBuild and kIsWeb are compile-time constants, so
@@ -171,6 +178,7 @@ class ServiceLocator {
     _settingsManager = SettingsManager();
     _loggerService = LoggerService();
     _apiService = ApiService();
+    _digestService = DigestService();
     _pdfService = PdfService(_settingsManager);
     _internetService = InternetService._();
     // Skip connectivity init in tests — platform plugin unavailable in Dart VM.
@@ -200,6 +208,9 @@ class ServiceLocator {
 
   /// Get the singleton ApiService instance
   ApiService get apiService => _apiService;
+
+  /// Get the singleton DigestService instance
+  DigestService get digestService => _digestService;
 
   /// Override the ApiService for testing — call before rendering widgets.
   @visibleForTesting

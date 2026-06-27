@@ -44,6 +44,11 @@
 	<string>Used to record voice notes to attach to your ideas.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used to select photos and videos to attach to your ideas.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+		<string>fetch</string>
+	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

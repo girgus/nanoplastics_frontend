@@ -283,6 +283,46 @@
   "languageChanged": "Langue changée en",
   "languageInfoMessage": "L'application sera mise à jour dans la langue sélectionnée. Certains contenus peuvent nécessiter un redémarrage de l'application.",
 
+  "settingsTresor": "Mon Trésor",
+  "settingsKeywords": "Mots-clés de recherche",
+
+  "digestFeedTitle": "Résumé de Recherche",
+  "digestFeedSubtitle": "Derniers articles sur les nanoplastiques",
+  "digestFeedEmpty": "Aucun nouvel article",
+  "digestFeedLastChecked": "Dernière vérification {date}",
+  "digestFeedPaperCount": "{count} nouvel{plural} article",
+
+  "paperDetailTitle": "Détails de l'Article",
+  "paperDetailOpenSource": "Ouvrir l'Article",
+  "paperDetailCopyDoi": "Copier DOI",
+  "paperDetailCopied": "Copié!",
+  "paperDetailCategory": "Catégorie",
+  "paperDetailSubcategory": "Sous-catégorie",
+  "paperDetailLabels": "Mots-clés",
+  "paperDetailJournal": "Journal",
+  "paperDetailPublished": "Publié",
+
+  "tresorTitle": "Mon Trésor",
+  "tresorSubtitle": "Articles de recherche sauvegardés",
+  "tresorEmpty": "Aucun article sauvegardé",
+  "tresorExport": "Exporter la collection",
+  "tresorExportSubject": "Articles de recherche NanoSolve",
+  "tresorExportEmpty": "Rien à exporter",
+
+  "digestSettingsTitle": "Préférences de Recherche",
+  "digestSettingsSubtitle": "Personnalisez votre résumé de recherche",
+  "digestSettingsDailyDigest": "Résumé Quotidien",
+  "digestSettingsDailyDigestHint": "Recevez des articles quotidiens selon vos intérêts",
+  "digestSettingsKeywords": "Mots-clés de recherche",
+  "digestSettingsKeywordAdd": "Ajouter mot-clé",
+  "digestSettingsKeywordPlaceholder": "Entrez mot-clé (ex. PFAS, eau potable)",
+  "digestSettingsKeywordHint": "ex. nanoplastiques, charge",
+  "digestSettingsSave": "Enregistrer les préférences",
+  "digestSettingsSaved": "Préférences enregistrées",
+  "digestSettingsError": "Erreur d'enregistrement des préférences",
+  "digestSettingsKeywordRequired": "Entrez un mot-clé",
+  "digestSettingsKeywordDuplicate": "Mot-clé déjà ajouté",
+
   "privacyTitle": "Confidentialité et sécurité",
   "privacySubtitle": "Gérez vos préférences de confidentialité",
   "privacyDataAnalytics": "Données et analytique",
@@ -652,5 +692,12 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "vaultTitle": "Coffre-fort",
+  "myVault": "Mon Coffre-fort",
+  "vaultSaveButton": "Enregistrer dans le Coffre-fort",
+  "vaultRemoveButton": "Supprimer du Coffre-fort",
+  "vaultExportLabel": "Exporter le coffre-fort en tant que fichier texte",
+  "vaultEmptyMessage": "Le coffre-fort est vide"
 }

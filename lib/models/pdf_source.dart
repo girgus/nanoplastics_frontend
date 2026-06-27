@@ -977,6 +977,11 @@ class VideoSource {
 // Video Sources - English
 final List<VideoSource> videoSourcesEn = [
   VideoSource(
+    title: 'Dr. Ragusa on Microplastics in the Human Placenta',
+    url: 'https://youtu.be/6nKLX-nBK4s?si=SWgw2hOfQ3XyXsTV',
+    language: 'en',
+  ),
+  VideoSource(
     title: 'Dr. Long (Oncologist) Warns About Nanoplastics in the Human Body',
     url: 'https://youtu.be/C3gtFQVSQFs?si=24eDIryFp-FTucwM',
     language: 'en',
@@ -992,11 +997,6 @@ final List<VideoSource> videoSourcesEn = [
     language: 'en',
   ),
   VideoSource(
-    title: 'Trap for Humanity | Popular Science Film',
-    url: 'https://youtu.be/NBbbqRzzQGY',
-    language: 'en',
-  ),
-  VideoSource(
     title: 'Why Is the Ocean Warming Up So Fast?',
     url: 'https://youtu.be/2tscXOUUVgk?si=tg_X9qMRyfM2pQm4',
     language: 'en',
@@ -1008,12 +1008,12 @@ final List<VideoSource> videoSourcesEn = [
   ),
   VideoSource(
     title: 'What Destroys You on a Quantum Level?',
-    url: 'https://youtu.be/0CBfe7w8oUU',
+    url: 'https://www.youtube.com/watch?v=lJk2Sz7kl0o',
     language: 'en',
   ),
   VideoSource(
     title: 'Nanoplastics. The Last Generation Has Already Been Born',
-    url: 'https://youtu.be/qsarcxl1jls',
+    url: 'https://youtu.be/qjOuYylvsBE',
     language: 'en',
   ),
   VideoSource(
@@ -1042,11 +1042,6 @@ final List<VideoSource> videoSourcesEs = [
     language: 'es',
   ),
   VideoSource(
-    title: 'Trampa para la Humanidad | Documental de divulgación científica',
-    url: 'https://youtu.be/2Ul0-69xuH4',
-    language: 'es',
-  ),
-  VideoSource(
     title: 'Factor Antropogénico en la Muerte del Océano | Documental',
     url: 'https://youtu.be/V2vb6bbOzqg',
     language: 'es',
@@ -1054,16 +1049,6 @@ final List<VideoSource> videoSourcesEs = [
   VideoSource(
     title: 'Por qué se está calentando el océano tan rápido? | Dr. Egon Cholakian',
     url: 'https://youtu.be/uxMwnRAgle4?si=p6ZEImTPNMMUturR',
-    language: 'es',
-  ),
-  VideoSource(
-    title: 'Nanoplásticos. La última generación ya ha nacido',
-    url: 'https://youtu.be/McTGMca-pHI',
-    language: 'es',
-  ),
-  VideoSource(
-    title: 'Comprendiendo la resistencia a los antibióticos 2025',
-    url: 'https://youtu.be/vlXQmLxlN9E',
     language: 'es',
   ),
   VideoSource(
@@ -1076,7 +1061,12 @@ final List<VideoSource> videoSourcesEs = [
 
 // Video Sources - Russian
 final List<VideoSource> videoSourcesRu = [
-    VideoSource(
+  VideoSource(
+    title: 'Как микропластик обходит защиту нашего организма?',
+    url: 'https://youtu.be/mRa8NF9uNXQ?si=gF2BVkfi2PI7tJr-',
+    language: 'ru',
+  ),
+  VideoSource(
     title: 'Нанопластик: скрытые связи и возникающие риски | Европейский парламент, Брюссель',
     url: 'https://youtu.be/ha6T0t0q7JA?si=h4Y85L9BjX4s9hby',
     language: 'ru',
@@ -1086,11 +1076,6 @@ final List<VideoSource> videoSourcesRu = [
     url: 'https://youtu.be/y9ephv8L1-Q',
     language: 'ru',
   ),
-  VideoSource(
-    title: 'Ловушка для человечества | Научно-Популярный Фильм',
-    url: 'https://youtu.be/7LGWum8MEBk',
-    language: 'ru',
-  ), 
   VideoSource(
     title: 'Почему океан нагревается так быстро? | Д-р Эгон Чолакян',
     url: 'https://youtu.be/6wYLXZfnkEo?si=rWmzjBD38vkDF0I-',
@@ -1102,13 +1087,8 @@ final List<VideoSource> videoSourcesRu = [
     language: 'ru',
   ),
   VideoSource(
-    title: 'Что разрушает вас на квантовом уровне?',
-    url: 'https://youtu.be/QJPXPE3j2Rc',
-    language: 'ru',
-  ),
-  VideoSource(
-    title: 'Нанопластик. Последнее поколение уже родилось',
-    url: 'https://youtu.be/AHlSwq65B4Q',
+    title: 'Физика нанопластика: Почему частицы ведут себя как «аккумуляторы»?',
+    url: 'https://youtu.be/wykOAppVrgA?si=SKfojXZFLAPkVPEp',
     language: 'ru',
   ),
   VideoSource(
@@ -1121,9 +1101,9 @@ final List<VideoSource> videoSourcesRu = [
 
 // Video Sources - French
 final List<VideoSource> videoSourcesFr = [
-    VideoSource(
-    title: 'Nanoplastiques : liens cachés et risques émergents | Conférence au Parlement européen',
-    url: 'https://youtu.be/VxEhJuBTLWM?si=hwp9bbV4V499IAXb',
+  VideoSource(
+    title: 'Nanoplastiques : la menace invisible et un risque mondial | Présentation à ChangeNOW 2026',
+    url: 'https://youtu.be/4OqOeNPM0SA?si=CM43jWsmjruyyBsw',
     language: 'fr',
   ),
   VideoSource(
@@ -1132,8 +1112,8 @@ final List<VideoSource> videoSourcesFr = [
     language: 'fr',
   ),
   VideoSource(
-    title: 'Un Piège Pour L\'humanité | Film De Vulgarisation Scientifique',
-    url: 'https://youtu.be/xmMNIqyb8pA',
+    title: 'Nanoplastiques : liens cachés et risques émergents | Conférence au Parlement européen',
+    url: 'https://youtu.be/VxEhJuBTLWM?si=hwp9bbV4V499IAXb',
     language: 'fr',
   ),
   VideoSource(
@@ -1144,17 +1124,6 @@ final List<VideoSource> videoSourcesFr = [
   VideoSource(
     title: 'Le facteur anthropique dans le déclin de l\'océan | Film',
     url: 'https://youtu.be/afVoVR6upOQ',
-    language: 'fr',
-  ),
-  VideoSource(
-    title:
-        'Des lésions cérébrales à l\'infertilité : comment les nanoparticules de plastique volent votre avenir',
-    url: 'https://youtu.be/e9N3YRMS8NE',
-    language: 'fr',
-  ),
-  VideoSource(
-    title: 'Comprendre la Résistance aux Antibiotiques 2025',
-    url: 'https://youtu.be/m8fksm68moE',
     language: 'fr',
   ),
   VideoSource(
@@ -1183,23 +1152,8 @@ final List<VideoSource> videoSourcesCs = [
     language: 'cs',
   ),
   VideoSource(
-    title: 'Past pro lidstvo | Vědecko-populární film',
-    url: 'https://www.youtube.com/watch?v=v6FBZz4j1_Y',
-    language: 'cs',
-  ),
-  VideoSource(
     title: 'Prečo sa oceán otepľuje tak rýchlo? | Dr. Egon Cholakian',
     url: 'https://youtu.be/N88S-F6cvpw?si=n34fsRjLxYT91iBr',
-    language: 'cs',
-  ),
-  VideoSource(
-    title: 'Čo vás ničí na kvantovej úrovni?',
-    url: 'https://www.youtube.com/watch?v=k2lf9lIiOJE',
-    language: 'cs',
-  ),
-  VideoSource(
-    title: 'Nanoplasty. Posledná generácia sa už narodila',
-    url: 'https://www.youtube.com/watch?v=-YoP7PBguPU',
     language: 'cs',
   ),
   VideoSource(

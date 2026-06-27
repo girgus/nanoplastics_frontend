@@ -46,6 +46,7 @@ ios/**/xcshareddata/WorkspaceSettings.xcsettings
 *.app
 *.app/
 
+
 # IDE
 .vscode/
 .idea/
@@ -79,3 +80,5 @@ CLAUDE.md
 run_localy_emmulator.sh
 lib/firebase_options.dart
 ios/ExportOptions.plist
+ios_certificates
+sa.json
