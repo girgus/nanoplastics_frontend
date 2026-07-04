@@ -328,6 +328,17 @@
   "digestSettingsError": "Failed to save preferences",
   "digestSettingsKeywordRequired": "Enter a keyword",
   "digestSettingsKeywordDuplicate": "Keyword already added",
+  "digestSettingsNotificationTime": "Notification Time",
+  "digestSettingsKeywordMax": "Max 10 keywords",
+  "digestSettingsKeywordMinRequired": "At least one keyword required",
+  "digestSettingsKeywordRemove": "Remove {keyword}",
+  "@digestSettingsKeywordRemove": {
+    "placeholders": {
+      "keyword": {
+        "type": "String"
+      }
+    }
+  },
 
   "profileTitle": "Profile Settings",
   "profileSubtitle": "Customize your profile and preferences",

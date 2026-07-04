@@ -123,7 +123,10 @@ class DigestService {
     List<String>? keywords,
   }) async {
     final email = _settings.email;
-    if (email.isEmpty) return false;
+    if (email.isEmpty) {
+      LoggerService().logError('updatePreferences', 'email empty, skipping PUT');
+      return false;
+    }
 
     try {
       final body = <String, dynamic>{'email': email};
@@ -133,24 +136,53 @@ class DigestService {
       }
       if (keywords != null) body['search_keywords'] = keywords;
 
+      final url = '${_api.baseUrl}/api/users/preferences';
       final resp = await http.put(
-        Uri.parse('${_api.baseUrl}/api/users/preferences'),
+        Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       ).timeout(const Duration(seconds: 10));
+
+      LoggerService().logNetworkCall(url, method: 'PUT', statusCode: resp.statusCode);
+      if (resp.statusCode != 200) {
+        LoggerService().logError('updatePreferences', 'status ${resp.statusCode}: ${resp.body}');
+      }
 
       if (resp.statusCode == 200 && keywords != null) {
         _settings.setDigestKeywords(keywords);
       }
 
       return resp.statusCode == 200;
-    } catch (e) {
+    } catch (e, st) {
+      LoggerService().logError('updatePreferences', e, st);
       return false;
     }
   }
 
   List<String> getKeywords() {
     return _settings.digestKeywords;
+  }
+
+  /// Fetches the user's current digest preferences from the server, or
+  /// null if the user doesn't exist yet / the request fails.
+  Future<({bool enabled, int digestHour})?> fetchPreferences() async {
+    final email = _settings.email;
+    if (email.isEmpty) return null;
+
+    try {
+      final resp = await http
+          .get(Uri.parse('${_api.baseUrl}/api/users/me?email=${Uri.encodeComponent(email)}'))
+          .timeout(const Duration(seconds: 8));
+      if (resp.statusCode != 200) return null;
+
+      final json = jsonDecode(resp.body) as Map<String, dynamic>;
+      return (
+        enabled: json['daily_digest_enabled'] as bool? ?? true,
+        digestHour: json['digest_hour'] as int? ?? 9,
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
   // ── Tresor ───────────────────────────────────────────────────────────────────

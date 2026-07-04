@@ -322,6 +322,10 @@
   "digestSettingsError": "Error al guardar preferencias",
   "digestSettingsKeywordRequired": "Ingresa una palabra clave",
   "digestSettingsKeywordDuplicate": "Palabra clave ya agregada",
+  "digestSettingsNotificationTime": "Hora de notificación",
+  "digestSettingsKeywordMax": "Máximo 10 palabras clave",
+  "digestSettingsKeywordMinRequired": "Se requiere al menos una palabra clave",
+  "digestSettingsKeywordRemove": "Eliminar {keyword}",
 
   "privacyTitle": "Privacidad y seguridad",
   "privacySubtitle": "Gestiona tus preferencias de privacidad",

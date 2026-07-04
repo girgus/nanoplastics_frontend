@@ -322,6 +322,10 @@
   "digestSettingsError": "Erreur d'enregistrement des préférences",
   "digestSettingsKeywordRequired": "Entrez un mot-clé",
   "digestSettingsKeywordDuplicate": "Mot-clé déjà ajouté",
+  "digestSettingsNotificationTime": "Heure de notification",
+  "digestSettingsKeywordMax": "Maximum 10 mots-clés",
+  "digestSettingsKeywordMinRequired": "Au moins un mot-clé requis",
+  "digestSettingsKeywordRemove": "Supprimer {keyword}",
 
   "privacyTitle": "Confidentialité et sécurité",
   "privacySubtitle": "Gérez vos préférences de confidentialité",

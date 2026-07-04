@@ -4,6 +4,7 @@ import '../config/app_colors.dart';
 import '../l10n/app_localizations.dart';
 import '../services/digest_service.dart';
 import '../services/push_notification_service.dart';
+import '../services/service_locator.dart';
 import '../utils/app_spacing.dart';
 import '../utils/app_sizing.dart';
 
@@ -28,6 +29,17 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
   void initState() {
     super.initState();
     _keywords = List.from(_svc.getKeywords());
+    _loadPreferences();
+  }
+
+  Future<void> _loadPreferences() async {
+    final prefs = await _svc.fetchPreferences();
+    if (prefs != null && mounted) {
+      setState(() {
+        _digestEnabled = prefs.enabled;
+        _digestHour = prefs.digestHour;
+      });
+    }
   }
 
   @override
@@ -40,11 +52,11 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
     final kw = _keywordController.text.trim().toLowerCase();
     if (kw.isEmpty) return;
     if (_keywords.contains(kw)) {
-      setState(() => _error = 'Already added');
+      setState(() => _error = AppLocalizations.of(context)!.digestSettingsKeywordDuplicate);
       return;
     }
-    if (_keywords.length >= 20) {
-      setState(() => _error = 'Max 20 keywords');
+    if (_keywords.length >= 10) {
+      setState(() => _error = AppLocalizations.of(context)!.digestSettingsKeywordMax);
       return;
     }
     setState(() {
@@ -56,7 +68,7 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
 
   void _removeKeyword(String kw) {
     if (_keywords.length <= 1) {
-      setState(() => _error = 'At least one keyword required');
+      setState(() => _error = AppLocalizations.of(context)!.digestSettingsKeywordMinRequired);
       return;
     }
     setState(() {
@@ -66,6 +78,11 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
   }
 
   Future<void> _save() async {
+    if (ServiceLocator().settingsManager.email.isEmpty) {
+      setState(() => _error = AppLocalizations.of(context)!.profileEmailRequired);
+      return;
+    }
+
     setState(() => _saving = true);
     final ok = await _svc.updatePreferences(
       enabled: _digestEnabled,
@@ -78,7 +95,7 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
         PushNotificationService().init();
         if (mounted) Navigator.maybePop(context);
       } else {
-        setState(() => _error = 'Save failed — check connection');
+        setState(() => _error = AppLocalizations.of(context)!.digestSettingsError);
       }
     }
   }
@@ -103,11 +120,11 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
                     // Toggle
                     _GlassCard(
                       child: SwitchListTile(
-                        title: const Text('Daily Digest',
-                            style: TextStyle(
+                        title: Text(AppLocalizations.of(context)!.digestSettingsDailyDigest,
+                            style: const TextStyle(
                                 color: AppColors.textMain, fontSize: 14)),
-                        subtitle: const Text('Receive new papers every day',
-                            style: TextStyle(
+                        subtitle: Text(AppLocalizations.of(context)!.digestSettingsDailyDigestHint,
+                            style: const TextStyle(
                                 color: AppColors.textMuted, fontSize: 12)),
                         value: _digestEnabled,
                         activeThumbColor: AppColors.neonCyan,
@@ -122,9 +139,9 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Notification Time',
-                            style: TextStyle(
+                          Text(
+                            AppLocalizations.of(context)!.digestSettingsNotificationTime,
+                            style: const TextStyle(
                               color: AppColors.textMain,
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -160,9 +177,9 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
                     SizedBox(height: spacing.md),
 
                     // Keywords section label
-                    const Text(
-                      'Search Keywords',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.digestSettingsKeywords,
+                      style: const TextStyle(
                         color: AppColors.textMuted,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -220,7 +237,7 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
                               SizedBox(width: spacing.sm),
                               Semantics(
                                 button: true,
-                                label: 'Add keyword',
+                                label: AppLocalizations.of(context)!.digestSettingsKeywordAdd,
                                 child: InkWell(
                                   onTap: _addKeyword,
                                   borderRadius: BorderRadius.circular(6),
@@ -257,7 +274,7 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
                     // Save button
                     Semantics(
                       button: true,
-                      label: 'Save preferences',
+                      label: AppLocalizations.of(context)!.digestSettingsSave,
                       child: InkWell(
                         onTap: _saving ? null : _save,
                         borderRadius: BorderRadius.circular(12),
@@ -288,9 +305,9 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
                                       color: AppColors.neonCyan,
                                     ),
                                   )
-                                : const Text(
-                                    'Save',
-                                    style: TextStyle(
+                                : Text(
+                                    AppLocalizations.of(context)!.categoryDetailBrainstormSave,
+                                    style: const TextStyle(
                                       color: AppColors.neonCyan,
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
@@ -329,7 +346,7 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
             children: [
               Semantics(
                 button: true,
-                label: 'Back',
+                label: AppLocalizations.of(context)!.settingsBack,
                 child: IconButton(
                   icon: const Icon(Icons.arrow_back_ios_new,
                       color: AppColors.neonCyan, size: 20),
@@ -338,9 +355,9 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
                 ),
               ),
               SizedBox(width: spacing.sm),
-              const Text(
-                'Research Preferences',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.digestSettingsTitle,
+                style: const TextStyle(
                   color: AppColors.textMain,
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
@@ -364,6 +381,7 @@ class _KeywordChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final spacing = AppSpacing.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
@@ -379,14 +397,17 @@ class _KeywordChip extends StatelessWidget {
                   color: AppColors.neonCyan,
                   fontSize: 12,
                   fontWeight: FontWeight.w500)),
-          const SizedBox(width: 5),
           Semantics(
             button: true,
-            label: 'Remove $label',
+            label: AppLocalizations.of(context)!.digestSettingsKeywordRemove(label),
             child: InkWell(
               onTap: onDelete,
-              child: const Icon(Icons.close,
-                  color: AppColors.neonCyan, size: 13),
+              customBorder: const CircleBorder(),
+              child: Padding(
+                padding: EdgeInsets.all(spacing.sm),
+                child: const Icon(Icons.close,
+                    color: AppColors.neonCyan, size: 13),
+              ),
             ),
           ),
         ],

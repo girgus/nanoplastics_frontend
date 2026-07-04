@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../config/app_colors.dart';
@@ -90,6 +91,7 @@ class _ProfileRegistrationDialogState extends State<ProfileRegistrationDialog> {
       await _settingsManager.setEmail(trimmedEmail);
       await _settingsManager.setBio(_specialtyController.text.trim());
       await _settingsManager.setProfileRegistered(true);
+      unawaited(ServiceLocator().digestService.syncUser());
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -322,6 +322,10 @@
   "digestSettingsError": "Ошибка сохранения предпочтений",
   "digestSettingsKeywordRequired": "Введите ключевое слово",
   "digestSettingsKeywordDuplicate": "Ключевое слово уже добавлено",
+  "digestSettingsNotificationTime": "Время уведомления",
+  "digestSettingsKeywordMax": "Максимум 10 ключевых слов",
+  "digestSettingsKeywordMinRequired": "Требуется хотя бы одно ключевое слово",
+  "digestSettingsKeywordRemove": "Удалить {keyword}",
 
   "privacyTitle": "Конфиденциальность и безопасность",
   "privacySubtitle": "Управляйте настройками конфиденциальности",

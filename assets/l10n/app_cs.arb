@@ -326,6 +326,10 @@
   "digestSettingsError": "Nepodařilo se uložit předvolby",
   "digestSettingsKeywordRequired": "Zadejte klíčové slovo",
   "digestSettingsKeywordDuplicate": "Klíčové slovo již přidáno",
+  "digestSettingsNotificationTime": "Čas oznámení",
+  "digestSettingsKeywordMax": "Max. 10 klíčových slov",
+  "digestSettingsKeywordMinRequired": "Je vyžadováno alespoň jedno klíčové slovo",
+  "digestSettingsKeywordRemove": "Odebrat {keyword}",
 
   "profileTitle": "Nastavení profilu",
   "profileSubtitle": "Přizpůsobte svůj profil a předvolby",

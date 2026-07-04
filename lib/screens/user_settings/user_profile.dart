@@ -120,6 +120,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     await _settingsManager
         .setPushNotificationsEnabled(_pushNotificationsEnabled);
 
+    if (_settingsManager.email.isNotEmpty) {
+      unawaited(ServiceLocator().digestService.syncUser());
+    } else if (mounted) {
+      ScaffoldMessenger.of(context)
+        ..clearSnackBars()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.profileEmailRequired),
+            backgroundColor: Colors.red,
+          ),
+        );
+    }
+
     if (mounted) {
       setState(() => _hasChanges = false);
     }
