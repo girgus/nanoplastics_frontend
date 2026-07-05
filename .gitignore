@@ -82,3 +82,4 @@ lib/firebase_options.dart
 ios/ExportOptions.plist
 ios_certificates
 sa.json
+send_notification.py

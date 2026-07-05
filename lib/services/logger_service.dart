@@ -17,6 +17,7 @@ class LoggerService {
   LoggerService._internal();
 
   bool _initialized = false;
+  Future<void>? _initFuture;
 
   /// Check if analytics is enabled if not only print into console don't sent to firebase.
   bool _isAnalyticsEnabled() {
@@ -29,9 +30,12 @@ class LoggerService {
   }
 
   /// Initialize Firebase and Crashlytics
-  Future<void> initialize() async {
-    if (_initialized) return;
+  Future<void> initialize() {
+    if (_initialized) return Future.value();
+    return _initFuture ??= _doInitialize();
+  }
 
+  Future<void> _doInitialize() async {
     try {
       // Initialize Firebase with options
       await Firebase.initializeApp(

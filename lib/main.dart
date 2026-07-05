@@ -43,6 +43,12 @@ void main() async {
 
   final serviceLocator = ServiceLocator();
   final logger = serviceLocator.loggerService;
+  // Firebase.initializeApp() was fired unawaited in ServiceLocator().initialize()
+  // so it wouldn't block the first frame. But registerHandlers() below touches
+  // FirebaseMessaging statics that require Firebase.app() to exist — awaiting
+  // here (memoized, no-op if already done) closes that race without adding
+  // meaningful latency, since Firebase init is normally already done or near-done.
+  await logger.initialize();
   logger.logAppLifecycle('App Starting...');
 
   // Set status bar style — both modes use dark surfaces, so always light icons
@@ -63,7 +69,8 @@ void main() async {
     ]);
   }
 
-  // Register FCM listeners before runApp — must be early so onMessageOpenedApp isn't missed
+  // Register FCM listeners before runApp — must be early so onMessageOpenedApp isn't missed.
+  // Firebase is guaranteed ready by the `await logger.initialize()` above.
   PushNotificationService().registerHandlers();
 
   // Notification tap → fetch paper → open PaperDetailScreen
@@ -80,8 +87,8 @@ void main() async {
     );
   };
 
-  // Note: Firebase is already initialized in LoggerService.initialize() — not awaited.
-  // Delay FCM init to let Firebase finish before accessing FirebaseMessaging.
+  // Delay permission prompt / token registration so it doesn't compete with
+  // first-frame render and PDF extraction for CPU on a cold, throttled launch.
   Future.delayed(const Duration(seconds: 3), () {
     PushNotificationService().init();
   });

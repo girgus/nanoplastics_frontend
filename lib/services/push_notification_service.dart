@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'digest_service.dart';
@@ -31,8 +32,14 @@ class PushNotificationService {
       FirebaseMessaging.onMessage.listen(_handleMessage);
       _handlersRegistered = true;
       debugPrint('[FCM] handlers registered');
-    } catch (e) {
-      debugPrint('[FCM] registerHandlers error: $e');
+    } catch (e, stack) {
+      // Visible in Crashlytics console even on builds with no debugger attached
+      // (debugPrint alone was silently hiding this failure in production).
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        stack,
+        reason: 'PushNotificationService.registerHandlers failed',
+      );
     }
   }
 
