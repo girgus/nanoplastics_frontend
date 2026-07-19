@@ -7,6 +7,7 @@ import '../services/push_notification_service.dart';
 import '../services/service_locator.dart';
 import '../utils/app_spacing.dart';
 import '../utils/app_sizing.dart';
+import '../utils/platform_adaptive.dart';
 
 class DigestSettingsScreen extends StatefulWidget {
   const DigestSettingsScreen({super.key});
@@ -17,7 +18,6 @@ class DigestSettingsScreen extends StatefulWidget {
 
 class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
   final _svc = DigestService();
-  final _keywordController = TextEditingController();
 
   late List<String> _keywords;
   bool _digestEnabled = true;
@@ -42,39 +42,14 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
     }
   }
 
-  @override
-  void dispose() {
-    _keywordController.dispose();
-    super.dispose();
-  }
-
-  void _addKeyword() {
-    final kw = _keywordController.text.trim().toLowerCase();
-    if (kw.isEmpty) return;
-    if (_keywords.contains(kw)) {
-      setState(() => _error = AppLocalizations.of(context)!.digestSettingsKeywordDuplicate);
-      return;
-    }
-    if (_keywords.length >= 10) {
-      setState(() => _error = AppLocalizations.of(context)!.digestSettingsKeywordMax);
-      return;
-    }
-    setState(() {
-      _keywords.add(kw);
-      _error = null;
-      _keywordController.clear();
-    });
-  }
-
-  void _removeKeyword(String kw) {
-    if (_keywords.length <= 1) {
-      setState(() => _error = AppLocalizations.of(context)!.digestSettingsKeywordMinRequired);
-      return;
-    }
-    setState(() {
-      _keywords.remove(kw);
-      _error = null;
-    });
+  void _requestMoreKeywords() {
+    final email = ServiceLocator().settingsManager.email;
+    final supportEmail = AppLocalizations.of(context)!.leaderboardContactEmail;
+    final subject = Uri.encodeComponent('Nanoplastics Digest - Keyword Request');
+    final body = Uri.encodeComponent(
+        'User email: $email\nCurrent keywords: ${_keywords.join(', ')}\n\nRequested new keyword(s): ');
+    PlatformAdaptive.launchExternalUri(
+        Uri.parse('mailto:$supportEmail?subject=$subject&body=$body'));
   }
 
   Future<void> _save() async {
@@ -197,66 +172,35 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
                             spacing: 6,
                             runSpacing: 6,
                             children: _keywords
-                                .map((kw) => _KeywordChip(
-                                      label: kw,
-                                      onDelete: () => _removeKeyword(kw),
-                                    ))
+                                .map((kw) => _KeywordChip(label: kw))
                                 .toList(),
                           ),
                           SizedBox(height: spacing.md),
 
-                          // Add field
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: _keywordController,
-                                  style: const TextStyle(
-                                      color: AppColors.textMain, fontSize: 13),
-                                  decoration: InputDecoration(
-                                    hintText: AppLocalizations.of(context)!.digestSettingsKeywordHint,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.textDark,
-                                        fontSize: 13),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: AppColors.neonCyan
-                                              .withValues(alpha: 0.3)),
+                          // Request more keywords via email
+                          Semantics(
+                            button: true,
+                            label: AppLocalizations.of(context)!.digestSettingsKeywordRequestMore,
+                            child: InkWell(
+                              onTap: _requestMoreKeywords,
+                              borderRadius: BorderRadius.circular(6),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.email_outlined,
+                                      color: AppColors.neonCyan, size: 16),
+                                  SizedBox(width: spacing.xs),
+                                  Text(
+                                    AppLocalizations.of(context)!.digestSettingsKeywordRequestMore,
+                                    style: const TextStyle(
+                                      color: AppColors.neonCyan,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    focusedBorder: const UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: AppColors.neonCyan),
-                                    ),
-                                    contentPadding:
-                                        EdgeInsets.symmetric(vertical: spacing.xs),
                                   ),
-                                  textInputAction: TextInputAction.done,
-                                  onSubmitted: (_) => _addKeyword(),
-                                ),
+                                ],
                               ),
-                              SizedBox(width: spacing.sm),
-                              Semantics(
-                                button: true,
-                                label: AppLocalizations.of(context)!.digestSettingsKeywordAdd,
-                                child: InkWell(
-                                  onTap: _addKeyword,
-                                  borderRadius: BorderRadius.circular(6),
-                                  child: Container(
-                                    padding: EdgeInsets.all(spacing.xs),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.neonCyan
-                                          .withValues(alpha: 0.15),
-                                      borderRadius: BorderRadius.circular(6),
-                                      border: Border.all(
-                                          color: AppColors.neonCyan
-                                              .withValues(alpha: 0.4)),
-                                    ),
-                                    child: const Icon(Icons.add,
-                                        color: AppColors.neonCyan, size: 18),
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
 
                           if (_error != null) ...[
@@ -375,13 +319,11 @@ class _DigestSettingsScreenState extends State<DigestSettingsScreen> {
 
 class _KeywordChip extends StatelessWidget {
   final String label;
-  final VoidCallback onDelete;
 
-  const _KeywordChip({required this.label, required this.onDelete});
+  const _KeywordChip({required this.label});
 
   @override
   Widget build(BuildContext context) {
-    final spacing = AppSpacing.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
@@ -389,29 +331,11 @@ class _KeywordChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.neonCyan.withValues(alpha: 0.4)),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(label,
-              style: const TextStyle(
-                  color: AppColors.neonCyan,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500)),
-          Semantics(
-            button: true,
-            label: AppLocalizations.of(context)!.digestSettingsKeywordRemove(label),
-            child: InkWell(
-              onTap: onDelete,
-              customBorder: const CircleBorder(),
-              child: Padding(
-                padding: EdgeInsets.all(spacing.sm),
-                child: const Icon(Icons.close,
-                    color: AppColors.neonCyan, size: 13),
-              ),
-            ),
-          ),
-        ],
-      ),
+      child: Text(label,
+          style: const TextStyle(
+              color: AppColors.neonCyan,
+              fontSize: 12,
+              fontWeight: FontWeight.w500)),
     );
   }
 }

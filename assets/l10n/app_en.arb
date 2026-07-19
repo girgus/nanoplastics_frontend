@@ -320,26 +320,11 @@
   "digestSettingsDailyDigest": "Daily Digest",
   "digestSettingsDailyDigestHint": "Receive daily papers matching your interests",
   "digestSettingsKeywords": "Search Keywords",
-  "digestSettingsKeywordAdd": "Add keyword",
-  "digestSettingsKeywordPlaceholder": "Enter keyword (e.g., PFAS, drinking water)",
-  "digestSettingsKeywordHint": "e.g. nanoplastics, charge",
+  "digestSettingsKeywordRequestMore": "Request more keywords",
   "digestSettingsSave": "Save Preferences",
   "digestSettingsSaved": "Preferences saved",
   "digestSettingsError": "Failed to save preferences",
-  "digestSettingsKeywordRequired": "Enter a keyword",
-  "digestSettingsKeywordDuplicate": "Keyword already added",
   "digestSettingsNotificationTime": "Notification Time",
-  "digestSettingsKeywordMax": "Max 10 keywords",
-  "digestSettingsKeywordMinRequired": "At least one keyword required",
-  "digestSettingsKeywordRemove": "Remove {keyword}",
-  "@digestSettingsKeywordRemove": {
-    "placeholders": {
-      "keyword": {
-        "type": "String"
-      }
-    }
-  },
-
   "profileTitle": "Profile Settings",
   "profileSubtitle": "Customize your profile and preferences",
   "profilePersonalInfo": "Personal Information",

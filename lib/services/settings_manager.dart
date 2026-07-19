@@ -413,7 +413,7 @@ class SettingsManager {
   List<String> get digestKeywords {
     _checkInitialized();
     final raw = _prefs.getString(_digestKeywordsKey) ?? '';
-    if (raw.isEmpty) return ['nanoplastics', 'microplastics'];
+    if (raw.isEmpty) return ['charge', 'nanoplastics'];
     return raw.split(',').map((k) => k.trim()).where((k) => k.isNotEmpty).toList();
   }
 
