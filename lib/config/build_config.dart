@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 /// Build-time configuration flags passed via --dart-define.
 ///
 /// Usage:
@@ -40,5 +42,21 @@ class BuildConfig {
   static const isGithubBuild = _distribution == 'github';
 
   /// True for any store build (Play or App Store). Self-update must be disabled.
-  static const isStoreBuild = _distribution == 'playStore' || _distribution == 'appStore';
+  static const isStoreBuild =
+      _distribution == 'playStore' || _distribution == 'appStore';
+
+  /// Whether this build may run the self-updater.
+  ///
+  /// The distribution flag alone is not enough. It defaults to `github`, so an
+  /// iOS build that forgets `--dart-define=DISTRIBUTION=appStore` used to get
+  /// the real updater, which compares the installed version against the GitHub
+  /// APK release feed, paints a red badge on a brand new install, and offers a
+  /// download iOS cannot install. The platform check cannot be forgotten.
+  ///
+  /// Deliberately a runtime check rather than a compile-time constant: being
+  /// unable to forget it is worth more than tree-shaking a few kilobytes.
+  static bool get selfUpdateSupported =>
+      isGithubBuild &&
+      !kIsWeb &&
+      defaultTargetPlatform == TargetPlatform.android;
 }

@@ -164,13 +164,11 @@ class ServiceLocator {
     _digestService = DigestService();
     unawaited(_digestService.syncUser());
 
-    // Update service — adapter chosen at compile time via BuildConfig.
-    // GitHub builds get the real self-updater; store/web builds get a no-op stub.
-    // Both BuildConfig.isGithubBuild and kIsWeb are compile-time constants, so
-    // Dart AOT tree-shakes the unused branch out of store, iOS, and web binaries.
-    _updateService = BuildConfig.isGithubBuild && !kIsWeb
-        ? UpdateService()
-        : NoOpUpdateService();
+    // Update service — only Android GitHub builds self-update. Everything
+    // else, including every iOS build regardless of its distribution flag,
+    // gets a no-op stub. See BuildConfig.selfUpdateSupported.
+    _updateService =
+        BuildConfig.selfUpdateSupported ? UpdateService() : NoOpUpdateService();
   }
 
   @visibleForTesting
@@ -183,7 +181,7 @@ class ServiceLocator {
     _internetService = InternetService._();
     // Skip connectivity init in tests — platform plugin unavailable in Dart VM.
     // InternetService stays in disconnected state, which is fine for unit tests.
-    _updateService = BuildConfig.isGithubBuild && !kIsWeb
+    _updateService = BuildConfig.selfUpdateSupported
         ? UpdateService(
             settingsManager: _settingsManager,
             internetService: _internetService,
